@@ -7,7 +7,7 @@ const theme: Theme = extendTheme({
     useSystemColorMode: false,
     initialColorMode: 'light',
   },
-  colors: { primary: 'teal.600' },
+  colors: { primary: 'teal.600', purpleTone: '#553CFB', grayText: '#8888A8' },
   fonts: {
     heading: `'Archivo Narrow', sans-serif`,
     body: `'Barlow', sans-serif`,
