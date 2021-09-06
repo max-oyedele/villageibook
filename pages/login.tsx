@@ -78,10 +78,9 @@ const Login = () => {
                   placeholder="Add Your Password"
                   fontSize="13px"
                 />
-                <InputRightAddon
-                  children={passwordShow ? <BiHide /> : <BiShow />}
-                  onClick={() => setPasswordShow(!passwordShow)}
-                />
+                <InputRightAddon onClick={() => setPasswordShow(!passwordShow)}>
+                  {passwordShow ? <BiHide /> : <BiShow />}
+                </InputRightAddon>
               </InputGroup>
               <FormHelperText></FormHelperText>
               <FormErrorMessage></FormErrorMessage>
@@ -113,7 +112,7 @@ const Login = () => {
                 border="1px"
                 borderColor="#D5DBEC"
                 leftIcon={
-                  <Image src="/icons/facebook.svg" width="17px" height="17px" />
+                  <Image src="/icons/facebook.svg" width="17px" height="17px" alt="facebook"/>
                 }
               >
                 Login with Facebook
@@ -124,7 +123,7 @@ const Login = () => {
                 border="1px"
                 borderColor="#D5DBEC"
                 leftIcon={
-                  <Image src="/icons/google.svg" width="17px" height="17px" />
+                  <Image src="/icons/google.svg" width="17px" height="17px" alt="google"/>
                 }
               >
                 Login with Google

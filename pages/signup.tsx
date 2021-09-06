@@ -55,7 +55,7 @@ const Signup = () => {
           <Flex
             w={{ base: "80%", md: "100%", lg: "70%" }}
             flexDirection="column"
-            my={{base: 6, md: 0}}
+            my={{ base: 6, md: 0 }}
           >
             <Text
               fontSize="36px"
@@ -97,10 +97,9 @@ const Signup = () => {
                   placeholder="Add Your Password"
                   fontSize="13px"
                 />
-                <InputRightAddon
-                  children={passwordShow ? <BiHide /> : <BiShow />}
-                  onClick={() => setPasswordShow(!passwordShow)}
-                />
+                <InputRightAddon onClick={() => setPasswordShow(!passwordShow)}>
+                  {passwordShow ? <BiHide /> : <BiShow />}
+                </InputRightAddon>
               </InputGroup>
               <FormHelperText></FormHelperText>
               <FormErrorMessage></FormErrorMessage>
@@ -153,7 +152,12 @@ const Signup = () => {
                 border="1px"
                 borderColor="#D5DBEC"
                 leftIcon={
-                  <Image src="/icons/facebook.svg" width="17px" height="17px" />
+                  <Image
+                    src="/icons/facebook.svg"
+                    width="17px"
+                    height="17px"
+                    alt="facebook"
+                  />
                 }
               >
                 {breakpointValue === "base"
@@ -166,12 +170,15 @@ const Signup = () => {
                 border="1px"
                 borderColor="#D5DBEC"
                 leftIcon={
-                  <Image src="/icons/google.svg" width="17px" height="17px" />
+                  <Image
+                    src="/icons/google.svg"
+                    width="17px"
+                    height="17px"
+                    alt="google"
+                  />
                 }
               >
-                {breakpointValue === "base"
-                  ? "Google"
-                  : "Signup with Google"}
+                {breakpointValue === "base" ? "Google" : "Signup with Google"}
               </Button>
             </HStack>
           </Flex>
