@@ -12,7 +12,7 @@ const theme: Theme = extendTheme({
     purpleTone: "#553CFB",
     grayText: "#8888A8",
     grayBg: "#F8F8FA"
-  },
+  },  
   fonts: {
     heading: `'Archivo Narrow', sans-serif`,
     body: `'Sofia Pro', sans-serif`,

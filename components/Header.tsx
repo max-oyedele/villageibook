@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 
 import Logo from "components/Logo";
+import SocialLinkBar from "components/SocialLinkBar";
 
 const Header = () => {
   const router = useRouter();
@@ -136,12 +137,9 @@ const Header = () => {
                 ))}
               </VStack>
 
-              <HStack spacing={8} mt={16} justifyContent="center">
-                <Image src="/icons/home-twitter.svg" alt="" />
-                <Image src="/icons/home-facebook.svg" alt="" />
-                <Image src="/icons/home-instagram.svg" alt="" />
-                <Image src="/icons/home-youtube.svg" alt="" />
-              </HStack>
+              <Box mt={16}>
+                <SocialLinkBar />
+              </Box>
             </Box>
           )}
         </Box>

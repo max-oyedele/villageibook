@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
 import { Flex, HStack, Box, Text, Image } from "@chakra-ui/react";
 
-const VillageCard: React.FC<{ name: string; img: string; last: number }> = ({
+const RecentUserCard: React.FC<{ name: string; img: string; recentAt: number }> = ({
   name,
   img,
-  last,
+  recentAt,
 }) => {
   return (
     <Fragment>
@@ -22,11 +22,11 @@ const VillageCard: React.FC<{ name: string; img: string; last: number }> = ({
             {name}
           </Text>
           <Text fontSize="12px" color="grayText">
-            {last === 0
+            {recentAt === 0
               ? "Today"
-              : last === 1
+              : recentAt === 1
               ? "Yesterday"
-              : `${last} days ago`}
+              : `${recentAt} days ago`}
           </Text>
         </Box>
       </Flex>
@@ -34,4 +34,4 @@ const VillageCard: React.FC<{ name: string; img: string; last: number }> = ({
   );
 };
 
-export default VillageCard;
+export default RecentUserCard;

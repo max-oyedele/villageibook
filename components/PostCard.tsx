@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Flex, HStack, Box, Text, Avatar, Image } from "@chakra-ui/react";
+import { Flex, Stack, Box, Text, Avatar, Image, useBreakpointValue } from "@chakra-ui/react";
 
 type User = {
   name: string;
@@ -16,6 +16,8 @@ const PostCard: React.FC<{ user: User; ago: string; post: Post }> = ({
   ago,
   post,
 }) => {
+  const breakpointValue = useBreakpointValue({base: 'base', md: 'md'})
+
   return (
     <Fragment>
       <Box w="full" p={4} bgColor="white" borderRadius="6px">
@@ -39,11 +41,11 @@ const PostCard: React.FC<{ user: User; ago: string; post: Post }> = ({
 
         <Text fontSize="13px" my={4}>{post.text}</Text>
 
-        <HStack spacing={4}>
+        <Stack direction={{base: 'column', lg: "row"}} spacing={4}>
           {post.imgs.map((img) => (
-            <Image key={img} src={img} alt="post" borderRadius="4px" w="full" />
+            <Image key={img} src={img} alt="" borderRadius="4px" w="full" />
           ))}
-        </HStack>
+        </Stack>
       </Box>
     </Fragment>
   );

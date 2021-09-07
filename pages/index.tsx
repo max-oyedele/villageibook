@@ -13,30 +13,34 @@ import {
 } from "@chakra-ui/react";
 
 import Header from "components/Header";
+import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import SearchBar from "components/SearchBar";
 import SignupCard from "components/SignupCard";
-import VillageCard from "components/VillageCard";
+import RecentVillageCard from "components/RecentVillageCard";
 import PostCard from "components/PostCard";
+import CaptionCard from "components/CaptionCard";
+import GraduateStatCard from "components/GraduateStatCard";
+import RecentUserCard from "components/RecentUserCard";
 
-const villages = [
+const recentVillages = [
   {
     id: 0,
     name: "Syedpur",
     img: "/images/village-card1.png",
-    last: 1,
+    recentAt: 1,
   },
   {
     id: 1,
     name: "Panchpara",
     img: "/images/village-card2.png",
-    last: 2,
+    recentAt: 2,
   },
   {
     id: 2,
     name: "Rasulpur",
     img: "/images/village-card1.png",
-    last: 4,
+    recentAt: 4,
   },
 ];
 
@@ -70,6 +74,21 @@ const posts = [
   },
 ];
 
+const recentUsers = [
+  {
+    id: 0,
+    name: "sarmin begum",
+    img: "/images/sarmin.png",
+    recentAt: 1,
+  },
+  {
+    id: 1,
+    name: "Nusrat Rahman",
+    img: "/images/sonia.png",
+    recentAt: 2,
+  },
+];
+
 const Home: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
@@ -91,8 +110,8 @@ const Home: NextPage = () => {
                 Recently developed
               </Text>
               <VStack spacing={4}>
-                {villages.map((village) => (
-                  <VillageCard key={village.name} {...village} />
+                {recentVillages.map((village) => (
+                  <RecentVillageCard key={village.name} {...village} />
                 ))}
               </VStack>
             </Box>
@@ -108,15 +127,27 @@ const Home: NextPage = () => {
 
           {breakpointValue === "md" && (
             <Box w="25%">
-              {/* <CaptionCard />
-              <Text>Graduates</Text>
-              <GraduatesStatCard />
-              <Text>Recently joined</Text>
-              <UserCard /> */}
+              <CaptionCard caption="caption" desc="Text Block" />
+              <Text fontSize="26px" fontWeight="bold" my={10}>
+                Graduates
+              </Text>
+              <GraduateStatCard villageName="jammura" />
+              <Text fontSize="26px" fontWeight="bold" my={10}>
+                Recently joined
+              </Text>
+              <VStack spacing={4}>
+                {recentUsers.map((user) => (
+                  <RecentUserCard key={user.name} {...user} />
+                ))}
+              </VStack>
             </Box>
           )}
         </HStack>
       </Container>
+      
+      <Box mt={20}>
+        <Footer />
+      </Box>
     </Fragment>
   );
 };
