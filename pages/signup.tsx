@@ -69,7 +69,7 @@ const Signup = () => {
               fontWeight="400"
               color="grayText"
               textAlign={{ base: "center", md: "left" }}
-              mt={4}
+              mt={6}
             >
               Create account to start using VillageiBook
             </Text>

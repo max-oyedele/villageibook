@@ -1,12 +1,15 @@
-import { Fragment } from 'react';
-import {Text} from '@chakra-ui/react';
+import { Fragment } from "react";
+import Link from "next/link";
+import { Text } from "@chakra-ui/react";
 
 const Logo = () => {
   return (
     <Fragment>
-      <Text fontSize="xl" fontWeight="bold"  color="purpleTone">V.</Text>
+      <Text fontSize="xl" fontWeight="bold" color="purpleTone">
+        <Link href="/">V.</Link>
+      </Text>
     </Fragment>
-  )
-}
+  );
+};
 
 export default Logo;
