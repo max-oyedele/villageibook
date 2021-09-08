@@ -19,6 +19,8 @@ import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import SearchBar from "components/SearchBar";
 import VideoCard from "components/VideoCard";
+import MyVillageDivider from "components/MyVillageDivider";
+import MyVillageItems from "components/MyVillageItems";
 import PremiumCard from "components/PremiumCard";
 import SignupCard from "components/SignupCard";
 import RecentVillageCard from "components/RecentVillageCard";
@@ -27,104 +29,7 @@ import CaptionCard from "components/CaptionCard";
 import GraduateStatCard from "components/GraduateStatCard";
 import RecentUserCard from "components/RecentUserCard";
 
-const myVillageItems = [
-  {
-    id: 0,
-    name: "My Pages",
-    img: "/icons/myvillage-mypage.svg",
-  },
-  {
-    id: 1,
-    name: "Village Graduates",
-    img: "/icons/myvillage-graduate.svg",
-  },
-  {
-    id: 2,
-    name: "Society",
-    img: "/icons/myvillage-society.svg",
-  },
-  {
-    id: 3,
-    name: "Personalities",
-    img: "/icons/myvillage-personality.svg",
-  },
-  {
-    id: 4,
-    name: "Institutions",
-    img: "/icons/myvillage-institution.svg",
-  },
-  {
-    id: 5,
-    name: "Videos",
-    img: "/icons/myvillage-video.svg",
-  },
-];
-
-const recentVillages = [
-  {
-    id: 0,
-    name: "Syedpur",
-    img: "/images/village-card1.png",
-    recentAt: 1,
-  },
-  {
-    id: 1,
-    name: "Panchpara",
-    img: "/images/village-card2.png",
-    recentAt: 2,
-  },
-  {
-    id: 2,
-    name: "Rasulpur",
-    img: "/images/village-card1.png",
-    recentAt: 4,
-  },
-];
-
-const posts = [
-  {
-    id: 0,
-    user: { name: "Nusrat Rahman", img: "/images/nusrat.png" },
-    ago: "3 hours ago",
-    post: {
-      text: "Consequat duis enim velit mollit. Exercitation veniam consequat sunt.",
-      imgs: ["/images/nusrat-post.png"],
-    },
-  },
-  {
-    id: 1,
-    user: { name: "Sarmin Degum", img: "/images/sarmin.png" },
-    ago: "5 hours ago",
-    post: {
-      text: "Consequat duis enim velit mollit. Exercitation veniam consequat sunt.",
-      imgs: ["/images/sarmin-post1.png", "/images/sarmin-post2.png"],
-    },
-  },
-  {
-    id: 2,
-    user: { name: "Sonia Khatun", img: "/images/sonia.png" },
-    ago: "1 day ago",
-    post: {
-      text: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim.",
-      imgs: ["/images/sonia-post.png"],
-    },
-  },
-];
-
-const recentUsers = [
-  {
-    id: 0,
-    name: "sarmin begum",
-    img: "/images/sarmin.png",
-    recentAt: 1,
-  },
-  {
-    id: 1,
-    name: "Nusrat Rahman",
-    img: "/images/sonia.png",
-    recentAt: 2,
-  },
-];
+import { recentVillages, posts, recentUsers } from "data";
 
 const Home: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -158,24 +63,15 @@ const Home: NextPage = () => {
             <Box w="25%">
               <Box bgColor="white" p={4} borderRadius="6px" mb={6}>
                 <VideoCard />
-                <HStack mt={8}>
-                  <Divider />
-                  <Button
-                    w="full"
-                    h="30px"
-                    bgColor="purpleTone"
-                    color="white"
-                    fontSize="10px"
-                  >
-                    MY VILLAGE
-                  </Button>
-                  <Divider />
-                </HStack>
+                <Box mt={8}>
+                  <MyVillageDivider />
+                </Box>
                 <Box my={6}>
                   <MyVillageItems />
                 </Box>
               </Box>
               <PremiumCard />
+              <Box mt={6}></Box>
               <SignupCard />
               <Text fontSize="26px" fontWeight="bold" my={10}>
                 Recently developed
@@ -286,36 +182,6 @@ const TabsMobile: React.FC<{
         ))}
       </HStack>
     </Fragment>
-  );
-};
-
-const MyVillageItems = () => {
-  const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-
-  return (
-    <VStack
-      spacing={2}
-      divider={breakpointValue === "base" ? <Divider /> : <></>}
-    >
-      {myVillageItems.map((item) => (
-        <HStack
-          key={item.name}
-          w="full"
-          h={{ base: "60px", md: "40px" }}
-          spacing={4}
-        >
-          <Image
-            src={item.img}
-            alt=""
-            w={{ base: "50px", md: "30px" }}
-            h={{ base: "50px", md: "30px" }}
-          />
-          <Text fontSize="13px" fontWeight="bold">
-            {item.name}
-          </Text>
-        </HStack>
-      ))}
-    </VStack>
   );
 };
 

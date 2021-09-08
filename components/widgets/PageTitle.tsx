@@ -6,7 +6,7 @@ const PageTitle: React.FC<{ title: string }> = ({ title }) => {
 
   return (
     <Fragment>
-      <Text fontSize="26px" fontWeight="bold" textAlign={breakpointValue === 'base' ? 'center' : 'left'}>
+      <Text fontSize="26px" fontWeight="bold" textAlign={breakpointValue === 'base' ? 'center' : 'left'} textTransform="capitalize">
         {title}
       </Text>
     </Fragment>
