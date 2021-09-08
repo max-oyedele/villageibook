@@ -10,45 +10,15 @@ import {
   Progress,
 } from "@chakra-ui/react";
 
-const totalGraduates = 1000;
-const jammuraGraduates = 124;
-const graduates:any = {
-  barisal: {
-    inter: 12,
-    oversea: 12,
-  },
-  chittagong: {
-    inter: 11,
-    oversea: 2,
-  },
-  dhaka: {
-    inter: 10,
-    oversea: 14,
-  },
-  khulna: {
-    inter: 21,
-    oversea: 5,
-  },
-  mymensingh: {
-    inter: 16,
-    oversea: 11,
-  },
-  rajshahi: {
-    inter: 18,
-    oversea: 8,
-  },
-  rangpur: {
-    inter: 14,
-    oversea: 13,
-  },
-  sylhet: {
-    inter: 13,
-    oversea: 13,
-  },
-};
+import VillageGraduatePercent from "./VillageGraduatePercent";
 
-const GraduateStatCard: React.FC<{ villageName: string }> = ({
-  villageName,
+const GraduateStatCard: React.FC<{ 
+  totalGraduates: number;
+  villageName: string;
+  villageGraduates: number;
+  bangladeshGraduates: any
+}> = ({
+  totalGraduates, villageName, villageGraduates, bangladeshGraduates
 }) => {
   return (
     <Fragment>
@@ -59,35 +29,13 @@ const GraduateStatCard: React.FC<{ villageName: string }> = ({
         bgColor="white"
         borderRadius="6px"
       >
-        <Text fontSize="13px" fontWeight="bold" textTransform="capitalize">
-          {villageName} Graduates
-        </Text>
-        <Progress
-          max={totalGraduates}
-          value={jammuraGraduates}
-          size="xs"
-          colorScheme="purple"
-          mt={4}
-        />
-        <Flex justifyContent="space-between" mt={4}>
-          <HStack>
-            <Text fontSize="26px" fontWeight="bold" color="purpleTone">
-              {jammuraGraduates}
-            </Text>
-            <Text fontSize="10px" fontWeight="bold">
-              /{totalGraduates}
-            </Text>
-          </HStack>
-          <Text fontSize="10px" fontWeight="bold">
-            {(jammuraGraduates / totalGraduates) * 100}%
-          </Text>
-        </Flex>
+        <VillageGraduatePercent totalGraduates={totalGraduates} villageName={villageName} villageGraduates={villageGraduates} />
 
         <VStack divider={<StackDivider />} mt={8}>
-          {Object.keys(graduates).map((region) => (
+          {Object.keys(bangladeshGraduates).map((region) => (
             <Flex w="full" key={region} justifyContent="space-between" alignItems="center">
               <Text fontSize="12px" fontWeight="bold" textTransform="capitalize">{region}</Text>
-              <Capsule inter={graduates[region].inter} oversea={graduates[region].oversea}/>
+              <Capsule inter={bangladeshGraduates[region].inter} oversea={bangladeshGraduates[region].oversea}/>
             </Flex>
           ))}
         </VStack>

@@ -18,7 +18,6 @@ import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import SearchBar from "components/SearchBar";
-import VideoCard from "components/VideoCard";
 import MyVillageDivider from "components/MyVillageDivider";
 import MyVillageItems from "components/MyVillageItems";
 import PremiumCard from "components/PremiumCard";
@@ -30,6 +29,12 @@ import GraduateStatCard from "components/GraduateStatCard";
 import RecentUserCard from "components/RecentUserCard";
 
 import { recentVillages, posts, recentUsers } from "data";
+import {
+  totalGraduates,
+  villageName,
+  villageGraduates,
+  bangladeshGraduates,
+} from "data";
 
 const Home: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -62,7 +67,23 @@ const Home: NextPage = () => {
           {breakpointValue === "md" && (
             <Box w="25%">
               <Box bgColor="white" p={4} borderRadius="6px" mb={6}>
-                <VideoCard />
+                <Flex
+                  w="full"
+                  pos="relative"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Image
+                    src="/images/video-card.png"
+                    w="full"
+                    fit="cover"
+                    alt=""
+                  />
+                  <Box pos="absolute" cursor="pointer">
+                    <Image src="/images/video-play.png" alt="" />
+                  </Box>
+                </Flex>
+
                 <Box mt={8}>
                   <MyVillageDivider />
                 </Box>
@@ -93,7 +114,7 @@ const Home: NextPage = () => {
                 ))}
               </VStack>
             )}
-            {activeTab === "My Village" && (
+            {breakpointValue === "base" && activeTab === "My Village" && (
               <Box>
                 <MyVillageItems />
                 <Box mt={12}>
@@ -109,12 +130,33 @@ const Home: NextPage = () => {
                 </VStack>
               </Box>
             )}
-            {activeTab === "Graduates" && (
+            {breakpointValue === "base" && activeTab === "Graduates" && (
               <Box>
-                <GraduateStatCard villageName="jammura" />
+                <GraduateStatCard
+                  totalGraduates={totalGraduates}
+                  villageName={villageName}
+                  villageGraduates={villageGraduates}
+                  bangladeshGraduates={bangladeshGraduates}
+                />
                 <Box mt={12}>
-                  <VideoCard />
+                  <Flex
+                    w="full"
+                    pos="relative"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Image
+                      src="/images/video-card.png"
+                      w="full"
+                      fit="cover"
+                      alt=""
+                    />
+                    <Box pos="absolute" cursor="pointer">
+                      <Image src="/images/video-play.png" alt="" />
+                    </Box>
+                  </Flex>
                 </Box>
+
                 <Text fontSize="20px" mt={12} mb={6}>
                   Recently joined
                 </Text>
@@ -133,7 +175,12 @@ const Home: NextPage = () => {
               <Text fontSize="26px" fontWeight="bold" my={10}>
                 Graduates
               </Text>
-              <GraduateStatCard villageName="jammura" />
+              <GraduateStatCard
+                totalGraduates={totalGraduates}
+                villageName={villageName}
+                villageGraduates={villageGraduates}
+                bangladeshGraduates={bangladeshGraduates}
+              />
               <Text fontSize="26px" fontWeight="bold" my={10}>
                 Recently joined
               </Text>
