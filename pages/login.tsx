@@ -112,7 +112,7 @@ const Login = () => {
                 border="1px"
                 borderColor="#D5DBEC"
                 leftIcon={
-                  <Image src="/icons/facebook.svg" width="17px" height="17px" alt="facebook"/>
+                  <Image src="/icons/auth-facebook.svg" width="17px" height="17px" alt="facebook"/>
                 }
               >
                 Login with Facebook
@@ -123,7 +123,7 @@ const Login = () => {
                 border="1px"
                 borderColor="#D5DBEC"
                 leftIcon={
-                  <Image src="/icons/google.svg" width="17px" height="17px" alt="google"/>
+                  <Image src="/icons/auth-google.svg" width="17px" height="17px" alt="google"/>
                 }
               >
                 Login with Google

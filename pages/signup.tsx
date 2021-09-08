@@ -153,7 +153,7 @@ const Signup = () => {
                 borderColor="#D5DBEC"
                 leftIcon={
                   <Image
-                    src="/icons/facebook.svg"
+                    src="/icons/auth-facebook.svg"
                     width="17px"
                     height="17px"
                     alt="facebook"
@@ -171,7 +171,7 @@ const Signup = () => {
                 borderColor="#D5DBEC"
                 leftIcon={
                   <Image
-                    src="/icons/google.svg"
+                    src="/icons/auth-google.svg"
                     width="17px"
                     height="17px"
                     alt="google"
