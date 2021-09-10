@@ -11,7 +11,8 @@ const theme: Theme = extendTheme({
     primary: "teal.600",
     purpleTone: "#553CFB",
     grayText: "#8888A8",
-    grayBg: "#F8F8FA"
+    grayBg: "#F8F8FA",
+    greenTone: "#36CFD1"
   },  
   fonts: {
     heading: `'Archivo Narrow', sans-serif`,

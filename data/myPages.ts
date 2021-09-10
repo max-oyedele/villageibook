@@ -13,6 +13,8 @@ export type MyPage = {
   name: string;
   img?: string;
   desc?: string;
+  role: string;
+  photos?: string[];
 };
 
 export const myPages: MyPage[] = [
@@ -22,6 +24,8 @@ export const myPages: MyPage[] = [
     name: "sadia rashid",
     img: "/images/sadia.png",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
+    role: "premium",
+    photos: ["/images/myphoto1.png", "/images/myphoto2.png", "/images/myphoto3.png"]
   },
   {
     id: 1,
@@ -29,6 +33,8 @@ export const myPages: MyPage[] = [
     name: "abdul ullah",
     img: "/images/abdul.png",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
+    role: "normal",
+    photos: ["/images/myphoto1.png", "/images/myphoto2.png", "/images/myphoto3.png"]
   },
   {
     id: 2,
@@ -36,6 +42,7 @@ export const myPages: MyPage[] = [
     name: "Taslima ahamed",
     img: "/images/taslima.png",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
+    role: "premium"
   },
 ];
 
@@ -57,12 +64,6 @@ export const societies: Society[] = [
     title: "Amet minim mollit non deserunt minim mollit non.",
     desc: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam nostrud consequat sunt nostrud amet. Velit officia consequat duis enim velit mollit. Exercitation veniam sunt nostrud amet.",
     img: "/images/society-card2.png",
-  },
-  {
-    id: 0,
-    title: "Amet minim mollit non deserunt minim mollit non.",
-    desc: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam nostrud consequat sunt nostrud amet. Velit officia consequat duis enim velit mollit. Exercitation veniam sunt nostrud amet.",
-    img: "/images/society-card1.png",
   },
   {
     id: 2,

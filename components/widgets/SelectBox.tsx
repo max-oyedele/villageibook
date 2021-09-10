@@ -54,6 +54,7 @@ const SelectBox = (props:any) => {
           paddingLeft: 10,
           display: 'flex',
           alignItems: 'center',
+          fontSize: 13,
           // border: '1px solid #e5e5e5',
           // borderRadius: 4
         }),
@@ -65,7 +66,8 @@ const SelectBox = (props:any) => {
           alignItems: 'center',
           borderRadius: 4,
           backgroundColor: props.backColor === 'primary' ? '#f26522' : props.backColor === 'secondary' ? '#282a2f' : 'transparent',
-          border: `1px solid ${props.backColor === 'transparent' ? '#E5E7EB' : '#D5DBEC'}`,
+          // border: `1px solid ${props.backColor === 'transparent' ? '#E5E7EB' : '#D5DBEC'}`,
+          border: `1px solid ${props.borderColor??'#E5E7EB'}`,
         }),
         placeholder: () => ({
           color: 'grayText',

@@ -30,6 +30,12 @@ const MyVillageItems:React.FC<{role?: string}> = ({role}) => {
           h={{ base: "60px", md: "40px" }}
           spacing={4}
           bgColor={item.path === pathname ? item.activeBgColor : 'transparent'}
+          borderRadius="8px"
+          px={2}
+          cursor="pointer"
+          _hover={{
+            bgColor: "gray.100"
+          }}
         >
           <Image
             src={item.img}

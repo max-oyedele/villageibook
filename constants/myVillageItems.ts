@@ -41,7 +41,7 @@ export const myVillageItems = [
     value: "institutions",
     img: "/icons/myvillage-institution.svg",
     path: '/institutions',
-    activeBgColor: '#5B8FFF',
+    activeBgColor: '#5B8FFF22',
     badgeColor: '#5A8FFF'
   },
   {
@@ -50,7 +50,7 @@ export const myVillageItems = [
     value: "videos",
     img: "/icons/myvillage-video.svg",
     path: '/videos',
-    activeBgColor: '#FF5B5B',
+    activeBgColor: '#FF5B5B22',
     badgeColor: '#FF645A'
   },
 ];

@@ -26,6 +26,7 @@ import SocietyCard from "components/SocietyCard";
 import PersonalityCard from "components/PersonalityCard";
 import InstitutionCard from "components/InstitutionCard";
 import VideoCard from "components/VideoCard";
+import FilterCard from "components/FilterCard";
 
 import {
   totalGraduates,
@@ -41,12 +42,8 @@ import {
   videos,
 } from "data/myPages";
 
-const userName = "mohammed shah";
-
 const MyPages: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-
-  const societyMaxRowsPerCol = societies.length / 2 + (societies.length % 2);
 
   return (
     <Fragment>
@@ -59,6 +56,12 @@ const MyPages: NextPage = () => {
           {breakpointValue === "md" && (
             <Box w="25%">
               <MyVillageCard />
+              <Text fontSize="26px" fontWeight="bold" my={10}>
+                Filters
+              </Text>
+              <Box bgColor="white" borderRadius="6px" px={4} py={8}>
+                <FilterCard />
+              </Box>
             </Box>
           )}
 
@@ -111,20 +114,16 @@ const MyPages: NextPage = () => {
                   ({societies.length})
                 </Text>
               </Text>
-              <HStack spacing={6} mt={6}>
-                <VStack spacing={10}>
-                  {societies.map((society, index) => {
-                    if (index >= societyMaxRowsPerCol) return null;
-                    return <SocietyCard key={society.id} society={society} />;
-                  })}
-                </VStack>
-                <VStack spacing={10}>
-                  {societies.map((society, index) => {
-                    if (index < societyMaxRowsPerCol) return null;
-                    return <SocietyCard key={society.id} society={society} />;
-                  })}
-                </VStack>
-              </HStack>
+              <Grid
+                templateColumns="repeat(2, 1fr)"
+                columnGap={6}
+                rowGap={10}
+                mt={6}
+              >
+                {societies.map((society) => (
+                  <SocietyCard key={society.id} society={society} />
+                ))}
+              </Grid>
               <Divider my={10} />
               <Box>
                 <Text

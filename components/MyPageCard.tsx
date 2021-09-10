@@ -24,7 +24,17 @@ const MyPageCard: React.FC<{ myPage: MyPage }> = ({ myPage }) => {
   return (
     <Fragment>
       <HStack w="full" border="1px" borderColor="gray.300" borderRadius="5px">
-        <Image src={myPage.img} alt="" w="135px" h="135px" fit="cover" />
+        <Box pos="relative" minW="max-content">
+          <Image src={myPage.img} alt="" w="135px" h="135px" fit="cover" />
+          {myPage.role === "premium" && (
+            <Box pos="absolute" top={2} left={2}>
+              <Badge fontSize="9px" borderRadius="full" px={2}>
+                PREMIUM
+              </Badge>
+            </Box>
+          )}
+        </Box>
+
         <Box w="full" p={4}>
           <Text
             fontSize="12px"
