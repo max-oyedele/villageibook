@@ -192,8 +192,8 @@ const Signup = () => {
           <Image
             src={
               breakpointValue === "base"
-                ? "/images/login-back-mobile.png"
-                : "/images/login-back-pc.png"
+                ? "/images/signup-back-mobile.png"
+                : "/images/signup-back-pc.png"
             }
             boxSize="full"
             fit="cover"

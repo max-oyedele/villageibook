@@ -29,6 +29,8 @@ import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 
+import {faqs} from "data/faq";
+
 const Faq: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
@@ -43,11 +45,78 @@ const Faq: NextPage = () => {
         <HStack spacing={6} mt={12} align="start">
           {breakpointValue === "md" && (
             <Box w="25%">
-              
+              <Box pos="relative">
+                <Image
+                  src="/images/email-card.png"
+                  w="full"
+                  fit="cover"
+                  alt=""
+                />
+                <Box pos="absolute" top="70%" left="10%">
+                  <Button
+                    w="110px"
+                    h="30px"
+                    variant="outline"
+                    color="white"
+                    fontSize="10px"
+                    fontWeight="800"
+                  >
+                    EMAIL NOW
+                  </Button>
+                </Box>
+              </Box>
             </Box>
           )}
 
-          <Box w="full"></Box>
+          <Box w="full">
+            <Accordion
+              allowToggle
+              w="full"
+              bgColor="white"
+              defaultIndex={0}
+              // onChange={(index) => {
+              //   typeof index === "number"
+              //     ? setExpandedDistrict(districtGraduates[index])
+              //     : setExpandedDistrict(districtGraduates[index[0]]);
+              // }}
+            >
+              {faqs.map((faq) => (
+                <AccordionItem
+                  key={faq.id}
+                  id={faq.id.toString()}
+                  border="none"
+                  bgColor="white"
+                  mt={4}
+                >
+                  <AccordionButton h={14}>
+                    <Box
+                      flex="1"
+                      textAlign="left"
+                      fontSize="16px"
+                      fontWeight="700"
+                      textTransform="capitalize"
+                      color={
+                        faq.id === expandedFaq?.id
+                          ? "purpleTone"
+                          : "primary"
+                      }
+                    >
+                      {faq.title}
+                    </Box>
+                    
+
+                    <AccordionIcon ml={4} />
+                  </AccordionButton>
+                  <Divider />
+                  <AccordionPanel pb={4}>
+                    <Box w="300px" mt={6} mb={10} ml={6}>
+                      asdfasdf    
+                    </Box>
+                  </AccordionPanel>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </Box>
         </HStack>
       </Container>
 

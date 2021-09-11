@@ -27,6 +27,7 @@ import PostCard from "components/PostCard";
 import CaptionCard from "components/CaptionCard";
 import GraduateStatCard from "components/GraduateStatCard";
 import RecentUserCard from "components/RecentUserCard";
+import VideoCard from "components/VideoCard";
 
 import { recentVillages, posts, recentUsers } from "data";
 import {
