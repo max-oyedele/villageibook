@@ -33,6 +33,9 @@ import {faqs} from "data/faq";
 
 const Faq: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
+  const [expandedFaq, setExpandedFaq] = useState(
+    faqs[0]
+  );
 
   return (
     <Fragment>
@@ -107,8 +110,8 @@ const Faq: NextPage = () => {
 
                     <AccordionIcon ml={4} />
                   </AccordionButton>
-                  <Divider />
                   <AccordionPanel pb={4}>
+                    <Divider />
                     <Box w="300px" mt={6} mb={10} ml={6}>
                       asdfasdf    
                     </Box>
