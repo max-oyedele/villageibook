@@ -4,7 +4,9 @@ import {
   PayloadAction,
   SerializedError,
 } from "@reduxjs/toolkit";
+
 import axios from "axios";
+import querystring from "querystring";
 
 export enum AuthStates {
   IDLE = "idle",
@@ -24,22 +26,52 @@ export enum AuthStates {
 export const login = createAsyncThunk(
   "auth/login",
   async (credentials: { email: string; password: string }, thunkAPI) => {
-    try {
-      const response = await axios.post<{ access_token: string }>(
-        "api/auth/login",
-        credentials
-      );
-      // // const refetch = await axios.get<{ name: string }>('api/me', {
-      // //   headers: { Authorization: `Bearer ${response.data.accessToken}` },
-      // // })
-      // return { accessToken: response.data.accessToken, me: { name: refetch.data.name } }
+    // try {
+    //   const response = await axios.post<{ access_token: string }>(
+    //     "api/auth/login",
+    //     credentials
+    //   );
+    //   // // const refetch = await axios.get<{ name: string }>('api/me', {
+    //   // //   headers: { Authorization: `Bearer ${response.data.accessToken}` },
+    //   // // })
+    //   // return { accessToken: response.data.accessToken, me: { name: refetch.data.name } }
 
-      return response.data;
-    } catch (error) {
-      // console.log('werwerwe', error.response)
-      // return thunkAPI.rejectWithValue({ error: error.message })
-      console.log('auth slice err', error.response)
-      return thunkAPI.rejectWithValue(error.response.data);
+    //   return response.data;
+    // } catch (error) {
+    //   // console.log('werwerwe', error.response)
+    //   // return thunkAPI.rejectWithValue({ error: error.message })
+    //   console.log('auth slice err', error.response)
+    //   return thunkAPI.rejectWithValue(error.response.data);
+    // }
+    const params = querystring.stringify({
+      username: credentials.email,
+      password: credentials.password,
+      grant_type: "password",
+      client_id: "villageibook-client",
+      client_secret: "4C6JYPsCJ795vFVS",
+    });
+  
+    try {
+      const { data } = await axios.post(
+        "http://villageibook-api.abosit.com/oauth/token", // api backend path
+        params,
+        {
+          headers: {
+            Authorization:
+              "Basic " +
+              Buffer.from(
+                "villageibook-client" + ":" + "4C6JYPsCJ795vFVS"
+              ).toString("base64"),
+            "content-type": "application/x-www-form-urlencoded",
+          },
+        } // Headers from the Next.js Client
+      );
+      console.log('res data', data)
+      return data; // Send data from Node.js server response
+    } catch ({ response: { status, data } }) {
+      // Send status (probably 401) so the axios interceptor can run.
+      console.log('err response data', data)
+      return thunkAPI.rejectWithValue(data);
     }
   }
 );
