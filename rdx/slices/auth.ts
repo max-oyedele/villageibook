@@ -41,7 +41,7 @@ export const login = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      // console.log('werwerwe', error.response)
+      console.log('werwerwe', error.response)
       // return thunkAPI.rejectWithValue({ error: error.message })
 
       return thunkAPI.rejectWithValue(error.response.data);
