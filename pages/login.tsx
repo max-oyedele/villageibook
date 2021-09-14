@@ -1,8 +1,9 @@
-import { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
+import { signIn } from "next-auth/react";
 
+import { useSelector, useDispatch } from "react-redux";
 import {
   Formik,
   FormikHelpers,
@@ -30,34 +31,22 @@ import {
   Divider,
   Image,
   useBreakpointValue,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { BiShow, BiHide } from "react-icons/bi";
 
 import Logo from "components/Logo";
 
 import { MyThunkDispatch, OurStore } from "rdx/store";
-import { signup } from "rdx/slices/auth";
-import axios from "axios";
+import { login } from "rdx/slices/auth";
 
-const signupSchema = yup.object({
-  firstname: yup.string().required("First Name is required."),
-  lastname: yup.string().required("Last Name is required."),
-  email: yup
-    .string()
-    .email("Provide correct Email address.")
-    .required("Email address is required."),
+const loginSchema = yup.object({
+  email: yup.string().email("Provide correct Email address.").required("Email address is required."),
   password: yup.string().required("Password is required."),
-  cpassword: yup
-    .string()
-    .oneOf([yup.ref("password"), null], "Password must match.")
-    .required("Confirm password is required."),
 });
 
-const Signup = () => {
+const Login = () => {
   const [passwordShow, setPasswordShow] = useState(false);
-  const [cPasswordShow, setCPasswordShow] = useState(false);
-
   const breakpointValue = useBreakpointValue({
     base: "base",
     sm: "sm",
@@ -74,17 +63,17 @@ const Signup = () => {
   const router = useRouter();
   const toast = useToast();
   useEffect(() => {
-    if (user) {
+    if(error){
       toast({
-        title: "Account created successfully!",
-        description: "",
-        status: "success",
+        title: "Login Failed!",
+        description: error,
+        status: "error",
         duration: 3000,
         isClosable: true,
       });
-      router.push("/");
-    } 
-  }, [user]);
+    }
+    if (accessToken) router.push("/");
+  }, [accessToken, error]);
 
   return (
     <Fragment>
@@ -110,39 +99,24 @@ const Signup = () => {
           <Flex
             w={{ base: "80%", md: "100%", lg: "70%" }}
             flexDirection="column"
-            my={{ base: 6, md: 0 }}
           >
             <Text
               fontSize="36px"
               fontWeight="bold"
               textAlign={{ base: "center", md: "left" }}
+              mt={{ base: 10, md: 0 }}
             >
-              Sign Up
+              Login
             </Text>
-            <Text
-              fontSize="14px"
-              fontWeight="400"
-              color="grayText"
-              textAlign={{ base: "center", md: "left" }}
-              mt={6}
-            >
-              Create account to start using VillageiBook
-            </Text>
+
             <Formik
-              initialValues={{
-                firstname: "",
-                lastname: "",
-                email: "",
-                password: "",
-                cpassword: "",
-              }}
-              validationSchema={signupSchema}
+              initialValues={{ email: "", password: "" }}
+              validationSchema={loginSchema}
               onSubmit={async (values, actions) => {
                 // console.log({ values, actions });
                 actions.setSubmitting(true);
 
-                const {data: {access_token}} = await axios.get('/api/auth/refreshToken')
-                await dispatch(signup({...values, token: access_token}));
+                await dispatch(login(values));
 
                 actions.setSubmitting(false);
               }}
@@ -156,47 +130,9 @@ const Signup = () => {
                 handleSubmit,
               }) => (
                 <Form noValidate>
-                  <SimpleGrid columns={{base: 1, md: 2}} gap={4} mt={8}>
-                    <FormControl
-                      id="firstname"
-                      isRequired
-                      isInvalid={errors.firstname && touched.firstname}
-                    >
-                      <FormLabel fontSize="11px" color="grayText">
-                        Firstname
-                      </FormLabel>
-                      <Input
-                        type="text"
-                        placeholder="Add Your First Name"
-                        fontSize="13px"
-                        name="firstname"
-                        onChange={handleChange}
-                      />
-                      <FormHelperText></FormHelperText>
-                      <FormErrorMessage>{errors.firstname}</FormErrorMessage>
-                    </FormControl>
-                    <FormControl
-                      id="lastname"
-                      isRequired
-                      isInvalid={errors.lastname && touched.lastname}
-                    >
-                      <FormLabel fontSize="11px" color="grayText">
-                        Lastname
-                      </FormLabel>
-                      <Input
-                        type="text"
-                        placeholder="Add Your Last Name"
-                        fontSize="13px"
-                        name="lastname"
-                        onChange={handleChange}
-                      />
-                      <FormHelperText></FormHelperText>
-                      <FormErrorMessage>{errors.lastname}</FormErrorMessage>
-                    </FormControl>
-                  </SimpleGrid>
                   <FormControl
                     id="email"
-                    mt={4}
+                    mt={8}
                     isRequired
                     isInvalid={errors.email && touched.email}
                   >
@@ -241,33 +177,6 @@ const Signup = () => {
                     <FormErrorMessage>{errors.password}</FormErrorMessage>
                   </FormControl>
 
-                  <FormControl
-                    id="cpassword"
-                    mt={4}
-                    isRequired
-                    isInvalid={errors.cpassword && touched.cpassword}
-                  >
-                    <FormLabel fontSize="11px" color="grayText">
-                      Confirm Password
-                    </FormLabel>
-                    <InputGroup>
-                      <Input
-                        type={passwordShow ? "text" : "password"}
-                        placeholder="Add Your Password"
-                        fontSize="13px"
-                        name="cpassword"
-                        onChange={handleChange}
-                      />
-                      <InputRightAddon
-                        onClick={() => setCPasswordShow(!cPasswordShow)}
-                      >
-                        {cPasswordShow ? <BiHide /> : <BiShow />}
-                      </InputRightAddon>
-                    </InputGroup>
-                    <FormHelperText></FormHelperText>
-                    <FormErrorMessage>{errors.cpassword}</FormErrorMessage>
-                  </FormControl>
-
                   <Button
                     type="submit"
                     bgColor="purpleTone"
@@ -279,7 +188,7 @@ const Signup = () => {
                     mt={8}
                     isLoading={isSubmitting}
                   >
-                    SIGNUP
+                    LOGIN
                   </Button>
                 </Form>
               )}
@@ -293,13 +202,7 @@ const Signup = () => {
               <Divider />
             </HStack>
 
-            {breakpointValue === "base" && (
-              <Text fontSize="12px" fontWeight="bold" textAlign="center" mt={4}>
-                Signup with
-              </Text>
-            )}
-
-            <HStack spacing={4} mt={{ base: 4, md: 8 }}>
+            <HStack spacing={4} mt={8}>
               <Button
                 w="full"
                 fontSize="12px"
@@ -314,9 +217,7 @@ const Signup = () => {
                   />
                 }
               >
-                {breakpointValue === "base"
-                  ? "Facebook"
-                  : "Signup with Facebook"}
+                Login with Facebook
               </Button>
               <Button
                 w="full"
@@ -332,19 +233,18 @@ const Signup = () => {
                   />
                 }
               >
-                {breakpointValue === "base" ? "Google" : "Signup with Google"}
+                Login with Google
               </Button>
             </HStack>
-
             <Box textAlign={{ base: "center", md: "right" }}>
-              <Link href="/auth/login">
+              <Link href="/signup">
                 <Text
                   fontSize="12px"
                   color="purpleTone"
                   mt={4}
                   cursor="pointer"
                 >
-                  Login if you have already account
+                  Create Account
                 </Text>
               </Link>
             </Box>
@@ -359,8 +259,8 @@ const Signup = () => {
           <Image
             src={
               breakpointValue === "base"
-                ? "/images/signup-back-mobile.png"
-                : "/images/signup-back-pc.png"
+                ? "/images/login-back-mobile.png"
+                : "/images/login-back-pc.png"
             }
             boxSize="full"
             fit="cover"
@@ -372,4 +272,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;

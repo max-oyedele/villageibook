@@ -68,7 +68,7 @@ const Header = () => {
               borderRadius="6px"
             >
               {
-                <Link href="/auth/login">LOGIN</Link>
+                <Link href="/login">LOGIN</Link>
               }
               {/* {session && 
                 <Button onClick={()=>signOut()}>LOGOUT</Button>

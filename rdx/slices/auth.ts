@@ -6,11 +6,6 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_HOST_URL,
-  withCredentials: true,
-})
-
 export enum AuthStates {
   IDLE = "idle",
   LOADING = "loading",
@@ -18,7 +13,7 @@ export enum AuthStates {
 
 // export const fetchUser = createAsyncThunk('auth/me', async (_, thunkAPI) => {
 //   try {
-//     const response = await axiosInstance.get<{ name?: string; email?: string; type?: string }>('api/me')
+//     const response = await axios.get<{ name?: string; email?: string; type?: string }>('api/me')
 
 //     return response.data
 //   } catch (error) {
@@ -30,18 +25,18 @@ export const login = createAsyncThunk(
   "auth/login",
   async (credentials: { email: string; password: string }, thunkAPI) => {
     try {
-      const response = await axiosInstance.post<{ access_token: string }>(
+      const response = await axios.post<{ access_token: string }>(
         "api/auth/login",
         credentials
       );
-      // // const refetch = await axiosInstance.get<{ name: string }>('api/me', {
+      // // const refetch = await axios.get<{ name: string }>('api/me', {
       // //   headers: { Authorization: `Bearer ${response.data.accessToken}` },
       // // })
       // return { accessToken: response.data.accessToken, me: { name: refetch.data.name } }
 
       return response.data;
     } catch (error) {
-      console.log('werwerwe', error.response)
+      // console.log('werwerwe', error.response)
       // return thunkAPI.rejectWithValue({ error: error.message })
 
       return thunkAPI.rejectWithValue(error.response.data);
@@ -56,11 +51,11 @@ export const signup = createAsyncThunk(
     thunkAPI
   ) => {
     try {
-      const response = await axiosInstance.post<{ user: any }>(
+      const response = await axios.post<{ user: any }>(
         "api/auth/signup",
         credentials
       );
-      // const refetch = await axiosInstance.get<{ name: string }>("api/me", {
+      // const refetch = await axios.get<{ name: string }>("api/me", {
       //   headers: { Authorization: `Bearer ${response.data.accessToken}` },
       // });
       // return {
@@ -79,7 +74,7 @@ export const signup = createAsyncThunk(
 
 export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   try {
-    const response = await axiosInstance.delete<{ accessToken: string }>("api/logout");
+    const response = await axios.delete<{ accessToken: string }>("api/logout");
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.message });
@@ -143,10 +138,9 @@ export const authSlice = createSlice({
     });
     builder.addCase(signup.rejected, (state, action) => {
       state.error = (
-        action.payload as { error: string, message: string}
+        action.payload as { status: number, error: string, message: string}
       ).message;
       state.loading = AuthStates.IDLE;
-      state.accessToken = "";
     });
     builder.addCase(logout.pending, (state) => {
       state.loading = AuthStates.LOADING;

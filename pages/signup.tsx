@@ -1,9 +1,8 @@
-import React, { Fragment, useState, useEffect } from "react";
+import { Fragment, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { signIn } from "next-auth/react";
-
 import { useSelector, useDispatch } from "react-redux";
+
 import {
   Formik,
   FormikHelpers,
@@ -31,22 +30,34 @@ import {
   Divider,
   Image,
   useBreakpointValue,
-  useToast,
+  useToast
 } from "@chakra-ui/react";
 import { BiShow, BiHide } from "react-icons/bi";
 
 import Logo from "components/Logo";
 
 import { MyThunkDispatch, OurStore } from "rdx/store";
-import { login } from "rdx/slices/auth";
+import { signup } from "rdx/slices/auth";
+import axios from "axios";
 
-const loginSchema = yup.object({
-  email: yup.string().email("Provide correct Email address.").required("Email address is required."),
+const signupSchema = yup.object({
+  firstname: yup.string().required("First Name is required."),
+  lastname: yup.string().required("Last Name is required."),
+  email: yup
+    .string()
+    .email("Provide correct Email address.")
+    .required("Email address is required."),
   password: yup.string().required("Password is required."),
+  cpassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Password must match.")
+    .required("Confirm password is required."),
 });
 
-const Login = () => {
+const Signup = () => {
   const [passwordShow, setPasswordShow] = useState(false);
+  const [cPasswordShow, setCPasswordShow] = useState(false);
+
   const breakpointValue = useBreakpointValue({
     base: "base",
     sm: "sm",
@@ -63,17 +74,26 @@ const Login = () => {
   const router = useRouter();
   const toast = useToast();
   useEffect(() => {
+    if (user) {
+      toast({
+        title: "Account created successfully!",
+        description: "",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      router.push("/");
+    } 
     if(error){
       toast({
-        title: "Login Failed!",
+        title: "Signup is Failed!",
         description: error,
         status: "error",
         duration: 3000,
         isClosable: true,
       });
     }
-    if (accessToken) router.push("/");
-  }, [accessToken, error]);
+  }, [user, error]);
 
   return (
     <Fragment>
@@ -99,24 +119,39 @@ const Login = () => {
           <Flex
             w={{ base: "80%", md: "100%", lg: "70%" }}
             flexDirection="column"
+            my={{ base: 6, md: 0 }}
           >
             <Text
               fontSize="36px"
               fontWeight="bold"
               textAlign={{ base: "center", md: "left" }}
-              mt={{ base: 10, md: 0 }}
             >
-              Login
+              Sign Up
             </Text>
-
+            <Text
+              fontSize="14px"
+              fontWeight="400"
+              color="grayText"
+              textAlign={{ base: "center", md: "left" }}
+              mt={6}
+            >
+              Create account to start using VillageiBook
+            </Text>
             <Formik
-              initialValues={{ email: "", password: "" }}
-              validationSchema={loginSchema}
+              initialValues={{
+                firstname: "",
+                lastname: "",
+                email: "",
+                password: "",
+                cpassword: "",
+              }}
+              validationSchema={signupSchema}
               onSubmit={async (values, actions) => {
                 // console.log({ values, actions });
                 actions.setSubmitting(true);
 
-                await dispatch(login(values));
+                const {data: {access_token}} = await axios.get('/api/auth/refreshToken')
+                await dispatch(signup({...values, token: access_token}));
 
                 actions.setSubmitting(false);
               }}
@@ -130,9 +165,47 @@ const Login = () => {
                 handleSubmit,
               }) => (
                 <Form noValidate>
+                  <SimpleGrid columns={{base: 1, md: 2}} gap={4} mt={8}>
+                    <FormControl
+                      id="firstname"
+                      isRequired
+                      isInvalid={errors.firstname && touched.firstname}
+                    >
+                      <FormLabel fontSize="11px" color="grayText">
+                        Firstname
+                      </FormLabel>
+                      <Input
+                        type="text"
+                        placeholder="Add Your First Name"
+                        fontSize="13px"
+                        name="firstname"
+                        onChange={handleChange}
+                      />
+                      <FormHelperText></FormHelperText>
+                      <FormErrorMessage>{errors.firstname}</FormErrorMessage>
+                    </FormControl>
+                    <FormControl
+                      id="lastname"
+                      isRequired
+                      isInvalid={errors.lastname && touched.lastname}
+                    >
+                      <FormLabel fontSize="11px" color="grayText">
+                        Lastname
+                      </FormLabel>
+                      <Input
+                        type="text"
+                        placeholder="Add Your Last Name"
+                        fontSize="13px"
+                        name="lastname"
+                        onChange={handleChange}
+                      />
+                      <FormHelperText></FormHelperText>
+                      <FormErrorMessage>{errors.lastname}</FormErrorMessage>
+                    </FormControl>
+                  </SimpleGrid>
                   <FormControl
                     id="email"
-                    mt={8}
+                    mt={4}
                     isRequired
                     isInvalid={errors.email && touched.email}
                   >
@@ -177,6 +250,33 @@ const Login = () => {
                     <FormErrorMessage>{errors.password}</FormErrorMessage>
                   </FormControl>
 
+                  <FormControl
+                    id="cpassword"
+                    mt={4}
+                    isRequired
+                    isInvalid={errors.cpassword && touched.cpassword}
+                  >
+                    <FormLabel fontSize="11px" color="grayText">
+                      Confirm Password
+                    </FormLabel>
+                    <InputGroup>
+                      <Input
+                        type={cPasswordShow ? "text" : "password"}
+                        placeholder="Add Your Password"
+                        fontSize="13px"
+                        name="cpassword"
+                        onChange={handleChange}
+                      />
+                      <InputRightAddon
+                        onClick={() => setCPasswordShow(!cPasswordShow)}
+                      >
+                        {cPasswordShow ? <BiHide /> : <BiShow />}
+                      </InputRightAddon>
+                    </InputGroup>
+                    <FormHelperText></FormHelperText>
+                    <FormErrorMessage>{errors.cpassword}</FormErrorMessage>
+                  </FormControl>
+
                   <Button
                     type="submit"
                     bgColor="purpleTone"
@@ -188,7 +288,7 @@ const Login = () => {
                     mt={8}
                     isLoading={isSubmitting}
                   >
-                    LOGIN
+                    SIGNUP
                   </Button>
                 </Form>
               )}
@@ -202,7 +302,13 @@ const Login = () => {
               <Divider />
             </HStack>
 
-            <HStack spacing={4} mt={8}>
+            {breakpointValue === "base" && (
+              <Text fontSize="12px" fontWeight="bold" textAlign="center" mt={4}>
+                Signup with
+              </Text>
+            )}
+
+            <HStack spacing={4} mt={{ base: 4, md: 8 }}>
               <Button
                 w="full"
                 fontSize="12px"
@@ -217,7 +323,9 @@ const Login = () => {
                   />
                 }
               >
-                Login with Facebook
+                {breakpointValue === "base"
+                  ? "Facebook"
+                  : "Signup with Facebook"}
               </Button>
               <Button
                 w="full"
@@ -233,18 +341,19 @@ const Login = () => {
                   />
                 }
               >
-                Login with Google
+                {breakpointValue === "base" ? "Google" : "Signup with Google"}
               </Button>
             </HStack>
+
             <Box textAlign={{ base: "center", md: "right" }}>
-              <Link href="/auth/signup">
+              <Link href="/login">
                 <Text
                   fontSize="12px"
                   color="purpleTone"
                   mt={4}
                   cursor="pointer"
                 >
-                  Create Account
+                  Login if you have already account
                 </Text>
               </Link>
             </Box>
@@ -259,8 +368,8 @@ const Login = () => {
           <Image
             src={
               breakpointValue === "base"
-                ? "/images/login-back-mobile.png"
-                : "/images/login-back-pc.png"
+                ? "/images/signup-back-mobile.png"
+                : "/images/signup-back-pc.png"
             }
             boxSize="full"
             fit="cover"
@@ -272,4 +381,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
