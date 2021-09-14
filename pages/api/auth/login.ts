@@ -23,6 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   try {
+    console.log('login params', params)
     const { data, headers: returnedHeaders } = await axios.post(
       "http://villageibook-api.abosit.com/oauth/token", // api backend path
       params, 
@@ -36,7 +37,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.send(data); // Send data from Node.js server response
   } catch ({ response: { status, data } }) {
     // Send status (probably 401) so the axios interceptor can run.
-
+    console.log('login err', data)
     res.status(status).json(data);
   }
 };

@@ -25,6 +25,7 @@ export const login = createAsyncThunk(
   "auth/login",
   async (credentials: { email: string; password: string }, thunkAPI) => {
     try {
+      console.log('login slice', credentials)
       const response = await axios.post<{ access_token: string }>(
         "api/auth/login",
         credentials
@@ -38,7 +39,7 @@ export const login = createAsyncThunk(
     } catch (error) {
       // console.log('werwerwe', error.response)
       // return thunkAPI.rejectWithValue({ error: error.message })
-
+      console.log('auth slice err', error.response.data)
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
