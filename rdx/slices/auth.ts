@@ -4,7 +4,12 @@ import {
   PayloadAction,
   SerializedError,
 } from "@reduxjs/toolkit";
-import axios from "libs/axios";
+import axios from "axios";
+
+const axiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_HOST_URL,
+  withCredentials: true,
+})
 
 export enum AuthStates {
   IDLE = "idle",
@@ -13,7 +18,7 @@ export enum AuthStates {
 
 // export const fetchUser = createAsyncThunk('auth/me', async (_, thunkAPI) => {
 //   try {
-//     const response = await axios.get<{ name?: string; email?: string; type?: string }>('api/me')
+//     const response = await axiosInstance.get<{ name?: string; email?: string; type?: string }>('api/me')
 
 //     return response.data
 //   } catch (error) {
@@ -25,11 +30,11 @@ export const login = createAsyncThunk(
   "auth/login",
   async (credentials: { email: string; password: string }, thunkAPI) => {
     try {
-      const response = await axios.post<{ access_token: string }>(
+      const response = await axiosInstance.post<{ access_token: string }>(
         "api/auth/login",
         credentials
       );
-      // // const refetch = await axios.get<{ name: string }>('api/me', {
+      // // const refetch = await axiosInstance.get<{ name: string }>('api/me', {
       // //   headers: { Authorization: `Bearer ${response.data.accessToken}` },
       // // })
       // return { accessToken: response.data.accessToken, me: { name: refetch.data.name } }
@@ -51,11 +56,11 @@ export const signup = createAsyncThunk(
     thunkAPI
   ) => {
     try {
-      const response = await axios.post<{ user: any }>(
+      const response = await axiosInstance.post<{ user: any }>(
         "api/auth/signup",
         credentials
       );
-      // const refetch = await axios.get<{ name: string }>("api/me", {
+      // const refetch = await axiosInstance.get<{ name: string }>("api/me", {
       //   headers: { Authorization: `Bearer ${response.data.accessToken}` },
       // });
       // return {
@@ -74,7 +79,7 @@ export const signup = createAsyncThunk(
 
 export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   try {
-    const response = await axios.delete<{ accessToken: string }>("api/logout");
+    const response = await axiosInstance.delete<{ accessToken: string }>("api/logout");
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.message });
