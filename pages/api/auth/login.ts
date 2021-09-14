@@ -6,12 +6,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { headers, body } = req;
   // console.log('body', body)
 
-  headers["authorization"] =
-    "Basic " +
-    Buffer.from("villageibook-client" + ":" + "4C6JYPsCJ795vFVS").toString(
-      "base64"
-    );
-  headers["content-type"] = "application/x-www-form-urlencoded";
+  // headers["authorization"] =
+  //   "Basic " +
+  //   Buffer.from("villageibook-client" + ":" + "4C6JYPsCJ795vFVS").toString(
+  //     "base64"
+  //   );
+  // headers["content-type"] = "application/x-www-form-urlencoded";
   // console.log('headers', headers)
 
   const params = querystring.stringify({
@@ -19,14 +19,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     password: body.password,
     grant_type: "password",
     client_id: "villageibook-client",
-    client_secret: "4C6JYPsCJ795vFVS"
+    client_secret: "4C6JYPsCJ795vFVS",
   });
 
   try {
     const { data, headers: returnedHeaders } = await axios.post(
       "http://villageibook-api.abosit.com/oauth/token", // api backend path
-      params, 
-      { headers } // Headers from the Next.js Client
+      params,
+      {
+        headers: {
+          Authorization:
+            "Basic " +
+            Buffer.from(
+              "villageibook-client" + ":" + "4C6JYPsCJ795vFVS"
+            ).toString("base64"),
+          "content-type": "application/x-www-form-urlencoded",
+        },
+      } // Headers from the Next.js Client
     );
     //  Update headers on requester using headers from Node.js server response
     Object.entries(returnedHeaders).forEach((keyArr) =>
