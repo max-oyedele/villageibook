@@ -4,10 +4,10 @@ import { useSelector } from "react-redux";
 import { OurStore } from "rdx/store";
 
 const Toast = () => {
-  const { accessToken, error } = useSelector(
+  const { jwt, error } = useSelector(
     (state: OurStore) => state.authReducer
   );
-  
+
   const toast = useToast();
   useEffect(() => {
     if (error) {
@@ -19,7 +19,7 @@ const Toast = () => {
         isClosable: true,
       });
     }
-  }, [accessToken, error]);
+  }, [jwt, error]);
 
   return null;
 };

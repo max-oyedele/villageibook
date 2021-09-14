@@ -41,7 +41,7 @@ const UserView: NextPage = () => {
 
   return (
     <Fragment>
-      <Header />
+      <Header jwt={null} />
       <Container maxW="full" p={6}>
         <PageTitle title={user?.name ?? ""} />
 

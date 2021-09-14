@@ -1,5 +1,4 @@
 import axios from "axios";
-import querystring from "querystring";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -20,7 +19,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { data, headers: returnedHeaders } = await axios.post(
       "http://villageibook-api.abosit.com/signup", // api backend path
       params,
-      { headers } // Headers from the Next.js Client
+      { headers } // Headers from the Next.js Client and put custome values
     );
     //  Update headers on requester using headers from Node.js server response
     Object.entries(returnedHeaders).forEach((keyArr) =>

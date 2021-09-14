@@ -1,5 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
+import cookie from "cookie";
 
 import {
   Container,
@@ -37,7 +38,7 @@ import {
   bangladeshGraduates,
 } from "data";
 
-const Home: NextPage = () => {
+const Home: NextPage<{jwt: string}> = ({jwt}) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const tabsMobile = ["Feed", "My Village", "Graduates"];
@@ -45,7 +46,7 @@ const Home: NextPage = () => {
 
   return (
     <Fragment>
-      <Header />
+      <Header jwt={jwt} />
       <Container maxW="full" p={6}>
         <Box mt={4}>
           <PageTitle title="Find Village" />
@@ -234,3 +235,20 @@ const TabsMobile: React.FC<{
 };
 
 export default Home;
+
+export async function getServerSideProps({req}){
+  const {jwt} = cookie.parse(req ? req.headers.cookie || "" : document.cookie)  
+  
+  if(jwt){
+    return {
+      props: {
+        jwt: jwt
+      }
+    }
+  }
+  return {
+    props: {
+
+    }
+  }
+}

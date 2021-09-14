@@ -17,7 +17,6 @@
     "@emotion/styled": "^11.3.0",
     "@reduxjs/toolkit": "^1.5.0",
     "axios": "^0.21.1",
-    "axios-auth-refresh": "^3.1.0",
     "cookie": "^0.4.1",
     "formik": "^2.2.6",
     "framer-motion": "^4.1.17",
@@ -26,13 +25,13 @@
     "next-images": "^1.8.1",
     "next-redux-wrapper": "^6.0.2",
     "react": "17.0.2",
+    "react-cookie": "^4.1.1",
     "react-dom": "17.0.2",
     "react-icons": "^4.2.0",
     "react-redux": "^7.2.5",
     "react-select": "^4.3.1",
     "redux": "^4.1.1",
     "redux-logger": "^3.0.6",
-    "set-cookie-parser": "^2.4.7",
     "yup": "^0.32.9"
   },
   "devDependencies": {
@@ -41,7 +40,6 @@
     "@types/react": "17.0.20",
     "@types/react-redux": "^7.1.16",
     "@types/react-select": "^4.0.17",
-    "@types/set-cookie-parser": "^2.4.0",
     "eslint": "^7.19.0",
     "eslint-config-next": "11.1.2",
     "typescript": "4.4.2"

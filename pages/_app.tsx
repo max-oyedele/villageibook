@@ -3,7 +3,8 @@ import "../styles/fonts.css";
 
 import { useEffect } from "react";
 import type { AppProps } from "next/app";
-import { SessionProvider } from "next-auth/react";
+import { SessionProvider } from "next-auth/react"; //for OAuth
+import { CookiesProvider } from "react-cookie"; //for jwt auth
 import { Provider } from "react-redux";
 import { wrapper, store } from "rdx/store";
 
@@ -15,7 +16,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <SessionProvider session={pageProps.session}>
-          <Component {...pageProps} />
+          <CookiesProvider>
+            <Component {...pageProps} />
+          </CookiesProvider>
         </SessionProvider>
       </ThemeProvider>
     </Provider>

@@ -1,6 +1,9 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useSelector, useDispatch } from "react-redux";
+import { useCookies } from "react-cookie";
+import cookie from "cookie";
 
 import { BiMenu, BiX } from "react-icons/bi";
 import {
@@ -20,10 +23,20 @@ import {
 import Logo from "components/Logo";
 import SocialLinkBar from "components/SocialLinkBar";
 import { tabs } from "constants/headerTabs";
+import { OurStore } from "rdx/store";
 
-const Header = () => {
+import { reset } from "rdx/slices/auth";
+
+const Header = ({jwt}) => {
   const router = useRouter();
   const { pathname } = router;
+
+  const { user } = useSelector(
+    (state: OurStore) => state.authReducer
+  );
+  const dispatch = useDispatch();
+  const [cookies, setCookie, removeCookie] = useCookies(["jwt"])
+  const [isAuth, setIsAuth] = useState(jwt)
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);
@@ -31,6 +44,12 @@ const Header = () => {
   const [activeTab, setActiveTab] = useState(
     tabs.find((tab) => tab.path === pathname) ?? tabs[0]
   );
+
+  const logout = () => {
+    dispatch(reset());
+    removeCookie("jwt")
+    setIsAuth(null)
+  }
 
   return (
     <Fragment>
@@ -59,6 +78,7 @@ const Header = () => {
             </Box>
             <Box
               w="140px"
+              h="24px"
               textAlign="center"
               color="purpleTone"
               fontSize="12px"
@@ -66,13 +86,13 @@ const Header = () => {
               border="1px"
               borderColor="purpleTone"
               borderRadius="6px"
+              cursor="pointer"
+              onClick={() => {
+                isAuth || user ? logout() : router.push("/login");
+              }}
             >
-              {
-                <Link href="/login">LOGIN</Link>
-              }
-              {/* {session && 
-                <Button onClick={()=>signOut()}>LOGOUT</Button>
-              } */}
+              {!isAuth && !user && <Text>LOGIN</Text>}
+              {(isAuth || user) && <Text>LOGOUT</Text>}
             </Box>
           </HStack>
         </Flex>

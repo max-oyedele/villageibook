@@ -67,7 +67,7 @@ const Signup = () => {
   });
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { accessToken, loading, user, error } = useSelector(
+  const { loading, user, error } = useSelector(
     (state: OurStore) => state.authReducer
   );
 

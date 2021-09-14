@@ -39,7 +39,7 @@ const Faq: NextPage = () => {
 
   return (
     <Fragment>
-      <Header />
+      <Header jwt={null} />
       <Container maxW="full" p={6}>
         <Flex justifyContent="space-between" mt={4}>
           <PageTitle title="FAQ" />

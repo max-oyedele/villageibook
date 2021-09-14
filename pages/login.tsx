@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
+import { useCookies } from "react-cookie";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -56,12 +57,13 @@ const Login = () => {
   });
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { accessToken, loading, user, error } = useSelector(
+  const { jwt, loading, user, error } = useSelector(
     (state: OurStore) => state.authReducer
   );
 
   const router = useRouter();
   const toast = useToast();
+  const [cookie, setCookie] = useCookies(["jwt"])
   useEffect(() => {
     if(error){
       toast({
@@ -72,8 +74,15 @@ const Login = () => {
         isClosable: true,
       });
     }
-    if (accessToken) router.push("/");
-  }, [accessToken, error]);
+    if (jwt) {
+      setCookie("jwt", JSON.stringify(jwt), {
+        path: "/",
+        maxAge: jwt.expires_in, // Expirey time in seconds
+        sameSite: true,
+      })
+      router.push("/");
+    } 
+  }, [jwt, error]);
 
   return (
     <Fragment>

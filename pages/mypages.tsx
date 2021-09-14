@@ -47,7 +47,7 @@ const MyPages: NextPage = () => {
 
   return (
     <Fragment>
-      <Header />
+      <Header jwt={null} />
       <Container maxW="full" p={6}>
         <Box mt={4}>
           <PageTitle title={`My Village: ${villageName}`} />
