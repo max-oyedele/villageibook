@@ -1,3 +1,9 @@
 {
-  "extends": "next/core-web-vitals"
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "no-shadow": "off",
+    "prettier/prettier": ["error", { "endOfLine": "auto" }]
+  }
 }

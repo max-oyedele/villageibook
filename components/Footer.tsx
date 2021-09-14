@@ -61,11 +61,13 @@ const Footer = () => {
     <Fragment>
       {breakpointValue === "md" && (
         <Flex
+          // pos="fixed"
+          // bottom={0}
+          w="full"
+          h="150px"
           bgColor="white"
-          h="200px"
           justifyContent="space-between"
           px={6}
-          shadow="md"
         >
           <HStack spacing={6}>
             <Logo />

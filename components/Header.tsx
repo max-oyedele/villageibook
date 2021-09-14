@@ -1,6 +1,7 @@
 import { Fragment, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+
 import { BiMenu, BiX } from "react-icons/bi";
 import {
   Flex,
@@ -66,7 +67,12 @@ const Header = () => {
               borderColor="purpleTone"
               borderRadius="6px"
             >
-              <Link href="/login">LOGIN</Link>
+              {
+                <Link href="/auth/login">LOGIN</Link>
+              }
+              {/* {session && 
+                <Button onClick={()=>signOut()}>LOGOUT</Button>
+              } */}
             </Box>
           </HStack>
         </Flex>
