@@ -18,8 +18,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     username: body.email,
     password: body.password,
     grant_type: "password",
-    // client_id: "villageibook-client",
-    // client_secret: "4C6JYPsCJ795vFVS"
+    client_id: "villageibook-client",
+    client_secret: "4C6JYPsCJ795vFVS"
   });
 
   try {
