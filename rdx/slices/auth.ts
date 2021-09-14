@@ -39,7 +39,7 @@ export const login = createAsyncThunk(
     } catch (error) {
       // console.log('werwerwe', error.response)
       // return thunkAPI.rejectWithValue({ error: error.message })
-      console.log('auth slice err', error.response.data)
+      console.log('auth slice err', error.response)
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
