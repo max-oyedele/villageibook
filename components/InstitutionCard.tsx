@@ -36,7 +36,7 @@ const InstitutionCard: React.FC<{ institution: Institution }> = ({ institution }
           </Text>
           <Text
             fontSize="18px"
-            fontWeight="700"
+            fontWeight="500"
             color="primary"
             textTransform="capitalize"
           >

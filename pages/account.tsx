@@ -126,17 +126,14 @@ const Account: NextPage = () => {
   return (
     <Fragment>
       <Header jwt={null} />
-      <Container maxW="full" p={6}>
-        <Flex justifyContent="space-between" mt={4}>
+      <Container maxW="full" px={6}>
+        <HStack h={24}>
           <PageTitle title="Account" />
-        </Flex>
+        </HStack>
 
-        <HStack spacing={6} mt={12} align="start">
+        <HStack spacing={6} align="start">
           <Box w="full">
-            {
-              breakpointValue === 'base' && 
-              <AvatarUpload />
-            }
+            {breakpointValue === "base" && <AvatarUpload />}
             <Flex flexDirection="column" bgColor="white" p={6}>
               <Text fontSize="12px" fontWeight="800">
                 USER DETAILS

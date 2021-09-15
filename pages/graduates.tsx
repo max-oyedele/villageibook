@@ -89,12 +89,12 @@ const Graduates: NextPage = () => {
   return (
     <Fragment>
       <Header jwt={null} />
-      <Container maxW="full" p={6}>
-        <Flex justifyContent="space-between" mt={4}>
+      <Container maxW="full" px={6}>
+        <HStack h={24}>
           <PageTitle title="Graduates" />
-        </Flex>
+        </HStack>
 
-        <HStack spacing={6} mt={12} align="start">
+        <HStack spacing={6} align="start">
           {breakpointValue === "md" && (
             <Box w="25%">
               <GraduateStatCard
@@ -150,7 +150,10 @@ const Graduates: NextPage = () => {
 
             {activeMenuItem.value === "village" && (
               <Box mt={6}>
-                <AlphaBetaBar selectedLetter={selectedLetter} setSelectedLetter={setSelectedLetter} />
+                <AlphaBetaBar
+                  selectedLetter={selectedLetter}
+                  setSelectedLetter={setSelectedLetter}
+                />
               </Box>
             )}
 

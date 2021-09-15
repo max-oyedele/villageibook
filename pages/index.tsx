@@ -38,7 +38,7 @@ import {
   bangladeshGraduates,
 } from "data";
 
-const Home: NextPage<{jwt: string}> = ({jwt}) => {
+const Home: NextPage<{ jwt: string }> = ({ jwt }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const tabsMobile = ["Feed", "My Village", "Graduates"];
@@ -47,11 +47,11 @@ const Home: NextPage<{jwt: string}> = ({jwt}) => {
   return (
     <Fragment>
       <Header jwt={jwt} />
-      <Container maxW="full" p={6}>
-        <Box mt={4}>
+      <Container maxW="full" px={6}>
+        <HStack h={24}>
           <PageTitle title="Find Village" />
-        </Box>
-        <Box mt={10} px={{ lg: 20 }}>
+        </HStack>
+        <Box px={{ lg: 20 }}>
           <SearchBar />
         </Box>
 
@@ -93,7 +93,7 @@ const Home: NextPage<{jwt: string}> = ({jwt}) => {
                   <MyVillageItems />
                 </Box>
               </Box>
-              <PremiumCard />
+              {jwt && <PremiumCard />}
               <Box mt={6}></Box>
               <SignupCard />
               <Text fontSize="26px" fontWeight="bold" my={10}>
@@ -236,19 +236,19 @@ const TabsMobile: React.FC<{
 
 export default Home;
 
-export async function getServerSideProps({req}){
-  const {jwt} = cookie.parse(req ? req.headers.cookie || "" : document.cookie)  
-  
-  if(jwt){
+export async function getServerSideProps({ req }) {
+  const { jwt } = cookie.parse(
+    req ? req.headers.cookie || "" : document.cookie
+  );
+
+  if (jwt) {
     return {
       props: {
-        jwt: jwt
-      }
-    }
+        jwt: jwt,
+      },
+    };
   }
   return {
-    props: {
-
-    }
-  }
+    props: {},
+  };
 }

@@ -20,7 +20,6 @@ import {
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
-import LngSwitch from "components/LngSwitch";
 import MyVillageCard from "components/MyVillageCard";
 import SocietyCard from "components/SocietyCard";
 
@@ -28,18 +27,15 @@ import { articles } from "data/society";
 
 const Society: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-  const [activeLng, setActiveLng] = useState("english");
 
   return (
     <Fragment>
       <Header jwt={null} />
-      <Container maxW="full" p={6}>
-        <Flex justifyContent="space-between" mt={4}>
+      <Container maxW="full" px={6}>
+        <HStack h={24}>
           <PageTitle title="Society" />
-          <LngSwitch activeLng={activeLng} setActiveLng={setActiveLng} />
-        </Flex>
-
-        <HStack spacing={6} mt={12} align="start">
+        </HStack>
+        <HStack spacing={6} align="start">
           {breakpointValue === "md" && (
             <Box w="25%">
               <MyVillageCard />

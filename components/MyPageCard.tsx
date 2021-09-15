@@ -46,7 +46,7 @@ const MyPageCard: React.FC<{ myPage: MyPage }> = ({ myPage }) => {
           </Text>
           <Text
             fontSize="18px"
-            fontWeight="700"
+            fontWeight="500"
             color="primary"
             textTransform="capitalize"
           >

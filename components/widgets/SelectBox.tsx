@@ -72,7 +72,7 @@ const SelectBox = (props:any) => {
         placeholder: () => ({
           color: 'grayText',
           fontSize: 13,
-          fontWeight: 700
+          fontWeight: 400
         }),
         indicatorSeparator: () => ({}),
         dropdownIndicator: (provided) => ({

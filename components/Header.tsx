@@ -36,7 +36,7 @@ const Header = ({jwt}) => {
   );
   const dispatch = useDispatch();
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"])
-  const [isAuth, setIsAuth] = useState(jwt)
+  const [isAuth, setIsAuth] = useState(!!jwt)
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);
@@ -47,8 +47,9 @@ const Header = ({jwt}) => {
 
   const logout = () => {
     dispatch(reset());
-    removeCookie("jwt")
-    setIsAuth(null)
+    removeCookie("jwt");
+    setIsAuth(null);
+    location.reload();
   }
 
   return (
@@ -63,7 +64,7 @@ const Header = ({jwt}) => {
                 h="70px"
                 alignItems="center"
                 fontSize="13px"
-                fontWeight="700"
+                fontWeight="400"
                 borderBottom={activeTab.name === tab.name ? "2px" : ""}
                 borderColor={activeTab.name === tab.name ? "purpleTone" : ""}
                 color={activeTab.name === tab.name ? "purpleTone" : "GrayText"}

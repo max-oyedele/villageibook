@@ -48,11 +48,11 @@ const MyPages: NextPage = () => {
   return (
     <Fragment>
       <Header jwt={null} />
-      <Container maxW="full" p={6}>
-        <Box mt={4}>
+      <Container maxW="full" px={6}>
+        <HStack h={24}>
           <PageTitle title={`My Village: ${villageName}`} />
-        </Box>
-        <HStack spacing={6} mt={12} align="start">
+        </HStack>
+        <HStack spacing={6} align="start">
           {breakpointValue === "md" && (
             <Box w="25%">
               <MyVillageCard />

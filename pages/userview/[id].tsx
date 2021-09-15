@@ -21,7 +21,6 @@ import {
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
-import LngSwitch from "components/LngSwitch";
 import MyVillageCard from "components/MyVillageCard";
 import PersonalityCard from "components/PersonalityCard";
 
@@ -42,10 +41,12 @@ const UserView: NextPage = () => {
   return (
     <Fragment>
       <Header jwt={null} />
-      <Container maxW="full" p={6}>
-        <PageTitle title={user?.name ?? ""} />
+      <Container maxW="full" px={6}>
+        <HStack h={24}>
+          <PageTitle title={user?.name ?? ""} />
+        </HStack>
 
-        <HStack spacing={6} mt={12} align="start">
+        <HStack spacing={6} align="start">
           {breakpointValue === "md" && (
             <Box w="25%">
               <Image src={user?.img} w="full" fit="cover" alt="" />
@@ -123,7 +124,7 @@ const UserView: NextPage = () => {
                   </Box>
                 </HStack>
               </VStack>
-              
+
               <Text fontSize="18px" fontWeight="700" mt={12}>
                 About me
               </Text>
@@ -132,23 +133,22 @@ const UserView: NextPage = () => {
                 University of Birmingham, with particular focus on English
                 Literature. My teaching is based on essay plans, writing
                 practice and close analysis of texts significant to the
-                student&apos;s course. 
-                <br /><br />
-                Since the age of fifteen I have been writing
-                creatively. By sixteen, I finished my first book. Currently, I
-                am in the progress of writing a historical fantasy novel
-                exploring witch hunts of the seventeenth century.
+                student&apos;s course.
+                <br />
+                <br />
+                Since the age of fifteen I have been writing creatively. By
+                sixteen, I finished my first book. Currently, I am in the
+                progress of writing a historical fantasy novel exploring witch
+                hunts of the seventeenth century.
               </Text>
 
               <Text fontSize="18px" fontWeight="700" mt={12}>
                 My Photos
               </Text>
-              <SimpleGrid columns={{base: 1, md: 3}} spacing={6} mt={8}>
-              {
-                user?.photos?.map(photo=>(
+              <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} mt={8}>
+                {user?.photos?.map((photo) => (
                   <Image key={photo} src={photo} w="full" alt="" />
-                ))
-              }
+                ))}
               </SimpleGrid>
             </Flex>
           </Box>

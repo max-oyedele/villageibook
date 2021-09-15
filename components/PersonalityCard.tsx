@@ -36,7 +36,7 @@ const PersonalityCard: React.FC<{ personality: Personality }> = ({ personality }
           </Text>
           <Text
             fontSize="18px"
-            fontWeight="700"
+            fontWeight="500"
             color="primary"
             textTransform="capitalize"
           >

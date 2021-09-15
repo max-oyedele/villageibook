@@ -29,23 +29,21 @@ import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 
-import {faqs} from "data/faq";
+import { faqs } from "data/faq";
 
 const Faq: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-  const [expandedFaq, setExpandedFaq] = useState(
-    faqs[0]
-  );
+  const [expandedFaq, setExpandedFaq] = useState(faqs[0]);
 
   return (
     <Fragment>
       <Header jwt={null} />
-      <Container maxW="full" p={6}>
-        <Flex justifyContent="space-between" mt={4}>
+      <Container maxW="full" px={6}>
+        <HStack h={24}>
           <PageTitle title="FAQ" />
-        </Flex>
+        </HStack>
 
-        <HStack spacing={6} mt={12} align="start">
+        <HStack spacing={6} align="start">
           {breakpointValue === "md" && (
             <Box w="25%">
               <Box pos="relative">
@@ -99,21 +97,18 @@ const Faq: NextPage = () => {
                       fontWeight="700"
                       textTransform="capitalize"
                       color={
-                        faq.id === expandedFaq?.id
-                          ? "purpleTone"
-                          : "primary"
+                        faq.id === expandedFaq?.id ? "purpleTone" : "primary"
                       }
                     >
                       {faq.title}
                     </Box>
-                    
 
                     <AccordionIcon ml={4} />
                   </AccordionButton>
                   <AccordionPanel pb={4}>
                     <Divider />
                     <Box w="300px" mt={6} mb={10} ml={6}>
-                      asdfasdf    
+                      asdfasdf
                     </Box>
                   </AccordionPanel>
                 </AccordionItem>
