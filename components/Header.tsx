@@ -65,7 +65,7 @@ const Header = ({ jwt }) => {
             {tabs.map((tab) => (
               <Link key={tab.name} href={tab.path}>
                 <Flex
-                  h="50px"
+                  h="55px"
                   alignItems="center"
                   fontSize="13px"
                   borderBottom={activeTab.name === tab.name ? "2px" : ""}

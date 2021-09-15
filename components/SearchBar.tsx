@@ -17,15 +17,13 @@ const SearchBar = () => {
     <Fragment>
       <Flex justifyContent="center">
         <SimpleGrid w="full" columns={{ base: 1, md: 3 }} spacing={6}>
-          <Box h="55px">
-            <SelectBox id="district" placeholder="Select District" />
-          </Box>
-          <Box h="55px">
-            <SelectBox id="upazila" placeholder="Select Upazila" />
-          </Box>
-          <Box h="55px">
-            <SelectBox id="village" placeholder="Select Village" />
-          </Box>
+          <SelectBox
+            id="district"
+            placeholder="Select District"
+            height="45px"
+          />
+          <SelectBox id="upazila" placeholder="Select Upazila" height="45px" />
+          <SelectBox id="village" placeholder="Select Village" height="45px" />
         </SimpleGrid>
         {breakpointValue === "md" && (
           <Box>
@@ -48,7 +46,7 @@ const SearchBar = () => {
       {breakpointValue === "base" && (
         <Button
           w="full"
-          h="55px"
+          h="45px"
           bgColor="purpleTone"
           fontSize="13px"
           fontWeight="400"
