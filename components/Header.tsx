@@ -55,7 +55,7 @@ const Header = ({jwt}) => {
   return (
     <Fragment>
       {breakpointValue === "md" && (
-        <Flex justifyContent="space-between" px={6} shadow="md">
+        <Flex sx={{position: 'sticky', top: 0, zIndex:10 }} bg="white" justifyContent="space-between" px={6} shadow="md">
           <HStack spacing={6} mr={1}>
             <Logo />
             {tabs.map((tab) => (

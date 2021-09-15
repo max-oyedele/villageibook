@@ -38,7 +38,7 @@ const Faq: NextPage = () => {
   return (
     <Fragment>
       <Header jwt={null} />
-      <Container maxW="full" px={6}>
+      <Container maxW="container.xl" px={6}>
         <HStack h={24}>
           <PageTitle title="FAQ" />
         </HStack>

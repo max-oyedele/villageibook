@@ -74,22 +74,10 @@ const Graduates: NextPage = () => {
   const [selectedDistrict, setSelectedDistrict] = useState(districts);
   const [selectedLetter, setSelectedLetter] = useState("a");
 
-  const calcGraduates: (stats: Stats) => number[] = (stats) => {
-    //{ bangladesh: 6, australia: 1, canada: 1, europe: 1, uk: 1, usa: 1, other: 1 }
-    const inter = stats[interCountry];
-    let oversea = 0;
-    for (const [key, value] of Object.entries(stats)) {
-      oversea += key === interCountry ? 0 : value;
-    }
-
-    //[total=12, inter=6, oversea=6]
-    return [inter + oversea, inter, oversea];
-  };
-
   return (
     <Fragment>
       <Header jwt={null} />
-      <Container maxW="full" px={6}>
+      <Container maxW="container.xl" px={6}>
         <HStack h={24}>
           <PageTitle title="Graduates" />
         </HStack>
@@ -107,6 +95,17 @@ const Graduates: NextPage = () => {
           )}
 
           <Box w="full">
+            {breakpointValue === "base" && (
+              <Box mb={6}>
+                <GraduateStatCard
+                  totalGraduates={totalGraduates}
+                  villageName={villageName}
+                  villageGraduates={villageGraduates}
+                  bangladeshGraduates={bangladeshGraduates}
+                />
+              </Box>
+            )}
+
             <GraduateSearchBox />
 
             <Flex
@@ -191,51 +190,40 @@ const Graduates: NextPage = () => {
                     >
                       {districtGraduate.name}
                     </Box>
-                    <Box
-                      fontSize="14px"
-                      fontWeight="400"
-                      color="greyText"
-                      mr={4}
-                      textTransform="capitalize"
-                    >
-                      {districtGraduate.name} Graduates Total -{" "}
-                      <Text color="greenTone" display="inline">
-                        {calcGraduates(districtGraduate.stats)[0]}
-                      </Text>
-                    </Box>
-                    <GraduateStatCapsule
-                      inter={calcGraduates(districtGraduate.stats)[1]}
-                      oversea={calcGraduates(districtGraduate.stats)[2]}
-                    />
-
+                    {breakpointValue === "md" && (
+                      <TotalCapsule districtGraduate={districtGraduate} />
+                    )}
                     <AccordionIcon ml={4} />
                   </AccordionButton>
 
                   <AccordionPanel pb={4}>
                     <Divider />
-                    <Box w="300px" mt={6} mb={10} ml={6}>
-                      <VStack spacing={2} divider={<Divider />}>
-                        {Object.entries(districtGraduate.stats).map((item) => (
-                          <Flex
-                            key={item[0]}
-                            w="full"
-                            justifyContent="space-between"
-                            alignItems="center"
+                    {breakpointValue === "base" && (
+                      <Flex justifyContent="center" alignItems="center" mt={6}>
+                        <TotalCapsule districtGraduate={districtGraduate} />
+                      </Flex>
+                    )}
+                    <VStack spacing={2} divider={<Divider />} p={6}>
+                      {Object.entries(districtGraduate.stats).map((item) => (
+                        <Flex
+                          key={item[0]}
+                          w="full"
+                          justifyContent="space-between"
+                          alignItems="center"
+                        >
+                          <Text
+                            fontSize="13px"
+                            fontWeight="700"
+                            textTransform="capitalize"
                           >
-                            <Text
-                              fontSize="13px"
-                              fontWeight="700"
-                              textTransform="capitalize"
-                            >
-                              {item[0]}
-                            </Text>
-                            <Badge px={4} borderRadius="full">
-                              {item[1]}
-                            </Badge>
-                          </Flex>
-                        ))}
-                      </VStack>
-                    </Box>
+                            {item[0]}
+                          </Text>
+                          <Badge px={4} borderRadius="full">
+                            {item[1]}
+                          </Badge>
+                        </Flex>
+                      ))}
+                    </VStack>
                   </AccordionPanel>
                 </AccordionItem>
               ))}
@@ -248,6 +236,41 @@ const Graduates: NextPage = () => {
         <Footer />
       </Box>
     </Fragment>
+  );
+};
+
+const TotalCapsule = ({ districtGraduate }) => {
+  const calcGraduates: (stats: Stats) => number[] = (stats) => {
+    //{ bangladesh: 6, australia: 1, canada: 1, europe: 1, uk: 1, usa: 1, other: 1 }
+    const inter = stats[interCountry];
+    let oversea = 0;
+    for (const [key, value] of Object.entries(stats)) {
+      oversea += key === interCountry ? 0 : value;
+    }
+
+    //[total=12, inter=6, oversea=6]
+    return [inter + oversea, inter, oversea];
+  };
+
+  return (
+    <HStack spacing={0}>
+      <Box
+        fontSize="14px"
+        fontWeight="400"
+        color="greyText"
+        mr={4}
+        textTransform="capitalize"
+      >
+        {districtGraduate.name} Graduates Total -{" "}
+        <Text color="greenTone" display="inline">
+          {calcGraduates(districtGraduate.stats)[0]}
+        </Text>
+      </Box>
+      <GraduateStatCapsule
+        inter={calcGraduates(districtGraduate.stats)[1]}
+        oversea={calcGraduates(districtGraduate.stats)[2]}
+      />
+    </HStack>
   );
 };
 

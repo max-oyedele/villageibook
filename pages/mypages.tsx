@@ -5,6 +5,7 @@ import {
   Container,
   HStack,
   VStack,
+  SimpleGrid,
   Divider,
   Flex,
   Box,
@@ -48,13 +49,13 @@ const MyPages: NextPage = () => {
   return (
     <Fragment>
       <Header jwt={null} />
-      <Container maxW="full" px={6}>
+      <Container maxW="container.xl" px={6}>
         <HStack h={24}>
           <PageTitle title={`My Village: ${villageName}`} />
         </HStack>
         <HStack spacing={6} align="start">
           {breakpointValue === "md" && (
-            <Box w="25%">
+            <Box w="30%">
               <MyVillageCard />
               <Text fontSize="26px" fontWeight="bold" my={10}>
                 Filters
@@ -73,11 +74,20 @@ const MyPages: NextPage = () => {
                   ({myPages.length})
                 </Text>
               </Text>
-              <VStack spacing={2} mt={6}>
-                {myPages.map((myPage) => (
-                  <MyPageCard key={myPage.id} myPage={myPage} />
-                ))}
-              </VStack>
+              {breakpointValue === "md" && (
+                <VStack spacing={2} mt={6}>
+                  {myPages.map((myPage) => (
+                    <MyPageCard key={myPage.id} myPage={myPage} />
+                  ))}
+                </VStack>
+              )}
+              {breakpointValue === "base" && (
+                <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4} mt={6}>
+                  {myPages.map((myPage) => (
+                    <MyPageCard key={myPage.id} myPage={myPage} />
+                  ))}
+                </SimpleGrid>
+              )}
               <Box>
                 <Text
                   fontSize="12px"
@@ -114,8 +124,8 @@ const MyPages: NextPage = () => {
                   ({societies.length})
                 </Text>
               </Text>
-              <Grid
-                templateColumns="repeat(2, 1fr)"
+              <SimpleGrid
+                columns={{ base: 1, md: 2 }}
                 columnGap={6}
                 rowGap={10}
                 mt={6}
@@ -123,7 +133,7 @@ const MyPages: NextPage = () => {
                 {societies.map((society) => (
                   <SocietyCard key={society.id} society={society} />
                 ))}
-              </Grid>
+              </SimpleGrid>
               <Divider my={10} />
               <Box>
                 <Text
@@ -144,14 +154,26 @@ const MyPages: NextPage = () => {
                   ({personalities.length})
                 </Text>
               </Text>
-              <VStack spacing={2} mt={6}>
-                {personalities.map((personality) => (
-                  <PersonalityCard
-                    key={personality.id}
-                    personality={personality}
-                  />
-                ))}
-              </VStack>
+              {breakpointValue === "md" && (
+                <VStack spacing={2} mt={6}>
+                  {personalities.map((personality) => (
+                    <PersonalityCard
+                      key={personality.id}
+                      personality={personality}
+                    />
+                  ))}
+                </VStack>
+              )}
+              {breakpointValue === "base" && (
+                <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4} mt={6}>
+                  {personalities.map((personality) => (
+                    <PersonalityCard
+                      key={personality.id}
+                      personality={personality}
+                    />
+                  ))}
+                </SimpleGrid>
+              )}
               <Box>
                 <Text
                   fontSize="12px"
@@ -200,8 +222,8 @@ const MyPages: NextPage = () => {
                   ({videos.length})
                 </Text>
               </Text>
-              <Grid
-                templateColumns="repeat(3, 1fr)"
+              <SimpleGrid
+                columns={{base: 2, md: 3}}
                 columnGap={4}
                 rowGap={10}
                 mt={6}
@@ -209,7 +231,7 @@ const MyPages: NextPage = () => {
                 {videos.map((video) => (
                   <VideoCard key={video.id} video={video} />
                 ))}
-              </Grid>
+              </SimpleGrid>
               <Divider mt={10} mb={6} />
               <Box>
                 <Text
