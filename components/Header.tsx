@@ -61,10 +61,9 @@ const Header = ({jwt}) => {
             {tabs.map((tab) => (
               <Flex
                 key={tab.name}
-                h="70px"
+                h="50px"
                 alignItems="center"
                 fontSize="13px"
-                fontWeight="400"
                 borderBottom={activeTab.name === tab.name ? "2px" : ""}
                 borderColor={activeTab.name === tab.name ? "purpleTone" : ""}
                 color={activeTab.name === tab.name ? "purpleTone" : "GrayText"}
@@ -74,16 +73,15 @@ const Header = ({jwt}) => {
             ))}
           </HStack>
           <HStack spacing={6} ml={1}>
-            <Box fontSize="12px" fontWeight="800">
+            <Box fontSize="12px">
               <Link href="/account">ACCOUNT</Link>
             </Box>
             <Box
-              w="140px"
+              px={4}
               h="24px"
               textAlign="center"
               color="purpleTone"
               fontSize="12px"
-              fontWeight="800"
               border="1px"
               borderColor="purpleTone"
               borderRadius="6px"
@@ -130,7 +128,6 @@ const Header = ({jwt}) => {
                 <Avatar size="lg" src="/images/mohammed-shah.png" />
                 <Text
                   fontSize="15px"
-                  fontWeight="700"
                   mt={4}
                   textTransform="capitalize"
                 >
@@ -139,7 +136,7 @@ const Header = ({jwt}) => {
                 <Text
                   fontSize="12px"
                   fontWeight="400"
-                  color="grayText"
+                  color="GrayText"
                   mt={2}
                   textTransform="capitalize"
                 >

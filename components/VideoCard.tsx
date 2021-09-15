@@ -31,8 +31,8 @@ const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
           </Box>
         </Flex>
         <Box mt={4}>
-          <Text fontSize="15px" fontWeight="500" color="primary" textTransform="capitalize">{video.title}</Text>
-          <Text fontSize="12px" fontWeight="400" color="grayText" textTransform="capitalize">{video.author}</Text>
+          <Text fontSize="15px" color="primary" textTransform="capitalize">{video.title}</Text>
+          <Text fontSize="12px" color="GrayText" textTransform="capitalize">{video.author}</Text>
         </Box>
       </Flex>
     </Fragment>

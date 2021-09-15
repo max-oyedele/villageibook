@@ -44,7 +44,7 @@ const Society: NextPage = () => {
 
           <Box w="full">
             <Box bgColor="white" p={6}>
-              <Text fontSize="14px" fontWeight="600">
+              <Text fontSize="14px">
                 SEE ALL ARTICLES
                 <Text display="inline" color="#36CFD1" ml={1}>
                   ({articles.length})

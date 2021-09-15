@@ -10,7 +10,7 @@ export const myVillageItems = [
   },
   {
     id: 1,
-    name: "Village Graduates",
+    name: "Graduates",
     value: "graduates",
     img: "/icons/myvillage-graduate.svg",
     path: '/graduates',

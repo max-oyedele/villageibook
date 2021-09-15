@@ -18,10 +18,10 @@ const RecentVillageCard: React.FC<{ name: string; img: string; recentAt: number 
       >
         <Image src={img} alt="" borderRadius="4px" />
         <Box w="full" ml={4}>
-          <Text fontSize="13px" fontWeight="bold">
+          <Text fontSize="13px">
             {name}
           </Text>
-          <Text fontSize="12px" color="grayText">
+          <Text fontSize="12px" color="GrayText">
             {recentAt === 0
               ? "Today"
               : recentAt === 1

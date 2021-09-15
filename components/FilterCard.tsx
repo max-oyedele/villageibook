@@ -28,7 +28,7 @@ const FilterCard = () => {
           p={2}
         >
           <Image src="/icons/filter-by-mypage.svg" alt="" w={4} h={4} ml={2} />
-          <Box w="full" fontSize="13px" fontWeight="700" ml={4}>
+          <Box w="full" fontSize="13px" ml={4}>
             My Pages
           </Box>
         </Flex>

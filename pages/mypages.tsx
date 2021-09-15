@@ -57,7 +57,7 @@ const MyPages: NextPage = () => {
           {breakpointValue === "md" && (
             <Box w="30%">
               <MyVillageCard />
-              <Text fontSize="26px" fontWeight="bold" my={10}>
+              <Text fontSize="24px" my={10}>
                 Filters
               </Text>
               <Box bgColor="white" borderRadius="6px" px={4} py={8}>
@@ -68,7 +68,7 @@ const MyPages: NextPage = () => {
 
           <Box w="full">
             <Box bgColor="white" p={6}>
-              <Text fontSize="14px" fontWeight="600">
+              <Text fontSize="14px">
                 MY PAGES
                 <Text display="inline" color="#36CFD1" ml={1}>
                   ({myPages.length})
@@ -91,7 +91,6 @@ const MyPages: NextPage = () => {
               <Box>
                 <Text
                   fontSize="12px"
-                  fontWeight="700"
                   color="purpleTone"
                   textAlign="center"
                   mt={8}
@@ -102,7 +101,7 @@ const MyPages: NextPage = () => {
             </Box>
 
             <Box bgColor="white" p={6} mt={6}>
-              <Text fontSize="14px" fontWeight="600">
+              <Text fontSize="14px">
                 VILLAGE GRADUATES
                 <Text display="inline" color="purpleTone" ml={1}>
                   ({villageGraduates})
@@ -118,9 +117,9 @@ const MyPages: NextPage = () => {
             </Box>
 
             <Box bgColor="white" p={6} mt={6}>
-              <Text fontSize="14px" fontWeight="600">
+              <Text fontSize="14px">
                 SOCIETY
-                <Text display="inline" color="grayText" ml={1}>
+                <Text display="inline" color="GrayText" ml={1}>
                   ({societies.length})
                 </Text>
               </Text>
@@ -138,7 +137,6 @@ const MyPages: NextPage = () => {
               <Box>
                 <Text
                   fontSize="12px"
-                  fontWeight="700"
                   color="purpleTone"
                   textAlign="center"
                 >
@@ -148,7 +146,7 @@ const MyPages: NextPage = () => {
             </Box>
 
             <Box bgColor="white" p={6} mt={6}>
-              <Text fontSize="14px" fontWeight="600">
+              <Text fontSize="14px">
                 PERSONALITIES
                 <Text display="inline" color="#FFC418" ml={1}>
                   ({personalities.length})
@@ -177,7 +175,6 @@ const MyPages: NextPage = () => {
               <Box>
                 <Text
                   fontSize="12px"
-                  fontWeight="700"
                   color="purpleTone"
                   textAlign="center"
                   mt={8}
@@ -188,7 +185,7 @@ const MyPages: NextPage = () => {
             </Box>
 
             <Box bgColor="white" p={6} mt={6}>
-              <Text fontSize="14px" fontWeight="600">
+              <Text fontSize="14px">
                 INSTITUTIONS
                 <Text display="inline" color="#FFC418" ml={1}>
                   ({institutions.length})
@@ -205,7 +202,6 @@ const MyPages: NextPage = () => {
               <Box>
                 <Text
                   fontSize="12px"
-                  fontWeight="700"
                   color="purpleTone"
                   textAlign="center"
                   mt={8}
@@ -216,7 +212,7 @@ const MyPages: NextPage = () => {
             </Box>
 
             <Box bgColor="white" p={6} mt={6}>
-              <Text fontSize="14px" fontWeight="600">
+              <Text fontSize="14px">
                 VIDEOS
                 <Text display="inline" color="#FFC418" ml={1}>
                   ({videos.length})
@@ -236,7 +232,6 @@ const MyPages: NextPage = () => {
               <Box>
                 <Text
                   fontSize="12px"
-                  fontWeight="700"
                   color="purpleTone"
                   textAlign="center"
                 >

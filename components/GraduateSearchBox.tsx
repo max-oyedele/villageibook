@@ -25,10 +25,10 @@ const GraduateSearchBox = () => {
       >
         <VStack spacing={8}>
           <Box textAlign="center">
-            <Text fontSize="14px" fontWeight="800">
+            <Text fontSize="14px">
               TOTAL GRADUATES
             </Text>
-            <Text fontSize="36px" fontWeight="800" color="purpleTone" mt={4}>
+            <Text fontSize="36px" fontWeight="700" color="purpleTone" mt={4}>
               10000
             </Text>
           </Box>

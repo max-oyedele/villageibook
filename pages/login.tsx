@@ -42,7 +42,10 @@ import { MyThunkDispatch, OurStore } from "rdx/store";
 import { login } from "rdx/slices/auth";
 
 const loginSchema = yup.object({
-  email: yup.string().email("Provide correct Email address.").required("Email address is required."),
+  email: yup
+    .string()
+    .email("Provide correct Email address.")
+    .required("Email address is required."),
   password: yup.string().required("Password is required."),
 });
 
@@ -63,9 +66,9 @@ const Login = () => {
 
   const router = useRouter();
   const toast = useToast();
-  const [cookie, setCookie] = useCookies(["jwt"])
+  const [cookie, setCookie] = useCookies(["jwt"]);
   useEffect(() => {
-    if(error){
+    if (error) {
       toast({
         title: "Login Failed!",
         description: error,
@@ -79,9 +82,9 @@ const Login = () => {
         path: "/",
         maxAge: jwt.expires_in, // Expirey time in seconds
         sameSite: true,
-      })
+      });
       router.push("/");
-    } 
+    }
   }, [jwt, error]);
 
   return (
@@ -145,7 +148,7 @@ const Login = () => {
                     isRequired
                     isInvalid={errors.email && touched.email}
                   >
-                    <FormLabel fontSize="11px" color="grayText">
+                    <FormLabel fontSize="11px" color="GrayText">
                       Email
                     </FormLabel>
                     <Input
@@ -165,7 +168,7 @@ const Login = () => {
                     isRequired
                     isInvalid={errors.password && touched.password}
                   >
-                    <FormLabel fontSize="11px" color="grayText">
+                    <FormLabel fontSize="11px" color="GrayText">
                       Password
                     </FormLabel>
                     <InputGroup>
@@ -205,7 +208,7 @@ const Login = () => {
 
             <HStack spacing={2} mt={8}>
               <Divider />
-              <Text color="grayText" fontSize="14px">
+              <Text color="GrayText" fontSize="14px">
                 or
               </Text>
               <Divider />
@@ -215,6 +218,7 @@ const Login = () => {
               <Button
                 w="full"
                 fontSize="12px"
+                fontWeight="400"
                 border="1px"
                 borderColor="#D5DBEC"
                 leftIcon={
@@ -231,6 +235,7 @@ const Login = () => {
               <Button
                 w="full"
                 fontSize="12px"
+                fontWeight="400"
                 border="1px"
                 borderColor="#D5DBEC"
                 leftIcon={
@@ -246,16 +251,9 @@ const Login = () => {
               </Button>
             </HStack>
             <Box textAlign={{ base: "center", md: "right" }}>
-              <Link href="/signup">
-                <Text
-                  fontSize="12px"
-                  color="purpleTone"
-                  mt={4}
-                  cursor="pointer"
-                >
-                  Create Account
-                </Text>
-              </Link>
+              <Text fontSize="12px" color="purpleTone" mt={4}>
+                <Link href="/signup">Create Account</Link>
+              </Text>
             </Box>
           </Flex>
         </Box>

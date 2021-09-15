@@ -72,7 +72,7 @@ const Footer = () => {
           <HStack spacing={6}>
             <Logo />
             <Box>
-              <Text fontSize="11px" fontWeight="400" color="grayText">
+              <Text fontSize="11px" fontWeight="400" color="GrayText">
                 Copyright @ 2021, All rights reserved.
               </Text>
               <Box mt={4}>
@@ -83,7 +83,7 @@ const Footer = () => {
           <HStack spacing={6}>
             {tabs.map((tab) => (
               <Link key={tab.name} href={tab.path}>
-                <Text fontSize="13px" color="grayText">
+                <Text fontSize="13px" color="GrayText">
                   {tab.name}
                 </Text>
               </Link>

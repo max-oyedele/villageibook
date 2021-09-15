@@ -30,7 +30,7 @@ import {
   Divider,
   Image,
   useBreakpointValue,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { BiShow, BiHide } from "react-icons/bi";
 
@@ -83,8 +83,8 @@ const Signup = () => {
         isClosable: true,
       });
       router.push("/");
-    } 
-    if(error){
+    }
+    if (error) {
       toast({
         title: "Signup is Failed!",
         description: error,
@@ -131,7 +131,7 @@ const Signup = () => {
             <Text
               fontSize="14px"
               fontWeight="400"
-              color="grayText"
+              color="GrayText"
               textAlign={{ base: "center", md: "left" }}
               mt={6}
             >
@@ -150,8 +150,10 @@ const Signup = () => {
                 // console.log({ values, actions });
                 actions.setSubmitting(true);
 
-                const {data: {access_token}} = await axios.get('/api/auth/refreshToken')
-                await dispatch(signup({...values, token: access_token}));
+                const {
+                  data: { access_token },
+                } = await axios.get("/api/auth/refreshToken");
+                await dispatch(signup({ ...values, token: access_token }));
 
                 actions.setSubmitting(false);
               }}
@@ -165,13 +167,13 @@ const Signup = () => {
                 handleSubmit,
               }) => (
                 <Form noValidate>
-                  <SimpleGrid columns={{base: 1, md: 2}} gap={4} mt={8}>
+                  <SimpleGrid columns={{ base: 1, md: 2 }} gap={4} mt={8}>
                     <FormControl
                       id="firstname"
                       isRequired
                       isInvalid={errors.firstname && touched.firstname}
                     >
-                      <FormLabel fontSize="11px" color="grayText">
+                      <FormLabel fontSize="11px" color="GrayText">
                         Firstname
                       </FormLabel>
                       <Input
@@ -189,7 +191,7 @@ const Signup = () => {
                       isRequired
                       isInvalid={errors.lastname && touched.lastname}
                     >
-                      <FormLabel fontSize="11px" color="grayText">
+                      <FormLabel fontSize="11px" color="GrayText">
                         Lastname
                       </FormLabel>
                       <Input
@@ -209,7 +211,7 @@ const Signup = () => {
                     isRequired
                     isInvalid={errors.email && touched.email}
                   >
-                    <FormLabel fontSize="11px" color="grayText">
+                    <FormLabel fontSize="11px" color="GrayText">
                       Email
                     </FormLabel>
                     <Input
@@ -229,7 +231,7 @@ const Signup = () => {
                     isRequired
                     isInvalid={errors.password && touched.password}
                   >
-                    <FormLabel fontSize="11px" color="grayText">
+                    <FormLabel fontSize="11px" color="GrayText">
                       Password
                     </FormLabel>
                     <InputGroup>
@@ -256,7 +258,7 @@ const Signup = () => {
                     isRequired
                     isInvalid={errors.cpassword && touched.cpassword}
                   >
-                    <FormLabel fontSize="11px" color="grayText">
+                    <FormLabel fontSize="11px" color="GrayText">
                       Confirm Password
                     </FormLabel>
                     <InputGroup>
@@ -296,14 +298,14 @@ const Signup = () => {
 
             <HStack spacing={2} mt={8}>
               <Divider />
-              <Text color="grayText" fontSize="14px">
+              <Text color="GrayText" fontSize="14px">
                 or
               </Text>
               <Divider />
             </HStack>
 
             {breakpointValue === "base" && (
-              <Text fontSize="12px" fontWeight="bold" textAlign="center" mt={4}>
+              <Text fontSize="12px" textAlign="center" mt={4}>
                 Signup with
               </Text>
             )}
@@ -312,6 +314,7 @@ const Signup = () => {
               <Button
                 w="full"
                 fontSize="12px"
+                fontWeight="400"
                 border="1px"
                 borderColor="#D5DBEC"
                 leftIcon={
@@ -330,6 +333,7 @@ const Signup = () => {
               <Button
                 w="full"
                 fontSize="12px"
+                fontWeight="400"
                 border="1px"
                 borderColor="#D5DBEC"
                 leftIcon={
@@ -346,16 +350,9 @@ const Signup = () => {
             </HStack>
 
             <Box textAlign={{ base: "center", md: "right" }}>
-              <Link href="/login">
-                <Text
-                  fontSize="12px"
-                  color="purpleTone"
-                  mt={4}
-                  cursor="pointer"
-                >
-                  Login if you have already account
-                </Text>
-              </Link>
+              <Text fontSize="12px" color="purpleTone" mt={4}>
+                <Link href="/login">Login if you have already account</Link>
+              </Text>
             </Box>
           </Flex>
         </Box>

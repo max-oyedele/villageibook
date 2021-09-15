@@ -96,7 +96,7 @@ const Home: NextPage<{ jwt: string }> = ({ jwt }) => {
               {jwt && <PremiumCard />}
               <Box mt={6}></Box>
               <SignupCard />
-              <Text fontSize="26px" fontWeight="bold" my={10}>
+              <Text fontSize="24px" my={10}>
                 Recently developed
               </Text>
               <VStack spacing={4}>
@@ -174,7 +174,7 @@ const Home: NextPage<{ jwt: string }> = ({ jwt }) => {
           {breakpointValue === "md" && (
             <Box w="25%">
               <CaptionCard caption="caption" desc="Text Block" />
-              <Text fontSize="26px" fontWeight="bold" my={10}>
+              <Text fontSize="24px" my={10}>
                 Graduates
               </Text>
               <GraduateStatCard
@@ -183,7 +183,7 @@ const Home: NextPage<{ jwt: string }> = ({ jwt }) => {
                 villageGraduates={villageGraduates}
                 bangladeshGraduates={bangladeshGraduates}
               />
-              <Text fontSize="26px" fontWeight="bold" my={10}>
+              <Text fontSize="24px" my={10}>
                 Recently joined
               </Text>
               <VStack spacing={4}>

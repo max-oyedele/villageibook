@@ -14,8 +14,8 @@ const SocietyCard:React.FC<{society: Society}> = ({society}) => {
           fit="cover"
           alt=""
         />
-        <Text fontSize="16px" fontWeight="700" mt={6}>{society.title}</Text>
-        <Text fontSize="12px" fontWeight="400" color="grayText" mt={4}>{society.desc}</Text>
+        <Text fontSize="16px" mt={6}>{society.title}</Text>
+        <Text fontSize="12px" color="GrayText" mt={4}>{society.desc}</Text>
       </Flex>
     </Fragment>
   );

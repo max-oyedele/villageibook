@@ -12,6 +12,7 @@ const MyVillageDivider = () => {
           bgColor="purpleTone"
           color="white"
           fontSize="10px"
+          fontWeight="400"
         >
           MY VILLAGE
         </Button>

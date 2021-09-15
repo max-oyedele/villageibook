@@ -34,7 +34,7 @@ const SearchBar = () => {
               h="full"
               bgColor="purpleTone"
               fontSize="13px"
-              fontWeight="800"
+              fontWeight="400"
               color="white"
               borderRadius="6px"
               ml={6}
@@ -51,7 +51,7 @@ const SearchBar = () => {
           h="55px"
           bgColor="purpleTone"
           fontSize="13px"
-          fontWeight="800"
+          fontWeight="400"
           color="white"
           borderRadius="6px"
           mt={6}

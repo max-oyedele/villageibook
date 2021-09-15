@@ -135,13 +135,13 @@ const Account: NextPage = () => {
           <Box w="full">
             {breakpointValue === "base" && <AvatarUpload />}
             <Flex flexDirection="column" bgColor="white" p={6}>
-              <Text fontSize="12px" fontWeight="800">
+              <Text fontSize="12px" fontWeight="600">
                 USER DETAILS
               </Text>
               <Divider my={6} />
               <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
                 <Box>
-                  <Text fontSize="13px" fontWeight="700" mb={4}>
+                  <Text fontSize="13px" mb={4}>
                     General information
                   </Text>
                   <InputBox label="First name" onChange={setFirstname} />
@@ -150,7 +150,7 @@ const Account: NextPage = () => {
                   <InputBox label="Password" onChange={setPassword} />
                 </Box>
                 <Box>
-                  <Text fontSize="13px" fontWeight="700" mb={4}>
+                  <Text fontSize="13px" mb={4}>
                     Education info
                   </Text>
                   <InputBoxWithSelect
@@ -168,7 +168,7 @@ const Account: NextPage = () => {
                   <InputBox label="University" onChange={setUniversity} />
                 </Box>
                 <Box>
-                  <Text fontSize="13px" fontWeight="700" mb={4}>
+                  <Text fontSize="13px" mb={4}>
                     Location
                   </Text>
                   <InputBoxWithSelect
@@ -192,7 +192,7 @@ const Account: NextPage = () => {
                 w="50%"
                 bgColor="purpleTone"
                 fontSize="12px"
-                fontWeight="800"
+                fontWeight="400"
                 color="white"
               >
                 SAVE
@@ -201,7 +201,7 @@ const Account: NextPage = () => {
                 w="50%"
                 bgColor="transparent"
                 fontSize="12px"
-                fontWeight="800"
+                fontWeight="400"
                 color="purpleTone"
                 variant="ghost"
               >
@@ -232,7 +232,7 @@ const InputBox: React.FC<{
   return (
     <Fragment>
       <HStack mt={4}>
-        <Text w="40%" fontSize="13px" fontWeight="400" color="GrayText">
+        <Text w="40%" fontSize="13px" color="GrayText">
           {label}
         </Text>
         <Box w="full">
@@ -273,7 +273,7 @@ const AvatarUpload = () => {
   return (
     <Fragment>
       <Flex flexDirection="column" bgColor="white" p={6}>
-        <Text fontSize="12px" fontWeight="800">
+        <Text fontSize="12px" fontWeight="600">
           AVATAR
         </Text>
         <Divider my={6} />
@@ -293,7 +293,7 @@ const AvatarUpload = () => {
             h="25px"
             color="purpleTone"
             fontSize="12px"
-            fontWeight="800"
+            fontWeight="400"
             border="1px"
             borderColor="gray.300"
             borderRadius="full"

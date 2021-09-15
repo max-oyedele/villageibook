@@ -16,10 +16,10 @@ const CaptionCard: React.FC<{ caption: string; desc: string }> = ({
         color="purpleTone"
         borderRadius="6px"
       >
-        <Text fontSize="13px" fontWeight="bold">
+        <Text fontSize="13px">
           {caption}
         </Text>
-        <Text fontSize="25px" fontWeight="bold">
+        <Text fontSize="25px">
           {desc}
         </Text>
       </Flex>

@@ -60,7 +60,8 @@ const UserView: NextPage = () => {
               borderRadius="8px"
               p={6}
             >
-              <Text fontSize="18px" fontWeight="700">
+              {breakpointValue === "base" && <Image src={user?.img} w="full" fit="cover" borderRadius="4px" alt="" mb={6} />}
+              <Text fontSize="18px">
                 General
               </Text>
               <VStack
@@ -73,7 +74,6 @@ const UserView: NextPage = () => {
                   <Box
                     w="full"
                     fontSize="13px"
-                    fontWeight="700"
                     color="purpleTone"
                   >
                     Village
@@ -81,8 +81,7 @@ const UserView: NextPage = () => {
                   <Box
                     w="full"
                     fontSize="13px"
-                    fontWeight="700"
-                    color="grayText"
+                    color="GrayText"
                   >
                     Fatepur
                   </Box>
@@ -91,7 +90,6 @@ const UserView: NextPage = () => {
                   <Box
                     w="full"
                     fontSize="13px"
-                    fontWeight="700"
                     color="purpleTone"
                   >
                     Graduated in
@@ -99,8 +97,7 @@ const UserView: NextPage = () => {
                   <Box
                     w="full"
                     fontSize="13px"
-                    fontWeight="700"
-                    color="grayText"
+                    color="GrayText"
                   >
                     UK
                   </Box>
@@ -109,7 +106,6 @@ const UserView: NextPage = () => {
                   <Box
                     w="full"
                     fontSize="13px"
-                    fontWeight="700"
                     color="purpleTone"
                   >
                     Age
@@ -117,15 +113,14 @@ const UserView: NextPage = () => {
                   <Box
                     w="full"
                     fontSize="13px"
-                    fontWeight="700"
-                    color="grayText"
+                    color="GrayText"
                   >
                     35
                   </Box>
                 </HStack>
               </VStack>
 
-              <Text fontSize="18px" fontWeight="700" mt={12}>
+              <Text fontSize="18px" mt={12}>
                 About me
               </Text>
               <Text fontSize="15px" fontWeight="400" color="GrayText" mt={6}>
@@ -142,7 +137,7 @@ const UserView: NextPage = () => {
                 hunts of the seventeenth century.
               </Text>
 
-              <Text fontSize="18px" fontWeight="700" mt={12}>
+              <Text fontSize="18px" mt={12}>
                 My Photos
               </Text>
               <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} mt={8}>

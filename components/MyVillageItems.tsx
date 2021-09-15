@@ -43,12 +43,12 @@ const MyVillageItems:React.FC<{role?: string}> = ({role}) => {
             w={{ base: "50px", md: "30px" }}
             h={{ base: "50px", md: "30px" }}
           />
-          <Text w="full" fontSize="13px" fontWeight="bold">
+          <Text w="full" fontSize="13px">
             {item.name}
           </Text>
           {
             role === 'registered' && 
-            <Badge bgColor={item.path === pathname ? item.badgeColor : '#FBFBFA'} color={item.path === pathname ? 'white' : ''} fontSize="10px" px={2} borderRadius="xl">{myVillageStats[item.value]}</Badge>
+            <Badge bgColor={item.path === pathname ? item.badgeColor : '#FBFBFA'} color={item.path === pathname ? 'white' : ''} fontSize="11px" fontWeight="400" lineHeight={2} px={2} borderRadius="xl">{myVillageStats[item.value]}</Badge>
           }
         </HStack>
       ))}

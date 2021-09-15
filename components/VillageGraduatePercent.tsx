@@ -18,7 +18,7 @@ const VillageGraduatePercent: React.FC<{
   return (
     <Fragment>
       <Box w="full">
-        <Text fontSize="13px" fontWeight="bold" textTransform="capitalize">
+        <Text fontSize="13px" textTransform="capitalize">
           {villageName} Graduates
         </Text>
         <Progress
@@ -33,11 +33,11 @@ const VillageGraduatePercent: React.FC<{
             <Text fontSize="26px" fontWeight="bold" color="purpleTone">
               {villageGraduates}
             </Text>
-            <Text fontSize="10px" fontWeight="bold">
+            <Text fontSize="11px">
               /{totalGraduates}
             </Text>
           </HStack>
-          <Text fontSize="10px" fontWeight="bold">
+          <Text fontSize="11px">
             {(villageGraduates / totalGraduates) * 100}%
           </Text>
         </Flex>

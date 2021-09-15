@@ -19,7 +19,7 @@ const SignupCard = () => {
             variant="outline"
             color="white"
             fontSize="10px"
-            fontWeight="800"
+            fontWeight="400"
           >
             <Link href="/signup">SIGN UP</Link>
           </Button>

@@ -32,20 +32,19 @@ const PersonalityCard: React.FC<{ personality: Personality }> = ({
             <Text
               fontSize="12px"
               fontWeight="400"
-              color="grayText"
+              color="GrayText"
               textTransform="capitalize"
             >
               {personality.region}
             </Text>
             <Text
               fontSize="18px"
-              fontWeight="500"
               color="primary"
               textTransform="capitalize"
             >
               {personality.name}
             </Text>
-            <Text fontSize="12px" fontWeight="400" color="grayText" mt={2}>
+            <Text fontSize="12px" fontWeight="400" color="GrayText" mt={2}>
               {personality.desc}
             </Text>
           </Box>
@@ -83,7 +82,7 @@ const PersonalityCard: React.FC<{ personality: Personality }> = ({
               borderRadius="full"
             />
             <Box>
-              <Text fontSize="10px" fontWeight="400" color="GrayText">
+              <Text fontSize="10px" color="GrayText">
                 {personality.region}
               </Text>
               <Text fontSize="13px" fontWeight="600" color="primary">
@@ -91,7 +90,7 @@ const PersonalityCard: React.FC<{ personality: Personality }> = ({
               </Text>
             </Box>
           </HStack>
-          <Text fontSize="11px" fontWeight="400" color="GrayText">
+          <Text fontSize="11px" color="GrayText">
             {personality.desc}
           </Text>
 

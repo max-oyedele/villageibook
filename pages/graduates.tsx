@@ -121,7 +121,6 @@ const Graduates: NextPage = () => {
                   h={8}
                   mx={8}
                   fontSize="13px"
-                  fontWeight="800"
                   borderBottom={item.id === activeMenuItem.id ? "2px" : "none"}
                   borderBottomColor={
                     item.id === activeMenuItem.id ? "purpleTone" : "none"
@@ -142,6 +141,7 @@ const Graduates: NextPage = () => {
                     selectedOption={selectedDistrict}
                     setSelectedOption={setSelectedDistrict}
                     borderColor="#36CFD1"
+                    height="45px"
                   />
                 </Box>
               </VStack>
@@ -180,7 +180,6 @@ const Graduates: NextPage = () => {
                       flex="1"
                       textAlign="left"
                       fontSize="16px"
-                      fontWeight="700"
                       textTransform="capitalize"
                       color={
                         districtGraduate.id === expandedDistrict?.id
@@ -213,12 +212,11 @@ const Graduates: NextPage = () => {
                         >
                           <Text
                             fontSize="13px"
-                            fontWeight="700"
                             textTransform="capitalize"
                           >
                             {item[0]}
                           </Text>
-                          <Badge px={4} borderRadius="full">
+                          <Badge px={4} borderRadius="full" fontSize="12px" fontWeight="400">
                             {item[1]}
                           </Badge>
                         </Flex>
@@ -256,8 +254,7 @@ const TotalCapsule = ({ districtGraduate }) => {
     <HStack spacing={0}>
       <Box
         fontSize="14px"
-        fontWeight="400"
-        color="greyText"
+        color="GrayText"
         mr={4}
         textTransform="capitalize"
       >

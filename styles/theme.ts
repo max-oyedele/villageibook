@@ -10,18 +10,11 @@ const theme: Theme = extendTheme({
   colors: {
     primary: "teal.600",
     purpleTone: "#553CFB",
-    grayText: "#8888A8",
     grayBg: "#F8F8FA",
     greenTone: "#36CFD1"
   },  
   fonts: {
-    heading: `'Archivo Narrow', sans-serif`,
     body: `'Sofia Pro', sans-serif`,
-    mono: `Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace`,
-  },
-  fontWeights: {
-    bold: 700,
-    heading: 500,
   },
   styles: {
     global: (props: GlobalStyleProps): SystemStyleObject => ({

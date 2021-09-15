@@ -2,16 +2,11 @@ import { Fragment } from "react";
 import Link from "next/link";
 import { Box, Text, Image, Button } from "@chakra-ui/react";
 
-const PremiumCard = () => {
+const ContactCard = () => {
   return (
     <Fragment>
-      <Box pos="relative">
-        <Image
-          src="/images/premium-card.png"
-          w="full"
-          fit="cover"
-          alt=""
-        />
+      <Box w="full" pos="relative">
+        <Image src="/images/email-card.png" w="full" fit="cover" alt="" borderRadius="4px"/>
         <Box pos="absolute" top="70%" left="10%">
           <Button
             w="110px"
@@ -21,7 +16,7 @@ const PremiumCard = () => {
             fontSize="10px"
             fontWeight="400"
           >
-            <Link href="/pay">JOIN NOW</Link>
+            EMAIL NOW
           </Button>
         </Box>
       </Box>
@@ -29,4 +24,4 @@ const PremiumCard = () => {
   );
 };
 
-export default PremiumCard;
+export default ContactCard;

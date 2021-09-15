@@ -25,7 +25,6 @@ const MyVillageCard = () => {
           <Avatar size="lg" src="/images/mohammed-shah.png" />
           <Text
             fontSize="15px"
-            fontWeight="700"
             mt={4}
             textTransform="capitalize"
           >
@@ -34,7 +33,7 @@ const MyVillageCard = () => {
           <Text
             fontSize="12px"
             fontWeight="400"
-            color="grayText"
+            color="GrayText"
             mt={2}
             textTransform="capitalize"
           >

@@ -30,10 +30,10 @@ const PostCard: React.FC<{ user: User; ago: string; post: Post }> = ({
         >
           <Avatar src={user.img} size="base" />
           <Box w="full" ml={4}>
-            <Text fontSize="13px" fontWeight="bold">
+            <Text fontSize="13px">
               {user.name}
             </Text>
-            <Text fontSize="11px" color="grayText">
+            <Text fontSize="11px" color="GrayText">
               {ago}
             </Text>
           </Box>

@@ -50,7 +50,6 @@ const GraduateStatCard: React.FC<{
             >
               <Text
                 fontSize="12px"
-                fontWeight="500"
                 textTransform="capitalize"
               >
                 {region}
