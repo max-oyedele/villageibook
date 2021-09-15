@@ -93,9 +93,11 @@ const Home: NextPage<{ jwt: string }> = ({ jwt }) => {
                   <MyVillageItems />
                 </Box>
               </Box>
+
               {jwt && <PremiumCard />}
-              <Box mt={6}></Box>
-              <SignupCard />
+
+              {!jwt && <SignupCard />}
+
               <Text fontSize="24px" my={10}>
                 Recently developed
               </Text>

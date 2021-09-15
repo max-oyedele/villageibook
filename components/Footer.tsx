@@ -83,7 +83,7 @@ const Footer = () => {
           <HStack spacing={6}>
             {tabs.map((tab) => (
               <Link key={tab.name} href={tab.path}>
-                <Text fontSize="13px" color="GrayText">
+                <Text fontSize="13px" color="GrayText" cursor="pointer" _hover={{color: "purpleTone"}}>
                   {tab.name}
                 </Text>
               </Link>

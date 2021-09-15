@@ -27,16 +27,14 @@ import { OurStore } from "rdx/store";
 
 import { reset } from "rdx/slices/auth";
 
-const Header = ({jwt}) => {
+const Header = ({ jwt }) => {
   const router = useRouter();
   const { pathname } = router;
 
-  const { user } = useSelector(
-    (state: OurStore) => state.authReducer
-  );
+  const { user } = useSelector((state: OurStore) => state.authReducer);
   const dispatch = useDispatch();
-  const [cookies, setCookie, removeCookie] = useCookies(["jwt"])
-  const [isAuth, setIsAuth] = useState(!!jwt)
+  const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
+  const [isAuth, setIsAuth] = useState(!!jwt);
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);
@@ -50,26 +48,36 @@ const Header = ({jwt}) => {
     removeCookie("jwt");
     setIsAuth(null);
     location.reload();
-  }
+  };
 
   return (
     <Fragment>
       {breakpointValue === "md" && (
-        <Flex sx={{position: 'sticky', top: 0, zIndex:10 }} bg="white" justifyContent="space-between" px={6} shadow="md">
+        <Flex
+          sx={{ position: "sticky", top: 0, zIndex: 10 }}
+          bg="white"
+          justifyContent="space-between"
+          px={6}
+          shadow="md"
+        >
           <HStack spacing={6} mr={1}>
             <Logo />
             {tabs.map((tab) => (
-              <Flex
-                key={tab.name}
-                h="50px"
-                alignItems="center"
-                fontSize="13px"
-                borderBottom={activeTab.name === tab.name ? "2px" : ""}
-                borderColor={activeTab.name === tab.name ? "purpleTone" : ""}
-                color={activeTab.name === tab.name ? "purpleTone" : "GrayText"}
-              >
-                <Link href={tab.path}>{tab.name}</Link>
-              </Flex>
+              <Link key={tab.name} href={tab.path}>
+                <Flex
+                  h="50px"
+                  alignItems="center"
+                  fontSize="13px"
+                  borderBottom={activeTab.name === tab.name ? "2px" : ""}
+                  borderColor={activeTab.name === tab.name ? "purpleTone" : ""}
+                  color={
+                    activeTab.name === tab.name ? "purpleTone" : "GrayText"
+                  }
+                  cursor="pointer"
+                >
+                  {tab.name}
+                </Flex>
+              </Link>
             ))}
           </HStack>
           <HStack spacing={6} ml={1}>
@@ -126,11 +134,7 @@ const Header = ({jwt}) => {
             >
               <Flex w="full" flexDirection="column" alignItems="center" mt={10}>
                 <Avatar size="lg" src="/images/mohammed-shah.png" />
-                <Text
-                  fontSize="15px"
-                  mt={4}
-                  textTransform="capitalize"
-                >
+                <Text fontSize="15px" mt={4} textTransform="capitalize">
                   Mohammed Shah
                 </Text>
                 <Text
