@@ -39,8 +39,16 @@ const Header = ({ jwt }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);
 
+  let showableTabs = []
+  if(jwt){//make separate by role later
+    showableTabs = tabs.filter(tab=>tab.shows.includes("member"))
+  }
+  else {
+    showableTabs = tabs.filter(tab=>tab.shows.includes("visitor"))
+  }
+
   const [activeTab, setActiveTab] = useState(
-    tabs.find((tab) => tab.path === pathname) ?? tabs[0]
+    showableTabs.find((tab) => tab.path === pathname) ?? showableTabs[0]
   );
 
   const logout = () => {
@@ -62,7 +70,7 @@ const Header = ({ jwt }) => {
         >
           <HStack spacing={6} mr={1}>
             <Logo />
-            {tabs.map((tab) => (
+            {showableTabs.map((tab) => (
               <Link key={tab.name} href={tab.path}>
                 <Flex
                   h="55px"
@@ -148,7 +156,7 @@ const Header = ({ jwt }) => {
                 </Text>
               </Flex>
               <VStack divider={<StackDivider />} mt={8}>
-                {tabs.map((tab) => (
+                {showableTabs.map((tab) => (
                   <Flex
                     key={tab.name}
                     h="55px"

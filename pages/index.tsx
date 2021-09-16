@@ -41,13 +41,13 @@ import {
   bangladeshGraduates,
 } from "data";
 
-import { District } from "types/schema"
+import { District } from "types/schema";
 
 const Home: NextPage<{ jwt: string }> = ({ jwt }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const tabsMobile = ["Feed", "My Village", "Graduates"];
-  const [activeTab, setActiveTab] = useState(tabsMobile[0]); 
+  const [activeTab, setActiveTab] = useState(tabsMobile[0]);
 
   return (
     <Fragment>
@@ -91,12 +91,16 @@ const Home: NextPage<{ jwt: string }> = ({ jwt }) => {
                   </Box>
                 </Flex>
 
-                <Box mt={8}>
-                  <MyVillageDivider />
-                </Box>
-                <Box my={6}>
-                  <MyVillageItems />
-                </Box>
+                {jwt && (
+                  <>
+                    <Box mt={8}>
+                      <MyVillageDivider />
+                    </Box>
+                    <Box my={6}>
+                      <MyVillageItems />
+                    </Box>
+                  </>
+                )}
               </Box>
 
               {jwt && <PremiumCard />}
