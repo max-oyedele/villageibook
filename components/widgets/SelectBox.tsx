@@ -34,6 +34,7 @@ const SelectBox = (props:any) => {
     <Select
       instanceId={props.id}
       isMulti={props.isMulti ? true : false}
+      getOptionLabel={props.optionLabel}
       value={selectedOption}
       onChange={handleChange}
       options={options}

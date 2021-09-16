@@ -3,11 +3,17 @@ import { createWrapper, MakeStore, HYDRATE } from 'next-redux-wrapper'
 import logger from 'redux-logger'
 
 import { authSlice } from './slices/auth'
-import { frogsSlice } from './slices/frogs'
+import { regionSlice } from './slices/region'
+import { districtSlice } from './slices/district'
+import { upazilaSlice } from './slices/upazila'
+import { villageSlice } from './slices/village'
 
 const combinedReducers = combineReducers({
   authReducer: authSlice.reducer,
-  frogsReducer: frogsSlice.reducer,
+  regionReducer: regionSlice.reducer,
+  districtReducer: districtSlice.reducer,
+  upazilaReducer: upazilaSlice.reducer,
+  villageReducer: villageSlice.reducer,
 })
 export type OurStore = ReturnType<typeof combinedReducers>
 

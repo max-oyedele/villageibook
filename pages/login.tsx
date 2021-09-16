@@ -60,7 +60,7 @@ const Login = () => {
   });
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { jwt, loading, user, error } = useSelector(
+  const { jwt, status, user, error } = useSelector(
     (state: OurStore) => state.authReducer
   );
 

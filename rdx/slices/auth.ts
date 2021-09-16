@@ -8,10 +8,7 @@ import {
 import axios from "axios";
 import querystring from "querystring";
 
-export enum AuthStates {
-  IDLE = "idle",
-  LOADING = "loading",
-}
+import {Status, AuthState} from "../types";
 
 // export const fetchUser = createAsyncThunk('auth/me', async (_, thunkAPI) => {
 //   try {
@@ -38,9 +35,6 @@ export const login = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      // console.log('werwerwe', error.response)
-      // return thunkAPI.rejectWithValue({ error: error.message })
-      
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
@@ -49,7 +43,7 @@ export const login = createAsyncThunk(
 export const signup = createAsyncThunk(
   "auth/signup",
   async (
-    credentials: { firstname: string; lastname: string; email: string; password: string; token: string },
+    credentials: { firstname: string; lastname: string; email: string; password: string },
     thunkAPI
   ) => {
     try {
@@ -84,70 +78,62 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
 });
 
 /********************************** */
-export interface AuthSliceState {
-  jwt: any;
-  loading: AuthStates;
-  user?: any;
-  error?: SerializedError;
-}
-
-const internalInitialState = {
+const initialState = {
   jwt: null,
-  loading: AuthStates.IDLE,
+  status: Status.IDLE,
   user: null,
   error: null,
 };
 
 export const authSlice = createSlice({
   name: "auth",
-  initialState: internalInitialState,
+  initialState: initialState,
   reducers: {
     updateAccessToken(
-      state: AuthSliceState,
+      state: AuthState,
       action: PayloadAction<{ token: string }>
     ) {
       state.jwt = action.payload;
     },
-    reset: () => internalInitialState,
+    reset: () => initialState,
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => {
-      state.loading = AuthStates.LOADING;
+      state.status = Status.LOADING;
       state.error = null;
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.jwt = action.payload;
       // state.me = action.payload.me
-      state.loading = AuthStates.IDLE;
-      state.error = null;
+      state.status = Status.IDLE;
     });
     builder.addCase(login.rejected, (state, action) => {
       // state = { ...internalInitialState, error: action.error.message }
       state.error = (
         action.payload as { error: string; error_description: string }
       ).error_description;
-      state.loading = AuthStates.IDLE;
+      state.status = Status.IDLE;
       state.jwt = null;
       // throw new Error(action.error.message)
     });
     builder.addCase(signup.pending, (state, action) => {
-      state.loading = AuthStates.LOADING;
+      state.status = Status.LOADING;
       state.error = null;
     });
     builder.addCase(signup.fulfilled, (state, action) => {
       state.user = action.payload;
-      state.loading = AuthStates.IDLE;
+      state.status = Status.IDLE;
     });
     builder.addCase(signup.rejected, (state, action) => {
       state.error = (
         action.payload as { status: number, error: string, message: string}
       ).message;
-      state.loading = AuthStates.IDLE;
+      state.status = Status.IDLE;
     });
     builder.addCase(logout.pending, (state) => {
-      state.loading = AuthStates.LOADING;
+      state.status = Status.LOADING;
     });
-    builder.addCase(logout.fulfilled, (_state) => internalInitialState);
+    builder.addCase(logout.fulfilled, (_state) => initialState);
     
     // builder.addCase(fetchUser.rejected, (state, action) => {
     //   state = { ...internalInitialState, error: action.error }

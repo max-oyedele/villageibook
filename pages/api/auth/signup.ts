@@ -1,11 +1,13 @@
 import axios from "axios";
+import { fetchToken } from "helpers/fetch-token";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { headers, body } = req;
   // console.log("body", body);
 
-  headers.authorization = `Bearer ${body.token}`;
+  const access_token = await fetchToken();
+  headers.authorization = `Bearer ${access_token}`;
   headers["content-type"] = "application/json";
 
   const params = JSON.stringify({

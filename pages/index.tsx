@@ -1,6 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
-import cookie from "cookie";
 
 import {
   Container,
@@ -30,19 +29,25 @@ import GraduateStatCard from "components/GraduateStatCard";
 import RecentUserCard from "components/RecentUserCard";
 import VideoCard from "components/VideoCard";
 
-import { recentVillages, posts, recentUsers } from "data";
+import { parseCookie } from "helpers/parse-cookie";
+
 import {
+  recentVillages,
+  posts,
+  recentUsers,
   totalGraduates,
   villageName,
   villageGraduates,
   bangladeshGraduates,
 } from "data";
 
+import { District } from "types/schema"
+
 const Home: NextPage<{ jwt: string }> = ({ jwt }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const tabsMobile = ["Feed", "My Village", "Graduates"];
-  const [activeTab, setActiveTab] = useState(tabsMobile[0]);
+  const [activeTab, setActiveTab] = useState(tabsMobile[0]); 
 
   return (
     <Fragment>
@@ -239,9 +244,7 @@ const TabsMobile: React.FC<{
 export default Home;
 
 export async function getServerSideProps({ req }) {
-  const { jwt } = cookie.parse(
-    req ? req.headers.cookie || "" : document.cookie
-  );
+  const { jwt } = parseCookie(req ? req.headers.cookie || "" : document.cookie);
 
   if (jwt) {
     return {

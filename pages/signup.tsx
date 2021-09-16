@@ -67,7 +67,7 @@ const Signup = () => {
   });
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { loading, user, error } = useSelector(
+  const { status, user, error } = useSelector(
     (state: OurStore) => state.authReducer
   );
 
@@ -150,10 +150,7 @@ const Signup = () => {
                 // console.log({ values, actions });
                 actions.setSubmitting(true);
 
-                const {
-                  data: { access_token },
-                } = await axios.get("/api/auth/refreshToken");
-                await dispatch(signup({ ...values, token: access_token }));
+                await dispatch(signup(values));
 
                 actions.setSubmitting(false);
               }}
