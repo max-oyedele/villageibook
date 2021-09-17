@@ -41,7 +41,7 @@ const Header = ({ jwt }) => {
 
   let showableTabs = []
   if(jwt){//make separate by role later
-    showableTabs = tabs.filter(tab=>tab.shows.includes("member"))
+    showableTabs = tabs.filter(tab=>tab.shows.includes("user"))
   }
   else {
     showableTabs = tabs.filter(tab=>tab.shows.includes("visitor"))

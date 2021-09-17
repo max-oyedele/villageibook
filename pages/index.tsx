@@ -11,6 +11,7 @@ import {
   Divider,
   Button,
   Image,
+  Textarea,
   useBreakpointValue,
 } from "@chakra-ui/react";
 
@@ -119,6 +120,19 @@ const Home: NextPage<{ jwt: string }> = ({ jwt }) => {
           )}
 
           <Box w={{ base: "100%", md: "50%" }}>
+            {jwt && (
+              <Box bg="white" borderRadius="4px" mb={4} p={4}>
+                <Textarea fontSize="13px"  placeholder="Write something here..." />
+                <Divider mt={4} mb={2} />
+                <Flex justifyContent="space-between">
+                  <HStack spacing={4} fontSize="13px" color="GrayText">
+                    <HStack spacing={1}><Image src="/icons/post-photo.svg" /><Text>Picture</Text></HStack>
+                    <HStack spacing={1}><Image src="/icons/post-video.svg" /><Text>Video</Text></HStack>
+                  </HStack>
+                  <Button h="27px" fontSize="13px" fontWeight="400" bgColor="yellow.400" color="white">Post</Button>
+                </Flex>
+              </Box>
+            )}
             {(breakpointValue === "md" ||
               (breakpointValue === "base" && activeTab === "Feed")) && (
               <VStack spacing={4}>

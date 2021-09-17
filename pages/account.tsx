@@ -283,7 +283,7 @@ const AvatarUpload = () => {
           alignItems="center"
         >
           <Image
-            src="/icons/upload-photo.svg"
+            src="/icons/upload-avatar.svg"
             w="80px"
             h="80px"
             alt=""
