@@ -71,7 +71,7 @@ const Faq: NextPage = () => {
                   bgColor="white"
                   mb={4}
                 >
-                  <AccordionButton h={14}>
+                  <AccordionButton h={14} _focus={{boxShadow: "none"}}>
                     <Box
                       flex="1"
                       textAlign="left"

@@ -76,7 +76,7 @@ const Graduates: NextPage = () => {
 
   return (
     <Fragment>
-      <Header jwt={null} />
+      <Header />
       <Container maxW="container.xl" px={6}>
         <HStack h={24}>
           <PageTitle title="Graduates" />
@@ -175,7 +175,7 @@ const Graduates: NextPage = () => {
                   bgColor="white"
                   mt={4}
                 >
-                  <AccordionButton h={14}>
+                  <AccordionButton h={14} _focus={{boxShadow: "none"}}>
                     <Box
                       flex="1"
                       textAlign="left"
