@@ -68,18 +68,23 @@ const VideoBox: React.FC<{ video: Video }> = ({ video }) => {
         </Flex>
       </Box>
 
-      <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+      <Modal
+        closeOnOverlayClick={false}
+        isCentered
+        size={breakpointValue === "base" ? "full" : "3xl"}
+        isOpen={isOpen}
+        onClose={onClose}
+      >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent m={0} p={0} bgColor="transparent">
           <ModalCloseButton color="white" zIndex={10} />
-          <ModalBody p={0}>
-            <ReactPlayer
-              className="react-player"
-              url="https://streamable.com/moo"
-              width="full"
-              height="full"
-            />
-          </ModalBody>
+          <ReactPlayer
+            className="react-player"
+            url="https://video.vidyard.com/watch/YBvcF2BEfvKdowmfrRwk57"
+            width="100%"
+            height="100%"
+            playing={true}
+          />
         </ModalContent>
       </Modal>
     </Fragment>
