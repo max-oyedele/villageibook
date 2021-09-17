@@ -12,6 +12,8 @@ import {
   Button,
   Image,
   Textarea,
+  AspectRatio,
+  Circle,
   useBreakpointValue,
 } from "@chakra-ui/react";
 
@@ -28,7 +30,7 @@ import PostCard from "components/PostCard";
 import CaptionCard from "components/CaptionCard";
 import GraduateStatCard from "components/GraduateStatCard";
 import RecentUserCard from "components/RecentUserCard";
-import VideoCard from "components/VideoCard";
+import VideoBox from "components/VideoBox";
 
 import { parseCookie } from "helpers/parse-cookie";
 
@@ -75,22 +77,14 @@ const Home: NextPage<{ jwt: string }> = ({ jwt }) => {
           {breakpointValue === "md" && (
             <Box w="25%">
               <Box bgColor="white" p={4} borderRadius="6px" mb={6}>
-                <Flex
-                  w="full"
-                  pos="relative"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <Image
-                    src="/images/video-card.png"
-                    w="full"
-                    fit="cover"
-                    alt=""
-                  />
-                  <Box pos="absolute" cursor="pointer">
-                    <Image src="/images/video-play.png" alt="" />
-                  </Box>
-                </Flex>
+                <VideoBox
+                  video={{
+                    id: 0,
+                    title: "video title",
+                    author: "author",
+                    img: "https://bit.ly/naruto-sage",
+                  }}
+                />
 
                 {jwt && (
                   <>
@@ -122,14 +116,31 @@ const Home: NextPage<{ jwt: string }> = ({ jwt }) => {
           <Box w={{ base: "100%", md: "50%" }}>
             {jwt && (
               <Box bg="white" borderRadius="4px" mb={4} p={4}>
-                <Textarea fontSize="13px"  placeholder="Write something here..." />
+                <Textarea
+                  fontSize="13px"
+                  placeholder="Write something here..."
+                />
                 <Divider mt={4} mb={2} />
                 <Flex justifyContent="space-between">
                   <HStack spacing={4} fontSize="13px" color="GrayText">
-                    <HStack spacing={1}><Image src="/icons/post-photo.svg" /><Text>Picture</Text></HStack>
-                    <HStack spacing={1}><Image src="/icons/post-video.svg" /><Text>Video</Text></HStack>
+                    <HStack spacing={1}>
+                      <Image src="/icons/post-photo.svg" />
+                      <Text>Picture</Text>
+                    </HStack>
+                    <HStack spacing={1}>
+                      <Image src="/icons/post-video.svg" />
+                      <Text>Video</Text>
+                    </HStack>
                   </HStack>
-                  <Button h="27px" fontSize="13px" fontWeight="400" bgColor="yellow.400" color="white">Post</Button>
+                  <Button
+                    h="27px"
+                    fontSize="13px"
+                    fontWeight="400"
+                    bgColor="greenTone"
+                    color="white"
+                  >
+                    Post
+                  </Button>
                 </Flex>
               </Box>
             )}
@@ -166,22 +177,14 @@ const Home: NextPage<{ jwt: string }> = ({ jwt }) => {
                   bangladeshGraduates={bangladeshGraduates}
                 />
                 <Box mt={12}>
-                  <Flex
-                    w="full"
-                    pos="relative"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Image
-                      src="/images/video-card.png"
-                      w="full"
-                      fit="cover"
-                      alt=""
-                    />
-                    <Box pos="absolute" cursor="pointer">
-                      <Image src="/images/video-play.png" alt="" />
-                    </Box>
-                  </Flex>
+                  <VideoBox
+                    video={{
+                      id: 0,
+                      title: "video title",
+                      author: "author",
+                      img: "https://bit.ly/naruto-sage",
+                    }}
+                  />
                 </Box>
 
                 <Text fontSize="20px" mt={12} mb={6}>

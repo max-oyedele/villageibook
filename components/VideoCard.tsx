@@ -13,6 +13,8 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
+import VideoBox from "components/VideoBox";
+
 import type { Video } from "data/myPages";
 
 const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
@@ -24,15 +26,14 @@ const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
   return (
     <Fragment>
       <Flex w="full" flexDirection="column">
-        <Flex pos="relative" justifyContent="center" alignItems="center">
-          <Image src={video.img} alt="" w="100%" h="181px" fit="cover" borderRadius="4px" />
-          <Box pos="absolute">
-            <Image src="/images/video-play.png" alt=""/>
-          </Box>
-        </Flex>
+        <VideoBox video={video} />
         <Box mt={4}>
-          <Text fontSize="15px" color="primary" textTransform="capitalize">{video.title}</Text>
-          <Text fontSize="12px" color="GrayText" textTransform="capitalize">{video.author}</Text>
+          <Text fontSize="15px" color="primary" textTransform="capitalize">
+            {video.title}
+          </Text>
+          <Text fontSize="12px" color="GrayText" textTransform="capitalize">
+            {video.author}
+          </Text>
         </Box>
       </Flex>
     </Fragment>
