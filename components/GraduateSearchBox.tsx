@@ -48,7 +48,7 @@ const GraduateSearchBox = () => {
               size="md"
               border="none"
             />
-            <Button w="140px" h="42px" bgColor="purpleTone" color="white" fontSize="14px">Find now</Button>
+            <Button w="140px" h="42px" bgColor="purpleTone" color="white" fontSize="14px" fontWeight="400" _focus={{boxShadow: "none"}}>Find now</Button>
           </HStack>
         </VStack>
       </Flex>

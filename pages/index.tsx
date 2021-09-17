@@ -129,7 +129,8 @@ const Home: NextPage = () => {
                   fontSize="13px"
                   fontWeight="400"
                   bgColor="greenTone"
-                  color="white"
+                  color="white"     
+                  _focus={{boxShadow: "none"}}             
                 >
                   Post
                 </Button>

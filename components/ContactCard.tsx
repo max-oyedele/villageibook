@@ -15,6 +15,7 @@ const ContactCard = () => {
             color="white"
             fontSize="10px"
             fontWeight="400"
+            _focus={{boxShadow: "none"}}
           >
             EMAIL NOW
           </Button>

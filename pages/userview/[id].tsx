@@ -24,7 +24,7 @@ import PageTitle from "components/widgets/PageTitle";
 import MyVillageCard from "components/MyVillageCard";
 import PersonalityCard from "components/PersonalityCard";
 
-import { MyPage, myPages } from "data/myPages";
+import { MyPage, myPages } from "data/myPage";
 
 const UserView: NextPage = () => {
   const router = useRouter();
@@ -40,7 +40,7 @@ const UserView: NextPage = () => {
 
   return (
     <Fragment>
-      <Header jwt={null} />
+      <Header />
       <Container maxW="container.xl" px={6}>
         <HStack h={24}>
           <PageTitle title={user?.name ?? ""} />

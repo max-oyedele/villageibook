@@ -194,6 +194,7 @@ const Account: NextPage = () => {
                 fontSize="12px"
                 fontWeight="400"
                 color="white"
+                _focus={{boxShadow: "none"}}
               >
                 SAVE
               </Button>
@@ -204,6 +205,7 @@ const Account: NextPage = () => {
                 fontWeight="400"
                 color="purpleTone"
                 variant="ghost"
+                _focus={{boxShadow: "none"}}
               >
                 CANCEL
               </Button>
@@ -297,6 +299,7 @@ const AvatarUpload = () => {
             border="1px"
             borderColor="gray.300"
             borderRadius="full"
+            _focus={{boxShadow: "none"}}
             mt={8}
           >
             UPLOAD AVATAR

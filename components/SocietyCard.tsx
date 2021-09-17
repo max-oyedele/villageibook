@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import Link from "next/link";
 import { Flex, Box, Text, Image, Button } from "@chakra-ui/react";
 
-import type {Society} from "data/myPages";
+import type {Society} from "data/myPage";
 
 const SocietyCard:React.FC<{society: Society}> = ({society}) => {
   return (

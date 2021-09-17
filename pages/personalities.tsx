@@ -22,7 +22,7 @@ import PageTitle from "components/widgets/PageTitle";
 import MyVillageCard from "components/MyVillageCard";
 import PersonalityCard from "components/PersonalityCard";
 
-import { personalities } from "data/myPages";
+import { personalities } from "data/myPage";
 
 const Personalities: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });

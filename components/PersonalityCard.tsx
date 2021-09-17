@@ -13,7 +13,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import type { Personality } from "data/myPages";
+import type { Personality } from "data/myPage";
 
 const PersonalityCard: React.FC<{ personality: Personality }> = ({
   personality,
@@ -56,6 +56,7 @@ const PersonalityCard: React.FC<{ personality: Personality }> = ({
               fontWeight="400"
               bgColor="#FFB425"
               color="white"
+              _focus={{boxShadow: "none"}}
             >
               Read Bio
             </Button>

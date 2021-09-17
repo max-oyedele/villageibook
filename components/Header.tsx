@@ -45,7 +45,7 @@ const Header = () => {
   const logout = () => {
     dispatch(reset());
     removeCookie("jwt");
-    location.reload();
+    router.push('/');
   };
 
   return (

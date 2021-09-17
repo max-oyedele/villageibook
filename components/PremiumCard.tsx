@@ -20,6 +20,7 @@ const PremiumCard = () => {
             color="white"
             fontSize="10px"
             fontWeight="400"
+            _focus={{boxShadow: "none"}}
           >
             <Link href="/pay">JOIN NOW</Link>
           </Button>

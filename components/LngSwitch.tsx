@@ -9,6 +9,7 @@ const LngSwitch = (props:any) => {
         fontSize="13px"
         bgColor={props.activeLng === "english" ? "purpleTone" : "#EEECFF"}
         color={props.activeLng === "english" ? "white" : "purpleTone"}
+        _focus={{boxShadow: "none"}}
         onClick={() => props.setActiveLng("english")}
       >
         English
@@ -19,6 +20,7 @@ const LngSwitch = (props:any) => {
         fontSize="13px"
         bgColor={props.activeLng === "bengali" ? "purpleTone" : "#EEECFF"}
         color={props.activeLng === "bengali" ? "white" : "purpleTone"}
+        _focus={{boxShadow: "none"}}
         onClick={() => props.setActiveLng("bengali")}
       >
         Bengali

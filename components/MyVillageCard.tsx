@@ -15,7 +15,6 @@ import MyVillageItems from "./MyVillageItems";
 
 const villageName = "jammura";
 const userName = "mohammed shah";
-const userRole = "registered";
 
 const MyVillageCard = () => {
   return (
@@ -42,7 +41,7 @@ const MyVillageCard = () => {
         </Flex>
         <MyVillageDivider />
         <Box p={4}>
-          <MyVillageItems role={userRole} />
+          <MyVillageItems />
         </Box>
       </Box>
     </Fragment>

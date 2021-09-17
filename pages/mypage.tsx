@@ -41,9 +41,9 @@ import {
   personalities,
   institutions,
   videos,
-} from "data/myPages";
+} from "data/myPage";
 
-const MyPages: NextPage = () => {
+const MyPage: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   return (
@@ -250,4 +250,4 @@ const MyPages: NextPage = () => {
   );
 };
 
-export default MyPages;
+export default MyPage;

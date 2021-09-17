@@ -13,7 +13,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import type { MyPage } from "data/myPages";
+import type { MyPage } from "data/myPage";
 
 const MyPageCard: React.FC<{ myPage: MyPage }> = ({ myPage }) => {
   const router = useRouter();
@@ -64,6 +64,7 @@ const MyPageCard: React.FC<{ myPage: MyPage }> = ({ myPage }) => {
               fontWeight="400"
               bgColor="purpleTone"
               color="white"
+              _focus={{boxShadow: "none"}}
             >
               View Profile
             </Button>

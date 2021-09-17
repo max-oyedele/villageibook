@@ -13,6 +13,7 @@ const MyVillageDivider = () => {
           color="white"
           fontSize="10px"
           fontWeight="400"
+          _focus={{boxShadow: "none"}}
         >
           MY VILLAGE
         </Button>

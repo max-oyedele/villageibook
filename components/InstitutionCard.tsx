@@ -15,7 +15,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import type { Institution } from "data/myPages";
+import type { Institution } from "data/myPage";
 
 const InstitutionCard: React.FC<{ institution: Institution }> = ({
   institution,
@@ -96,6 +96,7 @@ const InstitutionCard: React.FC<{ institution: Institution }> = ({
                 fontWeight="400"
                 bgColor="purpleTone"
                 color="white"
+                _focus={{boxShadow: "none"}}
               >
                 More
               </Button>

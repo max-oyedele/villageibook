@@ -283,6 +283,7 @@ const Signup = () => {
                     size="md"
                     fontSize="12px"
                     fontWeight="400"
+                    _focus={{boxShadow: "none"}}
                     w="full"
                     mt={8}
                     isLoading={isSubmitting}
@@ -314,6 +315,7 @@ const Signup = () => {
                 fontWeight="400"
                 border="1px"
                 borderColor="#D5DBEC"
+                _focus={{boxShadow: "none"}}
                 leftIcon={
                   <Image
                     src="/icons/auth-facebook.svg"
@@ -333,6 +335,7 @@ const Signup = () => {
                 fontWeight="400"
                 border="1px"
                 borderColor="#D5DBEC"
+                _focus={{boxShadow: "none"}}
                 leftIcon={
                   <Image
                     src="/icons/auth-google.svg"

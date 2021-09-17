@@ -89,6 +89,7 @@ const SearchBar = () => {
               fontWeight="400"
               color="white"
               borderRadius="6px"
+              _focus={{boxShadow: "none"}}
               ml={6}
             >
               GO

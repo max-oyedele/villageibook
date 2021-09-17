@@ -1,5 +1,5 @@
 export const myVillageStats: any = {
-  myPages: 202,
+  myPage: 202,
   graduates: 124,
   society: 520,
   personalities: 89,

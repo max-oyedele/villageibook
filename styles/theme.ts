@@ -41,7 +41,7 @@ const theme: Theme = extendTheme({
       },
       pre: {
         overflowX: "auto",
-      },
+      }
     }),
   },
 });

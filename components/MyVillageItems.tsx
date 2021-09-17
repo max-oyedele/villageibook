@@ -12,9 +12,9 @@ import {
 } from "@chakra-ui/react";
 
 import { myVillageItems } from "constants/myVillageItems";
-import { myVillageStats } from "data/myPages";
+import { myVillageStats } from "data/myPage";
 
-const MyVillageItems: React.FC<{ role?: string }> = ({ role }) => {
+const MyVillageItems: React.FC = () => {
   const router = useRouter();
   const { pathname } = router;
 
@@ -50,19 +50,19 @@ const MyVillageItems: React.FC<{ role?: string }> = ({ role }) => {
             <Text w="full" fontSize="13px">
               {item.name}
             </Text>
-            {role === "registered" && (
-              <Badge
-                bgColor={item.path === pathname ? item.badgeColor : "#FBFBFA"}
-                color={item.path === pathname ? "white" : ""}
-                fontSize="11px"
-                fontWeight="400"
-                lineHeight={2}
-                px={2}
-                borderRadius="xl"
-              >
-                {myVillageStats[item.value]}
-              </Badge>
-            )}
+
+            <Badge
+              bgColor={item.path === pathname ? item.badgeColor : "#FBFBFA"}
+              color={item.path === pathname ? "white" : ""}
+              fontSize="11px"
+              fontWeight="400"
+              lineHeight={2}
+              px={2}
+              borderRadius="xl"
+            >
+              {myVillageStats[item.value]}
+            </Badge>
+
           </HStack>
         </Link>
       ))}
