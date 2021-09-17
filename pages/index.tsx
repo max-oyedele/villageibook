@@ -46,7 +46,7 @@ import {
 
 import { District } from "types/schema";
 
-const Home: NextPage<{ jwt: string }> = ({ jwt }) => {
+const Home: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const tabsMobile = ["Feed", "My Village", "Graduates"];
@@ -54,7 +54,7 @@ const Home: NextPage<{ jwt: string }> = ({ jwt }) => {
 
   return (
     <Fragment>
-      <Header jwt={jwt} />
+      <Header />
       <Container maxW="container.xl" px={6}>
         <HStack h={24}>
           <PageTitle title="Find Village" />
@@ -86,21 +86,17 @@ const Home: NextPage<{ jwt: string }> = ({ jwt }) => {
                   }}
                 />
 
-                {jwt && (
-                  <>
-                    <Box mt={8}>
-                      <MyVillageDivider />
-                    </Box>
-                    <Box my={6}>
-                      <MyVillageItems />
-                    </Box>
-                  </>
-                )}
+                <Box mt={8}>
+                  <MyVillageDivider />
+                </Box>
+                <Box my={6}>
+                  <MyVillageItems />
+                </Box>
               </Box>
 
-              {jwt && <PremiumCard />}
+              {/* {jwt && <PremiumCard />} */}
 
-              {!jwt && <SignupCard />}
+              {/* {!jwt && <SignupCard />} */}
 
               <Text fontSize="24px" my={10}>
                 Recently developed
@@ -114,36 +110,32 @@ const Home: NextPage<{ jwt: string }> = ({ jwt }) => {
           )}
 
           <Box w={{ base: "100%", md: "50%" }}>
-            {jwt && (
-              <Box bg="white" borderRadius="4px" mb={4} p={4}>
-                <Textarea
-                  fontSize="13px"
-                  placeholder="Write something here..."
-                />
-                <Divider mt={4} mb={2} />
-                <Flex justifyContent="space-between">
-                  <HStack spacing={4} fontSize="13px" color="GrayText">
-                    <HStack spacing={1}>
-                      <Image src="/icons/post-photo.svg" />
-                      <Text>Picture</Text>
-                    </HStack>
-                    <HStack spacing={1}>
-                      <Image src="/icons/post-video.svg" />
-                      <Text>Video</Text>
-                    </HStack>
+            <Box bg="white" borderRadius="4px" mb={4} p={4}>
+              <Textarea fontSize="13px" placeholder="Write something here..." />
+              <Divider mt={4} mb={2} />
+              <Flex justifyContent="space-between">
+                <HStack spacing={4} fontSize="13px" color="GrayText">
+                  <HStack spacing={1}>
+                    <Image src="/icons/post-photo.svg" />
+                    <Text>Picture</Text>
                   </HStack>
-                  <Button
-                    h="27px"
-                    fontSize="13px"
-                    fontWeight="400"
-                    bgColor="greenTone"
-                    color="white"
-                  >
-                    Post
-                  </Button>
-                </Flex>
-              </Box>
-            )}
+                  <HStack spacing={1}>
+                    <Image src="/icons/post-video.svg" />
+                    <Text>Video</Text>
+                  </HStack>
+                </HStack>
+                <Button
+                  h="27px"
+                  fontSize="13px"
+                  fontWeight="400"
+                  bgColor="greenTone"
+                  color="white"
+                >
+                  Post
+                </Button>
+              </Flex>
+            </Box>
+
             {(breakpointValue === "md" ||
               (breakpointValue === "base" && activeTab === "Feed")) && (
               <VStack spacing={4}>
@@ -269,12 +261,13 @@ export async function getServerSideProps({ req }) {
 
   if (jwt) {
     return {
-      props: {
-        jwt: jwt,
-      },
+      props: {},
     };
   }
   return {
-    props: {},
+    redirect: {
+      destination: "/home",
+      permanent: false,
+    },
   };
 }

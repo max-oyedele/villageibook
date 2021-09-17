@@ -29,7 +29,7 @@ const Institutions: NextPage = () => {
 
   return (
     <Fragment>
-      <Header jwt={null} />
+      <Header />
       <Container maxW="container.xl" px={6}>
         <HStack h={24}>
           <PageTitle title="Institutions" />

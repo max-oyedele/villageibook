@@ -27,34 +27,24 @@ import { OurStore } from "rdx/store";
 
 import { reset } from "rdx/slices/auth";
 
-const Header = ({ jwt }) => {
+const Header = () => {
   const router = useRouter();
   const { pathname } = router;
 
   const { user } = useSelector((state: OurStore) => state.authReducer);
   const dispatch = useDispatch();
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
-  const [isAuth, setIsAuth] = useState(!!jwt);
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);
 
-  let showableTabs = []
-  if(jwt){//make separate by role later
-    showableTabs = tabs.filter(tab=>tab.shows.includes("user"))
-  }
-  else {
-    showableTabs = tabs.filter(tab=>tab.shows.includes("visitor"))
-  }
-
   const [activeTab, setActiveTab] = useState(
-    showableTabs.find((tab) => tab.path === pathname) ?? showableTabs[0]
+    tabs.find((tab) => tab.path === pathname) ?? tabs[0]
   );
 
   const logout = () => {
     dispatch(reset());
     removeCookie("jwt");
-    setIsAuth(null);
     location.reload();
   };
 
@@ -70,7 +60,7 @@ const Header = ({ jwt }) => {
         >
           <HStack spacing={6} mr={1}>
             <Logo />
-            {showableTabs.map((tab) => (
+            {tabs.map((tab) => (
               <Link key={tab.name} href={tab.path}>
                 <Flex
                   h="55px"
@@ -102,12 +92,9 @@ const Header = ({ jwt }) => {
               borderColor="purpleTone"
               borderRadius="6px"
               cursor="pointer"
-              onClick={() => {
-                isAuth || user ? logout() : router.push("/login");
-              }}
+              onClick={() => logout()}
             >
-              {!isAuth && !user && <Text>LOGIN</Text>}
-              {(isAuth || user) && <Text>LOGOUT</Text>}
+              <Text>LOGOUT</Text>
             </Box>
           </HStack>
         </Flex>
@@ -156,7 +143,7 @@ const Header = ({ jwt }) => {
                 </Text>
               </Flex>
               <VStack divider={<StackDivider />} mt={8}>
-                {showableTabs.map((tab) => (
+                {tabs.map((tab) => (
                   <Flex
                     key={tab.name}
                     h="55px"
