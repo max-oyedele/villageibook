@@ -302,13 +302,13 @@ const Signup = () => {
               <Divider />
             </HStack>
 
-            {breakpointValue === "base" && (
+            {/* {breakpointValue === "base" && (
               <Text fontSize="12px" textAlign="center" mt={4}>
                 Signup with
               </Text>
-            )}
+            )} */}
 
-            <HStack spacing={4} mt={{ base: 4, md: 8 }}>
+            {/* <HStack spacing={4} mt={{ base: 4, md: 8 }}>
               <Button
                 w="full"
                 fontSize="12px"
@@ -347,7 +347,7 @@ const Signup = () => {
               >
                 {breakpointValue === "base" ? "Google" : "Signup with Google"}
               </Button>
-            </HStack>
+            </HStack> */}
 
             <Box textAlign={{ base: "center", md: "right" }}>
               <Text fontSize="12px" color="purpleTone" mt={4}>

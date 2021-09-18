@@ -4,7 +4,7 @@ export const myVillageItems = [
     name: "My Page",
     value: "myPage",
     img: "/icons/myvillage-mypage.svg",
-    path: '/mypage',
+    path: '/myvillage',
     activeBgColor: '#EFFBFA',
     badgeColor: '#36CFD1'
   },
@@ -22,7 +22,7 @@ export const myVillageItems = [
     name: "Society",
     value: "society",
     img: "/icons/myvillage-society.svg",
-    path: '/society',
+    path: '/myvillage/society',
     activeBgColor: '#F4F4FB',
     badgeColor: '#BBBBD7'
   },
@@ -31,7 +31,7 @@ export const myVillageItems = [
     name: "Personalities",
     value: "personalities",
     img: "/icons/myvillage-personality.svg",
-    path: '/personalities',
+    path: '/myvillage/personalities',
     activeBgColor: '#FFF9E8',
     badgeColor: '#FFB425'
   },
@@ -40,7 +40,7 @@ export const myVillageItems = [
     name: "Institutions",
     value: "institutions",
     img: "/icons/myvillage-institution.svg",
-    path: '/institutions',
+    path: '/myvillage/institutions',
     activeBgColor: '#5B8FFF22',
     badgeColor: '#5A8FFF'
   },
@@ -49,7 +49,7 @@ export const myVillageItems = [
     name: "Videos",
     value: "videos",
     img: "/icons/myvillage-video.svg",
-    path: '/videos',
+    path: '/myvillage/videos',
     activeBgColor: '#FF5B5B22',
     badgeColor: '#FF645A'
   },

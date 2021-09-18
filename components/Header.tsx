@@ -39,8 +39,11 @@ const Header = () => {
   const [showMenuMobile, setShowMenuMobile] = useState(false);
 
   const [activeTab, setActiveTab] = useState(
-    tabs.find((tab) => tab.path === pathname) ?? tabs[0]
+    tabs.find((tab) => pathname.includes(tab.path)) ?? tabs[0]
   );
+
+  console.log('tabs', tabs)
+  console.log('pathname', pathname)
 
   const logout = () => {
     dispatch(reset());

@@ -215,7 +215,7 @@ const Login = () => {
               <Divider />
             </HStack>
 
-            <HStack spacing={4} mt={8}>
+            {/* <HStack spacing={4} mt={8}>
               <Button
                 w="full"
                 fontSize="12px"
@@ -252,7 +252,7 @@ const Login = () => {
               >
                 Login with Google
               </Button>
-            </HStack>
+            </HStack> */}
             <Box textAlign={{ base: "center", md: "right" }}>
               <Text fontSize="12px" color="purpleTone" mt={4}>
                 <Link href="/signup">Create Account</Link>
