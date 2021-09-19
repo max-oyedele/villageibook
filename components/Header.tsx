@@ -39,11 +39,8 @@ const Header = () => {
   const [showMenuMobile, setShowMenuMobile] = useState(false);
 
   const [activeTab, setActiveTab] = useState(
-    tabs.find((tab) => pathname.includes(tab.path)) ?? tabs[0]
+    pathname.includes("myvillage") ? tabs[1] : pathname.includes("graduates") ? tabs[2] : tabs[0]
   );
-
-  console.log('tabs', tabs)
-  console.log('pathname', pathname)
 
   const logout = () => {
     dispatch(reset());

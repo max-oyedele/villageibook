@@ -18,40 +18,13 @@ import {
 
 import Logo from "components/Logo";
 import SocialLinkBar from "components/SocialLinkBar";
+import { tabs } from "constants/footerTabs";
 
 const Footer = () => {
   const router = useRouter();
   const { pathname } = router;
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-
-  const tabs = [
-    {
-      id: 0,
-      name: "Privacy",
-      path: "/privacy",
-    },
-    {
-      id: 1,
-      name: "Legal",
-      path: "/legal",
-    },
-    {
-      id: 2,
-      name: "Faq",
-      path: "/faq",
-    },
-    {
-      id: 3,
-      name: "Contact Us",
-      path: "/contact",
-    },
-    {
-      id: 4,
-      name: "Ad Us",
-      path: "/ad",
-    },
-  ];
 
   const [activeTab, setActiveTab] = useState(
     tabs.find((tab) => tab.path === pathname) ?? tabs[0]

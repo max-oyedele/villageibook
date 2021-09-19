@@ -1,22 +1,23 @@
 import React, { Fragment } from "react";
-import { Flex, Stack, Box, Text, Avatar, Image, useBreakpointValue } from "@chakra-ui/react";
+import Link from "next/link";
+import ReactReadMoreReadLess from "react-read-more-read-less";
 
-type User = {
-  name: string;
-  img: string;
-};
+import {
+  Flex,
+  Stack,
+  Box,
+  Text,
+  Avatar,
+  Image,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 
-type Post = {
-  text: string;
-  imgs: string[];
-};
+import VideoBox from "components/VideoBox";
+import {Video} from "data/myPage";
+import { Post } from "data";
 
-const PostCard: React.FC<{ user: User; ago: string; post: Post }> = ({
-  user,
-  ago,
-  post,
-}) => {
-  const breakpointValue = useBreakpointValue({base: 'base', md: 'md'})
+const PostCard: React.FC<{ post: Post }> = ({ post }) => {
+  const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   return (
     <Fragment>
@@ -28,23 +29,57 @@ const PostCard: React.FC<{ user: User; ago: string; post: Post }> = ({
           bgColor="white"
           borderRadius="6px"
         >
-          <Avatar src={user.img} size="base" />
+          <Link href={`/userview/${post.user.id}`}>
+            <Avatar src={post.user.img} size="sm" cursor="pointer" />
+          </Link>
           <Box w="full" ml={4}>
-            <Text fontSize="13px">
-              {user.name}
-            </Text>
+            <Link href={`/userview/${post.user.id}`}>
+              <Text
+                display="inline"
+                fontSize="13px"
+                _hover={{ textDecoration: "underline", cursor: "pointer" }}
+              >
+                {post.user.name}
+              </Text>
+            </Link>
             <Text fontSize="11px" color="GrayText">
-              {ago}
+              {post.ago}
             </Text>
           </Box>
         </Flex>
 
-        <Text fontSize="13px" my={4}>{post.text}</Text>
+        <Text fontSize="13px" my={4}>
+          <ReactReadMoreReadLess
+            charLimit={200}
+            readMoreText={"see more"}
+            readLessText={"see less"}
+            readMoreStyle={{ color: "#553CFB", cursor: "pointer" }}
+            readLessStyle={{ color: "#553CFB", cursor: "pointer" }}
+          >
+            {post.contents.text}
+          </ReactReadMoreReadLess>
+        </Text>
 
-        <Stack direction={{base: 'column', lg: "row"}} spacing={4}>
-          {post.imgs.map((img) => (
-            <Image key={img} src={img} alt="" borderRadius="4px" w="full" />
-          ))}
+        <Stack direction={{ base: "column", lg: "row" }} spacing={4}>
+          {post.contents.img && (
+            <Box w="full">
+              <Image
+                src={post.contents.img}
+                alt=""
+                borderRadius="4px"
+                w="full"
+                h="full"
+                fit="cover"
+              />
+            </Box>
+          )}
+          {post.contents.video && (
+            <Box w="full">
+              <VideoBox
+                video={post.contents.video}
+              />
+            </Box>
+          )}
         </Stack>
       </Box>
     </Fragment>

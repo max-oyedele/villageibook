@@ -13,6 +13,7 @@ import {
   Badge,
   Button,
   AspectRatio,
+  Center,
   Circle,
   useBreakpointValue,
   useDisclosure,
@@ -39,15 +40,15 @@ const VideoBox: React.FC<{ video: Video }> = ({ video }) => {
 
   return (
     <Fragment>
-      <Box pos="relative">
-        <AspectRatio maxW="full" ratio={4 / 3}>
-          <Image
-            src={video.img}
-            alt="naruto"
-            objectFit="cover"
-            borderRadius="6px"
-          />
-        </AspectRatio>
+      <Box w="full" pos="relative">
+        <Image
+          src={video.img}
+          alt="naruto"
+          objectFit="cover"
+          borderRadius="6px"
+          w="full"
+          fit="cover"
+        />
         <Flex
           pos="absolute"
           top={0}

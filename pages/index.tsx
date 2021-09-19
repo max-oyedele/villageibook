@@ -141,7 +141,7 @@ const Home: NextPage = () => {
               (breakpointValue === "base" && activeTab === "Feed")) && (
               <VStack spacing={4}>
                 {posts.map((post) => (
-                  <PostCard key={post.id} {...post} />
+                  <PostCard key={post.id} post={post} />
                 ))}
               </VStack>
             )}

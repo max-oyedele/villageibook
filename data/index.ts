@@ -1,3 +1,5 @@
+import { Video } from "data/myPage";
+
 export const recentVillages = [
   {
     id: 0,
@@ -19,32 +21,54 @@ export const recentVillages = [
   },
 ];
 
-export const posts = [
+export type Post = {
+  id: number;
+  user: {
+    id: number;
+    name: string;
+    img: string;
+  };
+  ago: string;
+  contents: {
+    text: string;
+    img: string;
+    video: Video;
+  };
+};
+export const posts: Post[] = [
   {
     id: 0,
-    user: { name: "Nusrat Rahman", img: "/images/nusrat.png" },
+    user: { id: 0, name: "sadia rashid", img: "/images/sadia.png" },
     ago: "3 hours ago",
-    post: {
+    contents: {
       text: "Consequat duis enim velit mollit. Exercitation veniam consequat sunt.",
-      imgs: ["/images/nusrat-post.png"],
+      img: "/images/nusrat-post.png",
+      video: null
     },
   },
   {
     id: 1,
-    user: { name: "Sarmin Degum", img: "/images/sarmin.png" },
+    user: { id: 1, name: "abdul ullah", img: "/images/abdul.png" },
     ago: "5 hours ago",
-    post: {
+    contents: {
       text: "Consequat duis enim velit mollit. Exercitation veniam consequat sunt.",
-      imgs: ["/images/sarmin-post1.png", "/images/sarmin-post2.png"],
+      img: "/images/sarmin-post1.png",
+      video: {
+        id: 0,
+        title: "video title",
+        author: "author",
+        img: "/images/sarmin-post2.png",
+      },
     },
   },
   {
     id: 2,
-    user: { name: "Sonia Khatun", img: "/images/sonia.png" },
+    user: { id: 2, name: "Taslima ahamed", img: "/images/taslima.png" },
     ago: "1 day ago",
-    post: {
+    contents: {
       text: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim.",
-      imgs: ["/images/sonia-post.png"],
+      img: "/images/sonia-post.png",
+      video: null,
     },
   },
 ];
@@ -110,5 +134,5 @@ export const countryGraduates = {
   USA: 3,
   canada: 1,
   UK: 10,
-  bangladesh: 130
-}
+  bangladesh: 130,
+};

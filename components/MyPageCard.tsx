@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import {
   HStack,
   VStack,
@@ -29,7 +30,13 @@ const MyPageCard: React.FC<{ myPage: MyPage }> = ({ myPage }) => {
             <Image src={myPage.img} alt="" w="135px" h="135px" fit="cover" />
             {myPage.role === "premium" && (
               <Box pos="absolute" top={2} left={2}>
-                <Badge fontSize="9px" fontWeight="400" opacity={0.8} borderRadius="full" px={2}>
+                <Badge
+                  fontSize="9px"
+                  fontWeight="400"
+                  opacity={0.8}
+                  borderRadius="full"
+                  px={2}
+                >
                   PREMIUM
                 </Badge>
               </Box>
@@ -45,11 +52,7 @@ const MyPageCard: React.FC<{ myPage: MyPage }> = ({ myPage }) => {
             >
               {myPage.region}
             </Text>
-            <Text
-              fontSize="18px"
-              color="primary"
-              textTransform="capitalize"
-            >
+            <Text fontSize="18px" color="primary" textTransform="capitalize">
               {myPage.name}
             </Text>
             <Text fontSize="12px" fontWeight="400" color="GrayText" mt={2}>
@@ -57,17 +60,19 @@ const MyPageCard: React.FC<{ myPage: MyPage }> = ({ myPage }) => {
             </Text>
           </Box>
           <Box px={4}>
-            <Button
-              px={4}
-              h="26px"
-              fontSize="12px"
-              fontWeight="400"
-              bgColor="purpleTone"
-              color="white"
-              _focus={{boxShadow: "none"}}
-            >
-              View Profile
-            </Button>
+            <Link href={`/userview/${myPage.id}`}>
+              <Button
+                px={4}
+                h="26px"
+                fontSize="12px"
+                fontWeight="400"
+                bgColor="purpleTone"
+                color="white"
+                _focus={{ boxShadow: "none" }}
+              >
+                View Profile
+              </Button>
+            </Link>
           </Box>
         </HStack>
       )}
@@ -106,7 +111,12 @@ const MyPageCard: React.FC<{ myPage: MyPage }> = ({ myPage }) => {
                 right={0}
                 justifyContent="flex-end"
               >
-                <Badge fontSize="8px" fontWeight="400" borderRadius="full" px={2}>
+                <Badge
+                  fontSize="8px"
+                  fontWeight="400"
+                  borderRadius="full"
+                  px={2}
+                >
                   PREMIUM
                 </Badge>
               </Flex>
@@ -116,16 +126,18 @@ const MyPageCard: React.FC<{ myPage: MyPage }> = ({ myPage }) => {
             {myPage.desc}
           </Text>
 
-          <Button
-            w={{ base: "auto", sm: "full" }}
-            h={8}
-            fontSize="12px"
-            fontWeight="400"
-            bgColor="purpleTone"
-            color="white"
-          >
-            View Profile
-          </Button>
+          <Link href={`/userview/${myPage.id}`}>
+            <Button
+              w={{ base: "auto", sm: "full" }}
+              h={8}
+              fontSize="12px"
+              fontWeight="400"
+              bgColor="purpleTone"
+              color="white"
+            >
+              View Profile
+            </Button>
+          </Link>
         </VStack>
       )}
     </Fragment>
