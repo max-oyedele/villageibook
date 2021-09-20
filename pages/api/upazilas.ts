@@ -2,7 +2,7 @@ import { fetchToken } from "helpers/fetch-token";
 import { fetchWrapper } from "helpers/fetch-wrapper";
 import { getParametrizedRoute } from "next/dist/shared/lib/router/utils/route-regex";
 
-const baseUrl = "http://villageibook-api.abosit.com";
+const baseUrl = "https://villageibook-api.abosit.com";
 
 async function handler(req, res) {
   const { access_token } = await fetchToken();

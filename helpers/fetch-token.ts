@@ -11,7 +11,7 @@ export async function fetchToken() {
 
   try {
     const { data } = await axios.post(
-      "http://villageibook-api.abosit.com/oauth/token",
+      "https://villageibook-api.abosit.com/oauth/token",
       params,
       {
         headers: {

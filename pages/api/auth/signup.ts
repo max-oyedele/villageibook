@@ -19,7 +19,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const { data, headers: returnedHeaders } = await axios.post(
-      "http://villageibook-api.abosit.com/signup", // api backend path
+      "https://villageibook-api.abosit.com/signup", // api backend path
       params,
       { headers } // Headers from the Next.js Client and put custome values
     );
