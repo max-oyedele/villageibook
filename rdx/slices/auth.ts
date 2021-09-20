@@ -32,10 +32,9 @@ export const login = createAsyncThunk(
       // //   headers: { Authorization: `Bearer ${response.data.accessToken}` },
       // // })
       // return { accessToken: response.data.accessToken, me: { name: refetch.data.name } }
-      console.log('login res data', response.data)
+      
       return response.data;
     } catch (error) {
-      console.log('login err data', error)
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }

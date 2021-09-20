@@ -7,9 +7,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // console.log("body", body);
 
   const access_token = await fetchToken();
-  headers.authorization = `Bearer ${access_token}`;
-  headers["content-type"] = "application/json";
-
+  
   const params = JSON.stringify({
     firstName: body.firstname,
     lastName: body.lastname,
@@ -18,19 +16,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   try {
-    const { data, headers: returnedHeaders } = await axios.post(
+    const { data } = await axios.post(
       "https://villageibook-api.abosit.com/signup", // api backend path
       params,
-      { headers } // Headers from the Next.js Client and put custome values
-    );
-    //  Update headers on requester using headers from Node.js server response
-    Object.entries(returnedHeaders).forEach((keyArr) =>
-      res.setHeader(keyArr[0], keyArr[1] as string)
+      {
+        headers: {
+          "authorization": `Bearer ${access_token}`,
+          "content-type": "application/json"
+        }
+      }
     );
 
     res.send(data); // Send data from Node.js server response
-  } catch ({ response: { status, data } }) {
+  } catch (error) {
     // Send status (probably 401) so the axios interceptor can run.
-    res.status(status).json(data);
+    res.status(401).json(error.response?.data);
   }
 };
