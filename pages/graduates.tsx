@@ -36,7 +36,7 @@ import {
   villageName,
   villageGraduates,
   bangladeshGraduates,
-} from "data";
+} from "data/browse";
 import {
   interCountry,
   Stats,

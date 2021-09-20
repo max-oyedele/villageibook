@@ -1,10 +1,10 @@
 export const myVillageItems = [
   {
     id: 0,
-    name: "My Page",
-    value: "myPage",
-    img: "/icons/myvillage-mypage.svg",
-    path: '/myvillage',
+    name: "Posts",
+    value: "posts",
+    img: "/icons/myvillage-post.svg",
+    path: '/myvillage/posts',
     activeBgColor: '#EFFBFA',
     badgeColor: '#36CFD1'
   },

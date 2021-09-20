@@ -1,5 +1,7 @@
 import { Fragment } from "react";
-import { HStack, Divider, Button } from "@chakra-ui/react"; 
+import Link from "next/link";
+
+import { HStack, Divider, Button } from "@chakra-ui/react";
 
 const MyVillageDivider = () => {
   return (
@@ -13,9 +15,9 @@ const MyVillageDivider = () => {
           color="white"
           fontSize="10px"
           fontWeight="400"
-          _focus={{boxShadow: "none"}}
+          _focus={{ boxShadow: "none" }}
         >
-          MY VILLAGE
+          <Link href="/myvillage">MY VILLAGE</Link>
         </Button>
         <Divider />
       </HStack>

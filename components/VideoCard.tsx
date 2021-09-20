@@ -15,7 +15,7 @@ import {
 
 import VideoBox from "components/VideoBox";
 
-import type { Video } from "data/myPage";
+import type { Video } from "types/data";
 
 const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
   const router = useRouter();

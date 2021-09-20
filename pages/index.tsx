@@ -42,7 +42,7 @@ import {
   villageName,
   villageGraduates,
   bangladeshGraduates,
-} from "data";
+} from "data/browse";
 
 import { District } from "types/schema";
 

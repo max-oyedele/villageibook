@@ -13,15 +13,14 @@ import {
 } from "@chakra-ui/react";
 
 import VideoBox from "components/VideoBox";
-import {Video} from "data/myPage";
-import { Post } from "data";
+import { Post } from "types/data";
 
 const PostCard: React.FC<{ post: Post }> = ({ post }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   return (
     <Fragment>
-      <Box w="full" p={4} bgColor="white" borderRadius="6px">
+      <Box w="full" p={4} bgColor="white" borderRadius="6px" border="1px" borderColor="gray.200">
         <Flex
           w="full"
           justifyContent="center"
@@ -43,7 +42,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
               </Text>
             </Link>
             <Text fontSize="11px" color="GrayText">
-              {post.ago}
+              {post.lastAt}
             </Text>
           </Box>
         </Flex>

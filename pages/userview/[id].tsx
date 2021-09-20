@@ -24,7 +24,8 @@ import PageTitle from "components/widgets/PageTitle";
 import MyVillageCard from "components/MyVillageCard";
 import PersonalityCard from "components/PersonalityCard";
 
-import { MyPage, myPages } from "data/myPage";
+import { personalities } from "data/myvillage";
+import { User } from "types/data";
 
 const UserView: NextPage = () => {
   const router = useRouter();
@@ -32,10 +33,10 @@ const UserView: NextPage = () => {
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const [user, setUser] = useState<MyPage | undefined>(undefined);
+  const [user, setUser] = useState<User | undefined>(undefined);
   useEffect(() => {
-    const t_user = myPages.find((item) => item.id == Number(id));
-    setUser(t_user);
+    const user = personalities.find((item) => item.id == Number(id));
+    setUser(user);
   }, [id]);
 
   return (
@@ -122,7 +123,7 @@ const UserView: NextPage = () => {
                 My Photos
               </Text>
               <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} mt={8}>
-                {user?.photos?.map((photo) => (
+                {user?.details?.photos.map((photo) => (
                   <Image key={photo} src={photo} w="full" alt="" />
                 ))}
               </SimpleGrid>

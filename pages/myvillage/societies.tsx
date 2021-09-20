@@ -21,13 +21,13 @@ import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import MyVillageCard from "components/MyVillageCard";
-import SocietyCard from "components/SocietyCard";
+import ArticleCard from "components/ArticleCard";
 
 import UseLeftFixed from "hooks/use-left-fixed";
 
-import { articles } from "data/society";
+import { articles } from "data/myvillage";
 
-const Society: NextPage = () => {
+const Societies: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const { fixed } = UseLeftFixed();
 
@@ -55,13 +55,13 @@ const Society: NextPage = () => {
                 </Text>
               </Text>
               <Grid
-                templateColumns="repeat(2, 1fr)"
+                templateColumns={breakpointValue === "base" ? "repeat(1, 1fr)" : "repeat(2, 1fr)"}
                 columnGap={6}
-                rowGap={10}
+                rowGap={12}
                 mt={6}
               >
                 {articles.map((article) => (
-                  <SocietyCard key={article.id} society={article} />
+                  <ArticleCard key={article.id} article={article} />
                 ))}
               </Grid>
             </Box>
@@ -76,4 +76,4 @@ const Society: NextPage = () => {
   );
 };
 
-export default Society;
+export default Societies;

@@ -11,6 +11,7 @@ import {
   Text,
   Image,
   Avatar,
+  Button,
   Grid,
   GridItem,
   useBreakpointValue,
@@ -20,22 +21,21 @@ import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import MyVillageCard from "components/MyVillageCard";
-import InstitutionCard from "components/InstitutionCard";
+import PostCard from "components/PostCard";
 
 import UseLeftFixed from "hooks/use-left-fixed";
 
-import { institutions } from "data/myvillage";
+import { posts } from "data/browse";
 
-const Institutions: NextPage = () => {
+const Posts: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-
-  const {fixed} = UseLeftFixed();
+  const { fixed } = UseLeftFixed();
 
   return (
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <PageTitle title="Institutions" />
+        <PageTitle title="Posts" />
         <Flex>
           {breakpointValue === "md" && (
             <Box>
@@ -43,15 +43,27 @@ const Institutions: NextPage = () => {
             </Box>
           )}
 
-          <Box w="full" ml={fixed && breakpointValue === "md" ? "264px" : breakpointValue === "md" ? "24px" : "0px"}>
-            <VStack spacing={2}>
-              {institutions.map((institution) => (
-                <InstitutionCard
-                  key={institution.id}
-                  institution={institution}
-                />
+          <Box
+            w="full"
+            ml={
+              fixed && breakpointValue === "md"
+                ? "264px"
+                : breakpointValue === "md"
+                ? "24px"
+                : "0px"
+            }
+          >
+            <Grid
+              templateColumns={
+                breakpointValue === "base" ? "repeat(1, 1fr)" : "repeat(2, 1fr)"
+              }
+              columnGap={6}
+              rowGap={8}
+            >
+              {posts.map((post) => (
+                <PostCard key={post.id} post={post} />
               ))}
-            </VStack>
+            </Grid>
           </Box>
         </Flex>
       </Container>
@@ -63,4 +75,4 @@ const Institutions: NextPage = () => {
   );
 };
 
-export default Institutions;
+export default Posts;

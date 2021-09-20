@@ -28,7 +28,7 @@ import {
 
 import ReactPlayer from "react-player/lazy";
 
-import type { Video } from "data/myPage";
+import type { Video } from "types/data";
 
 const VideoBox: React.FC<{ video: Video }> = ({ video }) => {
   const router = useRouter();

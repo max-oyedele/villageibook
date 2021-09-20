@@ -23,7 +23,7 @@ import MyVillageCard from "components/MyVillageCard";
 import PersonalityCard from "components/PersonalityCard";
 
 import UseLeftFixed from "hooks/use-left-fixed";
-import { personalities } from "data/myPage";
+import { personalities } from "data/myvillage";
 
 const Personalities: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -44,10 +44,10 @@ const Personalities: NextPage = () => {
 
           <Box w="full" ml={fixed && breakpointValue === "md" ? "264px" : breakpointValue === "md" ? "24px" : "0px"}>
             <VStack spacing={2}>
-              {personalities.map((personality) => (
+              {personalities.map((user) => (
                 <PersonalityCard
-                  key={personality.id}
-                  personality={personality}
+                  key={user.id}
+                  user={user}
                 />
               ))}
             </VStack>

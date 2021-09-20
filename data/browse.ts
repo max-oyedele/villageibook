@@ -1,4 +1,4 @@
-import { Video } from "data/myPage";
+import { Post } from "types/data";
 
 export const recentVillages = [
   {
@@ -21,35 +21,35 @@ export const recentVillages = [
   },
 ];
 
-export type Post = {
-  id: number;
-  user: {
-    id: number;
-    name: string;
-    img: string;
-  };
-  ago: string;
-  contents: {
-    text: string;
-    img: string;
-    video: Video;
-  };
-};
 export const posts: Post[] = [
   {
     id: 0,
-    user: { id: 0, name: "sadia rashid", img: "/images/sadia.png" },
-    ago: "3 hours ago",
-    contents: {
-      text: "Consequat duis enim velit mollit. Exercitation veniam consequat sunt.",
-      img: "/images/nusrat-post.png",
-      video: null
+    user: {
+      id: 0,
+      location: "fatepur",
+      name: "abdul ullah",
+      img: "/images/abdul.png",
+      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
+      role: "premium",
     },
+    lastAt: "3 hours ago",
+    contents: {
+      text: "Consequat duis enim velit mollit. Exercitation veniam consequat sunt. Consequat duis enim velit mollit. Exercitation veniam consequat sunt.Consequat duis enim velit mollit. Exercitation veniam consequat sunt.Consequat duis enim velit mollit. Exercitation veniam consequat sunt.Consequat duis enim velit mollit. Exercitation veniam consequat sunt.Consequat duis enim velit mollit. Exercitation veniam consequat sunt.",
+      img: "/images/nusrat-post.png",
+      video: null,
+    },
+    village: "Fateur",
   },
   {
     id: 1,
-    user: { id: 1, name: "abdul ullah", img: "/images/abdul.png" },
-    ago: "5 hours ago",
+    user: {
+      id: 1,
+      location: "kumri",
+      name: "sadia ullah",
+      img: "/images/sadia.png",
+      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
+    },
+    lastAt: "5 hours ago",
     contents: {
       text: "Consequat duis enim velit mollit. Exercitation veniam consequat sunt.",
       img: "/images/sarmin-post1.png",
@@ -60,16 +60,25 @@ export const posts: Post[] = [
         img: "/images/sarmin-post2.png",
       },
     },
+    village: "Jammura",
   },
   {
     id: 2,
-    user: { id: 2, name: "Taslima ahamed", img: "/images/taslima.png" },
-    ago: "1 day ago",
+    user: {
+      id: 2,
+      location: "mulaid",
+      name: "taslim ahamed",
+      img: "/images/taslim.png",
+      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
+      role: "premium",
+    },
+    lastAt: "1 day ago",
     contents: {
       text: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim.",
       img: "/images/sonia-post.png",
       video: null,
     },
+    village: "Chittagong",
   },
 ];
 

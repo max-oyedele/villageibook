@@ -12,7 +12,7 @@ export const tabs = [
   {
     id: 1,
     name: "My Village",
-    path: "/myvillage",
+    path: "/myvillage/feeds",
   },
   {
     id: 2,

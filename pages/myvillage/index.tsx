@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import type { NextPage } from "next";
+import Link from "next/link";
 
 import {
   Container,
@@ -21,9 +22,9 @@ import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import MyVillageCard from "components/MyVillageCard";
-import MyPageCard from "components/MyPageCard";
+import PostCard from "components/PostCard";
 import VillageGraduatesCard from "components/VillageGraduatesCard";
-import SocietyCard from "components/SocietyCard";
+import ArticleCard from "components/ArticleCard";
 import PersonalityCard from "components/PersonalityCard";
 import InstitutionCard from "components/InstitutionCard";
 import VideoCard from "components/VideoCard";
@@ -34,67 +35,80 @@ import {
   villageName,
   villageGraduates,
   countryGraduates,
-} from "data";
-import {
-  myPages,
-  societies,
-  personalities,
-  institutions,
-  videos,
-} from "data/myPage";
+  posts,
+} from "data/browse";
 
-const MyPage: NextPage = () => {
+import { articles, personalities, institutions, videos } from "data/myvillage";
+
+import UseLeftFixed from "hooks/use-left-fixed";
+
+const Posts: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
+
+  const { fixed } = UseLeftFixed();
 
   return (
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
         <PageTitle title={`My Village: ${villageName}`} />
-        <HStack spacing={6} align="start">
+        <Flex>
           {breakpointValue === "md" && (
-            <Box w="30%">
-              <MyVillageCard />
-              <Text fontSize="24px" my={10}>
+            <Box>
+              <MyVillageCard fixed={fixed} />
+              {/* <Text fontSize="24px" my={10}>
                 Filters
               </Text>
               <Box bgColor="white" borderRadius="6px" px={4} py={8}>
                 <FilterCard />
-              </Box>
+              </Box> */}
             </Box>
           )}
 
-          <Box w="full">
+          <Box
+            w="full"
+            ml={
+              fixed && breakpointValue === "md"
+                ? "264px"
+                : breakpointValue === "md"
+                ? "24px"
+                : "0px"
+            }
+          >
             <Box bgColor="white" p={6}>
               <Text fontSize="14px">
-                MY PAGES
+                POSTS
                 <Text display="inline" color="#36CFD1" ml={1}>
-                  ({myPages.length})
+                  ({posts.length})
                 </Text>
               </Text>
-              {breakpointValue === "md" && (
-                <VStack spacing={2} mt={6}>
-                  {myPages.map((myPage) => (
-                    <MyPageCard key={myPage.id} myPage={myPage} />
-                  ))}
-                </VStack>
-              )}
-              {breakpointValue === "base" && (
-                <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4} mt={6}>
-                  {myPages.map((myPage) => (
-                    <MyPageCard key={myPage.id} myPage={myPage} />
-                  ))}
-                </SimpleGrid>
-              )}
+
+              <Grid
+                templateColumns={
+                  breakpointValue === "base"
+                    ? "repeat(1, 1fr)"
+                    : "repeat(2, 1fr)"
+                }
+                columnGap={6}
+                rowGap={8}
+                mt={6}
+              >
+                {posts.map((post) => (
+                  <PostCard key={post.id} post={post} />
+                ))}
+              </Grid>
+              <Divider my={6} />
               <Box>
-                <Text
-                  fontSize="12px"
-                  color="purpleTone"
-                  textAlign="center"
-                  mt={8}
-                >
-                  SEE ALL MY PAGES ({myPages.length})
-                </Text>
+                <Link href="/myvillage/posts">
+                  <Text
+                    fontSize="12px"
+                    color="purpleTone"
+                    textAlign="center"
+                    cursor="pointer"
+                  >
+                    SEE ALL POSTS ({posts.length})
+                  </Text>
+                </Link>
               </Box>
             </Box>
 
@@ -118,7 +132,7 @@ const MyPage: NextPage = () => {
               <Text fontSize="14px">
                 SOCIETY
                 <Text display="inline" color="GrayText" ml={1}>
-                  ({societies.length})
+                  ({articles.length})
                 </Text>
               </Text>
               <SimpleGrid
@@ -127,15 +141,22 @@ const MyPage: NextPage = () => {
                 rowGap={10}
                 mt={6}
               >
-                {societies.map((society) => (
-                  <SocietyCard key={society.id} society={society} />
+                {articles.map((article) => (
+                  <ArticleCard key={article.id} article={article} />
                 ))}
               </SimpleGrid>
-              <Divider my={10} />
+              <Divider my={6} />
               <Box>
-                <Text fontSize="12px" color="purpleTone" textAlign="center">
-                  SEE ALL POST ({societies.length})
-                </Text>
+                <Link href="/myvillage/society">
+                  <Text
+                    fontSize="12px"
+                    color="purpleTone"
+                    textAlign="center"
+                    cursor="pointer"
+                  >
+                    SEE ALL ARTICLES ({articles.length})
+                  </Text>
+                </Link>
               </Box>
             </Box>
 
@@ -148,33 +169,36 @@ const MyPage: NextPage = () => {
               </Text>
               {breakpointValue === "md" && (
                 <VStack spacing={2} mt={6}>
-                  {personalities.map((personality) => (
+                  {personalities.map((user) => (
                     <PersonalityCard
-                      key={personality.id}
-                      personality={personality}
+                      key={user.id}
+                      user={user}
                     />
                   ))}
                 </VStack>
               )}
               {breakpointValue === "base" && (
                 <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4} mt={6}>
-                  {personalities.map((personality) => (
+                  {personalities.map((user) => (
                     <PersonalityCard
-                      key={personality.id}
-                      personality={personality}
+                      key={user.id}
+                      user={user}
                     />
                   ))}
                 </SimpleGrid>
               )}
               <Box>
-                <Text
-                  fontSize="12px"
-                  color="purpleTone"
-                  textAlign="center"
-                  mt={8}
-                >
-                  SEE ALL PERSONALITIES ({personalities.length})
-                </Text>
+                <Link href="/myvillage/personalities">
+                  <Text
+                    fontSize="12px"
+                    color="purpleTone"
+                    textAlign="center"
+                    cursor="pointer"
+                    mt={8}
+                  >
+                    SEE ALL PERSONALITIES ({personalities.length})
+                  </Text>
+                </Link>
               </Box>
             </Box>
 
@@ -194,14 +218,17 @@ const MyPage: NextPage = () => {
                 ))}
               </VStack>
               <Box>
-                <Text
-                  fontSize="12px"
-                  color="purpleTone"
-                  textAlign="center"
-                  mt={8}
-                >
-                  SEE ALL INSTITUTIONS ({institutions.length})
-                </Text>
+                <Link href="/myvillage/institutions">
+                  <Text
+                    fontSize="12px"
+                    color="purpleTone"
+                    textAlign="center"
+                    mt={8}
+                    cursor="pointer"
+                  >
+                    SEE ALL INSTITUTIONS ({institutions.length})
+                  </Text>
+                </Link>
               </Box>
             </Box>
 
@@ -224,13 +251,20 @@ const MyPage: NextPage = () => {
               </SimpleGrid>
               <Divider mt={10} mb={6} />
               <Box>
-                <Text fontSize="12px" color="purpleTone" textAlign="center">
-                  SEE ALL VIDEOS ({videos.length})
-                </Text>
+                <Link href="/myvillage/videos">
+                  <Text
+                    fontSize="12px"
+                    color="purpleTone"
+                    textAlign="center"
+                    cursor="pointer"
+                  >
+                    SEE ALL VIDEOS ({videos.length})
+                  </Text>
+                </Link>
               </Box>
             </Box>
           </Box>
-        </HStack>
+        </Flex>
       </Container>
 
       <Box mt={20}>
@@ -240,4 +274,4 @@ const MyPage: NextPage = () => {
   );
 };
 
-export default MyPage;
+export default Posts;

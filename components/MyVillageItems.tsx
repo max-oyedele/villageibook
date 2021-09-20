@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 
 import { myVillageItems } from "constants/myVillageItems";
-import { myVillageStats } from "data/myPage";
+import { myVillageStats } from "data/myvillage";
 
 const MyVillageItems: React.FC = () => {
   const router = useRouter();

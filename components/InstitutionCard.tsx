@@ -15,7 +15,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import type { Institution } from "data/myPage";
+import type { Institution } from "types/data";
 
 const InstitutionCard: React.FC<{ institution: Institution }> = ({
   institution,
