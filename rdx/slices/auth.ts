@@ -125,8 +125,8 @@ export const authSlice = createSlice({
     });
     builder.addCase(signup.rejected, (state, action) => {
       state.error = (
-        action.payload as { error: string; error_description: string}
-      ).error_description;
+        action.payload as { error: string; message: string}
+      ).message;
       state.status = Status.IDLE;
     });
     builder.addCase(logout.pending, (state) => {
