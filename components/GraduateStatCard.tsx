@@ -19,20 +19,23 @@ const GraduateStatCard: React.FC<{
   villageName: string;
   villageGraduates: number;
   bangladeshGraduates: any;
+  fixed?: boolean;
 }> = ({
   totalGraduates,
   villageName,
   villageGraduates,
   bangladeshGraduates,
+  fixed,
 }) => {
   return (
     <Fragment>
-      <Flex
-        w="full"
-        flexDirection="column"
+      <Box
         p={6}
         bgColor="white"
         borderRadius="6px"
+        w={{ base: "full", md: "240px" }}
+        pos={fixed ? "fixed" : "static"}
+        top={fixed ? "80px" : 0}
       >
         <VillageGraduatePercent
           totalGraduates={totalGraduates}
@@ -48,10 +51,7 @@ const GraduateStatCard: React.FC<{
               justifyContent="space-between"
               alignItems="center"
             >
-              <Text
-                fontSize="12px"
-                textTransform="capitalize"
-              >
+              <Text fontSize="12px" textTransform="capitalize">
                 {region}
               </Text>
               <GraduateStatCapsule
@@ -61,7 +61,7 @@ const GraduateStatCard: React.FC<{
             </Flex>
           ))}
         </VStack>
-      </Flex>
+      </Box>
     </Fragment>
   );
 };

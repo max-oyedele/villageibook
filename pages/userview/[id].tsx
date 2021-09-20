@@ -42,9 +42,7 @@ const UserView: NextPage = () => {
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <HStack h={24}>
-          <PageTitle title={user?.name ?? ""} />
-        </HStack>
+        <PageTitle title={user?.name ?? ""} />
 
         <HStack spacing={6} align="start">
           {breakpointValue === "md" && (
@@ -60,10 +58,17 @@ const UserView: NextPage = () => {
               borderRadius="8px"
               p={6}
             >
-              {breakpointValue === "base" && <Image src={user?.img} w="full" fit="cover" borderRadius="4px" alt="" mb={6} />}
-              <Text fontSize="18px">
-                General
-              </Text>
+              {breakpointValue === "base" && (
+                <Image
+                  src={user?.img}
+                  w="full"
+                  fit="cover"
+                  borderRadius="4px"
+                  alt=""
+                  mb={6}
+                />
+              )}
+              <Text fontSize="18px">General</Text>
               <VStack
                 w={{ base: "full", md: "400px" }}
                 spacing={2}
@@ -71,50 +76,26 @@ const UserView: NextPage = () => {
                 mt={6}
               >
                 <HStack w="full">
-                  <Box
-                    w="full"
-                    fontSize="13px"
-                    color="purpleTone"
-                  >
+                  <Box w="full" fontSize="13px" color="purpleTone">
                     Village
                   </Box>
-                  <Box
-                    w="full"
-                    fontSize="13px"
-                    color="GrayText"
-                  >
+                  <Box w="full" fontSize="13px" color="GrayText">
                     Fatepur
                   </Box>
                 </HStack>
                 <HStack w="full">
-                  <Box
-                    w="full"
-                    fontSize="13px"
-                    color="purpleTone"
-                  >
+                  <Box w="full" fontSize="13px" color="purpleTone">
                     Graduated in
                   </Box>
-                  <Box
-                    w="full"
-                    fontSize="13px"
-                    color="GrayText"
-                  >
+                  <Box w="full" fontSize="13px" color="GrayText">
                     UK
                   </Box>
                 </HStack>
                 <HStack w="full">
-                  <Box
-                    w="full"
-                    fontSize="13px"
-                    color="purpleTone"
-                  >
+                  <Box w="full" fontSize="13px" color="purpleTone">
                     Age
                   </Box>
-                  <Box
-                    w="full"
-                    fontSize="13px"
-                    color="GrayText"
-                  >
+                  <Box w="full" fontSize="13px" color="GrayText">
                     35
                   </Box>
                 </HStack>

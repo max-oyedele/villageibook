@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 import {
   HStack,
   Divider,
@@ -16,17 +16,13 @@ import MyVillageItems from "./MyVillageItems";
 const villageName = "jammura";
 const userName = "mohammed shah";
 
-const MyVillageCard = () => {
+const MyVillageCard = ({fixed}) => {
   return (
     <Fragment>
-      <Box bgColor="white" borderRadius="6px">
+      <Box bgColor="white" borderRadius="6px" w="240px" pos={fixed ? "fixed" : "static"} top={fixed ? "80px" : 0}>
         <Flex w="full" flexDirection="column" alignItems="center" p={4}>
           <Avatar size="lg" src="/images/mohammed-shah.png" />
-          <Text
-            fontSize="15px"
-            mt={4}
-            textTransform="capitalize"
-          >
+          <Text fontSize="15px" mt={4} textTransform="capitalize">
             {userName}
           </Text>
           <Text

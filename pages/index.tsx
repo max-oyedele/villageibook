@@ -56,9 +56,7 @@ const Home: NextPage = () => {
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <HStack h={24}>
-          <PageTitle title="Find Village" />
-        </HStack>
+        <PageTitle title="Find Village" />
         <Box px={{ lg: 20 }}>
           <SearchBar />
         </Box>
@@ -129,8 +127,8 @@ const Home: NextPage = () => {
                   fontSize="13px"
                   fontWeight="400"
                   bgColor="greenTone"
-                  color="white"     
-                  _focus={{boxShadow: "none"}}             
+                  color="white"
+                  _focus={{ boxShadow: "none" }}
                 >
                   Post
                 </Button>

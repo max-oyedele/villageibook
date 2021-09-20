@@ -50,9 +50,7 @@ const MyPage: NextPage = () => {
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <HStack h={24}>
-          <PageTitle title={`My Village: ${villageName}`} />
-        </HStack>
+        <PageTitle title={`My Village: ${villageName}`} />
         <HStack spacing={6} align="start">
           {breakpointValue === "md" && (
             <Box w="30%">
@@ -135,11 +133,7 @@ const MyPage: NextPage = () => {
               </SimpleGrid>
               <Divider my={10} />
               <Box>
-                <Text
-                  fontSize="12px"
-                  color="purpleTone"
-                  textAlign="center"
-                >
+                <Text fontSize="12px" color="purpleTone" textAlign="center">
                   SEE ALL POST ({societies.length})
                 </Text>
               </Box>
@@ -219,7 +213,7 @@ const MyPage: NextPage = () => {
                 </Text>
               </Text>
               <SimpleGrid
-                columns={{base: 2, md: 3}}
+                columns={{ base: 2, md: 3 }}
                 columnGap={4}
                 rowGap={10}
                 mt={6}
@@ -230,11 +224,7 @@ const MyPage: NextPage = () => {
               </SimpleGrid>
               <Divider mt={10} mb={6} />
               <Box>
-                <Text
-                  fontSize="12px"
-                  color="purpleTone"
-                  textAlign="center"
-                >
+                <Text fontSize="12px" color="purpleTone" textAlign="center">
                   SEE ALL VIDEOS ({videos.length})
                 </Text>
               </Box>

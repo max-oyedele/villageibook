@@ -23,26 +23,30 @@ import PageTitle from "components/widgets/PageTitle";
 import MyVillageCard from "components/MyVillageCard";
 import SocietyCard from "components/SocietyCard";
 
+import UseLeftFixed from "hooks/use-left-fixed";
+
 import { articles } from "data/society";
 
 const Society: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
+  const { fixed } = UseLeftFixed();
 
   return (
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <HStack h={24}>
-          <PageTitle title="Society" />
-        </HStack>
-        <HStack spacing={6} align="start">
+        <PageTitle title="Society" />
+        <Flex>
           {breakpointValue === "md" && (
-            <Box w="25%">
-              <MyVillageCard />
+            <Box>
+              <MyVillageCard fixed={fixed} />
             </Box>
           )}
 
-          <Box w="full">
+          <Box
+            w="full"
+            ml={fixed && breakpointValue === "md" ? "264px" : breakpointValue === "md" ? "24px" : "0px"}
+          >
             <Box bgColor="white" p={6}>
               <Text fontSize="14px">
                 SEE ALL ARTICLES
@@ -62,7 +66,7 @@ const Society: NextPage = () => {
               </Grid>
             </Box>
           </Box>
-        </HStack>
+        </Flex>
       </Container>
 
       <Box mt={20}>

@@ -40,13 +40,11 @@ const Faq: NextPage = () => {
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <HStack h={24}>
-          <PageTitle title="FAQ" />
-        </HStack>
+        <PageTitle title="FAQ" />
 
         <HStack spacing={6} align="start">
           {breakpointValue === "md" && (
-            <Box w={{base: "30%", sm: "25%"}}>
+            <Box w={{ base: "30%", sm: "25%" }}>
               <ContactCard />
             </Box>
           )}
@@ -71,7 +69,7 @@ const Faq: NextPage = () => {
                   bgColor="white"
                   mb={4}
                 >
-                  <AccordionButton h={14} _focus={{boxShadow: "none"}}>
+                  <AccordionButton h={14} _focus={{ boxShadow: "none" }}>
                     <Box
                       flex="1"
                       textAlign="left"

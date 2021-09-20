@@ -44,6 +44,8 @@ import {
   districts,
 } from "data/graduates";
 
+import UseLeftFixed from "hooks/use-left-fixed";
+
 const menuItems = [
   {
     id: 0,
@@ -74,27 +76,28 @@ const Graduates: NextPage = () => {
   const [selectedDistrict, setSelectedDistrict] = useState(districts);
   const [selectedLetter, setSelectedLetter] = useState("a");
 
+  const {fixed} = UseLeftFixed();
+
   return (
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <HStack h={24}>
-          <PageTitle title="Graduates" />
-        </HStack>
+        <PageTitle title="Graduates" />
 
-        <HStack spacing={6} align="start">
+        <Flex>
           {breakpointValue === "md" && (
-            <Box w="25%">
+            <Box>
               <GraduateStatCard
                 totalGraduates={totalGraduates}
                 villageName={villageName}
                 villageGraduates={villageGraduates}
                 bangladeshGraduates={bangladeshGraduates}
+                fixed={fixed}
               />
             </Box>
           )}
 
-          <Box w="full">
+          <Box w="full" ml={fixed && breakpointValue === "md" ? "264px" : breakpointValue === "md" ? "24px" : "0px"}>
             {breakpointValue === "base" && (
               <Box mb={6}>
                 <GraduateStatCard
@@ -175,7 +178,7 @@ const Graduates: NextPage = () => {
                   bgColor="white"
                   mt={4}
                 >
-                  <AccordionButton h={14} _focus={{boxShadow: "none"}}>
+                  <AccordionButton h={14} _focus={{ boxShadow: "none" }}>
                     <Box
                       flex="1"
                       textAlign="left"
@@ -210,13 +213,15 @@ const Graduates: NextPage = () => {
                           justifyContent="space-between"
                           alignItems="center"
                         >
-                          <Text
-                            fontSize="13px"
-                            textTransform="capitalize"
-                          >
+                          <Text fontSize="13px" textTransform="capitalize">
                             {item[0]}
                           </Text>
-                          <Badge px={4} borderRadius="full" fontSize="12px" fontWeight="400">
+                          <Badge
+                            px={4}
+                            borderRadius="full"
+                            fontSize="12px"
+                            fontWeight="400"
+                          >
                             {item[1]}
                           </Badge>
                         </Flex>
@@ -227,7 +232,7 @@ const Graduates: NextPage = () => {
               ))}
             </Accordion>
           </Box>
-        </HStack>
+        </Flex>
       </Container>
 
       <Box mt={20}>
@@ -252,12 +257,7 @@ const TotalCapsule = ({ districtGraduate }) => {
 
   return (
     <HStack spacing={0}>
-      <Box
-        fontSize="14px"
-        color="GrayText"
-        mr={4}
-        textTransform="capitalize"
-      >
+      <Box fontSize="14px" color="GrayText" mr={4} textTransform="capitalize">
         {districtGraduate.name} Graduates Total -{" "}
         <Text color="greenTone" display="inline">
           {calcGraduates(districtGraduate.stats)[0]}

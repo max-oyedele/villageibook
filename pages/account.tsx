@@ -127,9 +127,7 @@ const Account: NextPage = () => {
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <HStack h={24}>
-          <PageTitle title="Account" />
-        </HStack>
+        <PageTitle title="Account" />
 
         <HStack spacing={6} align="start">
           <Box w="full">
@@ -194,7 +192,7 @@ const Account: NextPage = () => {
                 fontSize="12px"
                 fontWeight="400"
                 color="white"
-                _focus={{boxShadow: "none"}}
+                _focus={{ boxShadow: "none" }}
               >
                 SAVE
               </Button>
@@ -205,7 +203,7 @@ const Account: NextPage = () => {
                 fontWeight="400"
                 color="purpleTone"
                 variant="ghost"
-                _focus={{boxShadow: "none"}}
+                _focus={{ boxShadow: "none" }}
               >
                 CANCEL
               </Button>
@@ -299,7 +297,7 @@ const AvatarUpload = () => {
             border="1px"
             borderColor="gray.300"
             borderRadius="full"
-            _focus={{boxShadow: "none"}}
+            _focus={{ boxShadow: "none" }}
             mt={8}
           >
             UPLOAD AVATAR

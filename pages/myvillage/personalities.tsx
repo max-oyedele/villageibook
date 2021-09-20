@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
 
 import {
@@ -22,26 +22,27 @@ import PageTitle from "components/widgets/PageTitle";
 import MyVillageCard from "components/MyVillageCard";
 import PersonalityCard from "components/PersonalityCard";
 
+import UseLeftFixed from "hooks/use-left-fixed";
 import { personalities } from "data/myPage";
 
 const Personalities: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
+  const {fixed} = UseLeftFixed();
+
   return (
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <HStack h={24}>
-          <PageTitle title="Personalities" />
-        </HStack>
-        <HStack spacing={6} align="start">
+        <PageTitle title="Personalities" />
+        <Flex>
           {breakpointValue === "md" && (
-            <Box w="25%">
-              <MyVillageCard />
+            <Box>
+              <MyVillageCard fixed={fixed} />
             </Box>
           )}
 
-          <Box w="full">
+          <Box w="full" ml={fixed && breakpointValue === "md" ? "264px" : breakpointValue === "md" ? "24px" : "0px"}>
             <VStack spacing={2}>
               {personalities.map((personality) => (
                 <PersonalityCard
@@ -51,7 +52,7 @@ const Personalities: NextPage = () => {
               ))}
             </VStack>
           </Box>
-        </HStack>
+        </Flex>
       </Container>
 
       <Box mt={20}>
