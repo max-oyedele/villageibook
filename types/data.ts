@@ -7,19 +7,19 @@ export type User = {
     photos: string[]
   };
   desc?: string;
-  location?: string
+  village?: string
 }
 
 export type Post = {
   id: number;
   user: User;
-  village: string;
   lastAt: string;
   contents: {
     text: string;
     img: string;
     video: Video;
   };
+  village?: string;
 };
 
 export type Article = {
@@ -27,6 +27,7 @@ export type Article = {
   title: string;
   desc: string;
   img: string;
+  village?: string;
 };
 
 export type Institution = {
@@ -36,6 +37,7 @@ export type Institution = {
   img: string;
   address: string;
   phone: string;
+  village?: string;
 };
 
 export type Video = {
@@ -43,5 +45,6 @@ export type Video = {
   title: string;
   author: string;
   img: string;
+  village?: string;
 }
 

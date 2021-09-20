@@ -21,10 +21,10 @@ import {
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
-import MyVillageCard from "components/MyVillageCard";
+import LeftVillageCard from "components/LeftVillageCard";
 import PersonalityCard from "components/PersonalityCard";
 
-import { personalities } from "data/myvillage";
+import { personalities } from "data/village";
 import { User } from "types/data";
 
 const UserView: NextPage = () => {

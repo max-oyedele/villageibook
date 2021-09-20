@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { HStack, Divider, Button } from "@chakra-ui/react";
 
-const MyVillageDivider = () => {
+const LeftVillageDivider = () => {
   return (
     <Fragment>
       <HStack>
@@ -25,4 +25,4 @@ const MyVillageDivider = () => {
   );
 };
 
-export default MyVillageDivider;
+export default LeftVillageDivider;

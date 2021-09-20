@@ -8,24 +8,29 @@ import {
   Image,
   Text,
   Badge,
+  Center,
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import { myVillageItems } from "constants/myVillageItems";
-import { myVillageStats } from "data/myvillage";
+import { villageItems } from "constants/villageItems";
+import UseVillageStats from "hooks/use-village-stats";
 
-const MyVillageItems: React.FC = () => {
+import { villageName } from "data/browse";
+
+const LeftVillageItems: React.FC = () => {
   const router = useRouter();
   const { pathname } = router;
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
+
+  const { villageStats } = UseVillageStats(villageName);
 
   return (
     <VStack
       spacing={1}
       divider={breakpointValue === "base" ? <Divider /> : null}
     >
-      {myVillageItems.map((item) => (
+      {villageItems.map((item) => (
         <Link key={item.name} href={item.path}>
           <HStack
             w="full"
@@ -58,11 +63,12 @@ const MyVillageItems: React.FC = () => {
               fontWeight="400"
               lineHeight={2}
               px={2}
+              minW={8}
+              h={5}
               borderRadius="xl"
             >
-              {myVillageStats[item.value]}
+              <Center>{villageStats[item.value]}</Center>
             </Badge>
-
           </HStack>
         </Link>
       ))}
@@ -70,4 +76,4 @@ const MyVillageItems: React.FC = () => {
   );
 };
 
-export default MyVillageItems;
+export default LeftVillageItems;

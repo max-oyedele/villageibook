@@ -20,16 +20,18 @@ import {
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
-import MyVillageCard from "components/MyVillageCard";
+import LeftVillageCard from "components/LeftVillageCard";
 import PostCard from "components/PostCard";
 
 import UseLeftFixed from "hooks/use-left-fixed";
 
-import { posts } from "data/browse";
+import { villageName } from "data/browse";
+import UseVillageData from "hooks/use-village-data";
 
 const Posts: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const { fixed } = UseLeftFixed();
+  const { villageData } = UseVillageData(villageName);
 
   return (
     <Fragment>
@@ -39,7 +41,7 @@ const Posts: NextPage = () => {
         <Flex>
           {breakpointValue === "md" && (
             <Box>
-              <MyVillageCard fixed={fixed} />
+              <LeftVillageCard fixed={fixed} />
             </Box>
           )}
 
@@ -60,7 +62,7 @@ const Posts: NextPage = () => {
               columnGap={6}
               rowGap={8}
             >
-              {posts.map((post) => (
+              {villageData["posts"].map((post) => (
                 <PostCard key={post.id} post={post} />
               ))}
             </Grid>

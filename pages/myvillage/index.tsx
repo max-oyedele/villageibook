@@ -21,7 +21,7 @@ import {
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
-import MyVillageCard from "components/MyVillageCard";
+import LeftVillageCard from "components/LeftVillageCard";
 import PostCard from "components/PostCard";
 import VillageGraduatesCard from "components/VillageGraduatesCard";
 import ArticleCard from "components/ArticleCard";
@@ -35,17 +35,18 @@ import {
   villageName,
   villageGraduates,
   countryGraduates,
-  posts,
 } from "data/browse";
 
-import { articles, personalities, institutions, videos } from "data/myvillage";
-
 import UseLeftFixed from "hooks/use-left-fixed";
+import UseVillageStats from "hooks/use-village-stats";
+import UseVillageData from "hooks/use-village-data";
 
 const Posts: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const { fixed } = UseLeftFixed();
+  const { villageStats } = UseVillageStats(villageName);
+  const { villageData } = UseVillageData(villageName);
 
   return (
     <Fragment>
@@ -55,7 +56,7 @@ const Posts: NextPage = () => {
         <Flex>
           {breakpointValue === "md" && (
             <Box>
-              <MyVillageCard fixed={fixed} />
+              <LeftVillageCard fixed={fixed} />
               {/* <Text fontSize="24px" my={10}>
                 Filters
               </Text>
@@ -75,50 +76,42 @@ const Posts: NextPage = () => {
                 : "0px"
             }
           >
-            <Box bgColor="white" p={6}>
-              <Text fontSize="14px">
-                POSTS
-                <Text display="inline" color="#36CFD1" ml={1}>
-                  ({posts.length})
-                </Text>
-              </Text>
+            {villageData["posts"].length > 0 && (
+              <Box bgColor="white" p={6} mb={6}>
+                <Text fontSize="14px">POSTS</Text>
 
-              <Grid
-                templateColumns={
-                  breakpointValue === "base"
-                    ? "repeat(1, 1fr)"
-                    : "repeat(2, 1fr)"
-                }
-                columnGap={6}
-                rowGap={8}
-                mt={6}
-              >
-                {posts.map((post) => (
-                  <PostCard key={post.id} post={post} />
-                ))}
-              </Grid>
-              <Divider my={6} />
-              <Box>
-                <Link href="/myvillage/posts">
-                  <Text
-                    fontSize="12px"
-                    color="purpleTone"
-                    textAlign="center"
-                    cursor="pointer"
-                  >
-                    SEE ALL POSTS ({posts.length})
-                  </Text>
-                </Link>
+                <Grid
+                  templateColumns={
+                    breakpointValue === "base"
+                      ? "repeat(1, 1fr)"
+                      : "repeat(2, 1fr)"
+                  }
+                  columnGap={6}
+                  rowGap={8}
+                  mt={6}
+                >
+                  {villageData["posts"].slice(0, 2).map((post) => (
+                    <PostCard key={post.id} post={post} />
+                  ))}
+                </Grid>
+                <Divider my={6} />
+                <Box>
+                  <Link href="/myvillage/posts">
+                    <Text
+                      fontSize="12px"
+                      color="purpleTone"
+                      textAlign="center"
+                      cursor="pointer"
+                    >
+                      SEE ALL POSTS ({villageStats["posts"]})
+                    </Text>
+                  </Link>
+                </Box>
               </Box>
-            </Box>
+            )}
 
-            <Box bgColor="white" p={6} mt={6}>
-              <Text fontSize="14px">
-                VILLAGE GRADUATES
-                <Text display="inline" color="purpleTone" ml={1}>
-                  ({villageGraduates})
-                </Text>
-              </Text>
+            <Box bgColor="white" p={6} mb={6}>
+              <Text fontSize="14px">VILLAGE GRADUATES</Text>
               <Divider mt={6} mb={8} />
               <VillageGraduatesCard
                 totalGraduates={totalGraduates}
@@ -128,141 +121,125 @@ const Posts: NextPage = () => {
               />
             </Box>
 
-            <Box bgColor="white" p={6} mt={6}>
-              <Text fontSize="14px">
-                SOCIETY
-                <Text display="inline" color="GrayText" ml={1}>
-                  ({articles.length})
-                </Text>
-              </Text>
-              <SimpleGrid
-                columns={{ base: 1, md: 2 }}
-                columnGap={6}
-                rowGap={10}
-                mt={6}
-              >
-                {articles.map((article) => (
-                  <ArticleCard key={article.id} article={article} />
-                ))}
-              </SimpleGrid>
-              <Divider my={6} />
-              <Box>
-                <Link href="/myvillage/society">
-                  <Text
-                    fontSize="12px"
-                    color="purpleTone"
-                    textAlign="center"
-                    cursor="pointer"
-                  >
-                    SEE ALL ARTICLES ({articles.length})
-                  </Text>
-                </Link>
-              </Box>
-            </Box>
-
-            <Box bgColor="white" p={6} mt={6}>
-              <Text fontSize="14px">
-                PERSONALITIES
-                <Text display="inline" color="#FFC418" ml={1}>
-                  ({personalities.length})
-                </Text>
-              </Text>
-              {breakpointValue === "md" && (
-                <VStack spacing={2} mt={6}>
-                  {personalities.map((user) => (
-                    <PersonalityCard
-                      key={user.id}
-                      user={user}
-                    />
-                  ))}
-                </VStack>
-              )}
-              {breakpointValue === "base" && (
-                <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4} mt={6}>
-                  {personalities.map((user) => (
-                    <PersonalityCard
-                      key={user.id}
-                      user={user}
-                    />
+            {villageData["articles"].length > 0 && (
+              <Box bgColor="white" p={6} mb={6}>
+                <Text fontSize="14px">SOCIETY</Text>
+                <SimpleGrid
+                  columns={{ base: 1, md: 2 }}
+                  columnGap={6}
+                  rowGap={10}
+                  mt={6}
+                >
+                  {villageData["articles"].slice(0, 2).map((article) => (
+                    <ArticleCard key={article.id} article={article} />
                   ))}
                 </SimpleGrid>
-              )}
-              <Box>
-                <Link href="/myvillage/personalities">
-                  <Text
-                    fontSize="12px"
-                    color="purpleTone"
-                    textAlign="center"
-                    cursor="pointer"
-                    mt={8}
-                  >
-                    SEE ALL PERSONALITIES ({personalities.length})
-                  </Text>
-                </Link>
+                <Divider my={6} />
+                <Box>
+                  <Link href="/myvillage/society">
+                    <Text
+                      fontSize="12px"
+                      color="purpleTone"
+                      textAlign="center"
+                      cursor="pointer"
+                    >
+                      SEE ALL ARTICLES ({villageStats["articles"]})
+                    </Text>
+                  </Link>
+                </Box>
               </Box>
-            </Box>
+            )}
 
-            <Box bgColor="white" p={6} mt={6}>
-              <Text fontSize="14px">
-                INSTITUTIONS
-                <Text display="inline" color="#FFC418" ml={1}>
-                  ({institutions.length})
-                </Text>
-              </Text>
-              <VStack spacing={2} mt={6}>
-                {institutions.map((institution) => (
-                  <InstitutionCard
-                    key={institution.id}
-                    institution={institution}
-                  />
-                ))}
-              </VStack>
-              <Box>
-                <Link href="/myvillage/institutions">
-                  <Text
-                    fontSize="12px"
-                    color="purpleTone"
-                    textAlign="center"
-                    mt={8}
-                    cursor="pointer"
-                  >
-                    SEE ALL INSTITUTIONS ({institutions.length})
-                  </Text>
-                </Link>
+            {villageData["personalities"].length > 0 && (
+              <Box bgColor="white" p={6} mb={6}>
+                <Text fontSize="14px">PERSONALITIES</Text>
+                {breakpointValue === "md" && (
+                  <VStack spacing={2} mt={6}>
+                    {villageData["personalities"].slice(0, 5).map((user) => (
+                      <PersonalityCard key={user.id} user={user} />
+                    ))}
+                  </VStack>
+                )}
+                {breakpointValue === "base" && (
+                  <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4} mt={6}>
+                    {villageData["personalities"].map((user) => (
+                      <PersonalityCard key={user.id} user={user} />
+                    ))}
+                  </SimpleGrid>
+                )}
+                <Box>
+                  <Link href="/myvillage/personalities">
+                    <Text
+                      fontSize="12px"
+                      color="purpleTone"
+                      textAlign="center"
+                      cursor="pointer"
+                      mt={8}
+                    >
+                      SEE ALL PERSONALITIES ({villageStats["personalities"]})
+                    </Text>
+                  </Link>
+                </Box>
               </Box>
-            </Box>
+            )}
 
-            <Box bgColor="white" p={6} mt={6}>
-              <Text fontSize="14px">
-                VIDEOS
-                <Text display="inline" color="#FFC418" ml={1}>
-                  ({videos.length})
-                </Text>
-              </Text>
-              <SimpleGrid
-                columns={{ base: 2, md: 3 }}
-                columnGap={4}
-                rowGap={10}
-                mt={6}
-              >
-                {videos.map((video) => (
-                  <VideoCard key={video.id} video={video} />
-                ))}
-              </SimpleGrid>
-              <Divider mt={10} mb={6} />
-              <Box>
-                <Link href="/myvillage/videos">
-                  <Text
-                    fontSize="12px"
-                    color="purpleTone"
-                    textAlign="center"
-                    cursor="pointer"
-                  >
-                    SEE ALL VIDEOS ({videos.length})
-                  </Text>
-                </Link>
+            {villageData["institutions"].length > 0 && (
+              <Box bgColor="white" p={6} mb={6}>
+                <Text fontSize="14px">INSTITUTIONS</Text>
+                <VStack spacing={2} mt={6}>
+                  {villageData["institutions"]
+                    .slice(0, 3)
+                    .map((institution) => (
+                      <InstitutionCard
+                        key={institution.id}
+                        institution={institution}
+                      />
+                    ))}
+                </VStack>
+                <Box>
+                  <Link href="/myvillage/institutions">
+                    <Text
+                      fontSize="12px"
+                      color="purpleTone"
+                      textAlign="center"
+                      mt={8}
+                      cursor="pointer"
+                    >
+                      SEE ALL INSTITUTIONS ({villageStats["institutions"]})
+                    </Text>
+                  </Link>
+                </Box>
               </Box>
-            </Box>
+            )}
+
+            {villageData["videos"].length > 0 && (
+              <Box bgColor="white" p={6} mb={6}>
+                <Text fontSize="14px">VIDEOS</Text>
+                <SimpleGrid
+                  columns={{ base: 2, md: 3 }}
+                  columnGap={4}
+                  rowGap={10}
+                  mt={6}
+                >
+                  {villageData["videos"].slice(0, 6).map((video) => (
+                    <VideoCard key={video.id} video={video} />
+                  ))}
+                </SimpleGrid>
+                <Divider mt={10} mb={6} />
+                <Box>
+                  <Link href="/myvillage/videos">
+                    <Text
+                      fontSize="12px"
+                      color="purpleTone"
+                      textAlign="center"
+                      cursor="pointer"
+                    >
+                      SEE ALL VIDEOS ({villageStats["videos"]})
+                    </Text>
+                  </Link>
+                </Box>
+              </Box>
+            )}
           </Box>
         </Flex>
       </Container>

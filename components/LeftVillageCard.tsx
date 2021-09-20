@@ -10,13 +10,13 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import MyVillageDivider from "./MyVillageDivider";
-import MyVillageItems from "./MyVillageItems";
+import LeftVillageDivider from "./LeftVillageDivider";
+import LeftVillageItems from "./LeftVillageItems";
 
 const villageName = "jammura";
 const userName = "mohammed shah";
 
-const MyVillageCard = ({fixed}) => {
+const LeftVillageCard = ({fixed}) => {
   return (
     <Fragment>
       <Box bgColor="white" borderRadius="6px" w="240px" pos={fixed ? "fixed" : "static"} top={fixed ? "80px" : 0}>
@@ -35,13 +35,13 @@ const MyVillageCard = ({fixed}) => {
             {villageName}
           </Text>
         </Flex>
-        <MyVillageDivider />
+        <LeftVillageDivider />
         <Box p={4}>
-          <MyVillageItems />
+          <LeftVillageItems />
         </Box>
       </Box>
     </Fragment>
   );
 };
 
-export default MyVillageCard;
+export default LeftVillageCard;

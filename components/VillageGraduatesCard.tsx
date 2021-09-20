@@ -22,7 +22,9 @@ const VillageGraduatesCard: React.FC<{
 }> = ({ totalGraduates, villageName, villageGraduates, countryGraduates }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const maxRowsPerCol = Object.keys(countryGraduates).length / 2 + Object.keys(countryGraduates).length % 2;
+  const maxRowsPerCol =
+    Object.keys(countryGraduates).length / 2 +
+    (Object.keys(countryGraduates).length % 2);
 
   return (
     <Fragment>
@@ -37,7 +39,11 @@ const VillageGraduatesCard: React.FC<{
             {Object.keys(countryGraduates).map((country, index) => {
               if (index >= maxRowsPerCol) return null;
               return (
-                <CountryBox key={country} country={country} countryGraduates={countryGraduates} />
+                <CountryBox
+                  key={country}
+                  country={country}
+                  countryGraduates={countryGraduates}
+                />
               );
             })}
           </VStack>
@@ -45,17 +51,43 @@ const VillageGraduatesCard: React.FC<{
             {Object.keys(countryGraduates).map((country, index) => {
               if (index < maxRowsPerCol) return null;
               return (
-                <CountryBox key={country} country={country} countryGraduates={countryGraduates} />
+                <CountryBox
+                  key={country}
+                  country={country}
+                  countryGraduates={countryGraduates}
+                />
               );
             })}
           </VStack>
         </HStack>
       )}
+
+      {breakpointValue === "base" && (
+        <VStack spacing={8}>
+          <VillageGraduatePercent
+            totalGraduates={totalGraduates}
+            villageName={villageName}
+            villageGraduates={villageGraduates}
+          />
+          <VStack w="full" divider={<Divider />}>
+            {Object.keys(countryGraduates).map((country, index) => (
+              <CountryBox
+                key={country}
+                country={country}
+                countryGraduates={countryGraduates}
+              />
+            ))}
+          </VStack>
+        </VStack>
+      )}
     </Fragment>
   );
 };
 
-const CountryBox: React.FC<{country: string, countryGraduates: any}> = ({country, countryGraduates}) => {
+const CountryBox: React.FC<{ country: string; countryGraduates: any }> = ({
+  country,
+  countryGraduates,
+}) => {
   return (
     <Flex
       w="full"

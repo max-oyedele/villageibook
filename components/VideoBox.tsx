@@ -43,7 +43,7 @@ const VideoBox: React.FC<{ video: Video }> = ({ video }) => {
       <Box w="full" pos="relative">
         <Image
           src={video.img}
-          alt="naruto"
+          alt=""
           objectFit="cover"
           borderRadius="6px"
           w="full"
@@ -70,7 +70,7 @@ const VideoBox: React.FC<{ video: Video }> = ({ video }) => {
       </Box>
 
       <Modal
-        closeOnOverlayClick={false}
+        closeOnOverlayClick={true}
         isCentered
         size={breakpointValue === "base" ? "full" : "3xl"}
         isOpen={isOpen}
@@ -78,7 +78,7 @@ const VideoBox: React.FC<{ video: Video }> = ({ video }) => {
       >
         <ModalOverlay />
         <ModalContent m={0} p={0} bgColor="transparent">
-          <ModalCloseButton color="white" zIndex={10} />
+          {/* <ModalCloseButton color="white" zIndex={10} /> */}
           <ReactPlayer
             className="react-player"
             url="https://video.vidyard.com/watch/YBvcF2BEfvKdowmfrRwk57"

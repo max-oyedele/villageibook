@@ -20,16 +20,18 @@ import {
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
-import MyVillageCard from "components/MyVillageCard";
+import LeftVillageCard from "components/LeftVillageCard";
 import ArticleCard from "components/ArticleCard";
 
+import {villageName} from "data/browse";
 import UseLeftFixed from "hooks/use-left-fixed";
+import UseVillageData from "hooks/use-village-data";
 
-import { articles } from "data/myvillage";
-
-const Societies: NextPage = () => {
+const Society: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const { fixed } = UseLeftFixed();
+
+  const { villageData } = UseVillageData(villageName);
 
   return (
     <Fragment>
@@ -39,7 +41,7 @@ const Societies: NextPage = () => {
         <Flex>
           {breakpointValue === "md" && (
             <Box>
-              <MyVillageCard fixed={fixed} />
+              <LeftVillageCard fixed={fixed} />
             </Box>
           )}
 
@@ -51,7 +53,7 @@ const Societies: NextPage = () => {
               <Text fontSize="14px">
                 SEE ALL ARTICLES
                 <Text display="inline" color="#36CFD1" ml={1}>
-                  ({articles.length})
+                  ({villageData["articles"].length})
                 </Text>
               </Text>
               <Grid
@@ -60,7 +62,7 @@ const Societies: NextPage = () => {
                 rowGap={12}
                 mt={6}
               >
-                {articles.map((article) => (
+                {villageData["articles"].map((article) => (
                   <ArticleCard key={article.id} article={article} />
                 ))}
               </Grid>
@@ -76,4 +78,4 @@ const Societies: NextPage = () => {
   );
 };
 
-export default Societies;
+export default Society;

@@ -21,8 +21,8 @@ import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import SearchBar from "components/SearchBar";
-import MyVillageDivider from "components/MyVillageDivider";
-import MyVillageItems from "components/MyVillageItems";
+import LeftVillageDivider from "components/LeftVillageDivider";
+import LeftVillageItems from "components/LeftVillageItems";
 import PremiumCard from "components/PremiumCard";
 import SignupCard from "components/SignupCard";
 import RecentVillageCard from "components/RecentVillageCard";
@@ -85,10 +85,10 @@ const Home: NextPage = () => {
                 />
 
                 <Box mt={8}>
-                  <MyVillageDivider />
+                  <LeftVillageDivider />
                 </Box>
                 <Box my={6}>
-                  <MyVillageItems />
+                  <LeftVillageItems />
                 </Box>
               </Box>
 
@@ -145,7 +145,7 @@ const Home: NextPage = () => {
             )}
             {breakpointValue === "base" && activeTab === "My Village" && (
               <Box>
-                <MyVillageItems />
+                <LeftVillageItems />
                 <Box mt={12}>
                   <PremiumCard />
                 </Box>

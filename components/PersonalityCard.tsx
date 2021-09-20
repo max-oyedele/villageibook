@@ -58,7 +58,7 @@ const PersonalityCard: React.FC<{ user: User }> = ({
               color="GrayText"
               textTransform="capitalize"
             >
-              {user.location}
+              {user.village}
             </Text>
             <Text fontSize="18px" color="primary" textTransform="capitalize">
               {user.name}
@@ -123,7 +123,7 @@ const PersonalityCard: React.FC<{ user: User }> = ({
             )}
             <Box>
               <Text fontSize="10px" color="GrayText">
-                {user.location}
+                {user.village}
               </Text>
               <Text fontSize="13px" fontWeight="600" color="primary">
                 {user.name}
