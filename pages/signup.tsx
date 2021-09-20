@@ -283,7 +283,7 @@ const Signup = () => {
                     size="md"
                     fontSize="12px"
                     fontWeight="400"
-                    _focus={{boxShadow: "none"}}
+                    _focus={{ boxShadow: "none" }}
                     w="full"
                     mt={8}
                     isLoading={isSubmitting}
@@ -350,8 +350,11 @@ const Signup = () => {
             </HStack> */}
 
             <Box textAlign={{ base: "center", md: "right" }}>
-              <Text fontSize="12px" color="purpleTone" mt={4}>
-                <Link href="/login">Login if you have already account</Link>
+              <Text fontSize="12px" mt={4}>
+                Already have an account?
+                <Text display="inline" color="purpleTone" ml={2}>
+                  <Link href="/login">Login</Link>
+                </Text>
               </Text>
             </Box>
           </Flex>
