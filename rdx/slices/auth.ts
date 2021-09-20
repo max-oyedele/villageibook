@@ -62,7 +62,6 @@ export const signup = createAsyncThunk(
       return response.data;
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });
-      
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
@@ -126,8 +125,8 @@ export const authSlice = createSlice({
     });
     builder.addCase(signup.rejected, (state, action) => {
       state.error = (
-        action.payload as { status: number, error: string, message: string}
-      ).message;
+        action.payload as { error: string; error_description: string}
+      ).error_description;
       state.status = Status.IDLE;
     });
     builder.addCase(logout.pending, (state) => {

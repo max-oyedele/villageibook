@@ -82,7 +82,7 @@ const Signup = () => {
         duration: 3000,
         isClosable: true,
       });
-      router.push("/");
+      router.push("/login");
     }
     if (error) {
       toast({

@@ -6,7 +6,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { headers, body } = req;
   // console.log("body", body);
 
-  const access_token = await fetchToken();
+  const { access_token } = await fetchToken();
   
   const params = JSON.stringify({
     firstName: body.firstname,
@@ -16,12 +16,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   try {
-    const { data } = await axios.post(
+    const { data, headers: returnedHeaders } = await axios.post(
       "https://villageibook-api.abosit.com/signup", // api backend path
       params,
       {
         headers: {
-          "authorization": `Bearer ${access_token}`,
+          "authorization": "Bearer " + access_token,
           "content-type": "application/json"
         }
       }
