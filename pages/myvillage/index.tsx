@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import type { NextPage } from "next";
 import Link from "next/link";
 
@@ -52,6 +52,10 @@ const Posts: NextPage = () => {
   
   const dispatch: MyThunkDispatch = useDispatch();
   const { posts, articles, users, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
+
+  useEffect(()=>{
+    dispatch(fetchVillagePageData({villageName}))
+  }, [])
 
   return (
     <Fragment>
