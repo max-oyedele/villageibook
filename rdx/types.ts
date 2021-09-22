@@ -3,6 +3,7 @@ import {
 } from "@reduxjs/toolkit";
 
 import {District, Upazila, Village} from "types/schema"
+import {Post, Article, User, Institution, Video} from "types/data"
 
 export enum Status {
   IDLE = 'idle',
@@ -40,5 +41,17 @@ export interface UpazilaState {
 export interface VillageState {
   status: Status;
   villages: Village[];
+  error?: SerializedError;
+}
+
+export interface VillagePageState {
+  status: Status;
+  pageData: {
+    posts: Post[];
+    users: User[];
+    articles: Article[];
+    institutions: Institution[];
+    videos: Video[];
+  };
   error?: SerializedError;
 }

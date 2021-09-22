@@ -17,6 +17,10 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
+import { useSelector, useDispatch } from "react-redux";
+import { MyThunkDispatch, OurStore } from "rdx/store";
+import { fetchVillagePageData } from "rdx/slices/villagePage";
+
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
@@ -25,13 +29,13 @@ import ArticleCard from "components/ArticleCard";
 
 import {villageName} from "data/browse";
 import UseLeftFixed from "hooks/use-left-fixed";
-import UseVillageData from "hooks/use-village-data";
 
 const Society: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const { fixed } = UseLeftFixed();
 
-  const { villageData } = UseVillageData(villageName);
+  const dispatch: MyThunkDispatch = useDispatch();
+  const { posts, articles, users, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
 
   return (
     <Fragment>
@@ -53,7 +57,7 @@ const Society: NextPage = () => {
               <Text fontSize="14px">
                 SEE ALL ARTICLES
                 <Text display="inline" color="#36CFD1" ml={1}>
-                  ({villageData["articles"].length})
+                  ({articles.length})
                 </Text>
               </Text>
               <Grid
@@ -62,7 +66,7 @@ const Society: NextPage = () => {
                 rowGap={12}
                 mt={6}
               >
-                {villageData["articles"].map((article) => (
+                {articles.map((article) => (
                   <ArticleCard key={article.id} article={article} />
                 ))}
               </Grid>

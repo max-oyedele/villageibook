@@ -38,7 +38,7 @@ export const articles: Article[] = [
   },
 ];
 
-export const personalities: User[] = [
+export const users: User[] = [
   {
     id: 0,
     name: "abdul ullah",

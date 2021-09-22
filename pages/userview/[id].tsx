@@ -24,7 +24,7 @@ import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
 import PersonalityCard from "components/PersonalityCard";
 
-import { personalities } from "data/village";
+import { users } from "data/village";
 import { User } from "types/data";
 
 const UserView: NextPage = () => {
@@ -35,7 +35,7 @@ const UserView: NextPage = () => {
 
   const [user, setUser] = useState<User | undefined>(undefined);
   useEffect(() => {
-    const user = personalities.find((item) => item.id == Number(id));
+    const user = users.find((item) => item.id == Number(id));
     setUser(user);
   }, [id]);
 

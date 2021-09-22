@@ -75,7 +75,7 @@ const Home: NextPage = () => {
             </Box>
           </HStack>
         </Flex>
-        <Progress h="2px" className="progress-bar" />
+        
         <Box px={{ base: 6, md: 32 }} mt={12}>
           <Stack spacing={12} direction={{ base: "column", md: "row" }}>
             <Box w="full">

@@ -18,6 +18,10 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
+import { useSelector, useDispatch } from "react-redux";
+import { MyThunkDispatch, OurStore } from "rdx/store";
+import { fetchVillagePageData } from "rdx/slices/villagePage";
+
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
@@ -39,14 +43,15 @@ import {
 
 import UseLeftFixed from "hooks/use-left-fixed";
 import UseVillageStats from "hooks/use-village-stats";
-import UseVillageData from "hooks/use-village-data";
 
 const Posts: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const { fixed } = UseLeftFixed();
   const { villageStats } = UseVillageStats(villageName);
-  const { villageData } = UseVillageData(villageName);
+  
+  const dispatch: MyThunkDispatch = useDispatch();
+  const { posts, articles, users, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
 
   return (
     <Fragment>
@@ -76,7 +81,7 @@ const Posts: NextPage = () => {
                 : "0px"
             }
           >
-            {villageData["posts"].length > 0 && (
+            {posts.length > 0 && (
               <Box bgColor="white" p={6} mb={6}>
                 <Text fontSize="14px">POSTS</Text>
 
@@ -90,7 +95,7 @@ const Posts: NextPage = () => {
                   rowGap={8}
                   mt={6}
                 >
-                  {villageData["posts"].slice(0, 2).map((post) => (
+                  {posts.slice(0, 2).map((post) => (
                     <PostCard key={post.id} post={post} />
                   ))}
                 </Grid>
@@ -121,7 +126,7 @@ const Posts: NextPage = () => {
               />
             </Box>
 
-            {villageData["articles"].length > 0 && (
+            {articles.length > 0 && (
               <Box bgColor="white" p={6} mb={6}>
                 <Text fontSize="14px">SOCIETY</Text>
                 <SimpleGrid
@@ -130,7 +135,7 @@ const Posts: NextPage = () => {
                   rowGap={10}
                   mt={6}
                 >
-                  {villageData["articles"].slice(0, 2).map((article) => (
+                  {articles.slice(0, 2).map((article) => (
                     <ArticleCard key={article.id} article={article} />
                   ))}
                 </SimpleGrid>
@@ -150,19 +155,19 @@ const Posts: NextPage = () => {
               </Box>
             )}
 
-            {villageData["personalities"].length > 0 && (
+            {users.length > 0 && (
               <Box bgColor="white" p={6} mb={6}>
                 <Text fontSize="14px">PERSONALITIES</Text>
                 {breakpointValue === "md" && (
                   <VStack spacing={2} mt={6}>
-                    {villageData["personalities"].slice(0, 5).map((user) => (
+                    {users.slice(0, 5).map((user) => (
                       <PersonalityCard key={user.id} user={user} />
                     ))}
                   </VStack>
                 )}
                 {breakpointValue === "base" && (
                   <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4} mt={6}>
-                    {villageData["personalities"].map((user) => (
+                    {users.map((user) => (
                       <PersonalityCard key={user.id} user={user} />
                     ))}
                   </SimpleGrid>
@@ -183,11 +188,11 @@ const Posts: NextPage = () => {
               </Box>
             )}
 
-            {villageData["institutions"].length > 0 && (
+            {institutions.length > 0 && (
               <Box bgColor="white" p={6} mb={6}>
                 <Text fontSize="14px">INSTITUTIONS</Text>
                 <VStack spacing={2} mt={6}>
-                  {villageData["institutions"]
+                  {institutions
                     .slice(0, 3)
                     .map((institution) => (
                       <InstitutionCard
@@ -212,7 +217,7 @@ const Posts: NextPage = () => {
               </Box>
             )}
 
-            {villageData["videos"].length > 0 && (
+            {videos.length > 0 && (
               <Box bgColor="white" p={6} mb={6}>
                 <Text fontSize="14px">VIDEOS</Text>
                 <SimpleGrid
@@ -221,7 +226,7 @@ const Posts: NextPage = () => {
                   rowGap={10}
                   mt={6}
                 >
-                  {villageData["videos"].slice(0, 6).map((video) => (
+                  {videos.slice(0, 6).map((video) => (
                     <VideoCard key={video.id} video={video} />
                   ))}
                 </SimpleGrid>

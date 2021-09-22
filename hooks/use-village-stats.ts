@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 
 import { posts } from "data/browse";
-import { articles, personalities, institutions, videos } from "data/village";
+import { articles, users, institutions, videos } from "data/village";
 
 const UseVillageStats = (villageName) => {
   const [nPosts, setNPosts] = useState(0);
   const [nArticles, setNArticles] = useState(0);
-  const [nPersonalities, setNPersonalities] = useState(0);
+  const [nUsers, setNPersonalities] = useState(0);
   const [nInstitutions, setNInstitutions] = useState(0);
   const [nVideos, setNVideos] = useState(0);
 
@@ -16,7 +16,7 @@ const UseVillageStats = (villageName) => {
       articles.filter((item) => item.village === villageName).length
     );
     setNPersonalities(
-      personalities.filter((item) => item.village === villageName).length
+      users.filter((item) => item.village === villageName).length
     );
     setNInstitutions(
       institutions.filter((item) => item.village === villageName).length
@@ -28,7 +28,7 @@ const UseVillageStats = (villageName) => {
     villageStats: {
       posts: nPosts,
       articles: nArticles,
-      personalities: nPersonalities,
+      users: nUsers,
       institutions: nInstitutions,
       videos: nVideos,
     }

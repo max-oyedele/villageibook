@@ -16,6 +16,10 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
+import { useSelector, useDispatch } from "react-redux";
+import { MyThunkDispatch, OurStore } from "rdx/store";
+import { fetchVillagePageData } from "rdx/slices/villagePage";
+
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
@@ -23,14 +27,15 @@ import LeftVillageCard from "components/LeftVillageCard";
 import InstitutionCard from "components/InstitutionCard";
 
 import UseLeftFixed from "hooks/use-left-fixed";
-import UseVillageData from "hooks/use-village-data";
 import { villageName } from "data/browse";
 
 const Institutions: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const { fixed } = UseLeftFixed();
-  const { villageData } = UseVillageData(villageName);
+  
+  const dispatch: MyThunkDispatch = useDispatch();
+  const { posts, articles, users, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
 
   return (
     <Fragment>
@@ -55,7 +60,7 @@ const Institutions: NextPage = () => {
             }
           >
             <VStack spacing={2}>
-              {villageData["institutions"].map((institution) => (
+              {institutions.map((institution) => (
                 <InstitutionCard
                   key={institution.id}
                   institution={institution}

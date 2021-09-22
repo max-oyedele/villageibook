@@ -42,11 +42,6 @@ const theme: Theme = extendTheme({
       pre: {
         overflowX: "auto",
       },
-
-      /*custom*/
-      ".progress-bar > div": {
-        transitionDuration: "1s"
-      }
     }),
   },
 });
