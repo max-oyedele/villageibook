@@ -19,9 +19,4 @@ export const tabs = [
     name: "Contact Us",
     path: "mailto:info@skillhet.com",
   },
-  {
-    id: 4,
-    name: "Ad Us",
-    path: "/ad",
-  },
 ];
