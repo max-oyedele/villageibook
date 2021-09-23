@@ -10,13 +10,13 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDistricts } from "rdx/slices/district";
-import { fetchUpazilas } from "rdx/slices/upazila";
+import { fetchSubDistricts } from "rdx/slices/subDistrict";
 import { fetchVillages } from "rdx/slices/village";
 import { setVillage } from "rdx/slices/browsePage";
 import { OurStore } from "rdx/store";
 
 import SelectBox from "components/widgets/SelectBox";
-import { District, Upazila, Village } from "types/schema";
+import { District, SubDistrict, Village } from "types/schema";
 
 const SearchBar = (props) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -25,28 +25,28 @@ const SearchBar = (props) => {
   const { status: districtStatus, districts } = useSelector(
     (state: OurStore) => state.districtReducer
   );
-  const { status: upazilaStatus, upazilas } = useSelector(
-    (state: OurStore) => state.upazilaReducer
+  const { status: subDistrictStatus, subDistricts } = useSelector(
+    (state: OurStore) => state.subDistrictReducer
   );
   const { status: villageStatus, villages } = useSelector(
     (state: OurStore) => state.villageReducer
   );
 
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
-  const [selectedUpazila, setSelectedUpazila] = useState<Upazila>(null);
+  const [selectedSubDistrict, setSelectedSubDistrict] = useState<SubDistrict>(null);
   // const [selectedVillage, setSelectedVillage] = useState<Village>(null);
   
   useEffect(() => {
     dispatch(fetchDistricts());
   }, []);
   useEffect(()=>{
-    setSelectedUpazila(null)
-    dispatch(fetchUpazilas({district: selectedDistrict?.href}));
+    setSelectedSubDistrict(null)
+    dispatch(fetchSubDistricts({district: selectedDistrict?.href}));
   }, [selectedDistrict])
   useEffect(()=>{
     props.setSelectedVillage(null)
-    dispatch(fetchVillages({upazila: selectedUpazila?.href}));
-  }, [selectedUpazila])
+    dispatch(fetchVillages({subDistrict: selectedSubDistrict?.href}));
+  }, [selectedSubDistrict])
 
   return (
     <Fragment>
@@ -62,13 +62,13 @@ const SearchBar = (props) => {
             setSelectedOption={setSelectedDistrict}
           />
           <SelectBox
-            id="upazila"
+            id="subdistrict"
             placeholder="Select Upazila"
             height="45px"
-            options={upazilas}
+            options={subDistricts}
             optionLabel={({ name }) => name}
-            selectedOption={selectedUpazila}
-            setSelectedOption={setSelectedUpazila}
+            selectedOption={selectedSubDistrict}
+            setSelectedOption={setSelectedSubDistrict}
           />
           <SelectBox
             id="village"

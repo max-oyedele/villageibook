@@ -2,7 +2,7 @@ import {
   SerializedError,
 } from "@reduxjs/toolkit";
 
-import {District, Upazila, Village} from "types/schema"
+import {District, SubDistrict, Village} from "types/schema"
 import {Post, Article, User, Institution, Video, Personality} from "types/data"
 
 export enum Status {
@@ -39,9 +39,9 @@ export interface DistrictState {
   error?: SerializedError;
 }
 
-export interface UpazilaState {
+export interface SubDistrictState {
   status: Status;
-  upazilas: Upazila[];
+  subDistricts: SubDistrict[];
   error?: SerializedError;
 }
 

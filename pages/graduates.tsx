@@ -55,7 +55,7 @@ const menuItems = [
   {
     id: 1,
     label: "UPAZILA",
-    value: "upazila",
+    value: "subDistrict",
   },
   {
     id: 2,
@@ -136,7 +136,7 @@ const Graduates: NextPage = () => {
               ))}
             </Flex>
 
-            {activeMenuItem.value === "upazila" && (
+            {activeMenuItem.value === "subDistrict" && (
               <VStack>
                 <Box w={{ base: "full", md: "40%" }} mt={6}>
                   <SelectBox

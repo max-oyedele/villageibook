@@ -7,11 +7,11 @@ import {
 
 import axios from "axios"
 
-import {Status, UpazilaState} from "../types"
+import {Status, SubDistrictState} from "../types"
 
-export const fetchUpazilas = createAsyncThunk('upazila/upazilas', async (params:any, thunkAPI) => {
+export const fetchSubDistricts = createAsyncThunk('subDistrict/subDistricts', async (params:any, thunkAPI) => {
   try {
-    const response = await axios.get('api/upazilas', {params})
+    const response = await axios.get('api/subDistricts', {params})
     return response.data['sub-districts']; // data: {pagination: {}, sub-districts: []}
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.message })
@@ -19,29 +19,29 @@ export const fetchUpazilas = createAsyncThunk('upazila/upazilas', async (params:
 })
 
 /************************************* */
-const initialState:UpazilaState = {
+const initialState:SubDistrictState = {
   status: Status.IDLE,
-  upazilas: [],
+  subDistricts: [],
   error: null,
 }
 
-export const upazilaSlice = createSlice({
-  name: 'upazila',
+export const subDistrictSlice = createSlice({
+  name: 'subDistrict',
   initialState: initialState,
   reducers: {
     reset: () => initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchUpazilas.pending, (state) => {
+    builder.addCase(fetchSubDistricts.pending, (state) => {
       state.status = Status.LOADING;
-      state.upazilas = [];
+      state.subDistricts = [];
       state.error = null;
     });
-    builder.addCase(fetchUpazilas.fulfilled, (state, action) => {
+    builder.addCase(fetchSubDistricts.fulfilled, (state, action) => {
       state.status = Status.IDLE;
-      state.upazilas = action.payload;
+      state.subDistricts = action.payload;
     });
-    builder.addCase(fetchUpazilas.rejected, (state, action) => {
+    builder.addCase(fetchSubDistricts.rejected, (state, action) => {
       // state.error = (
       //   action.payload as { error: string; error_description: string }
       // ).error_description;
@@ -51,4 +51,4 @@ export const upazilaSlice = createSlice({
   },
 })
 
-export const { reset } = upazilaSlice.actions
+export const { reset } = subDistrictSlice.actions

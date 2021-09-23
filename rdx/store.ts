@@ -5,7 +5,7 @@ import logger from 'redux-logger'
 import { authSlice } from './slices/auth'
 import { regionSlice } from './slices/region'
 import { districtSlice } from './slices/district'
-import { upazilaSlice } from './slices/upazila'
+import { subDistrictSlice } from './slices/subDistrict'
 import { villageSlice } from './slices/village'
 import { browsePageSlice} from './slices/browsePage'
 import { villagePageSlice} from './slices/villagePage'
@@ -14,7 +14,7 @@ const combinedReducers = combineReducers({
   authReducer: authSlice.reducer,
   regionReducer: regionSlice.reducer,
   districtReducer: districtSlice.reducer,
-  upazilaReducer: upazilaSlice.reducer,
+  subDistrictReducer: subDistrictSlice.reducer,
   villageReducer: villageSlice.reducer,
   villagePageReducer: villagePageSlice.reducer,
   browsePageReducer: browsePageSlice.reducer

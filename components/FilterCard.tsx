@@ -54,7 +54,7 @@ const FilterCard = () => {
           borderRadius="8px"
           pl={2}
         >
-          <Image src="/icons/filter-by-upazila.svg" alt="" w={4} h={4} ml={2} />
+          <Image src="/icons/filter-by-subdistrict.svg" alt="" w={4} h={4} ml={2} />
           <Box w="full" ml={2}>
             <SelectBox w="full" height="full" borderColor="transparent" placeholder="By Upazila" />
           </Box>

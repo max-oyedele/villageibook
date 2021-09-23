@@ -5,7 +5,7 @@ export type District = {
   uuid: string;
 }
 
-export type Upazila = {
+export type SubDistrict = {
   id: number;
   name: string;
   href: string;

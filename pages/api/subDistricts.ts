@@ -10,21 +10,21 @@ async function handler(req, res) {
 
   switch (req.method) {
     case "GET":
-      return getUpazilas();
+      return getSubDistricts();
     case "POST":
-      return createUpazila();
+      return createSubDistrict();
     default:
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 
-  async function getUpazilas() {
+  async function getSubDistricts() {
     try {
-      let upazila = fetchWrapper.get(baseUrl + "/sub-districts.json", access_token);
-      if(district){
-        upazila = fetchWrapper.get(baseUrl + `/district/[href=${district}]/sub-districts.json`, access_token);
+      let subDistrict = fetchWrapper.get(baseUrl + "/sub-districts.json", access_token);
+      if(subDistrict){
+        subDistrict = fetchWrapper.get(baseUrl + `/district/[href=${district}]/sub-districts.json`, access_token);
       }
 
-      await upazila.then(response=>{
+      await subDistrict.then(response=>{
         res.status(200).json(response);
       })
     } catch (error) {
@@ -32,7 +32,7 @@ async function handler(req, res) {
     }
   }
 
-  async function createUpazila() {
+  async function createSubDistrict() {
     try {
       fetchWrapper.post(baseUrl + "/sub-districts", req.body);
       return res.status(200).json({});

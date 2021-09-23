@@ -64,13 +64,13 @@ const Account: NextPage = () => {
   const [university, setUniversity] = useState<string | null>(null);
 
   const [selectedDistrict, setSelectedDistrict] = useState(null);
-  const [selectedUpazila, setSelectedUpazila] = useState(null);
+  const [selectedSubDistrict, setSelectedSubDistrict] = useState(null);
   const [village, setVillage] = useState<string | null>(null);
 
   const dispatch: MyThunkDispatch = useDispatch();
   const { jwt, error } = useSelector((state: OurStore) => state.authReducer);
   const { districts } = useSelector((state: OurStore) => state.districtReducer);
-  const { upazilas } = useSelector((state: OurStore) => state.upazilaReducer);
+  const { subDistricts } = useSelector((state: OurStore) => state.subDistrictReducer);
   const { villages } = useSelector((state: OurStore) => state.villageReducer);
 
   const router = useRouter();
@@ -150,9 +150,9 @@ const Account: NextPage = () => {
                   />
                   <InputBoxWithSelect
                     label="Upazila"
-                    options={upazilas}
-                    selectedOption={selectedUpazila}
-                    setSelectedOption={setSelectedUpazila}
+                    options={subDistricts}
+                    selectedOption={selectedSubDistrict}
+                    setSelectedOption={setSelectedSubDistrict}
                   />
                   <InputBox label="Village" onChange={setVillage} />
                 </Box>
