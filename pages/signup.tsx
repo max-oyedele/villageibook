@@ -84,7 +84,7 @@ const Signup = () => {
         isClosable: true,
       });
       dispatch(reset());
-      router.push("/login");
+      router.push("/account");
     }
     if (error) {
       toast({

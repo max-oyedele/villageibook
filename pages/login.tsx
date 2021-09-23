@@ -1,7 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { signIn } from "next-auth/react";
 import { useCookies } from "react-cookie";
 
 import { useSelector, useDispatch } from "react-redux";
