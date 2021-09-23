@@ -1,5 +1,8 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
+
+import { useRouter } from "next/router";
+import { useCookies } from "react-cookie";
 
 import {
   Container,
@@ -23,12 +26,29 @@ import {
   Input,
   Button,
   useBreakpointValue,
+  useToast,
 } from "@chakra-ui/react";
+
+import { useSelector, useDispatch } from "react-redux";
+import {
+  Formik,
+  FormikHelpers,
+  FormikProps,
+  Form,
+  Field,
+  FieldProps,
+} from "formik";
+import * as yup from "yup";
+
+import { MyThunkDispatch, OurStore } from "rdx/store";
+import { login } from "rdx/slices/auth";
 
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import SelectBox from "components/widgets/SelectBox";
+
+import { degrees, countries } from "constants/account";
 
 const Account: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -38,90 +58,43 @@ const Account: NextPage = () => {
   const [email, setEmail] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
 
-  type Degree = {
-    id: number;
-    label: string;
-    value: string;
-  };
-  const degrees: Degree[] = [
-    {
-      id: 0,
-      label: "Master",
-      value: "master",
-    },
-    {
-      id: 1,
-      label: "Bachelor's",
-      value: "bachelor",
-    },
-  ];
   const [selectedDegree, setSelectedDegree] = useState(null);
 
-  type GraduateIn = {
-    id: number;
-    label: string;
-    value: string;
-  };
-  const graduatedIns: GraduateIn[] = [
-    {
-      id: 0,
-      label: "Canada",
-      value: "canada",
-    },
-    {
-      id: 1,
-      label: "USA",
-      value: "usa",
-    },
-    {
-      id: 1,
-      label: "Bangladesh",
-      value: "bangladesh",
-    },
-  ];
   const [selectedGraduatedIn, setSelectedGraduatedIn] = useState(null);
-
   const [university, setUniversity] = useState<string | null>(null);
 
-  type District = {
-    id: number;
-    label: string;
-    value: string;
-  };
-  const districts: District[] = [
-    {
-      id: 0,
-      label: "Dinajpur",
-      value: "dinajpur",
-    },
-    {
-      id: 1,
-      label: "Bogra",
-      value: "bogra",
-    },
-  ];
   const [selectedDistrict, setSelectedDistrict] = useState(null);
-
-  type Upazila = {
-    id: number;
-    label: string;
-    value: string;
-  };
-  const upazilas: Upazila[] = [
-    {
-      id: 0,
-      label: "Upazila1",
-      value: "upazila1",
-    },
-    {
-      id: 1,
-      label: "Upazila2",
-      value: "upazila2",
-    },
-  ];
   const [selectedUpazila, setSelectedUpazila] = useState(null);
-
   const [village, setVillage] = useState<string | null>(null);
+
+  const dispatch: MyThunkDispatch = useDispatch();
+  const { jwt, error } = useSelector((state: OurStore) => state.authReducer);
+  const { districts } = useSelector((state: OurStore) => state.districtReducer);
+  const { upazilas } = useSelector((state: OurStore) => state.upazilaReducer);
+  const { villages } = useSelector((state: OurStore) => state.villageReducer);
+
+  const router = useRouter();
+  const toast = useToast();
+  const [cookie, setCookie] = useCookies(["jwt"]);
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Login Failed!",
+        description: error,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    if (jwt) {
+      setCookie("jwt", JSON.stringify(jwt), {
+        path: "/",
+        maxAge: jwt.expires_in, // Expirey time in seconds
+        sameSite: true,
+      });
+      router.push("/");
+    }
+  }, [jwt, error]);
 
   return (
     <Fragment>
@@ -159,7 +132,7 @@ const Account: NextPage = () => {
                   />
                   <InputBoxWithSelect
                     label="Graduated in"
-                    options={graduatedIns}
+                    options={countries}
                     selectedOption={selectedGraduatedIn}
                     setSelectedOption={setSelectedDegree}
                   />
