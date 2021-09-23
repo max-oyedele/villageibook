@@ -12,12 +12,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchDistricts } from "rdx/slices/district";
 import { fetchUpazilas } from "rdx/slices/upazila";
 import { fetchVillages } from "rdx/slices/village";
+import { setVillage } from "rdx/slices/browsePage";
 import { OurStore } from "rdx/store";
 
 import SelectBox from "components/widgets/SelectBox";
 import { District, Upazila, Village } from "types/schema";
 
-const SearchBar = () => {
+const SearchBar = (props) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const SearchBar = () => {
 
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
   const [selectedUpazila, setSelectedUpazila] = useState<Upazila>(null);
-  const [selectedVillage, setSelectedVillage] = useState<Village>(null);
+  // const [selectedVillage, setSelectedVillage] = useState<Village>(null);
   
   useEffect(() => {
     dispatch(fetchDistricts());
@@ -43,7 +44,7 @@ const SearchBar = () => {
     dispatch(fetchUpazilas({district: selectedDistrict?.href}));
   }, [selectedDistrict])
   useEffect(()=>{
-    setSelectedVillage(null)
+    props.setSelectedVillage(null)
     dispatch(fetchVillages({upazila: selectedUpazila?.href}));
   }, [selectedUpazila])
 
@@ -75,8 +76,8 @@ const SearchBar = () => {
             height="45px"
             options={villages}
             optionLabel={({ name }) => name}
-            selectedOption={selectedVillage}
-            setSelectedOption={setSelectedVillage}
+            selectedOption={props.selectedVillage}
+            setSelectedOption={props.setSelectedVillage}
           />
         </SimpleGrid>
         {breakpointValue === "md" && (
@@ -91,8 +92,9 @@ const SearchBar = () => {
               borderRadius="6px"
               _focus={{boxShadow: "none"}}
               ml={6}
+              onClick={()=>{dispatch(setVillage(props.selectedVillage))}}
             >
-              GO
+              Find
             </Button>
           </Box>
         )}
@@ -109,7 +111,7 @@ const SearchBar = () => {
           borderRadius="6px"
           mt={6}
         >
-          GO
+          Find
         </Button>
       )}
     </Fragment>

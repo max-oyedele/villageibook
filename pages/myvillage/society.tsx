@@ -27,7 +27,6 @@ import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
 import ArticleCard from "components/ArticleCard";
 
-import {villageName} from "data/browse";
 import UseLeftFixed from "hooks/use-left-fixed";
 
 const Society: NextPage = () => {
@@ -35,7 +34,7 @@ const Society: NextPage = () => {
   const { fixed } = UseLeftFixed();
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { posts, articles, users, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
+  const { users, articles, personalities, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
 
   return (
     <Fragment>

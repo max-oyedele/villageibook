@@ -8,7 +8,7 @@ import {
 import axios from "axios";
 import querystring from "querystring";
 
-import {Status, AuthState} from "../types";
+import { Status, Register, AuthState } from "../types";
 
 // export const fetchUser = createAsyncThunk('auth/me', async (_, thunkAPI) => {
 //   try {
@@ -32,7 +32,7 @@ export const login = createAsyncThunk(
       // //   headers: { Authorization: `Bearer ${response.data.accessToken}` },
       // // })
       // return { accessToken: response.data.accessToken, me: { name: refetch.data.name } }
-      
+
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -43,14 +43,20 @@ export const login = createAsyncThunk(
 export const signup = createAsyncThunk(
   "auth/signup",
   async (
-    credentials: { firstname: string; lastname: string; email: string; password: string },
+    credentials: {
+      firstname: string;
+      lastname: string;
+      email: string;
+      password: string;
+    },
     thunkAPI
   ) => {
     try {
-      const response = await axios.post<{ user: any }>(
-        "api/auth/signup",
-        credentials
-      );
+      // const response = await axios.post<{ user: any }>(
+      //   "api/auth/signup",
+      //   credentials
+      // );
+
       // const refetch = await axios.get<{ name: string }>("api/me", {
       //   headers: { Authorization: `Bearer ${response.data.accessToken}` },
       // });
@@ -58,8 +64,39 @@ export const signup = createAsyncThunk(
       //   accessToken: response.data.accessToken,
       //   me: { name: refetch.data.name },
       // };
-      
-      return response.data;
+
+      // return response.data;
+      return {};
+    } catch (error) {
+      // return thunkAPI.rejectWithValue({ error: error.message });
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const submit = createAsyncThunk(
+  "auth/submit",
+  async (
+    body: {
+      education: { degree: string; graduatedIn: string; university: string };
+      location: {
+        country: string;
+        region: string;
+        district: string;
+        subDistrict: string;
+        village: string;
+      };
+    },
+    thunkAPI
+  ) => {
+    try {
+      // const response = await axios.post<{ user: any }>(
+      //   "api/auth/submit",
+      //   body
+      // );
+
+      // return response.data;
+      return {};
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });
       return thunkAPI.rejectWithValue(error.response.data);
@@ -80,6 +117,7 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
 const initialState = {
   jwt: null,
   status: Status.IDLE,
+  register: Register.STEP1,
   user: null,
   error: null,
 };
@@ -121,11 +159,27 @@ export const authSlice = createSlice({
     });
     builder.addCase(signup.fulfilled, (state, action) => {
       state.user = action.payload;
+      state.register = Register.STEP2;
       state.status = Status.IDLE;
     });
     builder.addCase(signup.rejected, (state, action) => {
       state.error = (
-        action.payload as { error: string; message: string}
+        action.payload as { error: string; message: string }
+      ).message;
+      state.status = Status.IDLE;
+    });
+    builder.addCase(submit.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(submit.fulfilled, (state, action) => {
+      // state.user = action.payload;
+      state.register = Register.COMPLETED;
+      state.status = Status.IDLE;
+    });
+    builder.addCase(submit.rejected, (state, action) => {
+      state.error = (
+        action.payload as { error: string; message: string }
       ).message;
       state.status = Status.IDLE;
     });
@@ -133,7 +187,7 @@ export const authSlice = createSlice({
       state.status = Status.LOADING;
     });
     builder.addCase(logout.fulfilled, (_state) => initialState);
-    
+
     // builder.addCase(fetchUser.rejected, (state, action) => {
     //   state = { ...internalInitialState, error: action.error }
     //   // throw new Error(action.error.message)

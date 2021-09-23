@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
 
 import {
@@ -11,7 +11,6 @@ import {
   Text,
   Image,
   Avatar,
-  Button,
   Grid,
   GridItem,
   useBreakpointValue,
@@ -25,24 +24,23 @@ import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
-import PostCard from "components/PostCard";
+import PersonalityCard from "components/PersonalityCard";
 
 import UseLeftFixed from "hooks/use-left-fixed";
 
-import { villageName } from "data/browse";
-
-const Posts: NextPage = () => {
+const Users: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-  const { fixed } = UseLeftFixed();
-  
+
+  const {fixed} = UseLeftFixed();
+
   const dispatch: MyThunkDispatch = useDispatch();
-  const { posts, articles, users, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
+  const { users, articles, personalities, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
 
   return (
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <PageTitle title="Posts" />
+        <PageTitle title="Personalities" />
         <Flex>
           {breakpointValue === "md" && (
             <Box>
@@ -50,27 +48,15 @@ const Posts: NextPage = () => {
             </Box>
           )}
 
-          <Box
-            w="full"
-            ml={
-              fixed && breakpointValue === "md"
-                ? "264px"
-                : breakpointValue === "md"
-                ? "24px"
-                : "0px"
-            }
-          >
-            <Grid
-              templateColumns={
-                breakpointValue === "base" ? "repeat(1, 1fr)" : "repeat(2, 1fr)"
-              }
-              columnGap={6}
-              rowGap={8}
-            >
-              {posts.map((post) => (
-                <PostCard key={post.id} post={post} />
+          <Box w="full" ml={fixed && breakpointValue === "md" ? "264px" : breakpointValue === "md" ? "24px" : "0px"}>
+            <VStack spacing={2}>
+              {users.map((user) => (
+                <PersonalityCard
+                  key={user.id}
+                  user={user}
+                />
               ))}
-            </Grid>
+            </VStack>
           </Box>
         </Flex>
       </Container>
@@ -82,4 +68,4 @@ const Posts: NextPage = () => {
   );
 };
 
-export default Posts;
+export default Users;

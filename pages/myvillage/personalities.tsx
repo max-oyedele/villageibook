@@ -28,15 +28,13 @@ import PersonalityCard from "components/PersonalityCard";
 
 import UseLeftFixed from "hooks/use-left-fixed";
 
-import {villageName} from "data/browse";
-
 const Personalities: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const {fixed} = UseLeftFixed();
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { posts, articles, users, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
+  const { users, articles, personalities, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
 
   return (
     <Fragment>

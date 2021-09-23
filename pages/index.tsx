@@ -17,6 +17,10 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
+import { useSelector, useDispatch } from "react-redux";
+import { MyThunkDispatch, OurStore } from "rdx/store";
+import { fetchBrowsePageData } from "rdx/slices/browsePage";
+
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
@@ -34,23 +38,24 @@ import VideoBox from "components/VideoBox";
 
 import { parseCookie } from "helpers/parse-cookie";
 
-import {
-  recentVillages,
-  posts,
-  recentUsers,
-  totalGraduates,
-  villageName,
-  villageGraduates,
-  bangladeshGraduates,
-} from "data/browse";
-
-import { District } from "types/schema";
-
 const Home: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const tabsMobile = ["Feed", "My Village", "Graduates"];
   const [activeTab, setActiveTab] = useState(tabsMobile[0]);
+
+  const dispatch: MyThunkDispatch = useDispatch();
+  const { posts, recentVillages, recentUsers, totalGraduates, village, villageGraduates, bangladeshGraduates } = useSelector((state:OurStore)=>state.browsePageReducer.pageData)
+
+  useEffect(()=>{
+    dispatch(fetchBrowsePageData(selectedVillage?.value))
+  }, [])
+
+  const [selectedVillage, setSelectedVillage] = useState(null)
+
+  useEffect(()=>{
+    
+  }, [selectedVillage])
 
   return (
     <Fragment>
@@ -58,7 +63,7 @@ const Home: NextPage = () => {
       <Container maxW="container.xl" px={6}>
         <PageTitle title="Find Village" />
         <Box px={{ lg: 20 }}>
-          <SearchBar />
+          <SearchBar selectedVillage={selectedVillage} setSelectedVillage={setSelectedVillage} />
         </Box>
 
         {breakpointValue === "base" && (
@@ -75,14 +80,16 @@ const Home: NextPage = () => {
           {breakpointValue === "md" && (
             <Box w="25%">
               <Box bgColor="white" p={4} borderRadius="6px" mb={6}>
-                <VideoBox
+                {/* <VideoBox
                   video={{
                     id: 0,
                     title: "video title",
                     author: "author",
                     img: "https://bit.ly/naruto-sage",
                   }}
-                />
+                /> */}
+
+                <CaptionCard />
 
                 <Box mt={8}>
                   <LeftVillageDivider />
@@ -163,7 +170,7 @@ const Home: NextPage = () => {
               <Box>
                 <GraduateStatCard
                   totalGraduates={totalGraduates}
-                  villageName={villageName}
+                  villageName={village.href}
                   villageGraduates={villageGraduates}
                   bangladeshGraduates={bangladeshGraduates}
                 />
@@ -191,14 +198,13 @@ const Home: NextPage = () => {
           </Box>
 
           {breakpointValue === "md" && (
-            <Box w="25%">
-              <CaptionCard caption="caption" desc="Text Block" />
+            <Box w="25%">              
               <Text fontSize="24px" my={10}>
                 Graduates
               </Text>
               <GraduateStatCard
                 totalGraduates={totalGraduates}
-                villageName={villageName}
+                villageName={village.href}
                 villageGraduates={villageGraduates}
                 bangladeshGraduates={bangladeshGraduates}
               />

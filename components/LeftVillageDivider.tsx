@@ -17,7 +17,7 @@ const LeftVillageDivider = () => {
           fontWeight="400"
           _focus={{ boxShadow: "none" }}
         >
-          <Link href="/myvillage">MY VILLAGE</Link>
+          <Link href="/myvillage">GO VILLAGE</Link>
         </Button>
         <Divider />
       </HStack>

@@ -1,7 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
 
 import {
   Formik,
@@ -29,16 +28,18 @@ import {
   HStack,
   Divider,
   Image,
+  Progress,
   useBreakpointValue,
   useToast,
 } from "@chakra-ui/react";
 import { BiShow, BiHide } from "react-icons/bi";
 
-import Logo from "components/Logo";
-
+import { useSelector, useDispatch } from "react-redux";
 import { MyThunkDispatch, OurStore } from "rdx/store";
-import { signup } from "rdx/slices/auth";
-import axios from "axios";
+import { signup, reset } from "rdx/slices/auth";
+import { Status, Register } from "rdx/types";
+
+import Logo from "components/Logo";
 
 const signupSchema = yup.object({
   firstname: yup.string().required("First Name is required."),
@@ -67,14 +68,14 @@ const Signup = () => {
   });
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { status, user, error } = useSelector(
+  const { status, register, user, error } = useSelector(
     (state: OurStore) => state.authReducer
   );
 
   const router = useRouter();
   const toast = useToast();
   useEffect(() => {
-    if (user) {
+    if (register === Register.COMPLETED) {
       toast({
         title: "Account created successfully!",
         description: "",
@@ -82,6 +83,7 @@ const Signup = () => {
         duration: 3000,
         isClosable: true,
       });
+      dispatch(reset());
       router.push("/login");
     }
     if (error) {
@@ -93,10 +95,15 @@ const Signup = () => {
         isClosable: true,
       });
     }
-  }, [user, error]);
+  }, [register, error]);
 
   return (
     <Fragment>
+      {status === Status.LOADING && (
+        <Box w="full" pos="fixed" top={0}>
+          <Progress h="2px" size="xs" isIndeterminate />
+        </Box>
+      )}
       <Box
         pos="absolute"
         top="20px"
@@ -293,61 +300,6 @@ const Signup = () => {
                 </Form>
               )}
             </Formik>
-
-            <HStack spacing={2} mt={8}>
-              <Divider />
-              <Text color="GrayText" fontSize="14px">
-                or
-              </Text>
-              <Divider />
-            </HStack>
-
-            {/* {breakpointValue === "base" && (
-              <Text fontSize="12px" textAlign="center" mt={4}>
-                Signup with
-              </Text>
-            )} */}
-
-            {/* <HStack spacing={4} mt={{ base: 4, md: 8 }}>
-              <Button
-                w="full"
-                fontSize="12px"
-                fontWeight="400"
-                border="1px"
-                borderColor="#D5DBEC"
-                _focus={{boxShadow: "none"}}
-                leftIcon={
-                  <Image
-                    src="/icons/auth-facebook.svg"
-                    width="17px"
-                    height="17px"
-                    alt="facebook"
-                  />
-                }
-              >
-                {breakpointValue === "base"
-                  ? "Facebook"
-                  : "Signup with Facebook"}
-              </Button>
-              <Button
-                w="full"
-                fontSize="12px"
-                fontWeight="400"
-                border="1px"
-                borderColor="#D5DBEC"
-                _focus={{boxShadow: "none"}}
-                leftIcon={
-                  <Image
-                    src="/icons/auth-google.svg"
-                    width="17px"
-                    height="17px"
-                    alt="google"
-                  />
-                }
-              >
-                {breakpointValue === "base" ? "Google" : "Signup with Google"}
-              </Button>
-            </HStack> */}
 
             <Box textAlign={{ base: "center", md: "right" }}>
               <Text fontSize="12px" mt={4}>

@@ -10,8 +10,7 @@ import axios from "axios";
 import { Status, VillagePageState } from "../types";
 
 //mock data
-import { posts } from "data/browse";
-import { articles, users, institutions, videos } from "data/village";
+import { users, articles, personalities, institutions, videos } from "data/village";
 
 export const fetchVillagePageData = createAsyncThunk(
   "villagePage/fetchData",
@@ -21,11 +20,16 @@ export const fetchVillagePageData = createAsyncThunk(
       // return response.data.villagePageData; // data: {villagePageData: []}
       
       return {
-        posts: posts.filter((item) => item.village === params.villageName),
-        articles: articles.filter((item) => item.village === params.villageName),
-        users: users.filter((item) => item.village === params.villageName),
-        institutions: institutions.filter((item) => item.village === params.villageName),
-        videos: videos.filter((item) => item.village === params.villageName),
+        // posts: posts.filter((item) => item.village === params.villageName),
+        // articles: articles.filter((item) => item.village === params.villageName),
+        // users: users.filter((item) => item.village === params.villageName),
+        // institutions: institutions.filter((item) => item.village === params.villageName),
+        // videos: videos.filter((item) => item.village === params.villageName),
+        users: users,
+        articles: articles,
+        personalities: personalities,
+        institutions: institutions,
+        videos: videos,
       };
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -37,9 +41,9 @@ export const fetchVillagePageData = createAsyncThunk(
 const initialState: VillagePageState = {
   status: Status.IDLE,
   pageData: {
-    posts: [],
     users: [],
     articles: [],
+    personalities: [],
     institutions: [],
     videos: [],
   },

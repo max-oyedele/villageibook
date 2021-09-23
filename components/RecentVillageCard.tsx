@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { Flex, HStack, Box, Text, Image } from "@chakra-ui/react";
 
-const RecentVillageCard: React.FC<{ name: string; img: string; recentAt: number }> = ({
+const RecentVillageCard: React.FC<{ name: string; img?: string; recentAt?: number }> = ({
   name,
   img,
   recentAt,

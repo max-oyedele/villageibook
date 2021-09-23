@@ -7,7 +7,8 @@ export type User = {
     photos: string[]
   };
   desc?: string;
-  village?: string
+  village?: string;
+  recentAt?: number;
 }
 
 export type Post = {
@@ -29,6 +30,18 @@ export type Article = {
   img: string;
   village?: string;
 };
+
+export type Personality = {
+  id: number;
+  name: string;
+  img: string;
+  role?: string;
+  details?: {
+    photos: string[]
+  };
+  desc?: string;
+  village?: string
+}
 
 export type Institution = {
   id: number;

@@ -26,7 +26,7 @@ import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
-import PostCard from "components/PostCard";
+import UserCard from "components/UserCard";
 import VillageGraduatesCard from "components/VillageGraduatesCard";
 import ArticleCard from "components/ArticleCard";
 import PersonalityCard from "components/PersonalityCard";
@@ -34,12 +34,12 @@ import InstitutionCard from "components/InstitutionCard";
 import VideoCard from "components/VideoCard";
 import FilterCard from "components/FilterCard";
 
-import {
-  totalGraduates,
-  villageName,
-  villageGraduates,
-  countryGraduates,
-} from "data/browse";
+// import {
+//   totalGraduates,
+//   village,
+//   villageGraduates,
+//   countryGraduates,
+// } from "data/browse";
 
 import UseLeftFixed from "hooks/use-left-fixed";
 import UseVillageStats from "hooks/use-village-stats";
@@ -47,21 +47,22 @@ import UseVillageStats from "hooks/use-village-stats";
 const Posts: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { fixed } = UseLeftFixed();
-  const { villageStats } = UseVillageStats(villageName);
-  
   const dispatch: MyThunkDispatch = useDispatch();
-  const { posts, articles, users, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
+  const { posts, recentVillages, recentUsers, totalGraduates, village, villageGraduates, countryGraduates, bangladeshGraduates } = useSelector((state:OurStore)=>state.browsePageReducer.pageData)
+  const { users, articles, personalities, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
 
+  const { fixed } = UseLeftFixed();
+  const { villageStats } = UseVillageStats(village.href);
+  
   useEffect(()=>{
-    dispatch(fetchVillagePageData({villageName}))
+    dispatch(fetchVillagePageData({village}))
   }, [])
 
   return (
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <PageTitle title={`My Village: ${villageName}`} />
+        <PageTitle title={`Village: ${village.href}`} />
         <Flex>
           {breakpointValue === "md" && (
             <Box>
@@ -85,34 +86,34 @@ const Posts: NextPage = () => {
                 : "0px"
             }
           >
-            {posts.length > 0 && (
+            {users.length > 0 && (
               <Box bgColor="white" p={6} mb={6}>
-                <Text fontSize="14px">POSTS</Text>
+                <Text fontSize="14px">MY PAGES</Text>
 
-                <Grid
-                  templateColumns={
-                    breakpointValue === "base"
-                      ? "repeat(1, 1fr)"
-                      : "repeat(2, 1fr)"
-                  }
-                  columnGap={6}
-                  rowGap={8}
-                  mt={6}
-                >
-                  {posts.slice(0, 2).map((post) => (
-                    <PostCard key={post.id} post={post} />
-                  ))}
-                </Grid>
-                <Divider my={6} />
+                {breakpointValue === "md" && (
+                  <VStack spacing={2} mt={6}>
+                    {users.slice(0, 5).map((user) => (
+                      <UserCard key={user.id} user={user} />
+                    ))}
+                  </VStack>
+                )}
+                {breakpointValue === "base" && (
+                  <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4} mt={6}>
+                    {users.map((user) => (
+                      <UserCard key={user.id} user={user} />
+                    ))}
+                  </SimpleGrid>
+                )}
                 <Box>
-                  <Link href="/myvillage/posts">
+                  <Link href="/myvillage/users">
                     <Text
                       fontSize="12px"
                       color="purpleTone"
                       textAlign="center"
                       cursor="pointer"
+                      mt={8}
                     >
-                      SEE ALL POSTS ({villageStats["posts"]})
+                      SEE ALL MY PAGES ({villageStats["users"]})
                     </Text>
                   </Link>
                 </Box>
@@ -124,7 +125,7 @@ const Posts: NextPage = () => {
               <Divider mt={6} mb={8} />
               <VillageGraduatesCard
                 totalGraduates={totalGraduates}
-                villageName={villageName}
+                villageName={village.href}
                 villageGraduates={villageGraduates}
                 countryGraduates={countryGraduates}
               />

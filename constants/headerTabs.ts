@@ -11,7 +11,7 @@ export const tabs = [
   },
   {
     id: 1,
-    name: "My Village",
+    name: "Village",
     path: "/myvillage",
   },
   {

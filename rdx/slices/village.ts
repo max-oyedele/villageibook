@@ -12,7 +12,27 @@ import {Status, VillageState} from "../types"
 export const fetchVillages = createAsyncThunk('village/villages', async (params:any, thunkAPI) => {
   try {
     const response = await axios.get('api/villages', {params: params})
-    return response.data.villages; // data: {pagination: {}, villages: []}
+    // return response.data.villages; // data: {pagination: {}, villages: []}
+    return [
+      {
+        id: 0,
+        name: "Jammura",
+        href: "jammura",
+        uuid: "000"
+      },
+      {
+        id: 1,
+        name: "Village1",
+        href: "village1",
+        uuid: "001"
+      },
+      {
+        id: 2,
+        name: "Village2",
+        href: "village2",
+        uuid: "002"
+      },
+    ]
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.message })
   }

@@ -17,7 +17,7 @@ import {
 
 import type { User } from "types/data";
 
-const PersonalityCard: React.FC<{ user: User }> = ({
+const UserCard: React.FC<{ user: User }> = ({
   user,
 }) => {
   const router = useRouter();
@@ -37,6 +37,19 @@ const PersonalityCard: React.FC<{ user: User }> = ({
               h="135px"
               fit="cover"
             />
+            {user.role === "premium" && (
+              <Box pos="absolute" top={2} left={2}>
+                <Badge
+                  fontSize="9px"
+                  fontWeight="400"
+                  opacity={0.8}
+                  borderRadius="full"
+                  px={2}
+                >
+                  PREMIUM
+                </Badge>
+              </Box>
+            )}
           </Box>
           <Box w="full" p={4}>
             <Text
@@ -61,11 +74,11 @@ const PersonalityCard: React.FC<{ user: User }> = ({
                 h="26px"
                 fontSize="12px"
                 fontWeight="400"
-                bgColor="#FFB425"
+                bgColor="purpleTone"
                 color="white"
                 _focus={{ boxShadow: "none" }}
               >
-                View More
+                View Profile
               </Button>
             </Link>
           </Box>
@@ -90,6 +103,24 @@ const PersonalityCard: React.FC<{ user: User }> = ({
               fit="cover"
               borderRadius="full"
             />
+            {user.role === "premium" && (
+              <Flex
+                w="full"
+                pos="absolute"
+                top={0}
+                right={0}
+                justifyContent="flex-end"
+              >
+                <Badge
+                  fontSize="8px"
+                  fontWeight="400"
+                  borderRadius="full"
+                  px={2}
+                >
+                  PREMIUM
+                </Badge>
+              </Flex>
+            )}
             <Box>
               <Text fontSize="10px" color="GrayText">
                 {user.village}
@@ -109,10 +140,10 @@ const PersonalityCard: React.FC<{ user: User }> = ({
               h={8}
               fontSize="12px"
               fontWeight="400"
-              bgColor="#FFB425"
+              bgColor="purpleTone"
               color="white"
             >
-              View More
+              View Profile
             </Button>
           </Link>
         </VStack>
@@ -121,4 +152,4 @@ const PersonalityCard: React.FC<{ user: User }> = ({
   );
 };
 
-export default PersonalityCard;
+export default UserCard;

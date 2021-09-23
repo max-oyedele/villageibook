@@ -206,53 +206,7 @@ const Login = () => {
                 </Form>
               )}
             </Formik>
-
-            <HStack spacing={2} mt={8}>
-              <Divider />
-              <Text color="GrayText" fontSize="14px">
-                or
-              </Text>
-              <Divider />
-            </HStack>
-
-            {/* <HStack spacing={4} mt={8}>
-              <Button
-                w="full"
-                fontSize="12px"
-                fontWeight="400"
-                border="1px"
-                borderColor="#D5DBEC"
-                _focus={{boxShadow: "none"}}
-                leftIcon={
-                  <Image
-                    src="/icons/auth-facebook.svg"
-                    width="17px"
-                    height="17px"
-                    alt="facebook"
-                  />
-                }
-              >
-                Login with Facebook
-              </Button>
-              <Button
-                w="full"
-                fontSize="12px"
-                fontWeight="400"
-                border="1px"
-                borderColor="#D5DBEC"
-                _focus={{boxShadow: "none"}}
-                leftIcon={
-                  <Image
-                    src="/icons/auth-google.svg"
-                    width="17px"
-                    height="17px"
-                    alt="google"
-                  />
-                }
-              >
-                Login with Google
-              </Button>
-            </HStack> */}
+            
             <Box textAlign={{ base: "center", md: "right" }}>
               <Text fontSize="12px" color="purpleTone" mt={4}>
                 <Link href="/signup">Create Account</Link>

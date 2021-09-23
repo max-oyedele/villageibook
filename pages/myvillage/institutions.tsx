@@ -27,7 +27,6 @@ import LeftVillageCard from "components/LeftVillageCard";
 import InstitutionCard from "components/InstitutionCard";
 
 import UseLeftFixed from "hooks/use-left-fixed";
-import { villageName } from "data/browse";
 
 const Institutions: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -35,7 +34,7 @@ const Institutions: NextPage = () => {
   const { fixed } = UseLeftFixed();
   
   const dispatch: MyThunkDispatch = useDispatch();
-  const { posts, articles, users, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
+  const { users, articles, personalities, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
 
   return (
     <Fragment>

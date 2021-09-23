@@ -1,26 +1,5 @@
 import { Post } from "types/data";
 
-export const recentVillages = [
-  {
-    id: 0,
-    name: "Syedpur",
-    img: "/images/village-card1.png",
-    recentAt: 1,
-  },
-  {
-    id: 1,
-    name: "Panchpara",
-    img: "/images/village-card2.png",
-    recentAt: 2,
-  },
-  {
-    id: 2,
-    name: "Rasulpur",
-    img: "/images/village-card1.png",
-    recentAt: 4,
-  },
-];
-
 export const posts: Post[] = [
   {
     id: 0,
@@ -124,6 +103,27 @@ export const posts: Post[] = [
   },
 ];
 
+export const recentVillages = [
+  {
+    id: 0,
+    name: "Syedpur",
+    img: "/images/village-card1.png",
+    recentAt: 1,
+  },
+  {
+    id: 1,
+    name: "Panchpara",
+    img: "/images/village-card2.png",
+    recentAt: 2,
+  },
+  {
+    id: 2,
+    name: "Rasulpur",
+    img: "/images/village-card1.png",
+    recentAt: 4,
+  },
+];
+
 export const recentUsers = [
   {
     id: 0,
@@ -140,7 +140,14 @@ export const recentUsers = [
 ];
 
 export const totalGraduates = 1000;
-export const villageName = "jammura";
+export const village = {
+  id: 0,
+  name: "",
+  href: "",
+  uuid: "000",
+  img: "",
+  recentAt: 0
+};
 export const villageGraduates = 124;
 export const bangladeshGraduates = {
   barisal: {

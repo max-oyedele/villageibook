@@ -15,8 +15,10 @@ export type Upazila = {
 export type Village = {
   id: number;
   name: string;
-  href: string;
-  uuid: string;
+  href?: string;
+  uuid?: string;
+  img?: string;
+  recentAt?: number;
 }
 
 

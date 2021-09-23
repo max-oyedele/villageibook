@@ -7,6 +7,7 @@ import { regionSlice } from './slices/region'
 import { districtSlice } from './slices/district'
 import { upazilaSlice } from './slices/upazila'
 import { villageSlice } from './slices/village'
+import { browsePageSlice} from './slices/browsePage'
 import { villagePageSlice} from './slices/villagePage'
 
 const combinedReducers = combineReducers({
@@ -15,7 +16,8 @@ const combinedReducers = combineReducers({
   districtReducer: districtSlice.reducer,
   upazilaReducer: upazilaSlice.reducer,
   villageReducer: villageSlice.reducer,
-  villagePageReducer: villagePageSlice.reducer
+  villagePageReducer: villagePageSlice.reducer,
+  browsePageReducer: browsePageSlice.reducer
 })
 export type OurStore = ReturnType<typeof combinedReducers>
 

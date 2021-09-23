@@ -1,4 +1,85 @@
-import { User, Post, Article, Institution, Video } from "types/data";
+import { User, Post, Article, Personality, Institution, Video } from "types/data";
+
+export const users: User[] = [
+  {
+    id: 0,
+    name: "abdul ullah",
+    img: "/images/abdul.png",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
+    role: "premium",
+    details: {
+      photos: [
+        "/images/myphoto1.png",
+        "/images/myphoto2.png",
+        "/images/myphoto3.png",
+        "/images/myphoto3.png",
+      ],
+    },
+    village: "jammura",
+  },
+  {
+    id: 1,
+    name: "sadia ullah",
+    img: "/images/sadia.png",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
+    details: {
+      photos: [
+        "/images/myphoto1.png",
+        "/images/myphoto2.png",
+        "/images/myphoto3.png",
+        "/images/myphoto3.png",
+      ],
+    },
+    village: "jammura",
+  },
+  {
+    id: 2,
+    name: "taslim ahamed",
+    img: "/images/taslim.png",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
+    role: "premium",
+    details: {
+      photos: [
+        "/images/myphoto1.png",
+        "/images/myphoto2.png",
+        "/images/myphoto3.png",
+        "/images/myphoto3.png",
+      ],
+    },
+    village: "jammura",
+  },
+  {
+    id: 3,
+    name: "sarmin ahamed",
+    img: "/images/sarmin.png",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
+    role: "premium",
+    details: {
+      photos: [
+        "/images/myphoto1.png",
+        "/images/myphoto2.png",
+        "/images/myphoto3.png",
+        "/images/myphoto3.png",
+      ],
+    },
+    village: "jammura",
+  },
+  {
+    id: 4,
+    name: "sonia bahmi",
+    img: "/images/sonia.png",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
+    details: {
+      photos: [
+        "/images/myphoto1.png",
+        "/images/myphoto2.png",
+        "/images/myphoto3.png",
+        "/images/myphoto3.png",
+      ],
+    },
+    village: "jammura",
+  },
+];
 
 export const articles: Article[] = [
   {
@@ -38,7 +119,7 @@ export const articles: Article[] = [
   },
 ];
 
-export const users: User[] = [
+export const personalities: Personality[] = [
   {
     id: 0,
     name: "abdul ullah",
@@ -53,7 +134,7 @@ export const users: User[] = [
         "/images/myphoto3.png",
       ],
     },
-    village: "fatepur",
+    village: "jammura",
   },
   {
     id: 1,
@@ -68,7 +149,7 @@ export const users: User[] = [
         "/images/myphoto3.png",
       ],
     },
-    village: "kumri",
+    village: "jammura",
   },
   {
     id: 2,
@@ -84,7 +165,7 @@ export const users: User[] = [
         "/images/myphoto3.png",
       ],
     },
-    village: "mulaid",
+    village: "jammura",
   },
   {
     id: 3,
@@ -100,7 +181,7 @@ export const users: User[] = [
         "/images/myphoto3.png",
       ],
     },
-    village: "khulna",
+    village: "jammura",
   },
   {
     id: 4,
@@ -115,7 +196,7 @@ export const users: User[] = [
         "/images/myphoto3.png",
       ],
     },
-    village: "Rajshahi",
+    village: "jammura",
   },
 ];
 

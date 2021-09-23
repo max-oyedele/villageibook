@@ -25,7 +25,7 @@ const LeftVillageCard = ({fixed}) => {
           <Text fontSize="15px" mt={4} textTransform="capitalize">
             {userName}
           </Text>
-          <Text
+          {/* <Text
             fontSize="12px"
             fontWeight="400"
             color="GrayText"
@@ -33,7 +33,7 @@ const LeftVillageCard = ({fixed}) => {
             textTransform="capitalize"
           >
             {villageName}
-          </Text>
+          </Text> */}
         </Flex>
         <LeftVillageDivider />
         <Box p={4}>
