@@ -2,7 +2,7 @@ import {
   SerializedError,
 } from "@reduxjs/toolkit";
 
-import {District, SubDistrict, Village} from "types/schema"
+import {Country, Region, District, SubDistrict, Village} from "types/schema"
 import {Post, Article, User, Institution, Video, Personality} from "types/data"
 
 export enum Status {
@@ -23,34 +23,18 @@ export interface AuthState {
   jwt: any;
   status: Status;
   register: Register;
-  user?: any;
+  user?: User;
   error?: SerializedError;
 }
-
-export interface RegionState {
+export interface LocationState {
   status: Status;
-  regions: any[];
-  error?: SerializedError;
-}
-
-export interface DistrictState {
-  status: Status;
+  countries: Country[];
+  regions: Region[];
   districts: District[];
-  error?: SerializedError;
-}
-
-export interface SubDistrictState {
-  status: Status;
   subDistricts: SubDistrict[];
-  error?: SerializedError;
-}
-
-export interface VillageState {
-  status: Status;
   villages: Village[];
   error?: SerializedError;
 }
-
 export interface BrowsePageState {
   status: Status;
   pageData: {

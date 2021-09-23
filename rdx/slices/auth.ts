@@ -20,6 +20,10 @@ import { Status, Register, AuthState } from "../types";
 //   }
 // })
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export const login = createAsyncThunk(
   "auth/login",
   async (credentials: { email: string; password: string }, thunkAPI) => {
@@ -66,6 +70,7 @@ export const signup = createAsyncThunk(
       // };
 
       // return response.data;
+      await sleep(2000);
       return {};
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });

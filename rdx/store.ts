@@ -3,19 +3,13 @@ import { createWrapper, MakeStore, HYDRATE } from 'next-redux-wrapper'
 import logger from 'redux-logger'
 
 import { authSlice } from './slices/auth'
-import { regionSlice } from './slices/region'
-import { districtSlice } from './slices/district'
-import { subDistrictSlice } from './slices/subDistrict'
-import { villageSlice } from './slices/village'
+import { locationSlice } from './slices/location'
 import { browsePageSlice} from './slices/browsePage'
 import { villagePageSlice} from './slices/villagePage'
 
 const combinedReducers = combineReducers({
   authReducer: authSlice.reducer,
-  regionReducer: regionSlice.reducer,
-  districtReducer: districtSlice.reducer,
-  subDistrictReducer: subDistrictSlice.reducer,
-  villageReducer: villageSlice.reducer,
+  locationReducer: locationSlice.reducer,
   villagePageReducer: villagePageSlice.reducer,
   browsePageReducer: browsePageSlice.reducer
 })
@@ -34,7 +28,7 @@ const rootReducer = (state: ReturnType<typeof combinedReducers>, action: AnyActi
 
 export const store = configureStore({
   reducer: rootReducer,
-  // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 })
 const makeStore: MakeStore = () => store
 

@@ -9,9 +9,11 @@ import {
 } from "@chakra-ui/react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDistricts } from "rdx/slices/district";
-import { fetchSubDistricts } from "rdx/slices/subDistrict";
-import { fetchVillages } from "rdx/slices/village";
+import {
+  fetchDistricts,
+  fetchSubDistricts,
+  fetchVillages,
+} from "rdx/slices/location";
 import { setVillage } from "rdx/slices/browsePage";
 import { OurStore } from "rdx/store";
 
@@ -22,31 +24,26 @@ const SearchBar = (props) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const dispatch = useDispatch();
-  const { status: districtStatus, districts } = useSelector(
-    (state: OurStore) => state.districtReducer
-  );
-  const { status: subDistrictStatus, subDistricts } = useSelector(
-    (state: OurStore) => state.subDistrictReducer
-  );
-  const { status: villageStatus, villages } = useSelector(
-    (state: OurStore) => state.villageReducer
+  const { status, districts, subDistricts, villages } = useSelector(
+    (state: OurStore) => state.locationReducer
   );
 
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
-  const [selectedSubDistrict, setSelectedSubDistrict] = useState<SubDistrict>(null);
+  const [selectedSubDistrict, setSelectedSubDistrict] =
+    useState<SubDistrict>(null);
   // const [selectedVillage, setSelectedVillage] = useState<Village>(null);
-  
+
   useEffect(() => {
     dispatch(fetchDistricts());
   }, []);
-  useEffect(()=>{
-    setSelectedSubDistrict(null)
-    dispatch(fetchSubDistricts({district: selectedDistrict?.href}));
-  }, [selectedDistrict])
-  useEffect(()=>{
-    props.setSelectedVillage(null)
-    dispatch(fetchVillages({subDistrict: selectedSubDistrict?.href}));
-  }, [selectedSubDistrict])
+  useEffect(() => {
+    setSelectedSubDistrict(null);
+    dispatch(fetchSubDistricts({ district: selectedDistrict?.href }));
+  }, [selectedDistrict]);
+  useEffect(() => {
+    props.setSelectedVillage(null);
+    dispatch(fetchVillages({ subDistrict: selectedSubDistrict?.href }));
+  }, [selectedSubDistrict]);
 
   return (
     <Fragment>
@@ -90,9 +87,11 @@ const SearchBar = (props) => {
               fontWeight="400"
               color="white"
               borderRadius="6px"
-              _focus={{boxShadow: "none"}}
+              _focus={{ boxShadow: "none" }}
               ml={6}
-              onClick={()=>{dispatch(setVillage(props.selectedVillage))}}
+              onClick={() => {
+                dispatch(setVillage(props.selectedVillage));
+              }}
             >
               Find
             </Button>

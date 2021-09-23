@@ -68,21 +68,14 @@ const Signup = () => {
   });
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { status, register, user, error } = useSelector(
+  const { status, register, error } = useSelector(
     (state: OurStore) => state.authReducer
   );
 
   const router = useRouter();
   const toast = useToast();
   useEffect(() => {
-    if (register === Register.COMPLETED) {
-      toast({
-        title: "Account created successfully!",
-        description: "",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+    if (register === Register.STEP2) {
       dispatch(reset());
       router.push("/account");
     }
@@ -301,14 +294,14 @@ const Signup = () => {
               )}
             </Formik>
 
-            <Box textAlign={{ base: "center", md: "right" }}>
-              <Text fontSize="12px" mt={4}>
+            <HStack justifyContent={{ base: "center", md: "right" }} mt={6}>
+              <Text fontSize="12px" lineHeight={0}>
                 Already have an account?
-                <Text display="inline" color="purpleTone" ml={2}>
-                  <Link href="/login">Login</Link>
-                </Text>
               </Text>
-            </Box>
+              <Text display="inline" color="purpleTone" lineHeight={0}>
+                <Link href="/login">Login</Link>
+              </Text>
+            </HStack>
           </Flex>
         </Box>
 

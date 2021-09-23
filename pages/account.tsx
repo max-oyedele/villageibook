@@ -41,14 +41,28 @@ import {
 import * as yup from "yup";
 
 import { MyThunkDispatch, OurStore } from "rdx/store";
-import { login } from "rdx/slices/auth";
+import { login, reset } from "rdx/slices/auth";
 
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import SelectBox from "components/widgets/SelectBox";
 
-import { degrees, countries } from "constants/account";
+import { Register } from "rdx/types";
+import { Degree } from "types/data";
+
+export const degrees: Degree[] = [
+  {
+    id: 0,
+    label: "Master",
+    value: "master",
+  },
+  {
+    id: 1,
+    label: "Bachelor's",
+    value: "bachelor",
+  },
+];
 
 const Account: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -63,20 +77,35 @@ const Account: NextPage = () => {
   const [selectedGraduatedIn, setSelectedGraduatedIn] = useState(null);
   const [university, setUniversity] = useState<string | null>(null);
 
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [selectedSubDistrict, setSelectedSubDistrict] = useState(null);
   const [village, setVillage] = useState<string | null>(null);
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { jwt, error } = useSelector((state: OurStore) => state.authReducer);
-  const { districts } = useSelector((state: OurStore) => state.districtReducer);
-  const { subDistricts } = useSelector((state: OurStore) => state.subDistrictReducer);
-  const { villages } = useSelector((state: OurStore) => state.villageReducer);
+  const { jwt, register, user, error } = useSelector(
+    (state: OurStore) => state.authReducer
+  );
+  const { countries, regions, districts, subDistricts, villages } = useSelector(
+    (state: OurStore) => state.locationReducer
+  );
 
   const router = useRouter();
   const toast = useToast();
   const [cookie, setCookie] = useCookies(["jwt"]);
   useEffect(() => {
+    if (register === Register.COMPLETED) {
+      toast({
+        title: "Account created successfully!",
+        description: "",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      dispatch(reset());
+      router.push("/login");
+    }
     if (error) {
       toast({
         title: "Login Failed!",
@@ -111,15 +140,17 @@ const Account: NextPage = () => {
               </Text>
               <Divider my={6} />
               <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
-                <Box>
-                  <Text fontSize="13px" mb={4}>
-                    General information
-                  </Text>
-                  <InputBox label="First name" onChange={setFirstname} />
-                  <InputBox label="Last name" onChange={setLastname} />
-                  <InputBox label="Email" onChange={setEmail} />
-                  <InputBox label="Password" onChange={setPassword} />
-                </Box>
+                {register === Register.COMPLETED && (
+                  <Box>
+                    <Text fontSize="13px" mb={4}>
+                      General information
+                    </Text>
+                    <InputBox label="First name" onChange={setFirstname} />
+                    <InputBox label="Last name" onChange={setLastname} />
+                    <InputBox label="Email" onChange={setEmail} />
+                    <InputBox label="Password" onChange={setPassword} />
+                  </Box>
+                )}
                 <Box>
                   <Text fontSize="13px" mb={4}>
                     Education info
@@ -142,6 +173,18 @@ const Account: NextPage = () => {
                   <Text fontSize="13px" mb={4}>
                     Location
                   </Text>
+                  <InputBoxWithSelect
+                    label="Country"
+                    options={countries}
+                    selectedOption={selectedCountry}
+                    setSelectedOption={setSelectedCountry}
+                  />
+                  <InputBoxWithSelect
+                    label="Region"
+                    options={regions}
+                    selectedOption={selectedRegion}
+                    setSelectedOption={setSelectedRegion}
+                  />
                   <InputBoxWithSelect
                     label="District"
                     options={districts}
@@ -191,7 +234,7 @@ const Account: NextPage = () => {
         </HStack>
       </Container>
 
-      <Box mt={20}>
+      <Box w="full" pos="fixed" bottom={0}>
         <Footer />
       </Box>
     </Fragment>

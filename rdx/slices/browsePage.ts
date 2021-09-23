@@ -36,7 +36,7 @@ export const fetchBrowsePageData = createAsyncThunk(
         village,
         villageGraduates,
         countryGraduates,
-        bangladeshGraduates,
+        bangladeshGraduates,        
       };
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });

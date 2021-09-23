@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { useCookies } from "react-cookie";
-import cookie from "cookie";
 
 import { BiMenu, BiX } from "react-icons/bi";
 import {
@@ -18,20 +17,42 @@ import {
   Avatar,
   Image,
   Button,
+  Progress,
 } from "@chakra-ui/react";
 
 import Logo from "components/Logo";
 import SocialLinkBar from "components/SocialLinkBar";
-import { tabs } from "constants/headerTabs";
-import { OurStore } from "rdx/store";
 
+import { OurStore } from "rdx/store";
 import { reset } from "rdx/slices/auth";
+import { Status, Register } from "rdx/types";
+
+const tabs = [
+  {
+    id: 0,
+    name: "Browse",
+    path: "/",
+  },
+  {
+    id: 1,
+    name: "Village",
+    path: "/myvillage",
+  },
+  {
+    id: 2,
+    name: "Graduates",
+    path: "/graduates",
+  },
+];
 
 const Header = () => {
   const router = useRouter();
   const { pathname } = router;
 
-  const { user } = useSelector((state: OurStore) => state.authReducer);
+  const { status, register, error } = useSelector(
+    (state: OurStore) => state.authReducer
+  );
+
   const dispatch = useDispatch();
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
 
@@ -39,65 +60,96 @@ const Header = () => {
   const [showMenuMobile, setShowMenuMobile] = useState(false);
 
   const [activeTab, setActiveTab] = useState(
-    pathname.includes("myvillage") ? tabs[1] : pathname.includes("graduates") ? tabs[2] : tabs[0]
+    pathname.includes("myvillage")
+      ? tabs[1]
+      : pathname.includes("graduates")
+      ? tabs[2]
+      : tabs[0]
   );
 
   const logout = () => {
     dispatch(reset());
     removeCookie("jwt");
-    router.push('/');
+    router.push("/");
   };
 
   return (
     <Fragment>
       {breakpointValue === "md" && (
-        <Flex
-          sx={{ position: "sticky", top: 0, zIndex: 10 }}
-          bg="white"
-          justifyContent="space-between"
-          px={6}
-          shadow="md"
-        >
-          <HStack spacing={6} mr={1}>
-            <Logo />
-            {tabs.map((tab) => (
-              <Link key={tab.name} href={tab.path}>
-                <Flex
-                  h="55px"
-                  alignItems="center"
-                  fontSize="13px"
-                  borderBottom={activeTab.name === tab.name ? "2px" : ""}
-                  borderColor={activeTab.name === tab.name ? "purpleTone" : ""}
-                  color={
-                    activeTab.name === tab.name ? "purpleTone" : "GrayText"
-                  }
-                  cursor="pointer"
-                >
-                  {tab.name}
-                </Flex>
-              </Link>
-            ))}
-          </HStack>
-          <HStack spacing={6} ml={1}>
-            <Box fontSize="12px">
-              <Link href="/account">ACCOUNT</Link>
-            </Box>
-            <Box
-              px={4}
-              h="24px"
-              textAlign="center"
-              color="purpleTone"
-              fontSize="12px"
-              border="1px"
-              borderColor="purpleTone"
-              borderRadius="6px"
-              cursor="pointer"
-              onClick={() => logout()}
+        <Box>
+          {register === Register.COMPLETED && (
+            <Flex
+              sx={{ position: "sticky", top: 0, zIndex: 10 }}
+              bg="white"
+              justifyContent="space-between"
+              px={6}
+              shadow="md"
             >
-              <Text>LOGOUT</Text>
+              <HStack spacing={6} mr={1}>
+                <Logo />
+                {tabs.map((tab) => (
+                  <Link key={tab.name} href={tab.path}>
+                    <Flex
+                      h="55px"
+                      alignItems="center"
+                      fontSize="13px"
+                      borderBottom={activeTab.name === tab.name ? "2px" : ""}
+                      borderColor={
+                        activeTab.name === tab.name ? "purpleTone" : ""
+                      }
+                      color={
+                        activeTab.name === tab.name ? "purpleTone" : "GrayText"
+                      }
+                      cursor="pointer"
+                    >
+                      {tab.name}
+                    </Flex>
+                  </Link>
+                ))}
+              </HStack>
+              <HStack spacing={6} ml={1}>
+                <Box fontSize="12px">
+                  <Link href="/account">ACCOUNT</Link>
+                </Box>
+                <Box
+                  px={4}
+                  h="24px"
+                  textAlign="center"
+                  color="purpleTone"
+                  fontSize="12px"
+                  border="1px"
+                  borderColor="purpleTone"
+                  borderRadius="6px"
+                  cursor="pointer"
+                  onClick={() => logout()}
+                >
+                  <Text>LOGOUT</Text>
+                </Box>
+              </HStack>
+            </Flex>
+          )}
+          {
+            (register === Register.STEP1 || register === Register.STEP2) && 
+            <Flex
+              sx={{ position: "sticky", top: 0, zIndex: 10 }}
+              bg="white"
+              justifyContent="space-between"
+              alignItems="center"
+              h="55px"
+              px={6}
+              shadow="md"
+            >
+              <Logo />
+              <Text>Please Fill the Form below.</Text>
+              <Box></Box>
+            </Flex>
+          }
+          {status === Status.LOADING && (
+            <Box w="full">
+              <Progress h="2px" size="xs" isIndeterminate />
             </Box>
-          </HStack>
-        </Flex>
+          )}
+        </Box>
       )}
 
       {breakpointValue === "base" && (
