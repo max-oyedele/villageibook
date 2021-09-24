@@ -10,6 +10,7 @@ export const posts: Post[] = [
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
       role: "premium",
       village: "fatepur",
+      uuid: "8897"
     },
     lastAt: "3 hours ago",
     contents: {
@@ -27,6 +28,7 @@ export const posts: Post[] = [
       img: "/images/sadia.png",
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
       village: "kumri",
+      uuid: "42342"
     },
     lastAt: "5 hours ago",
     contents: {
@@ -51,6 +53,7 @@ export const posts: Post[] = [
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
       role: "premium",
       village: "mulaid",
+      uuid: "3454"
     },
     lastAt: "1 day ago",
     contents: {
@@ -69,6 +72,7 @@ export const posts: Post[] = [
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
       role: "premium",
       village: "khulna",
+      uuid: "2345"
     },
     lastAt: "1 day ago",
     contents: {
@@ -86,6 +90,7 @@ export const posts: Post[] = [
       img: "/images/sonia.png",
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
       village: "Rajshahi",
+      uuid: "1234"
     },
     lastAt: "1 day ago",
     contents: {
@@ -130,12 +135,14 @@ export const recentUsers = [
     name: "sarmin begum",
     img: "/images/sarmin.png",
     recentAt: 1,
+    uuid: "3355"
   },
   {
     id: 1,
     name: "Nusrat Rahman",
     img: "/images/sonia.png",
     recentAt: 2,
+    uuid: "34555"
   },
 ];
 

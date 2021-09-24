@@ -9,6 +9,7 @@ export type User = {
   desc?: string;
   village?: string;
   recentAt?: number;
+  uuid: string;
 }
 
 export type Post = {
@@ -60,15 +61,3 @@ export type Video = {
   img: string;
   village?: string;
 }
-
-export type Degree = {
-  id: number;
-  label: string;
-  value: string;
-};
-
-export type Country = {
-  id: number;
-  label: string;
-  value: string;
-};

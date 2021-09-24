@@ -35,4 +35,8 @@ export type Village = {
   recentAt?: number;
 }
 
-
+export type Degree = {
+  id: number;
+  label: string;
+  value: string;
+};

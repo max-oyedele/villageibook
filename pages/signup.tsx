@@ -61,34 +61,11 @@ const Signup = () => {
 
   const breakpointValue = useBreakpointValue({
     base: "base",
-    sm: "sm",
     md: "md",
-    lg: "lg",
-    xl: "xl",
   });
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { status, register, error } = useSelector(
-    (state: OurStore) => state.authReducer
-  );
-
-  const router = useRouter();
-  const toast = useToast();
-  useEffect(() => {
-    if (register === Register.STEP2) {
-      dispatch(reset());
-      router.push("/account");
-    }
-    if (error) {
-      toast({
-        title: "Signup is Failed!",
-        description: error,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  }, [register, error]);
+  const { status } = useSelector((state: OurStore) => state.authReducer);
 
   return (
     <Fragment>

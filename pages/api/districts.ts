@@ -5,6 +5,7 @@ const baseUrl = "https://villageibook-api.abosit.com";
 
 async function handler(req, res) {
   const { access_token } = await fetchToken();
+  const { region } = req.query;
 
   switch (req.method) {
     case "GET":
@@ -17,8 +18,14 @@ async function handler(req, res) {
 
   async function getDistricts() {
     try {
-      await fetchWrapper.get(baseUrl + "/districts.json", access_token)
-      .then(response=>{
+      let district = fetchWrapper.get(baseUrl + "/districts.json", access_token);
+      
+      if(region){
+        const href = JSON.parse(region)?.href;
+        district = fetchWrapper.get(baseUrl + `/region/[href=${href}]/districts.json`, access_token);
+      }
+
+      await district.then(response=>{
         res.status(200).json(response);
       })
     } catch (error) {

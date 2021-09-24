@@ -63,18 +63,18 @@ export const fetchCountries = createAsyncThunk('location/countries', async (_, t
   }
 })
 
-export const fetchRegions = createAsyncThunk('location/regions', async (_, thunkAPI) => {
+export const fetchRegions = createAsyncThunk('location/regions', async (params:any, thunkAPI) => {
   try {
-    const response = await axios.get('api/regions')
+    const response = await axios.get('api/regions', {params})
     return response.data.regions;
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.message })
   }
 })
 
-export const fetchDistricts = createAsyncThunk('location/districts', async (_, thunkAPI) => {
+export const fetchDistricts = createAsyncThunk('location/districts', async (params:any, thunkAPI) => {
   try {
-    const response = await axios.get('api/districts')
+    const response = await axios.get('api/districts', {params})
     return response.data.districts; // data: {pagination: {}, districts: []}
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.message })

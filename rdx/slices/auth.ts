@@ -9,6 +9,14 @@ import axios from "axios";
 import querystring from "querystring";
 
 import { Status, Register, AuthState } from "../types";
+import {
+  Degree,
+  Country,
+  Region,
+  District,
+  SubDistrict,
+  Village,
+} from "types/schema";
 
 // export const fetchUser = createAsyncThunk('auth/me', async (_, thunkAPI) => {
 //   try {
@@ -21,7 +29,7 @@ import { Status, Register, AuthState } from "../types";
 // })
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 export const login = createAsyncThunk(
@@ -70,8 +78,13 @@ export const signup = createAsyncThunk(
       // };
 
       // return response.data;
-      await sleep(2000);
-      return {};
+      await sleep(4000);
+      return {
+        id: 584,
+        name: "sdf nbb",
+        img: "/images/avatar.png",
+        uuid: "879a1f43-d496-43eb-a658-648071820d31"
+      };
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });
       return thunkAPI.rejectWithValue(error.response.data);
@@ -83,25 +96,31 @@ export const submit = createAsyncThunk(
   "auth/submit",
   async (
     body: {
-      education: { degree: string; graduatedIn: string; university: string };
+      uuid: string;
+      general?: {
+        firstname: string;
+        lastname: string;
+        email: string;
+        password: string;
+      };
+      education: { degree: Degree; graduatedIn: Country; university: string };
       location: {
-        country: string;
-        region: string;
-        district: string;
-        subDistrict: string;
-        village: string;
+        country: Country;
+        region: Region;
+        district: District;
+        subDistrict: SubDistrict;
+        village: Village;
       };
     },
     thunkAPI
   ) => {
     try {
-      // const response = await axios.post<{ user: any }>(
-      //   "api/auth/submit",
-      //   body
-      // );
-
-      // return response.data;
-      return {};
+      const response = await axios.post<{ user: any }>(
+        "api/auth/submit",
+        body
+      );
+      console.log('responsedata', response.data)
+      return response.data;
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });
       return thunkAPI.rejectWithValue(error.response.data);
@@ -119,11 +138,17 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
 });
 
 /********************************** */
-const initialState = {
+const initialState: AuthState = {
   jwt: null,
   status: Status.IDLE,
   register: Register.STEP1,
-  user: null,
+  // user: null,
+  user: {
+    id: 584,
+    name: "sdf nbb",
+    img: "/images/avatar.png",
+    uuid: "879a1f43-d496-43eb-a658-648071820d31"
+  },
   error: null,
 };
 
@@ -131,10 +156,7 @@ export const authSlice = createSlice({
   name: "auth",
   initialState: initialState,
   reducers: {
-    updateAccessToken(
-      state: AuthState,
-      action: PayloadAction<{ token: string }>
-    ) {
+    updateJWT: (state: AuthState, action: PayloadAction<{ jwt: any }>) => {
       state.jwt = action.payload;
     },
     reset: () => initialState,
@@ -151,11 +173,12 @@ export const authSlice = createSlice({
     });
     builder.addCase(login.rejected, (state, action) => {
       // state = { ...internalInitialState, error: action.error.message }
-      state.error = (
-        action.payload as { error: string; error_description: string }
-      ).error_description;
+      // state.error = (
+      //   action.payload as { error: string; error_description: string }
+      // ).error_description;
       state.status = Status.IDLE;
       state.jwt = null;
+      state.error = action.payload;
       // throw new Error(action.error.message)
     });
     builder.addCase(signup.pending, (state, action) => {
@@ -168,10 +191,8 @@ export const authSlice = createSlice({
       state.status = Status.IDLE;
     });
     builder.addCase(signup.rejected, (state, action) => {
-      state.error = (
-        action.payload as { error: string; message: string }
-      ).message;
       state.status = Status.IDLE;
+      state.error = action.payload;
     });
     builder.addCase(submit.pending, (state, action) => {
       state.status = Status.LOADING;
@@ -183,10 +204,8 @@ export const authSlice = createSlice({
       state.status = Status.IDLE;
     });
     builder.addCase(submit.rejected, (state, action) => {
-      state.error = (
-        action.payload as { error: string; message: string }
-      ).message;
       state.status = Status.IDLE;
+      state.error = action.payload;
     });
     builder.addCase(logout.pending, (state) => {
       state.status = Status.LOADING;
@@ -203,4 +222,4 @@ export const authSlice = createSlice({
   },
 });
 
-export const { updateAccessToken, reset } = authSlice.actions;
+export const { updateJWT, reset } = authSlice.actions;

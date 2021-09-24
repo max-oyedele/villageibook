@@ -1,5 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
+import { InferGetServerSidePropsType } from "next";
 
 import {
   Container,
@@ -19,6 +20,7 @@ import {
 
 import { useSelector, useDispatch } from "react-redux";
 import { MyThunkDispatch, OurStore } from "rdx/store";
+import { updateJWT } from "rdx/slices/auth";
 import { fetchBrowsePageData } from "rdx/slices/browsePage";
 
 import Header from "components/Header";
@@ -38,24 +40,31 @@ import VideoBox from "components/VideoBox";
 
 import { parseCookie } from "helpers/parse-cookie";
 
-const Home: NextPage = () => {
+const Home: NextPage<{jwt: any}> = ({ jwt }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const tabsMobile = ["Feed", "My Village", "Graduates"];
   const [activeTab, setActiveTab] = useState(tabsMobile[0]);
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { posts, recentVillages, recentUsers, totalGraduates, village, villageGraduates, bangladeshGraduates } = useSelector((state:OurStore)=>state.browsePageReducer.pageData)
+  const {
+    posts,
+    recentVillages,
+    recentUsers,
+    totalGraduates,
+    village,
+    villageGraduates,
+    bangladeshGraduates,
+  } = useSelector((state: OurStore) => state.browsePageReducer.pageData);
 
-  useEffect(()=>{
-    dispatch(fetchBrowsePageData(selectedVillage?.value))
-  }, [])
+  useEffect(() => {
+    dispatch(updateJWT({jwt}));
+    dispatch(fetchBrowsePageData(selectedVillage?.value));
+  }, [jwt]);
 
-  const [selectedVillage, setSelectedVillage] = useState(null)
+  const [selectedVillage, setSelectedVillage] = useState(null);
 
-  useEffect(()=>{
-    
-  }, [selectedVillage])
+  useEffect(() => {}, [selectedVillage]);
 
   return (
     <Fragment>
@@ -63,7 +72,10 @@ const Home: NextPage = () => {
       <Container maxW="container.xl" px={6}>
         <PageTitle title="Find Village" />
         <Box px={{ lg: 20 }}>
-          <SearchBar selectedVillage={selectedVillage} setSelectedVillage={setSelectedVillage} />
+          <SearchBar
+            selectedVillage={selectedVillage}
+            setSelectedVillage={setSelectedVillage}
+          />
         </Box>
 
         {breakpointValue === "base" && (
@@ -198,7 +210,7 @@ const Home: NextPage = () => {
           </Box>
 
           {breakpointValue === "md" && (
-            <Box w="25%">              
+            <Box w="25%">
               <Text fontSize="24px" my={10}>
                 Graduates
               </Text>
@@ -266,7 +278,7 @@ export async function getServerSideProps({ req }) {
 
   if (jwt) {
     return {
-      props: {},
+      props: { jwt },
     };
   }
   return {

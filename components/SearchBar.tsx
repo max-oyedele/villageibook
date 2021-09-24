@@ -34,15 +34,15 @@ const SearchBar = (props) => {
   // const [selectedVillage, setSelectedVillage] = useState<Village>(null);
 
   useEffect(() => {
-    dispatch(fetchDistricts());
+    dispatch(fetchDistricts(null));
   }, []);
   useEffect(() => {
     setSelectedSubDistrict(null);
-    dispatch(fetchSubDistricts({ district: selectedDistrict?.href }));
+    dispatch(fetchSubDistricts({ district: selectedDistrict }));
   }, [selectedDistrict]);
   useEffect(() => {
     props.setSelectedVillage(null);
-    dispatch(fetchVillages({ subDistrict: selectedSubDistrict?.href }));
+    dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
   }, [selectedSubDistrict]);
 
   return (

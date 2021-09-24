@@ -16,6 +16,7 @@ export const users: User[] = [
       ],
     },
     village: "jammura",
+    uuid: "23423"
   },
   {
     id: 1,
@@ -31,6 +32,7 @@ export const users: User[] = [
       ],
     },
     village: "jammura",
+    uuid: "23455"
   },
   {
     id: 2,
@@ -47,6 +49,7 @@ export const users: User[] = [
       ],
     },
     village: "jammura",
+    uuid: "43534"
   },
   {
     id: 3,
@@ -63,6 +66,7 @@ export const users: User[] = [
       ],
     },
     village: "jammura",
+    uuid: "345435"
   },
   {
     id: 4,
@@ -78,6 +82,7 @@ export const users: User[] = [
       ],
     },
     village: "jammura",
+    uuid: "345435"
   },
 ];
 

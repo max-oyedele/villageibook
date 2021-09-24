@@ -1,7 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useCookies } from "react-cookie";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -52,39 +50,10 @@ const Login = () => {
   const [passwordShow, setPasswordShow] = useState(false);
   const breakpointValue = useBreakpointValue({
     base: "base",
-    sm: "sm",
     md: "md",
-    lg: "lg",
-    xl: "xl",
   });
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { jwt, status, user, error } = useSelector(
-    (state: OurStore) => state.authReducer
-  );
-
-  const router = useRouter();
-  const toast = useToast();
-  const [cookie, setCookie] = useCookies(["jwt"]);
-  useEffect(() => {
-    if (error) {
-      toast({
-        title: "Login Failed!",
-        description: error,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-    if (jwt) {
-      setCookie("jwt", JSON.stringify(jwt), {
-        path: "/",
-        maxAge: jwt.expires_in, // Expirey time in seconds
-        sameSite: true,
-      });
-      router.push("/");
-    }
-  }, [jwt, error]);
 
   return (
     <Fragment>
@@ -195,7 +164,7 @@ const Login = () => {
                     size="md"
                     fontSize="12px"
                     fontWeight="400"
-                    _focus={{boxShadow: "none"}}
+                    _focus={{ boxShadow: "none" }}
                     w="full"
                     mt={8}
                     isLoading={isSubmitting}
@@ -205,7 +174,7 @@ const Login = () => {
                 </Form>
               )}
             </Formik>
-            
+
             <Box textAlign={{ base: "center", md: "right" }}>
               <Text fontSize="12px" color="purpleTone" mt={4}>
                 <Link href="/signup">Create Account</Link>

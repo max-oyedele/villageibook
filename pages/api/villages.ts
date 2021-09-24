@@ -20,7 +20,8 @@ async function handler(req, res) {
     try {
       let village = fetchWrapper.get(baseUrl + "/villages.json", access_token);
       if (subDistrict) {
-        village = fetchWrapper.get(baseUrl + `/sub-district/[href=${subDistrict}]/villages.json`, access_token);
+        const href = JSON.parse(subDistrict)?.href;
+        village = fetchWrapper.get(baseUrl + `/sub-district/[href=${href}]/villages.json`, access_token);
       }
 
       await village.then((response) => {

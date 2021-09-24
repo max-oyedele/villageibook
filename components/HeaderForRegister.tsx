@@ -27,49 +27,19 @@ import { OurStore } from "rdx/store";
 import { reset } from "rdx/slices/auth";
 import { Status, Register } from "rdx/types";
 
-const tabs = [
-  {
-    id: 0,
-    name: "Browse",
-    path: "/",
-  },
-  {
-    id: 1,
-    name: "Village",
-    path: "/myvillage",
-  },
-  {
-    id: 2,
-    name: "Graduates",
-    path: "/graduates",
-  },
-];
-
-const Header = () => {
+const HeaderForRegister = () => {
   const router = useRouter();
   const { pathname } = router;
 
-  const { status } = useSelector((state: OurStore) => state.authReducer);
+  const { status, register, jwt, user, error } = useSelector(
+    (state: OurStore) => state.authReducer
+  );
 
   const dispatch = useDispatch();
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);
-
-  const [activeTab, setActiveTab] = useState(
-    pathname.includes("myvillage")
-      ? tabs[1]
-      : pathname.includes("graduates")
-      ? tabs[2]
-      : tabs[0]
-  );
-
-  const logout = () => {
-    dispatch(reset());
-    removeCookie("jwt");
-    router.push("/");
-  };
 
   return (
     <Fragment>
@@ -79,50 +49,14 @@ const Header = () => {
             sx={{ position: "sticky", top: 0, zIndex: 10 }}
             bg="white"
             justifyContent="space-between"
+            alignItems="center"
+            h="55px"
             px={6}
             shadow="md"
           >
-            <HStack spacing={6} mr={1}>
-              <Logo />
-              {tabs.map((tab) => (
-                <Link key={tab.name} href={tab.path}>
-                  <Flex
-                    h="55px"
-                    alignItems="center"
-                    fontSize="13px"
-                    borderBottom={activeTab.name === tab.name ? "2px" : ""}
-                    borderColor={
-                      activeTab.name === tab.name ? "purpleTone" : ""
-                    }
-                    color={
-                      activeTab.name === tab.name ? "purpleTone" : "GrayText"
-                    }
-                    cursor="pointer"
-                  >
-                    {tab.name}
-                  </Flex>
-                </Link>
-              ))}
-            </HStack>
-            <HStack spacing={6} ml={1}>
-              <Box fontSize="12px">
-                <Link href="/accountedit">ACCOUNT</Link>
-              </Box>
-              <Box
-                px={4}
-                h="24px"
-                textAlign="center"
-                color="purpleTone"
-                fontSize="12px"
-                border="1px"
-                borderColor="purpleTone"
-                borderRadius="6px"
-                cursor="pointer"
-                onClick={() => logout()}
-              >
-                <Text>LOGOUT</Text>
-              </Box>
-            </HStack>
+            <Logo />
+            <Text>Please Fill the Form below.</Text>
+            <Box></Box>
           </Flex>
 
           {status === Status.LOADING && (
@@ -175,18 +109,6 @@ const Header = () => {
                   Jammura
                 </Text>
               </Flex>
-              <VStack divider={<StackDivider />} mt={8}>
-                {tabs.map((tab) => (
-                  <Flex
-                    key={tab.name}
-                    h="55px"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Link href={tab.path}>{tab.name}</Link>
-                  </Flex>
-                ))}
-              </VStack>
 
               <Box mt={16}>
                 <SocialLinkBar />
@@ -199,4 +121,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderForRegister;
