@@ -74,9 +74,8 @@ const Header = () => {
   return (
     <Fragment>
       {breakpointValue === "md" && (
-        <Box>
+        <Box pos="sticky" top={0} zIndex={10}>
           <Flex
-            sx={{ position: "sticky", top: 0, zIndex: 10 }}
             bg="white"
             justifyContent="space-between"
             px={6}

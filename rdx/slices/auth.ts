@@ -116,7 +116,6 @@ export const submit = createAsyncThunk(
     thunkAPI
   ) => {
     try {
-      console.log('werfsdf', body.avatar)
       const response = await axios.post<{ user: any }>(
         "api/auth/submit",
         body
