@@ -111,10 +111,12 @@ export const submit = createAsyncThunk(
         subDistrict: SubDistrict;
         village: Village;
       };
+      avatar: FormData
     },
     thunkAPI
   ) => {
     try {
+      console.log('werfsdf', body.avatar)
       const response = await axios.post<{ user: any }>(
         "api/auth/submit",
         body

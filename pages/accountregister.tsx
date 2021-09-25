@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import type { NextPage } from "next";
 
 import { useRouter } from "next/router";
@@ -57,11 +57,13 @@ import HeaderForRegister from "components/HeaderForRegister";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import SelectBox from "components/widgets/SelectBox";
+import AvatarUpload from "components/widgets/AvatarUpload";
 
 import { Register } from "rdx/types";
 import { submit } from "rdx/slices/auth";
 import { Degree } from "types/schema";
 import { Country, Region, District, SubDistrict, Village } from "types/schema";
+import { filterUndefined } from "@chakra-ui/react-utils/node_modules/@chakra-ui/utils";
 
 export const degrees: Degree[] = [
   {
@@ -100,6 +102,7 @@ const AccountToRegister: NextPage = () => {
   const [selectedSubDistrict, setSelectedSubDistrict] =
     useState<SubDistrict>(null);
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
+  const [avatar, setAvatar] = useState(null)
 
   const dispatch: MyThunkDispatch = useDispatch();
   const {
@@ -139,7 +142,7 @@ const AccountToRegister: NextPage = () => {
   return (
     <Fragment>
       <HeaderForRegister />
-      <Container maxW="container.xl" px={6} mb={48}>
+      <Container maxW="container.xl" px={6}>
         <PageTitle title="Account" />
 
         <Formik
@@ -158,6 +161,10 @@ const AccountToRegister: NextPage = () => {
           onSubmit={async (values, actions) => {
             // console.log({ values, actions });
 
+            const avatarBody = new FormData();
+            avatarBody.append("file", avatar);
+            console.log('avatar body', avatarBody)
+
             const body = {
               uuid: user.uuid,
               education: {
@@ -172,8 +179,9 @@ const AccountToRegister: NextPage = () => {
                 subDistrict: selectedSubDistrict,
                 village: selectedVillage,
               },
+              avatar: avatarBody
             };
-            
+
             actions.setSubmitting(true);
             await dispatch(submit(body));
             actions.setSubmitting(false);
@@ -190,7 +198,7 @@ const AccountToRegister: NextPage = () => {
             <Form noValidate>
               <HStack spacing={6} align="start">
                 <Box w="full">
-                  {breakpointValue === "base" && <AvatarUpload />}
+                  {breakpointValue === "base" && <AvatarUpload setAvatar={setAvatar} />}
                   <Flex flexDirection="column" bgColor="white" p={6}>
                     <Text fontSize="12px" fontWeight="600">
                       USER DETAILS
@@ -328,7 +336,7 @@ const AccountToRegister: NextPage = () => {
 
                 {breakpointValue === "md" && (
                   <Box w="40%">
-                    <AvatarUpload />
+                    <AvatarUpload setAvatar={setAvatar} />
                   </Box>
                 )}
               </HStack>
@@ -337,9 +345,9 @@ const AccountToRegister: NextPage = () => {
         </Formik>
       </Container>
 
-      {/* <Box w="full" pos="fixed" bottom={0}>
+      <Box mt={8}>
         <Footer />
-      </Box> */}
+      </Box>
     </Fragment>
   );
 };
@@ -414,45 +422,6 @@ const InputBoxWithSelect: React.FC<{
           </Box>
         </HStack>
       </FormControl>
-    </Fragment>
-  );
-};
-
-const AvatarUpload = () => {
-  return (
-    <Fragment>
-      <Flex flexDirection="column" bgColor="white" p={6}>
-        <Text fontSize="12px" fontWeight="600">
-          AVATAR
-        </Text>
-        <Divider my={6} />
-        <Flex
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Image
-            src="/icons/upload-avatar.svg"
-            w="80px"
-            h="80px"
-            alt=""
-            mt={8}
-          />
-          <Button
-            h="25px"
-            color="purpleTone"
-            fontSize="12px"
-            fontWeight="400"
-            border="1px"
-            borderColor="gray.300"
-            borderRadius="full"
-            _focus={{ boxShadow: "none" }}
-            mt={8}
-          >
-            UPLOAD AVATAR
-          </Button>
-        </Flex>
-      </Flex>
     </Fragment>
   );
 };

@@ -12,6 +12,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     let params = JSON.stringify({
       degree: body.education.degree.value,    
       university: body.education.university,
+      graduatedIn: body.education.graduatedIn.name,
+      // avatar: body.avatar
     });
 
     await axios.patch(

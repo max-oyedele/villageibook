@@ -57,6 +57,7 @@ import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import SelectBox from "components/widgets/SelectBox";
+import AvatarUpload from "components/widgets/AvatarUpload";
 
 import { Register } from "rdx/types";
 import { submit } from "rdx/slices/auth";
@@ -108,6 +109,7 @@ const AccountToEdit: NextPage = () => {
   const [selectedSubDistrict, setSelectedSubDistrict] =
     useState<SubDistrict>(null);
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
+  const [avatar, setAvatar] = useState(null)
 
   const dispatch: MyThunkDispatch = useDispatch();
   const {
@@ -161,6 +163,9 @@ const AccountToEdit: NextPage = () => {
           }}
           validationSchema={accountSchema}
           onSubmit={async (values, actions) => {
+            const avatarBody = new FormData();
+            avatarBody.append("file", avatar);
+
             const body = {
               uuid: user.uuid,
               general: { firstname, lastname, email, password },
@@ -176,6 +181,7 @@ const AccountToEdit: NextPage = () => {
                 subDistrict: selectedSubDistrict,
                 village: selectedVillage,
               },
+              avatar: avatarBody
             };
             actions.setSubmitting(true);
             await dispatch(submit(body));
@@ -193,7 +199,7 @@ const AccountToEdit: NextPage = () => {
             <Form noValidate>
               <HStack spacing={6} align="start">
                 <Box w="full">
-                  {breakpointValue === "base" && <AvatarUpload />}
+                  {breakpointValue === "base" && <AvatarUpload setAvatar={setAvatar} />}
                   <Flex flexDirection="column" bgColor="white" p={6}>
                     <Text fontSize="12px" fontWeight="600">
                       USER DETAILS
@@ -317,7 +323,7 @@ const AccountToEdit: NextPage = () => {
 
                 {breakpointValue === "md" && (
                   <Box w="40%">
-                    <AvatarUpload />
+                    <AvatarUpload setAvatar={setAvatar} />
                   </Box>
                 )}
               </HStack>
@@ -384,45 +390,6 @@ const InputBoxWithSelect: React.FC<{
           />
         </Box>
       </HStack>
-    </Fragment>
-  );
-};
-
-const AvatarUpload = () => {
-  return (
-    <Fragment>
-      <Flex flexDirection="column" bgColor="white" p={6}>
-        <Text fontSize="12px" fontWeight="600">
-          AVATAR
-        </Text>
-        <Divider my={6} />
-        <Flex
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Image
-            src="/icons/upload-avatar.svg"
-            w="80px"
-            h="80px"
-            alt=""
-            mt={8}
-          />
-          <Button
-            h="25px"
-            color="purpleTone"
-            fontSize="12px"
-            fontWeight="400"
-            border="1px"
-            borderColor="gray.300"
-            borderRadius="full"
-            _focus={{ boxShadow: "none" }}
-            mt={8}
-          >
-            UPLOAD AVATAR
-          </Button>
-        </Flex>
-      </Flex>
     </Fragment>
   );
 };
