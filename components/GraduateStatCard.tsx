@@ -8,6 +8,7 @@ import {
   Text,
   Image,
   Progress,
+  useBreakpointValue
 } from "@chakra-ui/react";
 
 import GraduateStatCapsule from "./GraduateStatCapsule";
@@ -27,13 +28,18 @@ const GraduateStatCard: React.FC<{
   bangladeshGraduates,
   fixed,
 }) => {
+  const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
+
   return (
     <Fragment>
       <Box
         p={6}
         bgColor="white"
+        border="1px"
+        minW="240px"
+        w={fixed ? "240px" : "full"}
         borderRadius="6px"
-        w={{ base: "full", md: "240px" }}
+        borderColor="gray.200"
         pos={fixed ? "fixed" : "static"}
         top={fixed ? "80px" : 0}
       >

@@ -1,16 +1,4 @@
-export type User = {
-  id: number;
-  name: string;
-  img: string;
-  role?: string;
-  details?: {
-    photos: string[]
-  };
-  desc?: string;
-  village?: string;
-  recentAt?: number;
-  uuid: string;
-}
+import { User } from "types/schema";
 
 export type Post = {
   id: number;
@@ -38,11 +26,11 @@ export type Personality = {
   img: string;
   role?: string;
   details?: {
-    photos: string[]
+    photos: string[];
   };
   desc?: string;
-  village?: string
-}
+  village?: string;
+};
 
 export type Institution = {
   id: number;
@@ -60,4 +48,4 @@ export type Video = {
   author: string;
   img: string;
   village?: string;
-}
+};

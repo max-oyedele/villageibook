@@ -58,11 +58,13 @@ const Header = () => {
   const [showMenuMobile, setShowMenuMobile] = useState(false);
 
   const [activeTab, setActiveTab] = useState(
-    pathname.includes("myvillage")
+      pathname === "/"
+      ? tabs[0] 
+      : pathname.includes("myvillage")
       ? tabs[1]
       : pathname.includes("graduates")
       ? tabs[2]
-      : tabs[0]
+      : null
   );
 
   const logout = () => {
@@ -75,12 +77,7 @@ const Header = () => {
     <Fragment>
       {breakpointValue === "md" && (
         <Box pos="sticky" top={0} zIndex={10}>
-          <Flex
-            bg="white"
-            justifyContent="space-between"
-            px={6}
-            shadow="md"
-          >
+          <Flex bg="white" justifyContent="space-between" px={6} shadow="md">
             <HStack spacing={6} mr={1}>
               <Logo />
               {tabs.map((tab) => (
@@ -88,13 +85,13 @@ const Header = () => {
                   <Flex
                     h="55px"
                     alignItems="center"
-                    fontSize="13px"
-                    borderBottom={activeTab.name === tab.name ? "2px" : ""}
+                    fontSize="14px"
+                    borderBottom={activeTab?.name === tab.name ? "2px" : ""}
                     borderColor={
-                      activeTab.name === tab.name ? "purpleTone" : ""
+                      activeTab?.name === tab.name ? "purpleTone" : ""
                     }
                     color={
-                      activeTab.name === tab.name ? "purpleTone" : "GrayText"
+                      activeTab?.name === tab.name ? "purpleTone" : "GrayText"
                     }
                     cursor="pointer"
                   >
@@ -104,9 +101,9 @@ const Header = () => {
               ))}
             </HStack>
             <HStack spacing={6} ml={1}>
-              <Box fontSize="12px">
-                <Link href="/accountedit">ACCOUNT</Link>
-              </Box>
+              <Flex h="full" alignItems="center" fontSize="12px" borderBottom={pathname.includes("accountedit") ? "2px" : ""} borderColor={pathname.includes("accountedit") ? "purpleTone": ""}>
+                <Link href="/accountedit"><Text mt={1} cursor="pointer">ACCOUNT</Text></Link>
+              </Flex>
               <Box
                 px={4}
                 h="24px"

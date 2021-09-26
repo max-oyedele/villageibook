@@ -2,8 +2,8 @@ import {
   SerializedError,
 } from "@reduxjs/toolkit";
 
-import {Country, Region, District, SubDistrict, Village} from "types/schema"
-import {Post, Article, User, Institution, Video, Personality} from "types/data"
+import {User, Country, Region, District, SubDistrict, Village} from "types/schema"
+import {Post, Article, Institution, Video, Personality} from "types/data"
 
 export enum Status {
   IDLE = 'idle',

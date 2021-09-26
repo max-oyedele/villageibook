@@ -1,4 +1,5 @@
-import { User, Post, Article, Personality, Institution, Video } from "types/data";
+import { User } from "types/schema";
+import { Post, Article, Personality, Institution, Video } from "types/data";
 
 export const users: User[] = [
   {

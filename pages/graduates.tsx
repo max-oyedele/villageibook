@@ -66,8 +66,7 @@ const menuItems = [
 
 const Graduates: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-  const [activeLng, setActiveLng] = useState("english");
-
+  
   const [activeMenuItem, setActiveMenuItem] = useState(menuItems[0]);
 
   const [expandedDistrict, setExpandedDistrict] = useState(

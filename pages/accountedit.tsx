@@ -56,7 +56,8 @@ import {
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
-import SelectBox from "components/widgets/SelectBox";
+import InputBox from "components/widgets/InputBox";
+import InputBoxWithSelect from "components/widgets/InputBoxWithSelect";
 import AvatarUpload from "components/widgets/AvatarUpload";
 
 import { Register } from "rdx/types";
@@ -78,17 +79,16 @@ export const degrees: Degree[] = [
 ];
 
 const accountSchema = yup.object({
-  firstname: yup.string().required("First Name is required."),
-  lastname: yup.string().required("Last Name is required."),
-  email: yup
-    .string()
-    .email("Provide correct Email address.")
-    .required("Email address is required."),
-  password: yup.string().required("Password is required."),
-  cpassword: yup
-    .string()
-    .oneOf([yup.ref("password"), null], "Password must match.")
-    .required("Confirm password is required."),  
+  firstname: yup.string().nullable().required("First Name is required."),
+  lastname: yup.string().nullable().required("Last Name is required."),
+  degree: yup.object().nullable(),
+  graduatedIn: yup.object().nullable(),
+  university: yup.string().nullable(),
+  country: yup.object().nullable().required("Country must be selected."),
+  region: yup.object().nullable().required("Region must be selected."),
+  district: yup.object().nullable().required("District must be selected."),
+  subDistrict: yup.object().nullable().required("Upazila must be selected."),
+  village: yup.object().nullable().required("Village must be selected."),
 });
 
 const AccountToEdit: NextPage = () => {
@@ -96,8 +96,6 @@ const AccountToEdit: NextPage = () => {
 
   const [firstname, setFirstname] = useState<string | null>(null);
   const [lastname, setLastname] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
-  const [password, setPassword] = useState<string | null>(null);
 
   const [selectedDegree, setSelectedDegree] = useState(null);
   const [selectedGraduatedIn, setSelectedGraduatedIn] = useState(null);
@@ -109,7 +107,7 @@ const AccountToEdit: NextPage = () => {
   const [selectedSubDistrict, setSelectedSubDistrict] =
     useState<SubDistrict>(null);
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
-  const [avatar, setAvatar] = useState(null)
+  const [avatar, setAvatar] = useState(null);
 
   const dispatch: MyThunkDispatch = useDispatch();
   const {
@@ -154,13 +152,18 @@ const AccountToEdit: NextPage = () => {
 
         <Formik
           initialValues={{
-            firstname: "",
-            lastname: "",
-            email: "",
-            password: "",
-            cpassword: "",
+            firstname: firstname,
+            lastname: lastname,
             degree: selectedDegree,
+            graduatedIn: selectedGraduatedIn,
+            university: university,
+            country: selectedCountry,
+            region: selectedRegion,
+            district: selectedDistrict,
+            subDistrict: selectedSubDistrict,
+            village: selectedVillage,
           }}
+          enableReinitialize={true}
           validationSchema={accountSchema}
           onSubmit={async (values, actions) => {
             const avatarBody = new FormData();
@@ -168,7 +171,7 @@ const AccountToEdit: NextPage = () => {
 
             const body = {
               uuid: user.uuid,
-              general: { firstname, lastname, email, password },
+              general: { firstname, lastname },
               education: {
                 degree: selectedDegree,
                 graduatedIn: selectedGraduatedIn,
@@ -181,7 +184,7 @@ const AccountToEdit: NextPage = () => {
                 subDistrict: selectedSubDistrict,
                 village: selectedVillage,
               },
-              avatar: avatarBody
+              avatar: avatarBody,
             };
             actions.setSubmitting(true);
             await dispatch(submit(body));
@@ -198,8 +201,15 @@ const AccountToEdit: NextPage = () => {
           }) => (
             <Form noValidate>
               <HStack spacing={6} align="start">
+                {breakpointValue === "md" && (
+                  <Box w="40%">
+                    <AvatarUpload setAvatar={setAvatar} />
+                  </Box>
+                )}
                 <Box w="full">
-                  {breakpointValue === "base" && <AvatarUpload setAvatar={setAvatar} />}
+                  {breakpointValue === "base" && (
+                    <AvatarUpload setAvatar={setAvatar} />
+                  )}
                   <Flex flexDirection="column" bgColor="white" p={6}>
                     <Text fontSize="12px" fontWeight="600">
                       USER DETAILS
@@ -210,41 +220,61 @@ const AccountToEdit: NextPage = () => {
                         <Text fontSize="13px" mb={4}>
                           General information
                         </Text>
-                        <InputBox label="First name" onChange={setFirstname} />
-                        <InputBox label="Last name" onChange={setLastname} />
-                        <InputBox label="Email" onChange={setEmail} />
-                        <InputBox label="Password" onChange={setPassword} />
+                        <InputBox
+                          id="firstname"
+                          label="First name"
+                          onChange={setFirstname}
+                          isRequired={true}
+                          isInvalid={!!errors.firstname}
+                          error={errors.firstname}
+                        />
+                        <InputBox
+                          id="lastname"
+                          label="Last name"
+                          onChange={setLastname}
+                          isRequired={true}
+                          isInvalid={!!errors.lastname}
+                          error={errors.lastname}
+                        />
                       </Box>
 
                       <Box>
                         <Text fontSize="13px" mb={4}>
                           Education info
                         </Text>
-                        <FormControl
+
+                        <InputBoxWithSelect
                           id="degree"
-                          isRequired
+                          label="Degree"
+                          options={degrees}
+                          optionLabel={({ label }) => label}
+                          selectedOption={selectedDegree}
+                          setSelectedOption={setSelectedDegree}
+                          isRequired={false}
                           isInvalid={!selectedDegree}
-                        >
-                          <InputBoxWithSelect
-                            id="degree"
-                            label="Degree"
-                            options={degrees}
-                            optionLabel={({ label }) => label}
-                            selectedOption={selectedDegree}
-                            setSelectedOption={setSelectedDegree}
-                          />
-                          <FormHelperText></FormHelperText>
-                          <FormErrorMessage>{errors.degree}</FormErrorMessage>
-                        </FormControl>
+                          error={errors.degree}
+                        />
+
                         <InputBoxWithSelect
                           id="graduatedIn"
                           label="Graduated in"
                           options={countries}
                           optionLabel={({ name }) => name}
                           selectedOption={selectedGraduatedIn}
-                          setSelectedOption={setSelectedDegree}
+                          setSelectedOption={setSelectedGraduatedIn}
+                          isRequired={false}
+                          isInvalid={!selectedGraduatedIn}
+                          error={errors.graduatedIn}
                         />
-                        <InputBox label="University" onChange={setUniversity} />
+
+                        <InputBox
+                          id="university"
+                          label="University"
+                          onChange={setUniversity}
+                          isRequired={false}
+                          isInvalid={!!errors.university}
+                          error={errors.university}
+                        />
                       </Box>
                       <Box>
                         <Text fontSize="13px" mb={4}>
@@ -257,14 +287,20 @@ const AccountToEdit: NextPage = () => {
                           optionLabel={({ name }) => name}
                           selectedOption={selectedCountry}
                           setSelectedOption={setSelectedCountry}
+                          isRequired={true}
+                          isInvalid={!selectedCountry}
+                          error={errors.country}
                         />
                         <InputBoxWithSelect
                           id="region"
-                          label="Region"
+                          label="Division"
                           options={regions}
                           optionLabel={({ name }) => name}
                           selectedOption={selectedRegion}
                           setSelectedOption={setSelectedRegion}
+                          isRequired={true}
+                          isInvalid={!selectedRegion}
+                          error={errors.region}
                         />
                         <InputBoxWithSelect
                           id="district"
@@ -273,6 +309,9 @@ const AccountToEdit: NextPage = () => {
                           optionLabel={({ name }) => name}
                           selectedOption={selectedDistrict}
                           setSelectedOption={setSelectedDistrict}
+                          isRequired={true}
+                          isInvalid={!selectedDistrict}
+                          error={errors.district}
                         />
                         <InputBoxWithSelect
                           id="subDistrict"
@@ -281,6 +320,9 @@ const AccountToEdit: NextPage = () => {
                           optionLabel={({ name }) => name}
                           selectedOption={selectedSubDistrict}
                           setSelectedOption={setSelectedSubDistrict}
+                          isRequired={true}
+                          isInvalid={!selectedSubDistrict}
+                          error={errors.subDistrict}
                         />
                         <InputBoxWithSelect
                           id="village"
@@ -289,6 +331,9 @@ const AccountToEdit: NextPage = () => {
                           optionLabel={({ name }) => name}
                           selectedOption={selectedVillage}
                           setSelectedOption={setSelectedVillage}
+                          isRequired={true}
+                          isInvalid={!selectedVillage}
+                          error={errors.village}
                         />
                         {/* <InputBox label="Village" onChange={setVillage} /> */}
                       </Box>
@@ -320,12 +365,6 @@ const AccountToEdit: NextPage = () => {
                     </Button>
                   </HStack>
                 </Box>
-
-                {breakpointValue === "md" && (
-                  <Box w="40%">
-                    <AvatarUpload setAvatar={setAvatar} />
-                  </Box>
-                )}
               </HStack>
             </Form>
           )}
@@ -335,61 +374,6 @@ const AccountToEdit: NextPage = () => {
       <Box w="full" pos="fixed" bottom={0}>
         <Footer />
       </Box>
-    </Fragment>
-  );
-};
-
-const InputBox: React.FC<{
-  label: string;
-  onChange: React.Dispatch<React.SetStateAction<string | null>>;
-}> = ({ label, onChange }) => {
-  return (
-    <Fragment>
-      <HStack mt={4}>
-        <Text w="40%" fontSize="13px" color="GrayText">
-          {label}
-        </Text>
-        <Box w="full">
-          <Input onChange={(e) => onChange(e.target.value)} />
-        </Box>
-      </HStack>
-    </Fragment>
-  );
-};
-
-const InputBoxWithSelect: React.FC<{
-  id: string;
-  label: string;
-  options: any[];
-  optionLabel: any;
-  selectedOption: any;
-  setSelectedOption: React.Dispatch<React.SetStateAction<any | null>>;
-}> = ({
-  id,
-  label,
-  options,
-  optionLabel,
-  selectedOption,
-  setSelectedOption,
-}) => {
-  return (
-    <Fragment>
-      <HStack mt={4}>
-        <Text w="40%" fontSize="13px" fontWeight="400" color="GrayText">
-          {label}
-        </Text>
-        <Box w="full">
-          <SelectBox
-            id={id}
-            options={options}
-            optionLabel={optionLabel}
-            selectedOption={selectedOption}
-            setSelectedOption={setSelectedOption}
-            width="full"
-            height="40px"
-          />
-        </Box>
-      </HStack>
     </Fragment>
   );
 };

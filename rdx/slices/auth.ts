@@ -100,8 +100,6 @@ export const submit = createAsyncThunk(
       general?: {
         firstname: string;
         lastname: string;
-        email: string;
-        password: string;
       };
       education: { degree: Degree; graduatedIn: Country; university: string };
       location: {

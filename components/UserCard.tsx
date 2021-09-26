@@ -15,7 +15,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import type { User } from "types/data";
+import type { User } from "types/schema";
 
 const UserCard: React.FC<{ user: User }> = ({
   user,

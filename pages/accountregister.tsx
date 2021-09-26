@@ -56,7 +56,8 @@ import {
 import HeaderForRegister from "components/HeaderForRegister";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
-import SelectBox from "components/widgets/SelectBox";
+import InputBox from "components/widgets/InputBox";
+import InputBoxWithSelect from "components/widgets/InputBoxWithSelect";
 import AvatarUpload from "components/widgets/AvatarUpload";
 
 import { Register } from "rdx/types";
@@ -102,7 +103,7 @@ const AccountToRegister: NextPage = () => {
   const [selectedSubDistrict, setSelectedSubDistrict] =
     useState<SubDistrict>(null);
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
-  const [avatar, setAvatar] = useState(null)
+  const [avatar, setAvatar] = useState(null);
 
   const dispatch: MyThunkDispatch = useDispatch();
   const {
@@ -163,7 +164,6 @@ const AccountToRegister: NextPage = () => {
 
             const avatarBody = new FormData();
             avatarBody.append("file", avatar);
-            console.log('avatar body', avatarBody)
 
             const body = {
               uuid: user.uuid,
@@ -179,7 +179,7 @@ const AccountToRegister: NextPage = () => {
                 subDistrict: selectedSubDistrict,
                 village: selectedVillage,
               },
-              avatar: avatarBody
+              avatar: avatarBody,
             };
 
             actions.setSubmitting(true);
@@ -198,7 +198,9 @@ const AccountToRegister: NextPage = () => {
             <Form noValidate>
               <HStack spacing={6} align="start">
                 <Box w="full">
-                  {breakpointValue === "base" && <AvatarUpload setAvatar={setAvatar} />}
+                  {breakpointValue === "base" && (
+                    <AvatarUpload setAvatar={setAvatar} />
+                  )}
                   <Flex flexDirection="column" bgColor="white" p={6}>
                     <Text fontSize="12px" fontWeight="600">
                       USER DETAILS
@@ -206,13 +208,20 @@ const AccountToRegister: NextPage = () => {
                     <Divider my={6} />
                     <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
                       <Box>
-                        <Text fontSize="13px" mb={4}>
+                        <Box mb={4}>
+                        {/* <Text fontSize="13px">
                           Education info
-                        </Text>
+                        </Text> */}
+                          <Text display="inline" fontSize="11px" color="purpleTone">
+                            Your graduation?
+                          </Text>
+                          <Text>Yes</Text> /
+                          <Text>No</Text>
+                        </Box>
 
                         <InputBoxWithSelect
                           id="degree"
-                          label="Degree"
+                          label="Subject Degree"
                           options={degrees}
                           optionLabel={({ label }) => label}
                           selectedOption={selectedDegree}
@@ -239,13 +248,17 @@ const AccountToRegister: NextPage = () => {
                           label="University"
                           onChange={setUniversity}
                           isRequired={false}
-                          isInvalid={false}
+                          isInvalid={!!errors.university}
+                          error={errors.university}
                         />
                       </Box>
                       <Box>
-                        <Text fontSize="13px" mb={4}>
-                          Location
-                        </Text>
+                        <Box mb={4}>
+                          {/* <Text fontSize="13px">Location</Text> */}
+                          <Text display="inline" fontSize="11px" color="purpleTone">
+                            Where are you residing now?
+                          </Text>
+                        </Box>
 
                         <InputBoxWithSelect
                           id="country"
@@ -261,7 +274,7 @@ const AccountToRegister: NextPage = () => {
 
                         <InputBoxWithSelect
                           id="region"
-                          label="Region"
+                          label="Division"
                           options={regions}
                           optionLabel={({ name }) => name}
                           selectedOption={selectedRegion}
@@ -348,80 +361,6 @@ const AccountToRegister: NextPage = () => {
       <Box mt={8}>
         <Footer />
       </Box>
-    </Fragment>
-  );
-};
-
-const InputBox: React.FC<{
-  id: string;
-  label: string;
-  onChange: React.Dispatch<React.SetStateAction<string | null>>;
-  isRequired: boolean;
-  isInvalid: boolean;
-}> = ({ id, label, onChange, isRequired, isInvalid }) => {
-  return (
-    <Fragment>
-      <FormControl id={id} isRequired={isRequired} isInvalid={isInvalid}>
-        <HStack mt={4}>
-          <FormLabel w="40%" fontSize="13px" color="GrayText">
-            {label}
-          </FormLabel>
-          <Box w="full">
-            <Input onChange={(e) => onChange(e.target.value)} />
-          </Box>
-        </HStack>
-      </FormControl>
-    </Fragment>
-  );
-};
-
-const InputBoxWithSelect: React.FC<{
-  id: string;
-  label: string;
-  options: any[];
-  optionLabel: any;
-  selectedOption: any;
-  setSelectedOption: React.Dispatch<React.SetStateAction<any | null>>;
-  isRequired: boolean;
-  isInvalid: boolean;
-  error: any;
-}> = ({
-  id,
-  label,
-  options,
-  optionLabel,
-  selectedOption,
-  setSelectedOption,
-  isRequired,
-  isInvalid,
-  error,
-}) => {
-  return (
-    <Fragment>
-      <FormControl id={id} isRequired={isRequired} isInvalid={isInvalid}>
-        <HStack mt={4}>
-          <FormLabel w="40%" fontSize="13px" color="GrayText">
-            {label}
-          </FormLabel>
-          <Box w="full">
-            <SelectBox
-              id={id}
-              options={options}
-              optionLabel={optionLabel}
-              selectedOption={selectedOption}
-              setSelectedOption={setSelectedOption}
-              width="full"
-              height="40px"
-            />
-          </Box>
-        </HStack>
-        <HStack spacing={5}>
-          <Box w="40%"></Box>
-          <Box w="full">
-            <FormErrorMessage>{error}</FormErrorMessage>
-          </Box>
-        </HStack>
-      </FormControl>
     </Fragment>
   );
 };

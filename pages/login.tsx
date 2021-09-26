@@ -36,7 +36,7 @@ import { BiShow, BiHide } from "react-icons/bi";
 import Logo from "components/Logo";
 
 import { MyThunkDispatch, OurStore } from "rdx/store";
-import { login } from "rdx/slices/auth";
+import { reset, login } from "rdx/slices/auth";
 
 const loginSchema = yup.object({
   email: yup
@@ -54,6 +54,9 @@ const Login = () => {
   });
 
   const dispatch: MyThunkDispatch = useDispatch();
+  useEffect(()=>{
+    dispatch(reset());
+  }, [])
 
   return (
     <Fragment>
@@ -95,9 +98,7 @@ const Login = () => {
               onSubmit={async (values, actions) => {
                 // console.log({ values, actions });
                 actions.setSubmitting(true);
-
                 await dispatch(login(values));
-
                 actions.setSubmitting(false);
               }}
             >

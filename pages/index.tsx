@@ -40,7 +40,9 @@ import VideoBox from "components/VideoBox";
 
 import { parseCookie } from "helpers/parse-cookie";
 
-const Home: NextPage<{jwt: any}> = ({ jwt }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Home: NextPage<{ jwt: any }> = ({
+  jwt,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const tabsMobile = ["Feed", "My Village", "Graduates"];
@@ -58,7 +60,7 @@ const Home: NextPage<{jwt: any}> = ({ jwt }: InferGetServerSidePropsType<typeof 
   } = useSelector((state: OurStore) => state.browsePageReducer.pageData);
 
   useEffect(() => {
-    dispatch(updateJWT({jwt}));
+    dispatch(updateJWT({ jwt }));
     dispatch(fetchBrowsePageData(selectedVillage?.value));
   }, [jwt]);
 
@@ -91,7 +93,14 @@ const Home: NextPage<{jwt: any}> = ({ jwt }: InferGetServerSidePropsType<typeof 
         <HStack spacing={6} mt={12} align="start">
           {breakpointValue === "md" && (
             <Box w="25%">
-              <Box bgColor="white" p={4} borderRadius="6px" mb={6}>
+              <Box
+                bgColor="white"
+                p={4}
+                border="1px"
+                borderColor="gray.200"
+                borderRadius="6px"
+                mb={6}
+              >
                 {/* <VideoBox
                   video={{
                     id: 0,
@@ -115,7 +124,7 @@ const Home: NextPage<{jwt: any}> = ({ jwt }: InferGetServerSidePropsType<typeof 
 
               {/* {!jwt && <SignupCard />} */}
 
-              <Text fontSize="24px" my={10}>
+              <Text fontSize="24px" mt={12} mb={6}>
                 Recently developed
               </Text>
               <VStack spacing={4}>
@@ -211,7 +220,7 @@ const Home: NextPage<{jwt: any}> = ({ jwt }: InferGetServerSidePropsType<typeof 
 
           {breakpointValue === "md" && (
             <Box w="25%">
-              <Text fontSize="24px" my={10}>
+              <Text fontSize="24px" mb={6}>
                 Graduates
               </Text>
               <GraduateStatCard
@@ -220,7 +229,7 @@ const Home: NextPage<{jwt: any}> = ({ jwt }: InferGetServerSidePropsType<typeof 
                 villageGraduates={villageGraduates}
                 bangladeshGraduates={bangladeshGraduates}
               />
-              <Text fontSize="24px" my={10}>
+              <Text fontSize="24px" mt={12} mb={6}>
                 Recently joined
               </Text>
               <VStack spacing={4}>

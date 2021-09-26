@@ -1,3 +1,17 @@
+export type User = {
+  id: number;
+  name: string;
+  img: string;
+  role?: string;
+  details?: {
+    photos: string[]
+  };
+  desc?: string;
+  village?: string;
+  recentAt?: number;
+  uuid: string;
+}
+
 export type Country = {
   id: number;
   name: string;

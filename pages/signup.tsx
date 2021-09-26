@@ -66,6 +66,9 @@ const Signup = () => {
 
   const dispatch: MyThunkDispatch = useDispatch();
   const { status } = useSelector((state: OurStore) => state.authReducer);
+  useEffect(()=>{
+    dispatch(reset());
+  }, [])
 
   return (
     <Fragment>
