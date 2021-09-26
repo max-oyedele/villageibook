@@ -9,6 +9,7 @@ import {
   HStack,
   VStack,
   Divider,
+  StackDivider,
   Flex,
   Box,
   Text,
@@ -59,8 +60,9 @@ import PageTitle from "components/widgets/PageTitle";
 import InputBox from "components/widgets/InputBox";
 import InputBoxWithSelect from "components/widgets/InputBoxWithSelect";
 import AvatarUpload from "components/widgets/AvatarUpload";
+import AccountQuestionBar from "components/AccountQuestionBar";
+import PremiumCard from "components/PremiumCard";
 
-import { Register } from "rdx/types";
 import { submit } from "rdx/slices/auth";
 import { Degree } from "types/schema";
 import { Country, Region, District, SubDistrict, Village } from "types/schema";
@@ -144,10 +146,13 @@ const AccountToEdit: NextPage = () => {
     dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
   }, [selectedSubDistrict]);
 
+  const [isGraduated, setIsGraduated] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
   return (
     <Fragment>
       <Header />
-      <Container maxW="container.xl" px={6} mb={48}>
+      <Container maxW="container.xl" px={6}>
         <PageTitle title="Account" />
 
         <Formik
@@ -210,14 +215,19 @@ const AccountToEdit: NextPage = () => {
                   {breakpointValue === "base" && (
                     <AvatarUpload setAvatar={setAvatar} />
                   )}
-                  <Flex flexDirection="column" bgColor="white" p={6}>
+                  <Flex flexDirection="column" bgColor="white" p={6} border="1px" borderRadius="8px" borderColor="gray.200">
                     <Text fontSize="12px" fontWeight="600">
                       USER DETAILS
                     </Text>
-                    <Divider my={6} />
+                    <Divider mt={6} />
                     <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
                       <Box>
-                        <Text fontSize="13px" mb={4}>
+                        <Text
+                          fontSize="13px"
+                          textDecoration="underline"
+                          mt={6}
+                          mb={4}
+                        >
                           General information
                         </Text>
                         <InputBox
@@ -236,49 +246,14 @@ const AccountToEdit: NextPage = () => {
                           isInvalid={!!errors.lastname}
                           error={errors.lastname}
                         />
-                      </Box>
 
-                      <Box>
-                        <Text fontSize="13px" mb={4}>
-                          Education info
-                        </Text>
-
-                        <InputBoxWithSelect
-                          id="degree"
-                          label="Degree"
-                          options={degrees}
-                          optionLabel={({ label }) => label}
-                          selectedOption={selectedDegree}
-                          setSelectedOption={setSelectedDegree}
-                          isRequired={false}
-                          isInvalid={!selectedDegree}
-                          error={errors.degree}
-                        />
-
-                        <InputBoxWithSelect
-                          id="graduatedIn"
-                          label="Graduated in"
-                          options={countries}
-                          optionLabel={({ name }) => name}
-                          selectedOption={selectedGraduatedIn}
-                          setSelectedOption={setSelectedGraduatedIn}
-                          isRequired={false}
-                          isInvalid={!selectedGraduatedIn}
-                          error={errors.graduatedIn}
-                        />
-
-                        <InputBox
-                          id="university"
-                          label="University"
-                          onChange={setUniversity}
-                          isRequired={false}
-                          isInvalid={!!errors.university}
-                          error={errors.university}
-                        />
-                      </Box>
-                      <Box>
-                        <Text fontSize="13px" mb={4}>
-                          Location
+                        <Text
+                          fontSize="13px"
+                          textDecoration="underline"
+                          mt={8}
+                          mb={4}
+                        >
+                          Residence
                         </Text>
                         <InputBoxWithSelect
                           id="country"
@@ -335,11 +310,77 @@ const AccountToEdit: NextPage = () => {
                           isInvalid={!selectedVillage}
                           error={errors.village}
                         />
-                        {/* <InputBox label="Village" onChange={setVillage} /> */}
+                      </Box>
+
+                      <Box>
+                        <Box mt={8}>
+                          <AccountQuestionBar
+                            question="Are you graduated?"
+                            isTrue={isGraduated}
+                            setIsTrue={setIsGraduated}
+                          />
+                        </Box>
+                        {isGraduated && (
+                          <>
+                            <Text
+                              fontSize="13px"
+                              textDecoration="underline"
+                              my={4}
+                            >
+                              Education info
+                            </Text>
+
+                            <InputBoxWithSelect
+                              id="degree"
+                              label="Degree"
+                              options={degrees}
+                              optionLabel={({ label }) => label}
+                              selectedOption={selectedDegree}
+                              setSelectedOption={setSelectedDegree}
+                              isRequired={false}
+                              isInvalid={!selectedDegree}
+                              error={errors.degree}
+                            />
+
+                            <InputBoxWithSelect
+                              id="graduatedIn"
+                              label="Graduated in"
+                              options={countries}
+                              optionLabel={({ name }) => name}
+                              selectedOption={selectedGraduatedIn}
+                              setSelectedOption={setSelectedGraduatedIn}
+                              isRequired={false}
+                              isInvalid={!selectedGraduatedIn}
+                              error={errors.graduatedIn}
+                            />
+
+                            <InputBox
+                              id="university"
+                              label="University"
+                              onChange={setUniversity}
+                              isRequired={false}
+                              isInvalid={!!errors.university}
+                              error={errors.university}
+                            />
+                          </>
+                        )}
+
+                        <Box mt={8}>
+                          <AccountQuestionBar
+                            question="Do you want to subscribe for better experience?"
+                            isTrue={isSubscribed}
+                            setIsTrue={setIsSubscribed}
+                          />
+                        </Box>
+                        {isSubscribed && (
+                          <Box mt={4}>
+                            <PremiumCard />
+                          </Box>
+                        )}
                       </Box>
                     </SimpleGrid>
                   </Flex>
-                  <HStack w={{ base: "100%", md: "50%" }} mt={10}>
+                  <Box w={{ base: "100%", md: "50%" }} mt={10}>
                     <Button
                       type="submit"
                       w="50%"
@@ -352,18 +393,7 @@ const AccountToEdit: NextPage = () => {
                     >
                       SAVE
                     </Button>
-                    <Button
-                      w="50%"
-                      bgColor="transparent"
-                      fontSize="12px"
-                      fontWeight="400"
-                      color="purpleTone"
-                      variant="ghost"
-                      _focus={{ boxShadow: "none" }}
-                    >
-                      CANCEL
-                    </Button>
-                  </HStack>
+                  </Box>
                 </Box>
               </HStack>
             </Form>
@@ -371,7 +401,7 @@ const AccountToEdit: NextPage = () => {
         </Formik>
       </Container>
 
-      <Box w="full" pos="fixed" bottom={0}>
+      <Box mt={20}>
         <Footer />
       </Box>
     </Fragment>

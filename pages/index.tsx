@@ -29,8 +29,7 @@ import PageTitle from "components/widgets/PageTitle";
 import SearchBar from "components/SearchBar";
 import LeftVillageDivider from "components/LeftVillageDivider";
 import LeftVillageItems from "components/LeftVillageItems";
-import PremiumCard from "components/PremiumCard";
-import SignupCard from "components/SignupCard";
+
 import RecentVillageCard from "components/RecentVillageCard";
 import PostCard from "components/PostCard";
 import CaptionCard from "components/CaptionCard";
@@ -120,10 +119,6 @@ const Home: NextPage<{ jwt: any }> = ({
                 </Box>
               </Box>
 
-              {/* {jwt && <PremiumCard />} */}
-
-              {/* {!jwt && <SignupCard />} */}
-
               <Text fontSize="24px" mt={12} mb={6}>
                 Recently developed
               </Text>
@@ -174,9 +169,6 @@ const Home: NextPage<{ jwt: any }> = ({
             {breakpointValue === "base" && activeTab === "My Village" && (
               <Box>
                 <LeftVillageItems />
-                <Box mt={12}>
-                  <PremiumCard />
-                </Box>
                 <Text fontSize="20px" mt={12} mb={6}>
                   Recently developed
                 </Text>

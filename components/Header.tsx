@@ -6,6 +6,7 @@ import { useCookies } from "react-cookie";
 
 import { BiMenu, BiX } from "react-icons/bi";
 import {
+  Container,
   Flex,
   Box,
   Text,
@@ -76,8 +77,9 @@ const Header = () => {
   return (
     <Fragment>
       {breakpointValue === "md" && (
-        <Box pos="sticky" top={0} zIndex={10}>
-          <Flex bg="white" justifyContent="space-between" px={6} shadow="md">
+        <Box bg="white" pos="sticky" top={0} zIndex={10} px={6} shadow="md">
+          <Container maxW="container.xl" px={6}>
+          <Flex justifyContent="space-between">
             <HStack spacing={6} mr={1}>
               <Logo />
               {tabs.map((tab) => (
@@ -120,6 +122,7 @@ const Header = () => {
               </Box>
             </HStack>
           </Flex>
+          </Container>
 
           {status === Status.LOADING && (
             <Box w="full">

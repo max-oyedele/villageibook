@@ -197,68 +197,31 @@ const AccountToRegister: NextPage = () => {
           }) => (
             <Form noValidate>
               <HStack spacing={6} align="start">
+                {breakpointValue === "md" && (
+                  <Box w="40%">
+                    <AvatarUpload setAvatar={setAvatar} />
+                  </Box>
+                )}
+
                 <Box w="full">
                   {breakpointValue === "base" && (
                     <AvatarUpload setAvatar={setAvatar} />
                   )}
-                  <Flex flexDirection="column" bgColor="white" p={6}>
+                  <Flex flexDirection="column" bgColor="white" p={6} border="1px" borderRadius="8px" borderColor="gray.200">
                     <Text fontSize="12px" fontWeight="600">
                       USER DETAILS
                     </Text>
                     <Divider my={6} />
                     <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
                       <Box>
-                        <Box mb={4}>
-                        {/* <Text fontSize="13px">
-                          Education info
-                        </Text> */}
-                          <Text display="inline" fontSize="11px" color="purpleTone">
-                            Your graduation?
-                          </Text>
-                          <Text>Yes</Text> /
-                          <Text>No</Text>
-                        </Box>
-
-                        <InputBoxWithSelect
-                          id="degree"
-                          label="Subject Degree"
-                          options={degrees}
-                          optionLabel={({ label }) => label}
-                          selectedOption={selectedDegree}
-                          setSelectedOption={setSelectedDegree}
-                          isRequired={false}
-                          isInvalid={!selectedDegree}
-                          error={errors.degree}
-                        />
-
-                        <InputBoxWithSelect
-                          id="graduatedIn"
-                          label="Graduated in"
-                          options={countries}
-                          optionLabel={({ name }) => name}
-                          selectedOption={selectedGraduatedIn}
-                          setSelectedOption={setSelectedGraduatedIn}
-                          isRequired={false}
-                          isInvalid={!selectedGraduatedIn}
-                          error={errors.graduatedIn}
-                        />
-
-                        <InputBox
-                          id="university"
-                          label="University"
-                          onChange={setUniversity}
-                          isRequired={false}
-                          isInvalid={!!errors.university}
-                          error={errors.university}
-                        />
-                      </Box>
-                      <Box>
-                        <Box mb={4}>
-                          {/* <Text fontSize="13px">Location</Text> */}
-                          <Text display="inline" fontSize="11px" color="purpleTone">
-                            Where are you residing now?
-                          </Text>
-                        </Box>
+                        <Text
+                          display="inline"
+                          fontSize="11px"
+                          color="purpleTone"
+                          mb={4}
+                        >
+                          Where are you residing now?
+                        </Text>
 
                         <InputBoxWithSelect
                           id="country"
@@ -316,11 +279,53 @@ const AccountToRegister: NextPage = () => {
                           isInvalid={!selectedVillage}
                           error={errors.village}
                         />
-                        {/* <InputBox label="Village" onChange={setVillage} /> */}
+                      </Box>
+                      <Box>
+                        <Text
+                          display="inline"
+                          fontSize="11px"
+                          color="purpleTone"
+                          mb={4}
+                        >
+                          Education Information
+                        </Text>
+
+                        <InputBoxWithSelect
+                          id="degree"
+                          label="Subject Degree"
+                          options={degrees}
+                          optionLabel={({ label }) => label}
+                          selectedOption={selectedDegree}
+                          setSelectedOption={setSelectedDegree}
+                          isRequired={false}
+                          isInvalid={!selectedDegree}
+                          error={errors.degree}
+                        />
+
+                        <InputBoxWithSelect
+                          id="graduatedIn"
+                          label="Graduated in"
+                          options={countries}
+                          optionLabel={({ name }) => name}
+                          selectedOption={selectedGraduatedIn}
+                          setSelectedOption={setSelectedGraduatedIn}
+                          isRequired={false}
+                          isInvalid={!selectedGraduatedIn}
+                          error={errors.graduatedIn}
+                        />
+
+                        <InputBox
+                          id="university"
+                          label="University"
+                          onChange={setUniversity}
+                          isRequired={false}
+                          isInvalid={!!errors.university}
+                          error={errors.university}
+                        />
                       </Box>
                     </SimpleGrid>
                   </Flex>
-                  <HStack w={{ base: "100%", md: "50%" }} mt={10}>
+                  <Box w={{ base: "100%", md: "50%" }} mt={10}>
                     <Button
                       type="submit"
                       w="50%"
@@ -333,32 +338,15 @@ const AccountToRegister: NextPage = () => {
                     >
                       SAVE
                     </Button>
-                    <Button
-                      w="50%"
-                      bgColor="transparent"
-                      fontSize="12px"
-                      fontWeight="400"
-                      color="purpleTone"
-                      variant="ghost"
-                      _focus={{ boxShadow: "none" }}
-                    >
-                      CANCEL
-                    </Button>
-                  </HStack>
-                </Box>
-
-                {breakpointValue === "md" && (
-                  <Box w="40%">
-                    <AvatarUpload setAvatar={setAvatar} />
                   </Box>
-                )}
+                </Box>
               </HStack>
             </Form>
           )}
         </Formik>
       </Container>
 
-      <Box mt={8}>
+      <Box w="full" pos="fixed" bottom={0}>
         <Footer />
       </Box>
     </Fragment>

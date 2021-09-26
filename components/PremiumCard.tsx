@@ -22,7 +22,7 @@ const PremiumCard = () => {
             fontWeight="400"
             _focus={{boxShadow: "none"}}
           >
-            <Link href="/pay">JOIN NOW</Link>
+            <Link href="/pay">CHECK OUT</Link>
           </Button>
         </Box>
       </Box>

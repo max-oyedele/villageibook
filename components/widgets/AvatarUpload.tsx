@@ -17,7 +17,7 @@ const AvatarUpload = ({ setAvatar }) => {
 
   return (
     <Fragment>
-      <Flex flexDirection="column" bgColor="white" p={6}>
+      <Flex flexDirection="column" bgColor="white" border="1px" borderRadius="8px" borderColor="gray.200" p={6}>
         <Text fontSize="12px" fontWeight="600">
           AVATAR
         </Text>
