@@ -14,7 +14,6 @@ import {
   fetchSubDistricts,
   fetchVillages,
 } from "rdx/slices/location";
-import { setVillage } from "rdx/slices/feedPage";
 import { OurStore } from "rdx/store";
 
 import SelectBox from "components/widgets/SelectBox";
@@ -31,8 +30,7 @@ const SearchBar = (props) => {
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
   const [selectedSubDistrict, setSelectedSubDistrict] =
     useState<SubDistrict>(null);
-  // const [selectedVillage, setSelectedVillage] = useState<Village>(null);
-
+  
   useEffect(() => {
     dispatch(fetchDistricts(null));
   }, []);
@@ -82,18 +80,18 @@ const SearchBar = (props) => {
             <Button
               w="165px"
               h="full"
-              bgColor="purpleTone"
-              fontSize="13px"
+              bgColor="greenTone"
+              fontSize="14px"
               fontWeight="400"
               color="white"
               borderRadius="6px"
               _focus={{ boxShadow: "none" }}
               ml={6}
               onClick={() => {
-                dispatch(setVillage(props.selectedVillage));
+                
               }}
             >
-              Find
+              Find Village
             </Button>
           </Box>
         )}
@@ -104,13 +102,13 @@ const SearchBar = (props) => {
           w="full"
           h="45px"
           bgColor="purpleTone"
-          fontSize="13px"
+          fontSize="14px"
           fontWeight="400"
           color="white"
           borderRadius="6px"
           mt={6}
         >
-          Find
+          Find Village
         </Button>
       )}
     </Fragment>

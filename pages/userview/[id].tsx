@@ -100,14 +100,14 @@ const UserView: NextPage = () => {
                     Fatepur
                   </Box>
                 </HStack>
-                <HStack w="full">
+                {/* <HStack w="full">
                   <Box w="full" fontSize="13px" color="purpleTone">
                     Age
                   </Box>
                   <Box w="full" fontSize="13px" color="GrayText">
                     35
                   </Box>
-                </HStack>
+                </HStack> */}
               </VStack>
               {user?.role === "premium" && (
                 <>

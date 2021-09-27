@@ -33,7 +33,6 @@ import AlphaBetaBar from "components/widgets/AlphaBetaBar";
 
 import {
   totalGraduates,
-  village,
   villageGraduates,
   bangladeshGraduates,
 } from "data/feed";
@@ -88,7 +87,7 @@ const Graduates: NextPage = () => {
             <Box>
               <GraduateStatCard
                 totalGraduates={totalGraduates}
-                villageName={village.href}
+                villageName={"Jammura"}
                 villageGraduates={villageGraduates}
                 bangladeshGraduates={bangladeshGraduates}
                 fixed={fixed}
@@ -101,7 +100,7 @@ const Graduates: NextPage = () => {
               <Box mb={6}>
                 <GraduateStatCard
                   totalGraduates={totalGraduates}
-                  villageName={village.href}
+                  villageName={"Jammura"}
                   villageGraduates={villageGraduates}
                   bangladeshGraduates={bangladeshGraduates}
                 />

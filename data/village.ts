@@ -70,7 +70,7 @@ export const users: User[] = [
         "/images/myphoto3.png",
       ],
     },
-    village: "jammura",
+    village: "village1",
     uuid: "345435"
   },
   {
@@ -87,7 +87,7 @@ export const users: User[] = [
         "/images/myphoto3.png",
       ],
     },
-    village: "jammura",
+    village: "village2",
     uuid: "345435"
   },
 ];
@@ -105,7 +105,7 @@ export const articles: Article[] = [
     title: "Amet minim mollit non deserunt minim mollit non.",
     desc: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam nostrud consequat sunt nostrud amet. Velit officia consequat duis enim velit mollit. Exercitation veniam sunt nostrud amet.",
     img: "/images/society-card2.png",
-    village: "chittagong"
+    village: "village1"
   },
   {
     id: 2,
@@ -119,14 +119,14 @@ export const articles: Article[] = [
     title: "Amet minim mollit non deserunt minim mollit non.",
     desc: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam nostrud consequat sunt nostrud amet. Velit officia consequat duis enim velit mollit. Exercitation veniam sunt nostrud amet.",
     img: "/images/society-card1.png",
-    village: "jammura"
+    village: "village2"
   },
   {
     id: 4,
     title: "Amet minim mollit non deserunt minim mollit non.",
     desc: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam nostrud consequat sunt nostrud amet. Velit officia consequat duis enim velit mollit. Exercitation veniam sunt nostrud amet.",
     img: "/images/society-card2.png",
-    village: "jammura"
+    village: "village2"
   },
 ];
 
@@ -160,7 +160,7 @@ export const personalities: Personality[] = [
         "/images/myphoto3.png",
       ],
     },
-    village: "jammura",
+    village: "village1",
   },
   {
     id: 2,
@@ -176,7 +176,7 @@ export const personalities: Personality[] = [
         "/images/myphoto3.png",
       ],
     },
-    village: "jammura",
+    village: "village2",
   },
   {
     id: 3,
@@ -219,7 +219,7 @@ export const institutions: Institution[] = [
     img: "/images/institution-card1.png",
     address: "Dhanmondi. 32 Dhaka-1209 Bangladesh",
     phone: "880-2-981100",
-    village: "Rajshahi",
+    village: "village1",
   },
   {
     id: 1,
@@ -228,7 +228,7 @@ export const institutions: Institution[] = [
     img: "/images/institution-card2.png",
     address: "Dhanmondi. 32 Dhaka-1209 Bangladesh",
     phone: "880-2-981100",
-    village: "Rajshahi",
+    village: "jammura",
   },
   {
     id: 2,
@@ -237,7 +237,7 @@ export const institutions: Institution[] = [
     img: "/images/institution-card3.png",
     address: "Dhanmondi. 32 Dhaka-1209 Bangladesh",
     phone: "880-2-981100",
-    village: "Rajshahi",
+    village: "jammura",
   },
 ];
 
@@ -254,7 +254,7 @@ export const videos: Video[] = [
     title: "video title",
     author: "author",
     img: "/images/video-card2.png",
-    village: "jammura",
+    village: "village1",
   },
   {
     id: 2,

@@ -49,12 +49,12 @@ const Feed: NextPage<{ jwt: any }> = ({
   const [activeTab, setActiveTab] = useState(tabsMobile[0]);
 
   const dispatch: MyThunkDispatch = useDispatch();
+  const {user, error} = useSelector((state:OurStore)=>state.authReducer);
   const {
     posts,
     recentVillages,
     recentUsers,
     totalGraduates,
-    village,
     villageGraduates,
     bangladeshGraduates,
   } = useSelector((state: OurStore) => state.feedPageReducer.pageData);
@@ -175,7 +175,7 @@ const Feed: NextPage<{ jwt: any }> = ({
               <Box>
                 <GraduateStatCard
                   totalGraduates={totalGraduates}
-                  villageName={village.href}
+                  villageName={user.village}
                   villageGraduates={villageGraduates}
                   bangladeshGraduates={bangladeshGraduates}
                 />
@@ -206,7 +206,7 @@ const Feed: NextPage<{ jwt: any }> = ({
             <Box w="300px">
               <GraduateStatCard
                 totalGraduates={totalGraduates}
-                villageName={village.href}
+                villageName={user.village}
                 villageGraduates={villageGraduates}
                 bangladeshGraduates={bangladeshGraduates}
               />

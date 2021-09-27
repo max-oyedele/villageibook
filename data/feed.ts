@@ -1,4 +1,5 @@
 import { Post } from "types/data";
+import { User, Village } from "types/schema";
 
 export const posts: Post[] = [
   {
@@ -113,7 +114,7 @@ export const posts: Post[] = [
   },
 ];
 
-export const recentVillages = [
+export const recentVillages: Village[] = [
   {
     id: 0,
     name: "Syedpur",
@@ -134,7 +135,7 @@ export const recentVillages = [
   },
 ];
 
-export const recentUsers = [
+export const recentUsers: User[] = [
   {
     id: 0,
     firstName: "sarmin",
@@ -154,14 +155,7 @@ export const recentUsers = [
 ];
 
 export const totalGraduates = 1000;
-export const village = {
-  id: 0,
-  name: "",
-  href: "",
-  uuid: "000",
-  img: "",
-  recentAt: 0,
-};
+
 export const villageGraduates = 124;
 export const bangladeshGraduates = {
   barisal: {

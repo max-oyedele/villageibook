@@ -42,7 +42,6 @@ export interface FeedPageState {
     recentVillages: Village[];
     recentUsers: User[];
     totalGraduates: number;
-    village: Village;
     villageGraduates: number;
     countryGraduates: any;
     bangladeshGraduates: any;

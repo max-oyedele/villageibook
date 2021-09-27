@@ -79,9 +79,8 @@ const LeftVillageItems: React.FC = () => {
   const { pathname } = router;
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-  const { village } = useSelector((state:OurStore)=>state.feedPageReducer.pageData)
 
-  const { villageStats } = UseVillageStats(village.name);
+  const { villageStats } = UseVillageStats("jammura");
   
   return (
     <VStack

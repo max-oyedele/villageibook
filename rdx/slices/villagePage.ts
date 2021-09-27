@@ -20,16 +20,11 @@ export const fetchVillagePageData = createAsyncThunk(
       // return response.data.villagePageData; // data: {villagePageData: []}
       
       return {
-        // posts: posts.filter((item) => item.village === params.villageName),
-        // articles: articles.filter((item) => item.village === params.villageName),
-        // users: users.filter((item) => item.village === params.villageName),
-        // institutions: institutions.filter((item) => item.village === params.villageName),
-        // videos: videos.filter((item) => item.village === params.villageName),
-        users: users,
-        articles: articles,
-        personalities: personalities,
-        institutions: institutions,
-        videos: videos,
+        users: users.filter((item) => item.village === params.villageName),
+        articles: articles.filter((item) => item.village === params.villageName),
+        personalities: personalities.filter((item) => item.village === params.villageName),
+        institutions: institutions.filter((item) => item.village === params.villageName),
+        videos: videos.filter((item) => item.village === params.villageName),
       };
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });

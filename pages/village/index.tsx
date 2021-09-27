@@ -1,6 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Link from "next/link";
+import {useRouter} from "next/router";
 
 import {
   Container,
@@ -40,18 +41,21 @@ import UseVillageStats from "hooks/use-village-stats";
 
 const Posts: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
+  const router = useRouter();
+  const {query} = router;
+  console.log('asdf', router)
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { posts, recentVillages, recentUsers, totalGraduates, village, villageGraduates, countryGraduates, bangladeshGraduates } = useSelector((state:OurStore)=>state.feedPageReducer.pageData)
+  const { posts, recentVillages, recentUsers, totalGraduates, villageGraduates, countryGraduates, bangladeshGraduates } = useSelector((state:OurStore)=>state.feedPageReducer.pageData)
   const { users, articles, personalities, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
 
   const { fixed } = UseLeftFixed();
-  const { villageStats } = UseVillageStats(village.href);
+  const { villageStats } = UseVillageStats("jammura");
   
   const [selectedVillage, setSelectedVillage] = useState(null);
   
   useEffect(()=>{
-    dispatch(fetchVillagePageData({village}))
+    dispatch(fetchVillagePageData({villageName: "jammura"}))
   }, [])
 
   return (
@@ -127,7 +131,7 @@ const Posts: NextPage = () => {
               <Divider mt={6} mb={8} />
               <VillageGraduatesCard
                 totalGraduates={totalGraduates}
-                villageName={village.href}
+                villageName={"jammura"}
                 villageGraduates={villageGraduates}
                 countryGraduates={countryGraduates}
               />

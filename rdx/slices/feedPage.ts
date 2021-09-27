@@ -15,7 +15,6 @@ import {
   recentVillages,
   recentUsers,
   totalGraduates,
-  village,
   villageGraduates,
   countryGraduates,
   bangladeshGraduates,
@@ -33,7 +32,6 @@ export const fetchFeedPageData = createAsyncThunk(
         recentVillages,
         recentUsers,
         totalGraduates,
-        village,
         villageGraduates,
         countryGraduates,
         bangladeshGraduates,        
@@ -52,14 +50,6 @@ const initialState: FeedPageState = {
     recentVillages: [],
     recentUsers: [],
     totalGraduates: 0,
-    village: {
-      id: 0,
-      name: "",
-      href: "",
-      uuid: "000",
-      img: "",
-      recentAt: 0,
-    },
     villageGraduates: 0,
     countryGraduates: {},
     bangladeshGraduates: {},
@@ -72,7 +62,6 @@ export const feedPageSlice = createSlice({
   initialState: initialState,
   reducers: {
     reset: () => initialState,
-    setVillage: (state, action) => {console.log(action.payload); state.pageData.village = action.payload},
   },
   extraReducers: (builder) => {
     builder.addCase(fetchFeedPageData.pending, (state) => {
@@ -93,4 +82,4 @@ export const feedPageSlice = createSlice({
   },
 });
 
-export const { reset, setVillage } = feedPageSlice.actions;
+export const { reset } = feedPageSlice.actions;
