@@ -53,7 +53,7 @@ import {
   fetchVillages,
 } from "rdx/slices/location";
 
-import HeaderForRegister from "components/HeaderForRegister";
+import HeaderForGuide from "components/HeaderForGuide";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import InputBox from "components/widgets/InputBox";
@@ -103,7 +103,6 @@ const AccountToRegister: NextPage = () => {
   const [selectedSubDistrict, setSelectedSubDistrict] =
     useState<SubDistrict>(null);
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
-  const [avatar, setAvatar] = useState(null);
 
   const dispatch: MyThunkDispatch = useDispatch();
   const {
@@ -142,7 +141,7 @@ const AccountToRegister: NextPage = () => {
 
   return (
     <Fragment>
-      <HeaderForRegister />
+      <HeaderForGuide title="Please Fill the Form below." />
       <Container maxW="container.xl" px={6}>
         <PageTitle title="Account" />
 
@@ -162,10 +161,8 @@ const AccountToRegister: NextPage = () => {
           onSubmit={async (values, actions) => {
             // console.log({ values, actions });
 
-            const avatarBody = new FormData();
-            avatarBody.append("file", avatar);
-
             const body = {
+              type: "json",
               uuid: user.uuid,
               education: {
                 degree: selectedDegree,
@@ -179,7 +176,6 @@ const AccountToRegister: NextPage = () => {
                 subDistrict: selectedSubDistrict,
                 village: selectedVillage,
               },
-              avatar: avatarBody,
             };
 
             actions.setSubmitting(true);
@@ -199,13 +195,13 @@ const AccountToRegister: NextPage = () => {
               <HStack spacing={6} align="start">
                 {breakpointValue === "md" && (
                   <Box w="40%">
-                    <AvatarUpload setAvatar={setAvatar} />
+                    <AvatarUpload />
                   </Box>
                 )}
 
                 <Box w="full">
                   {breakpointValue === "base" && (
-                    <AvatarUpload setAvatar={setAvatar} />
+                    <AvatarUpload />
                   )}
                   <Flex flexDirection="column" bgColor="white" p={6} border="1px" borderRadius="8px" borderColor="gray.200">
                     <Text fontSize="12px" fontWeight="600">

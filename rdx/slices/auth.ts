@@ -81,9 +81,10 @@ export const signup = createAsyncThunk(
       await sleep(4000);
       return {
         id: 584,
-        name: "sdf nbb",
+        firstName: "sdf",
+        lastName: "bbb",
         img: "/images/avatar.png",
-        uuid: "879a1f43-d496-43eb-a658-648071820d31"
+        uuid: "879a1f43-d496-43eb-a658-648071820d31",
       };
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });
@@ -96,29 +97,29 @@ export const submit = createAsyncThunk(
   "auth/submit",
   async (
     body: {
+      type: string;
       uuid: string;
+      avatar?: FormData;
       general?: {
         firstname: string;
         lastname: string;
       };
-      education: { degree: Degree; graduatedIn: Country; university: string };
-      location: {
+      education?: { degree: Degree; graduatedIn: Country; university: string };
+      location?: {
         country: Country;
         region: Region;
         district: District;
         subDistrict: SubDistrict;
         village: Village;
       };
-      avatar: FormData
+      aboutMe?: string;
+      media?: FormData;
     },
     thunkAPI
   ) => {
     try {
-      const response = await axios.post<{ user: any }>(
-        "api/auth/submit",
-        body
-      );
-      console.log('responsedata', response.data)
+      const response = await axios.post<{ user: any }>("api/auth/submit", body);
+      console.log("responsedata", response.data);
       return response.data;
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });
@@ -144,9 +145,11 @@ const initialState: AuthState = {
   // user: null,
   user: {
     id: 584,
-    name: "sdf nbb",
+    firstName: "sdf",
+    lastName: "bbb",
     img: "/images/avatar.png",
-    uuid: "879a1f43-d496-43eb-a658-648071820d31"
+    uuid: "879a1f43-d496-43eb-a658-648071820d31",
+    role: "premium",
   },
   error: null,
 };

@@ -43,7 +43,7 @@ const UserView: NextPage = () => {
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6} mb={48}>
-        <PageTitle title={user?.name ?? ""} />
+        <PageTitle title={user?.firstName + user?.lastName ?? ""} />
 
         <HStack spacing={6} align="start">
           {breakpointValue === "md" && (

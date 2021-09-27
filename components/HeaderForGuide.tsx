@@ -27,7 +27,7 @@ import { OurStore } from "rdx/store";
 import { reset } from "rdx/slices/auth";
 import { Status, Register } from "rdx/types";
 
-const HeaderForRegister = () => {
+const HeaderForGuide:React.FC<{title: string}> = ({title}) => {
   const router = useRouter();
   const { pathname } = router;
 
@@ -55,7 +55,7 @@ const HeaderForRegister = () => {
             shadow="md"
           >
             <Logo />
-            <Text>Please Fill the Form below.</Text>
+            <Text>{title}</Text>
             <Box></Box>
           </Flex>
 
@@ -121,4 +121,4 @@ const HeaderForRegister = () => {
   );
 };
 
-export default HeaderForRegister;
+export default HeaderForGuide;

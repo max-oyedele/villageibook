@@ -38,7 +38,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
                 fontSize="13px"
                 _hover={{ textDecoration: "underline", cursor: "pointer" }}
               >
-                {post.user.name}
+                {post.user.firstName} {post.user.lastName}
               </Text>
             </Link>
             <Text fontSize="11px" color="GrayText">

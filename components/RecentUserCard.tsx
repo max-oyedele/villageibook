@@ -1,8 +1,9 @@
 import React, { Fragment } from "react";
 import { Flex, HStack, Box, Text, Image } from "@chakra-ui/react";
 
-const RecentUserCard: React.FC<{ name: string; img: string; recentAt?: number }> = ({
-  name,
+const RecentUserCard: React.FC<{ firstName: string; lastName: string; img: string; recentAt?: number }> = ({
+  firstName,
+  lastName,
   img,
   recentAt,
 }) => {
@@ -20,7 +21,7 @@ const RecentUserCard: React.FC<{ name: string; img: string; recentAt?: number }>
         <Image src={img} alt="" borderRadius="4px" />
         <Box w="full" ml={4}>
           <Text fontSize="13px">
-            {name}
+            {firstName} {lastName}
           </Text>
           <Text fontSize="12px" color="GrayText">
             {recentAt === 0

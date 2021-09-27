@@ -203,7 +203,7 @@ const Home: NextPage<{ jwt: any }> = ({
                 </Text>
                 <VStack spacing={4}>
                   {recentUsers.map((user) => (
-                    <RecentUserCard key={user.name} {...user} />
+                    <RecentUserCard key={user.uuid} {...user} />
                   ))}
                 </VStack>
               </Box>
@@ -226,7 +226,7 @@ const Home: NextPage<{ jwt: any }> = ({
               </Text>
               <VStack spacing={4}>
                 {recentUsers.map((user) => (
-                  <RecentUserCard key={user.name} {...user} />
+                  <RecentUserCard key={user.uuid} {...user} />
                 ))}
               </VStack>
             </Box>

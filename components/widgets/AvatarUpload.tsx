@@ -1,10 +1,22 @@
 import { Fragment, useState, useRef } from "react";
 import { Flex, Text, Divider, Image, Button } from "@chakra-ui/react";
 
-const AvatarUpload = ({ setAvatar }) => {
+import { useSelector, useDispatch } from "react-redux";
+
+import { submit } from "rdx/slices/auth";
+import { MyThunkDispatch, OurStore } from "rdx/store";
+
+
+const AvatarUpload = () => {
+  const dispatch: MyThunkDispatch = useDispatch();
+  const { jwt, user } = useSelector((state: OurStore) => state.authReducer);
+
   const avatarRef = useRef(null);
 
+  const [avatar, setAvatar] = useState(null);
   const [avatarURL, setAvatarURL] = useState(null);
+
+  const [isUploading, setIsUploading] = useState(false);
 
   const uploadToClient = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -15,9 +27,31 @@ const AvatarUpload = ({ setAvatar }) => {
     }
   };
 
+  const uploadToServer = async () => {
+    const avatarBody = new FormData();
+    avatarBody.append("file", avatar);
+
+    const body = {
+      type: "avatar",
+      uuid: user.uuid,
+      avatar: avatarBody
+    }
+
+    setIsUploading(true);
+    await dispatch(submit(body));
+    setIsUploading(false);
+  }
+
   return (
     <Fragment>
-      <Flex flexDirection="column" bgColor="white" border="1px" borderRadius="8px" borderColor="gray.200" p={6}>
+      <Flex
+        flexDirection="column"
+        bgColor="white"
+        border="1px"
+        borderRadius="8px"
+        borderColor="gray.200"
+        p={6}
+      >
         <Text fontSize="12px" fontWeight="600">
           AVATAR
         </Text>
@@ -27,26 +61,17 @@ const AvatarUpload = ({ setAvatar }) => {
           justifyContent="center"
           alignItems="center"
         >
-          {!avatarURL && (
-            <Image
-              src="/icons/upload-avatar.svg"
-              w="80px"
-              h="80px"
-              alt=""
-              mt={8}
-            />
-          )}
-          {avatarURL && (
-            <Image
-              src={avatarURL}
-              w="80px"
-              h="80px"
-              borderRadius="full"
-              fit="cover"
-              alt=""
-              mt={8}
-            />
-          )}
+          <Image
+            src={avatarURL ?? "/icons/upload-avatar.svg"}
+            w="80px"
+            h="80px"
+            borderRadius="full"
+            fit="cover"
+            alt=""
+            mt={8}
+            cursor="pointer"
+            onClick={()=>avatarRef.current?.click()}
+          />
           <input
             ref={avatarRef}
             type="file"
@@ -64,7 +89,9 @@ const AvatarUpload = ({ setAvatar }) => {
             borderRadius="full"
             _focus={{ boxShadow: "none" }}
             mt={8}
-            onClick={() => avatarRef.current?.click()}
+            onClick={() => uploadToServer()}
+            isLoading={isUploading}
+            disabled={!avatarURL}
           >
             UPLOAD AVATAR
           </Button>

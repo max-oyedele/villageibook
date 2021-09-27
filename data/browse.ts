@@ -5,12 +5,13 @@ export const posts: Post[] = [
     id: 0,
     user: {
       id: 0,
-      name: "abdul ullah",
+      firstName: "abdul",
+      lastName: "ullah",
       img: "/images/abdul.png",
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
       role: "premium",
       village: "fatepur",
-      uuid: "8897"
+      uuid: "8897",
     },
     lastAt: "3 hours ago",
     contents: {
@@ -24,11 +25,12 @@ export const posts: Post[] = [
     id: 1,
     user: {
       id: 1,
-      name: "sadia ullah",
+      firstName: "sadia",
+      lastName: "ullah",      
       img: "/images/sadia.png",
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
       village: "kumri",
-      uuid: "42342"
+      uuid: "42342",
     },
     lastAt: "5 hours ago",
     contents: {
@@ -39,7 +41,7 @@ export const posts: Post[] = [
         title: "video title",
         author: "author",
         img: "/images/sadia-post2.png",
-        village: "jammura"
+        village: "jammura",
       },
     },
     village: "jammura",
@@ -48,12 +50,13 @@ export const posts: Post[] = [
     id: 2,
     user: {
       id: 2,
-      name: "taslim ahamed",
+      firstName: "taslim",
+      lastName: "ahamed",
       img: "/images/taslim.png",
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
       role: "premium",
       village: "mulaid",
-      uuid: "3454"
+      uuid: "3454",
     },
     lastAt: "1 day ago",
     contents: {
@@ -67,12 +70,13 @@ export const posts: Post[] = [
     id: 3,
     user: {
       id: 3,
-      name: "sarmin ahamed",
+      firstName: "sarmin",
+      lastName: "ahmed",      
       img: "/images/sarmin.png",
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
       role: "premium",
       village: "khulna",
-      uuid: "2345"
+      uuid: "2345",
     },
     lastAt: "1 day ago",
     contents: {
@@ -86,11 +90,12 @@ export const posts: Post[] = [
     id: 4,
     user: {
       id: 4,
-      name: "sonia bahmi",
+      firstName: "sonia",
+      lastName: "bahmi",      
       img: "/images/sonia.png",
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
       village: "Rajshahi",
-      uuid: "1234"
+      uuid: "1234",
     },
     lastAt: "1 day ago",
     contents: {
@@ -101,7 +106,7 @@ export const posts: Post[] = [
         title: "video title",
         author: "author",
         img: "/images/sonia-post.png",
-        village: "jammura"
+        village: "jammura",
       },
     },
     village: "jammura",
@@ -132,17 +137,19 @@ export const recentVillages = [
 export const recentUsers = [
   {
     id: 0,
-    name: "sarmin begum",
+    firstName: "sarmin",
+    lastName: "begum",    
     img: "/images/sarmin.png",
     recentAt: 1,
-    uuid: "3355"
+    uuid: "3355",
   },
   {
     id: 1,
-    name: "Nusrat Rahman",
+    firstName: "nusrat",
+    lastName: "rahman",    
     img: "/images/sonia.png",
     recentAt: 2,
-    uuid: "34555"
+    uuid: "34555",
   },
 ];
 
@@ -153,7 +160,7 @@ export const village = {
   href: "",
   uuid: "000",
   img: "",
-  recentAt: 0
+  recentAt: 0,
 };
 export const villageGraduates = 124;
 export const bangladeshGraduates = {

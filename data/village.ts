@@ -4,7 +4,8 @@ import { Post, Article, Personality, Institution, Video } from "types/data";
 export const users: User[] = [
   {
     id: 0,
-    name: "abdul ullah",
+    firstName: "abdul",
+    lastName: "ullah",    
     img: "/images/abdul.png",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
     role: "premium",
@@ -21,7 +22,8 @@ export const users: User[] = [
   },
   {
     id: 1,
-    name: "sadia ullah",
+    firstName: "sadia",
+    lastName: "ullah",    
     img: "/images/sadia.png",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
     details: {
@@ -37,7 +39,8 @@ export const users: User[] = [
   },
   {
     id: 2,
-    name: "taslim ahamed",
+    firstName: "taslim",
+    lastName: "ahmed",    
     img: "/images/taslim.png",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
     role: "premium",
@@ -54,7 +57,8 @@ export const users: User[] = [
   },
   {
     id: 3,
-    name: "sarmin ahamed",
+    firstName: "sarmin",
+    lastName: "ahmed",    
     img: "/images/sarmin.png",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
     role: "premium",
@@ -71,7 +75,8 @@ export const users: User[] = [
   },
   {
     id: 4,
-    name: "sonia bahmi",
+    firstName: "sonia",
+    lastName: "bahmi",    
     img: "/images/sonia.png",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
     details: {
