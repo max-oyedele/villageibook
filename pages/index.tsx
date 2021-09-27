@@ -21,12 +21,11 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { MyThunkDispatch, OurStore } from "rdx/store";
 import { updateJWT } from "rdx/slices/auth";
-import { fetchBrowsePageData } from "rdx/slices/browsePage";
+import { fetchFeedPageData } from "rdx/slices/feedPage";
 
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
-import SearchBar from "components/SearchBar";
 import LeftVillageDivider from "components/LeftVillageDivider";
 import LeftVillageItems from "components/LeftVillageItems";
 
@@ -38,13 +37,15 @@ import RecentUserCard from "components/RecentUserCard";
 import VideoBox from "components/VideoBox";
 
 import { parseCookie } from "helpers/parse-cookie";
+import UseLeftFixed from "hooks/use-left-fixed";
 
-const Home: NextPage<{ jwt: any }> = ({
+const Feed: NextPage<{ jwt: any }> = ({
   jwt,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
+  const { fixed } = UseLeftFixed();
 
-  const tabsMobile = ["Feed", "My Village", "Graduates"];
+  const tabsMobile = ["Feed", "Village", "Graduates"];
   const [activeTab, setActiveTab] = useState(tabsMobile[0]);
 
   const dispatch: MyThunkDispatch = useDispatch();
@@ -56,29 +57,17 @@ const Home: NextPage<{ jwt: any }> = ({
     village,
     villageGraduates,
     bangladeshGraduates,
-  } = useSelector((state: OurStore) => state.browsePageReducer.pageData);
+  } = useSelector((state: OurStore) => state.feedPageReducer.pageData);
 
   useEffect(() => {
     dispatch(updateJWT({ jwt }));
-    dispatch(fetchBrowsePageData(selectedVillage?.value));
+    dispatch(fetchFeedPageData());
   }, [jwt]);
-
-  const [selectedVillage, setSelectedVillage] = useState(null);
-
-  useEffect(() => {}, [selectedVillage]);
 
   return (
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <PageTitle title="Find Village" />
-        <Box px={{ lg: 20 }}>
-          <SearchBar
-            selectedVillage={selectedVillage}
-            setSelectedVillage={setSelectedVillage}
-          />
-        </Box>
-
         {breakpointValue === "base" && (
           <Box mt={12}>
             <TabsMobile
@@ -89,18 +78,21 @@ const Home: NextPage<{ jwt: any }> = ({
           </Box>
         )}
 
-        <HStack spacing={6} mt={12} align="start">
+        <Flex mt={8}>
           {breakpointValue === "md" && (
-            <Box w="25%">
-              <Box
-                bgColor="white"
-                p={4}
-                border="1px"
-                borderColor="gray.200"
-                borderRadius="6px"
-                mb={6}
-              >
-                {/* <VideoBox
+            <Box
+              minW="300px"
+              h="max-content"
+              bgColor="white"
+              p={4}
+              border="1px"
+              borderColor="gray.200"
+              borderRadius="6px"
+              pos={fixed ? "fixed" : "static"}
+              top={fixed ? "80px" : 0}
+              mb={6}
+            >
+              {/* <VideoBox
                   video={{
                     id: 0,
                     title: "video title",
@@ -109,28 +101,28 @@ const Home: NextPage<{ jwt: any }> = ({
                   }}
                 /> */}
 
-                <CaptionCard />
+              <CaptionCard name="VillageiBook" />
 
-                <Box mt={8}>
-                  <LeftVillageDivider />
-                </Box>
-                <Box my={6}>
-                  <LeftVillageItems />
-                </Box>
+              <Box mt={8}>
+                <LeftVillageDivider title="Go My Village" />
               </Box>
-
-              <Text fontSize="24px" mt={12} mb={6}>
-                Recently developed
-              </Text>
-              <VStack spacing={4}>
-                {recentVillages.map((village) => (
-                  <RecentVillageCard key={village.name} {...village} />
-                ))}
-              </VStack>
+              <Box my={6}>
+                <LeftVillageItems />
+              </Box>
             </Box>
           )}
 
-          <Box w={{ base: "100%", md: "50%" }}>
+          <Box
+            w={{ base: "100%", md: "50%" }}
+            ml={
+              fixed && breakpointValue === "md"
+                ? "324px"
+                : breakpointValue === "md"
+                ? "24px"
+                : "0px"
+            }
+            mr={breakpointValue === "md" ? "24px" : "0px"}
+          >
             <Box bg="white" borderRadius="4px" mb={4} p={4}>
               <Textarea fontSize="13px" placeholder="Write something here..." />
               <Divider mt={4} mb={2} />
@@ -166,7 +158,7 @@ const Home: NextPage<{ jwt: any }> = ({
                 ))}
               </VStack>
             )}
-            {breakpointValue === "base" && activeTab === "My Village" && (
+            {breakpointValue === "base" && activeTab === "Village" && (
               <Box>
                 <LeftVillageItems />
                 <Text fontSize="20px" mt={12} mb={6}>
@@ -211,16 +203,14 @@ const Home: NextPage<{ jwt: any }> = ({
           </Box>
 
           {breakpointValue === "md" && (
-            <Box w="25%">
-              <Text fontSize="24px" mb={6}>
-                Graduates
-              </Text>
+            <Box w="300px">
               <GraduateStatCard
                 totalGraduates={totalGraduates}
                 villageName={village.href}
                 villageGraduates={villageGraduates}
                 bangladeshGraduates={bangladeshGraduates}
               />
+
               <Text fontSize="24px" mt={12} mb={6}>
                 Recently joined
               </Text>
@@ -229,12 +219,21 @@ const Home: NextPage<{ jwt: any }> = ({
                   <RecentUserCard key={user.uuid} {...user} />
                 ))}
               </VStack>
+
+              <Text fontSize="24px" mt={12} mb={6}>
+                Recently developed
+              </Text>
+              <VStack spacing={4}>
+                {recentVillages.map((village) => (
+                  <RecentVillageCard key={village.name} {...village} />
+                ))}
+              </VStack>
             </Box>
           )}
-        </HStack>
+        </Flex>
       </Container>
 
-      <Box mt={20}>
+      <Box mt={40}>
         <Footer />
       </Box>
     </Fragment>
@@ -272,7 +271,7 @@ const TabsMobile: React.FC<{
   );
 };
 
-export default Home;
+export default Feed;
 
 export async function getServerSideProps({ req }) {
   const { jwt } = parseCookie(req ? req.headers.cookie || "" : document.cookie);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { posts } from "data/browse";
+import { posts } from "data/feed";
 import { articles, users, institutions, videos } from "data/village";
 
 const UseVillageStats = (villageName) => {

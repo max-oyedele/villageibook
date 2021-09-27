@@ -36,7 +36,7 @@ import {
   village,
   villageGraduates,
   bangladeshGraduates,
-} from "data/browse";
+} from "data/feed";
 import {
   interCountry,
   Stats,

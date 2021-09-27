@@ -7,7 +7,7 @@ import {
 
 import axios from "axios";
 
-import { Status, BrowsePageState } from "../types";
+import { Status, FeedPageState } from "../types";
 
 //mock data
 import {
@@ -19,14 +19,14 @@ import {
   villageGraduates,
   countryGraduates,
   bangladeshGraduates,
-} from "data/browse";
+} from "data/feed";
 
-export const fetchBrowsePageData = createAsyncThunk(
-  "browsePage/fetchData",
-  async (params: any, thunkAPI) => {
+export const fetchFeedPageData = createAsyncThunk(
+  "feedPage/fetchData",
+  async (_, thunkAPI) => {
     try {
-      // const response = await axios.get('api/village-page-data', {params: params})
-      // return response.data.villagePageData; // data: {villagePageData: []}
+      // const response = await axios.get('api/feed-page-data')
+      // return response.data.villagePageData; // data: {feedPageData: []}
 
       return {
         posts,
@@ -45,7 +45,7 @@ export const fetchBrowsePageData = createAsyncThunk(
 );
 
 /************************************* */
-const initialState: BrowsePageState = {
+const initialState: FeedPageState = {
   status: Status.IDLE,
   pageData: {
     posts: [],
@@ -67,23 +67,23 @@ const initialState: BrowsePageState = {
   error: null,
 };
 
-export const browsePageSlice = createSlice({
-  name: "browsePage",
+export const feedPageSlice = createSlice({
+  name: "feedPage",
   initialState: initialState,
   reducers: {
     reset: () => initialState,
     setVillage: (state, action) => {console.log(action.payload); state.pageData.village = action.payload},
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchBrowsePageData.pending, (state) => {
+    builder.addCase(fetchFeedPageData.pending, (state) => {
       state.status = Status.LOADING;
       state.error = null;
     });
-    builder.addCase(fetchBrowsePageData.fulfilled, (state, action) => {
+    builder.addCase(fetchFeedPageData.fulfilled, (state, action) => {
       state.status = Status.IDLE;
       state.pageData = action.payload;
     });
-    builder.addCase(fetchBrowsePageData.rejected, (state, action) => {
+    builder.addCase(fetchFeedPageData.rejected, (state, action) => {
       // state.error = (
       //   action.payload as { error: string; error_description: string }
       // ).error_description;
@@ -93,4 +93,4 @@ export const browsePageSlice = createSlice({
   },
 });
 
-export const { reset, setVillage } = browsePageSlice.actions;
+export const { reset, setVillage } = feedPageSlice.actions;

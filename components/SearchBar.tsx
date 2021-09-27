@@ -14,7 +14,7 @@ import {
   fetchSubDistricts,
   fetchVillages,
 } from "rdx/slices/location";
-import { setVillage } from "rdx/slices/browsePage";
+import { setVillage } from "rdx/slices/feedPage";
 import { OurStore } from "rdx/store";
 
 import SelectBox from "components/widgets/SelectBox";

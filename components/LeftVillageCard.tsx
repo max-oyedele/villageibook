@@ -12,19 +12,18 @@ import {
 
 import LeftVillageDivider from "./LeftVillageDivider";
 import LeftVillageItems from "./LeftVillageItems";
-
-const villageName = "jammura";
-const userName = "mohammed shah";
+import CaptionCard from "./CaptionCard";
 
 const LeftVillageCard = ({fixed}) => {
   return (
     <Fragment>
-      <Box bgColor="white" borderRadius="6px" w="240px" pos={fixed ? "fixed" : "static"} top={fixed ? "80px" : 0}>
+      <Box bgColor="white" border="1px" borderRadius="8px" borderColor="gray.200" w="240px" pos={fixed ? "fixed" : "static"} top={fixed ? "80px" : 0}>
         <Flex w="full" flexDirection="column" alignItems="center" p={4}>
-          <Avatar size="lg" src="/images/mohammed-shah.png" />
+          {/* <Avatar size="lg" src="/images/mohammed-shah.png" />
           <Text fontSize="15px" mt={4} textTransform="capitalize">
             {userName}
-          </Text>
+          </Text> */}
+          <CaptionCard name="Jammura" />
           {/* <Text
             fontSize="12px"
             fontWeight="400"

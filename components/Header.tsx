@@ -31,13 +31,13 @@ import { Status, Register } from "rdx/types";
 const tabs = [
   {
     id: 0,
-    name: "Browse",
+    name: "Feed",
     path: "/",
   },
   {
     id: 1,
     name: "Village",
-    path: "/myvillage",
+    path: "/village",
   },
   {
     id: 2,
@@ -61,7 +61,7 @@ const Header = () => {
   const [activeTab, setActiveTab] = useState(
       pathname === "/"
       ? tabs[0] 
-      : pathname.includes("myvillage")
+      : pathname.includes("village")
       ? tabs[1]
       : pathname.includes("graduates")
       ? tabs[2]

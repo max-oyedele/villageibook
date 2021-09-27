@@ -23,7 +23,7 @@ const villageItems = [
     name: "My Page",
     value: "users",
     img: "/icons/village-mypage.svg",
-    path: '/myvillage/users',
+    path: '/village/users',
     activeBgColor: '#EFFBFA',
     badgeColor: '#36CFD1'
   },
@@ -41,7 +41,7 @@ const villageItems = [
     name: "Society",
     value: "articles",
     img: "/icons/village-society.svg",
-    path: '/myvillage/society',
+    path: '/village/society',
     activeBgColor: '#F4F4FB',
     badgeColor: '#BBBBD7'
   },
@@ -50,7 +50,7 @@ const villageItems = [
     name: "Personalities",
     value: "users",
     img: "/icons/village-personality.svg",
-    path: '/myvillage/personalities',
+    path: '/village/personalities',
     activeBgColor: '#FFF9E8',
     badgeColor: '#FFB425'
   },
@@ -59,7 +59,7 @@ const villageItems = [
     name: "Institutions",
     value: "institutions",
     img: "/icons/village-institution.svg",
-    path: '/myvillage/institutions',
+    path: '/village/institutions',
     activeBgColor: '#5B8FFF22',
     badgeColor: '#5A8FFF'
   },
@@ -68,7 +68,7 @@ const villageItems = [
     name: "Videos",
     value: "videos",
     img: "/icons/village-video.svg",
-    path: '/myvillage/videos',
+    path: '/village/videos',
     activeBgColor: '#FF5B5B22',
     badgeColor: '#FF645A'
   },
@@ -79,7 +79,7 @@ const LeftVillageItems: React.FC = () => {
   const { pathname } = router;
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-  const { village } = useSelector((state:OurStore)=>state.browsePageReducer.pageData)
+  const { village } = useSelector((state:OurStore)=>state.feedPageReducer.pageData)
 
   const { villageStats } = UseVillageStats(village.name);
   

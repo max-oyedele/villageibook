@@ -4,14 +4,14 @@ import logger from 'redux-logger'
 
 import { authSlice } from './slices/auth'
 import { locationSlice } from './slices/location'
-import { browsePageSlice} from './slices/browsePage'
+import { feedPageSlice} from './slices/feedPage'
 import { villagePageSlice} from './slices/villagePage'
 
 const combinedReducers = combineReducers({
   authReducer: authSlice.reducer,
   locationReducer: locationSlice.reducer,
   villagePageReducer: villagePageSlice.reducer,
-  browsePageReducer: browsePageSlice.reducer
+  feedPageReducer: feedPageSlice.reducer
 })
 export type OurStore = ReturnType<typeof combinedReducers>
 

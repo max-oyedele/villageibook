@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Link from "next/link";
 
@@ -25,6 +25,7 @@ import { fetchVillagePageData } from "rdx/slices/villagePage";
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
+import SearchBar from "components/SearchBar";
 import LeftVillageCard from "components/LeftVillageCard";
 import UserCard from "components/UserCard";
 import VillageGraduatesCard from "components/VillageGraduatesCard";
@@ -34,13 +35,6 @@ import InstitutionCard from "components/InstitutionCard";
 import VideoCard from "components/VideoCard";
 import FilterCard from "components/FilterCard";
 
-// import {
-//   totalGraduates,
-//   village,
-//   villageGraduates,
-//   countryGraduates,
-// } from "data/browse";
-
 import UseLeftFixed from "hooks/use-left-fixed";
 import UseVillageStats from "hooks/use-village-stats";
 
@@ -48,11 +42,13 @@ const Posts: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { posts, recentVillages, recentUsers, totalGraduates, village, villageGraduates, countryGraduates, bangladeshGraduates } = useSelector((state:OurStore)=>state.browsePageReducer.pageData)
+  const { posts, recentVillages, recentUsers, totalGraduates, village, villageGraduates, countryGraduates, bangladeshGraduates } = useSelector((state:OurStore)=>state.feedPageReducer.pageData)
   const { users, articles, personalities, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
 
   const { fixed } = UseLeftFixed();
   const { villageStats } = UseVillageStats(village.href);
+  
+  const [selectedVillage, setSelectedVillage] = useState(null);
   
   useEffect(()=>{
     dispatch(fetchVillagePageData({village}))
@@ -62,7 +58,13 @@ const Posts: NextPage = () => {
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <PageTitle title={`Village: ${village.href}`} />
+        <Box px={{ lg: 20 }} my={8}>
+          <SearchBar
+            selectedVillage={selectedVillage}
+            setSelectedVillage={setSelectedVillage}
+          />
+        </Box>
+
         <Flex>
           {breakpointValue === "md" && (
             <Box>
@@ -105,7 +107,7 @@ const Posts: NextPage = () => {
                   </SimpleGrid>
                 )}
                 <Box>
-                  <Link href="/myvillage/users">
+                  <Link href="/village/users">
                     <Text
                       fontSize="12px"
                       color="purpleTone"
@@ -146,7 +148,7 @@ const Posts: NextPage = () => {
                 </SimpleGrid>
                 <Divider my={6} />
                 <Box>
-                  <Link href="/myvillage/society">
+                  <Link href="/village/society">
                     <Text
                       fontSize="12px"
                       color="purpleTone"
@@ -178,7 +180,7 @@ const Posts: NextPage = () => {
                   </SimpleGrid>
                 )}
                 <Box>
-                  <Link href="/myvillage/personalities">
+                  <Link href="/village/personalities">
                     <Text
                       fontSize="12px"
                       color="purpleTone"
@@ -207,7 +209,7 @@ const Posts: NextPage = () => {
                     ))}
                 </VStack>
                 <Box>
-                  <Link href="/myvillage/institutions">
+                  <Link href="/village/institutions">
                     <Text
                       fontSize="12px"
                       color="purpleTone"
@@ -237,7 +239,7 @@ const Posts: NextPage = () => {
                 </SimpleGrid>
                 <Divider mt={10} mb={6} />
                 <Box>
-                  <Link href="/myvillage/videos">
+                  <Link href="/village/videos">
                     <Text
                       fontSize="12px"
                       color="purpleTone"

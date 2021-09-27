@@ -35,7 +35,7 @@ export interface LocationState {
   villages: Village[];
   error?: SerializedError;
 }
-export interface BrowsePageState {
+export interface FeedPageState {
   status: Status;
   pageData: {
     posts: Post[];

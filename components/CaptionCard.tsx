@@ -1,21 +1,7 @@
 import React, { Fragment } from "react";
 import { Flex, HStack, Box, Text, Image } from "@chakra-ui/react";
 
-import { useSelector, useDispatch } from "react-redux";
-import { MyThunkDispatch, OurStore } from "rdx/store";
-
-const CaptionCard = () => {
-  const dispatch: MyThunkDispatch = useDispatch();
-  const {
-    posts,
-    recentVillages,
-    recentUsers,
-    totalGraduates,
-    village,
-    villageGraduates,
-    bangladeshGraduates,
-  } = useSelector((state: OurStore) => state.browsePageReducer.pageData);
-
+const CaptionCard = ({name}) => {
   return (
     <Fragment>
       <Flex
@@ -29,7 +15,7 @@ const CaptionCard = () => {
       >
         <Text fontSize="24px">Welcome</Text>
         <Text fontSize="24px" fontWeight="700" mt={2}>
-          to {village.name ? village.name : "VillageiBook"}
+          to {name}
         </Text>
       </Flex>
     </Fragment>

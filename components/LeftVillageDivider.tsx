@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { HStack, Divider, Button } from "@chakra-ui/react";
 
-const LeftVillageDivider = () => {
+const LeftVillageDivider:React.FC<{title?: string}> = ({title}) => {
   return (
     <Fragment>
       <HStack>
@@ -13,11 +13,11 @@ const LeftVillageDivider = () => {
           h="30px"
           bgColor="purpleTone"
           color="white"
-          fontSize="10px"
+          fontSize="13px"
           fontWeight="400"
           _focus={{ boxShadow: "none" }}
         >
-          <Link href="/myvillage">GO VILLAGE</Link>
+          <Link href="/village">{title??"GO VILLAGE"}</Link>
         </Button>
         <Divider />
       </HStack>
