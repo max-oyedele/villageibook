@@ -3,14 +3,18 @@ export type User = {
   firstName: string;
   lastName: string;
   img: string;
-  role?: string;
+  email: string;
   details?: {
     photos: string[]
   };
   desc?: string;
   village?: string;
+  graduatedIn?: string;
+  university?: string;
+  degree?: string;
   recentAt?: number;
   uuid: string;
+  role?: string;
 }
 
 export type Country = {

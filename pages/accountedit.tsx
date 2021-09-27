@@ -91,7 +91,7 @@ const AccountToEdit: NextPage = () => {
     (state: OurStore) => state.authReducer
   );
 
-  const [activeStep, setActiveStep] = useState<number>(1);
+  const [activeStep, setActiveStep] = useState<number>(2);
 
   return (
     <Fragment>
@@ -159,9 +159,9 @@ const AccountToEdit: NextPage = () => {
         </HStack>
       </Container>
 
-      <Box mt={20}>
+      {/* <Box mt={20}>
         <Footer />
-      </Box>
+      </Box> */}
     </Fragment>
   );
 };
@@ -186,8 +186,8 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
     useState<SubDistrict>(null);
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
 
-  const [isGraduated, setIsGraduated] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isSelf, setIsSelf] = useState(true);
 
   useEffect(() => {
     dispatch(fetchCountries());
@@ -294,7 +294,7 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
               />
 
               <Text fontSize="13px" textDecoration="underline" mt={8} mb={4}>
-                Residence
+                Where do you live?
               </Text>
               <InputBoxWithSelect
                 id="country"
@@ -354,66 +354,85 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
             </Box>
 
             <Box>
-              <Box mt={8}>
-                <AccountQuestionBar
-                  question="Are you graduated?"
-                  isTrue={isGraduated}
-                  setIsTrue={setIsGraduated}
-                />
-              </Box>
-              {isGraduated && (
-                <>
-                  <Text fontSize="13px" textDecoration="underline" my={4}>
-                    Education info
-                  </Text>
+              <Text fontSize="13px" textDecoration="underline" my={4}>
+                About your education
+              </Text>
 
-                  <InputBoxWithSelect
-                    id="degree"
-                    label="Degree"
-                    options={degrees}
-                    optionLabel={({ label }) => label}
-                    selectedOption={selectedDegree}
-                    setSelectedOption={setSelectedDegree}
-                    isRequired={false}
-                    isInvalid={!selectedDegree}
-                    error={errors.degree}
-                  />
+              <InputBoxWithSelect
+                id="graduatedIn"
+                label="Graduated in"
+                options={countries}
+                optionLabel={({ name }) => name}
+                selectedOption={selectedGraduatedIn}
+                setSelectedOption={setSelectedGraduatedIn}
+                isRequired={false}
+                isInvalid={!selectedGraduatedIn}
+                error={errors.graduatedIn}
+              />
 
-                  <InputBoxWithSelect
-                    id="graduatedIn"
-                    label="Graduated in"
-                    options={countries}
-                    optionLabel={({ name }) => name}
-                    selectedOption={selectedGraduatedIn}
-                    setSelectedOption={setSelectedGraduatedIn}
-                    isRequired={false}
-                    isInvalid={!selectedGraduatedIn}
-                    error={errors.graduatedIn}
-                  />
+              <InputBox
+                id="university"
+                label="University"
+                onChange={setUniversity}
+                isRequired={false}
+                isInvalid={!!errors.university}
+                error={errors.university}
+              />
 
-                  <InputBox
-                    id="university"
-                    label="University"
-                    onChange={setUniversity}
-                    isRequired={false}
-                    isInvalid={!!errors.university}
-                    error={errors.university}
-                  />
-                </>
-              )}
+              <InputBoxWithSelect
+                id="degree"
+                label="Degree"
+                options={degrees}
+                optionLabel={({ label }) => label}
+                selectedOption={selectedDegree}
+                setSelectedOption={setSelectedDegree}
+                isRequired={false}
+                isInvalid={!selectedDegree}
+                error={errors.degree}
+              />
+
+              <InputBoxWithSelect
+                id="degree"
+                label="Profession"
+                options={degrees}
+                optionLabel={({ label }) => label}
+                selectedOption={selectedDegree}
+                setSelectedOption={setSelectedDegree}
+                isRequired={false}
+                isInvalid={!selectedDegree}
+                error={errors.degree}
+              />
 
               {user.role !== "premium" && (
-                <Box mt={8}>
-                  <AccountQuestionBar
-                    question="Do you want to subscribe for better experience?"
-                    isTrue={isSubscribed}
-                    setIsTrue={setIsSubscribed}
-                  />
+                // <Box mt={8}>
+                //   <AccountQuestionBar
+                //     question="Do you want to subscribe for better experience?"
+                //     isTrue={isSubscribed}
+                //     setIsTrue={setIsSubscribed}
+                //   />
+                // </Box>
+                <Box mt={12}>
+                  <PremiumCard />
                 </Box>
               )}
-              {isSubscribed && (
-                <Box mt={4}>
-                  <PremiumCard />
+              {user.role === "premium" && (
+                <Box mt={8}>
+                  <Text fontSize="12px" color="GrayText" mt={4}>
+                    Please complete 2nd, 3rd part of your profile pages now.
+                  </Text>
+                  <Text fontSize="12px" color="GrayText" my={1}>
+                    or
+                  </Text>
+                  <Text fontSize="12px" color="GrayText">
+                    Please ask assitance from admin team for the completion.
+                  </Text>
+                  <Box mt={4}>
+                    <AccountQuestionBar
+                      question="Do you want admin team write your profile?"
+                      isTrue={isSelf}
+                      setIsTrue={setIsSelf}
+                    />
+                  </Box>
                 </Box>
               )}
             </Box>
@@ -458,7 +477,6 @@ const Step2Form = ({ user, error, activeStep, setActiveStep }) => {
   const dispatch: MyThunkDispatch = useDispatch();
 
   const [aboutMe, setAboutMe] = useState(null);
-  const [isSelf, setIsSelf] = useState(true);
 
   const step2Schema = yup.object({
     aboutMe: yup.string().nullable().required("About me is required."),
@@ -493,24 +511,18 @@ const Step2Form = ({ user, error, activeStep, setActiveStep }) => {
       }) => (
         <Form noValidate>
           <Box>
-            <Text fontSize="13px" textDecoration="underline" mt={6} mb={4}>
+            {/* <Text fontSize="13px" textDecoration="underline" mt={6} mb={4}>
               Detail information
-            </Text>
-            <AccountQuestionBar
-              question="Do you want to write about you by yourself or by admin?"
-              isTrue={isSelf}
-              setIsTrue={setIsSelf}
+            </Text> */}
+
+            <InputTextArea
+              id="aboutme"
+              label="About Me"
+              onChange={setAboutMe}
+              isRequired={true}
+              isInvalid={!!errors.aboutMe}
+              error={errors.aboutMe}
             />
-            {isSelf && (
-              <InputTextArea
-                id="aboutme"
-                label="About Me"
-                onChange={setAboutMe}
-                isRequired={true}
-                isInvalid={!!errors.aboutMe}
-                error={errors.aboutMe}
-              />
-            )}
           </Box>
 
           <HStack spacing={4} w={{ base: "100%", md: "50%" }} mt={10}>
@@ -569,7 +581,7 @@ const Step3Form = ({ user, error, activeStep, setActiveStep }) => {
         mediaURLs[index] = URL.createObjectURL(i);
         return mediaURLs;
       });
-      setRefresh(!refresh)
+      setRefresh(!refresh);
     }
   };
 
@@ -598,10 +610,10 @@ const Step3Form = ({ user, error, activeStep, setActiveStep }) => {
     <Fragment>
       <Box>
         <Text fontSize="13px" textDecoration="underline" mt={6} mb={4}>
-          Upload Media (up to 6)
+          Upload Photos (up to 3)
         </Text>
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
-          {[1, 2, 3, 4, 5, 6].map((e, index) => (
+          {[1, 2, 3].map((e, index) => (
             <Box w="full" key={e}>
               <AspectRatio ratio={4 / 3}>
                 <Image

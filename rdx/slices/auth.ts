@@ -84,6 +84,7 @@ export const signup = createAsyncThunk(
         firstName: "sdf",
         lastName: "bbb",
         img: "/images/avatar.png",
+        email: "sdf@gmail.com",
         uuid: "879a1f43-d496-43eb-a658-648071820d31",
       };
     } catch (error) {
@@ -148,6 +149,7 @@ const initialState: AuthState = {
     firstName: "sdf",
     lastName: "bbb",
     img: "/images/avatar.png",
+    email: "sdf@gmail.com",
     uuid: "879a1f43-d496-43eb-a658-648071820d31",
     role: "premium",
   },

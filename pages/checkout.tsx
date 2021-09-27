@@ -49,8 +49,7 @@ const Checkout: NextPage = () => {
                 <Radio value="1">
                   Paypal
                 </Radio>
-                <Radio value="2">Stripe</Radio>
-                <Radio value="3">Master Card</Radio>
+                <Radio value="2">Debit Card</Radio>
               </Stack>
             </RadioGroup>
 

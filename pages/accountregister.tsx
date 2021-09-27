@@ -141,7 +141,7 @@ const AccountToRegister: NextPage = () => {
 
   return (
     <Fragment>
-      <HeaderForGuide title="Please Fill the Form below." />
+      <HeaderForGuide title="Please Fill the Form below to complete your Signup." />
       <Container maxW="container.xl" px={6}>
         <PageTitle title="Account" />
 
@@ -200,10 +200,15 @@ const AccountToRegister: NextPage = () => {
                 )}
 
                 <Box w="full">
-                  {breakpointValue === "base" && (
-                    <AvatarUpload />
-                  )}
-                  <Flex flexDirection="column" bgColor="white" p={6} border="1px" borderRadius="8px" borderColor="gray.200">
+                  {breakpointValue === "base" && <AvatarUpload />}
+                  <Flex
+                    flexDirection="column"
+                    bgColor="white"
+                    p={6}
+                    border="1px"
+                    borderRadius="8px"
+                    borderColor="gray.200"
+                  >
                     <Text fontSize="12px" fontWeight="600">
                       USER DETAILS
                     </Text>
@@ -216,7 +221,7 @@ const AccountToRegister: NextPage = () => {
                           color="purpleTone"
                           mb={4}
                         >
-                          Where are you residing now?
+                          Where do you live?
                         </Text>
 
                         <InputBoxWithSelect
@@ -283,20 +288,8 @@ const AccountToRegister: NextPage = () => {
                           color="purpleTone"
                           mb={4}
                         >
-                          Education Information
+                          About your education
                         </Text>
-
-                        <InputBoxWithSelect
-                          id="degree"
-                          label="Subject Degree"
-                          options={degrees}
-                          optionLabel={({ label }) => label}
-                          selectedOption={selectedDegree}
-                          setSelectedOption={setSelectedDegree}
-                          isRequired={false}
-                          isInvalid={!selectedDegree}
-                          error={errors.degree}
-                        />
 
                         <InputBoxWithSelect
                           id="graduatedIn"
@@ -317,6 +310,18 @@ const AccountToRegister: NextPage = () => {
                           isRequired={false}
                           isInvalid={!!errors.university}
                           error={errors.university}
+                        />
+
+                        <InputBoxWithSelect
+                          id="degree"
+                          label="Degree"
+                          options={degrees}
+                          optionLabel={({ label }) => label}
+                          selectedOption={selectedDegree}
+                          setSelectedOption={setSelectedDegree}
+                          isRequired={false}
+                          isInvalid={!selectedDegree}
+                          error={errors.degree}
                         />
                       </Box>
                     </SimpleGrid>
@@ -342,9 +347,9 @@ const AccountToRegister: NextPage = () => {
         </Formik>
       </Container>
 
-      <Box w="full" pos="fixed" bottom={0}>
+      {/* <Box w="full" pos="fixed" bottom={0}>
         <Footer />
-      </Box>
+      </Box> */}
     </Fragment>
   );
 };

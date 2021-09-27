@@ -1,6 +1,14 @@
 import { Fragment } from "react";
 import Link from "next/link";
-import { HStack, Flex, Box, Text, Image, Button } from "@chakra-ui/react";
+import {
+  VStack,
+  HStack,
+  Flex,
+  Box,
+  Text,
+  Image,
+  Button,
+} from "@chakra-ui/react";
 
 const AccountQuestionBar: React.FC<{
   question: string;
@@ -9,9 +17,10 @@ const AccountQuestionBar: React.FC<{
 }> = ({ question, isTrue, setIsTrue }) => {
   return (
     <Fragment>
-      <Flex justifyContent="space-between" fontSize="13px">
+      <Box justifyContent="space-between" fontSize="14px">
         <Text>{question}</Text>
-        <HStack spacing={4}>
+
+        <HStack mt={2}>
           <Text
             color={isTrue ? "purpleTone" : ""}
             cursor="pointer"
@@ -28,7 +37,7 @@ const AccountQuestionBar: React.FC<{
             No
           </Text>
         </HStack>
-      </Flex>
+      </Box>
     </Fragment>
   );
 };
