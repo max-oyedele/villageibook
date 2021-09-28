@@ -404,13 +404,6 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
               />
 
               {user.role !== "premium" && (
-                // <Box mt={8}>
-                //   <AccountQuestionBar
-                //     question="Do you want to subscribe for better experience?"
-                //     isTrue={isSubscribed}
-                //     setIsTrue={setIsSubscribed}
-                //   />
-                // </Box>
                 <Box mt={12}>
                   <PremiumCard />
                 </Box>
@@ -510,11 +503,7 @@ const Step2Form = ({ user, error, activeStep, setActiveStep }) => {
         handleSubmit,
       }) => (
         <Form noValidate>
-          <Box>
-            {/* <Text fontSize="13px" textDecoration="underline" mt={6} mb={4}>
-              Detail information
-            </Text> */}
-
+          
             <InputTextArea
               id="aboutme"
               label="About Me"
@@ -523,7 +512,7 @@ const Step2Form = ({ user, error, activeStep, setActiveStep }) => {
               isInvalid={!!errors.aboutMe}
               error={errors.aboutMe}
             />
-          </Box>
+          
 
           <HStack spacing={4} w={{ base: "100%", md: "50%" }} mt={10}>
             {user.role === "premium" && activeStep >= 2 && (

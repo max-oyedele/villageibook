@@ -27,6 +27,7 @@ import Footer from "components/Footer";
 import HomeSlick from "components/HomeSlick";
 import HomeSlickControl from "components/HomeSlickControl";
 import HomeCategoryBar from "components/HomeCategoryBar";
+import VideoBox from "components/VideoBox";
 
 const Home: NextPage = () => {
   const heroImgSlideConf = {
@@ -75,7 +76,7 @@ const Home: NextPage = () => {
             </Box>
           </HStack>
         </Flex>
-        
+
         <Box px={{ base: 6, md: 32 }} mt={12}>
           <Stack spacing={12} direction={{ base: "column", md: "row" }}>
             <Box w="full">
@@ -189,7 +190,18 @@ const Home: NextPage = () => {
           <HomeCategoryBar />
         </Box>
 
-        <Box>
+        <Container maxW="container.md" mt={24}>
+          <VideoBox
+            video={{
+              id: 0,
+              title: "video title",
+              author: "author",
+              img: "https://bit.ly/naruto-sage",
+            }}
+          />
+        </Container>
+
+        <Box mt={-96}>
           <Image src="/images/home/bottom-back.png" w="full" fit="cover" />
         </Box>
 

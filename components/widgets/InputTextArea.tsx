@@ -25,7 +25,7 @@ const InputTextArea: React.FC<{
             {label}
           </FormLabel>
           <Box w="full">
-            <Textarea onChange={(e) => onChange(e.target.value)} />
+            <Textarea rows={20} onChange={(e) => onChange(e.target.value)} placeholder="Write here..." />
           </Box>
         </HStack>
         <HStack spacing={5}>

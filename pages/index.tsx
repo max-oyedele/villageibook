@@ -91,16 +91,7 @@ const Feed: NextPage<{ jwt: any }> = ({
               pos={fixed ? "fixed" : "static"}
               top={fixed ? "80px" : 0}
               mb={6}
-            >
-              {/* <VideoBox
-                  video={{
-                    id: 0,
-                    title: "video title",
-                    author: "author",
-                    img: "https://bit.ly/naruto-sage",
-                  }}
-                /> */}
-
+            >            
               <CaptionCard name="VillageiBook" />
 
               <Box mt={8}>
