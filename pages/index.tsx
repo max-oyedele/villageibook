@@ -110,7 +110,7 @@ const Feed: NextPage<{ jwt: any }> = ({
                 </Text>
                 <VStack spacing={4}>
                   {recentVillages.map((village) => (
-                    <RecentVillageCard key={village.name} {...village} />
+                    <RecentVillageCard key={village.name} village={village} />
                   ))}
                 </VStack>
               </Box>
@@ -119,13 +119,14 @@ const Feed: NextPage<{ jwt: any }> = ({
 
           <Box
             w={{ base: "100%", md: "full" }}
-            mx={
+            ml={
               fixed && breakpointValue === "md"
                 ? "294px"
                 : breakpointValue === "md"
                 ? "24px"
                 : "0px"
             }
+            mr={breakpointValue === "md" ? "24px" : 0}
           >
             <Box bg="white" borderRadius="4px" mb={4} p={4}>
               <Textarea fontSize="13px" placeholder="Write something here..." />
@@ -170,7 +171,7 @@ const Feed: NextPage<{ jwt: any }> = ({
                 </Text>
                 <VStack spacing={4}>
                   {recentVillages.map((village) => (
-                    <RecentVillageCard key={village.name} {...village} />
+                    <RecentVillageCard key={village.name} village={village} />
                   ))}
                 </VStack>
               </Box>
@@ -209,9 +210,8 @@ const Feed: NextPage<{ jwt: any }> = ({
           {breakpointValue === "md" && (
             <Box
               minW="270px"
-              pos={fixed ? "fixed" : "static"}
-              top={fixed ? "80px" : 0}
-              right={44}
+              // pos={fixed ? "fixed" : "static"}
+              // top={fixed ? "80px" : 0}
             >
               <GraduateStatCard
                 totalGraduates={totalGraduates}

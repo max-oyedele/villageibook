@@ -27,9 +27,9 @@ const Videos = () => {
         Video Grids
       </Container>
 
-      <Box w="full" pos="fixed" bottom={0}>
+      {/* <Box mt={20}>
         <Footer />
-      </Box>
+      </Box> */}
     </Fragment>
   );
 };

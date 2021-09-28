@@ -122,13 +122,15 @@ export const posts: Post[] = [
 export const recentVillages: Village[] = [
   {
     id: 0,
-    name: "Syedpur",
+    name: "Village1",
+    href: "village1",
     img: "/images/village-card1.png",
     recentAt: 1,
   },
   {
     id: 1,
-    name: "Panchpara",
+    name: "Village2",
+    href: "village2",
     img: "/images/village-card2.png",
     recentAt: 2,
   }

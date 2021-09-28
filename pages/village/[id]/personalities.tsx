@@ -40,9 +40,9 @@ const Personalities: NextPage = () => {
 
   const dispatch: MyThunkDispatch = useDispatch();
   const { users, articles, personalities, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
-  useEffect(() => {
-    dispatch(fetchVillagePageData({villageName: vid}));
-  }, []);
+  useEffect(()=>{
+    dispatch(fetchVillagePageData({villageName: vid}))
+  }, [vid])
 
   return (
     <Fragment>
@@ -69,9 +69,9 @@ const Personalities: NextPage = () => {
         </Flex>
       </Container>
 
-      <Box mt={20}>
+      {/* <Box mt={20}>
         <Footer />
-      </Box>
+      </Box> */}
     </Fragment>
   );
 };

@@ -43,9 +43,9 @@ const Society: NextPage = () => {
   const { users, articles, personalities, institutions, videos } = useSelector(
     (state: OurStore) => state.villagePageReducer.pageData
   );
-  useEffect(() => {
-    dispatch(fetchVillagePageData({ villageName: vid }));
-  }, []);
+  useEffect(()=>{
+    dispatch(fetchVillagePageData({villageName: vid}))
+  }, [vid])
 
   return (
     <Fragment>
@@ -69,35 +69,30 @@ const Society: NextPage = () => {
                 : "0px"
             }
           >
-            <Box bgColor="white" p={6}>
-              <Text fontSize="14px">
-                SEE ALL ARTICLES
-                <Text display="inline" color="#36CFD1" ml={1}>
-                  ({articles.length})
-                </Text>
-              </Text>
-              <Grid
-                templateColumns={
-                  breakpointValue === "base"
-                    ? "repeat(1, 1fr)"
-                    : "repeat(2, 1fr)"
-                }
-                columnGap={6}
-                rowGap={12}
-                mt={6}
-              >
-                {articles.map((article) => (
-                  <ArticleCard key={article.id} article={article} />
-                ))}
-              </Grid>
-            </Box>
+            {articles.length > 0 && (
+              <Box bgColor="white" p={6}>
+                <Grid
+                  templateColumns={
+                    breakpointValue === "base"
+                      ? "repeat(1, 1fr)"
+                      : "repeat(2, 1fr)"
+                  }
+                  columnGap={6}
+                  rowGap={12}
+                >
+                  {articles.map((article) => (
+                    <ArticleCard key={article.id} article={article} />
+                  ))}
+                </Grid>
+              </Box>
+            )}
           </Box>
         </Flex>
       </Container>
 
-      <Box mt={20}>
+      {/* <Box mt={20}>
         <Footer />
-      </Box>
+      </Box> */}
     </Fragment>
   );
 };

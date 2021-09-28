@@ -52,21 +52,16 @@ const Posts: NextPage = () => {
   const { fixed } = UseLeftFixed();
   const { villageStats } = UseVillageStats(vid);
   
-  const [selectedVillage, setSelectedVillage] = useState(null);
-  
   useEffect(()=>{
     dispatch(fetchVillagePageData({villageName: vid}))
-  }, [])
+  }, [vid])
 
   return (
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
         <Box px={{ lg: 20 }} my={{base: 16, md: 8}}>
-          <SearchBar
-            selectedVillage={selectedVillage}
-            setSelectedVillage={setSelectedVillage}
-          />
+          <SearchBar />
         </Box>
 
         <Flex>

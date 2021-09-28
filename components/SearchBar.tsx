@@ -18,6 +18,7 @@ import { OurStore } from "rdx/store";
 
 import SelectBox from "components/widgets/SelectBox";
 import { District, SubDistrict, Village } from "types/schema";
+import router from "next/router";
 
 const SearchBar = (props) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -30,7 +31,8 @@ const SearchBar = (props) => {
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
   const [selectedSubDistrict, setSelectedSubDistrict] =
     useState<SubDistrict>(null);
-  
+  const [selectedVillage, setSelectedVillage] = useState<Village>(null);
+
   useEffect(() => {
     dispatch(fetchDistricts(null));
   }, []);
@@ -39,7 +41,7 @@ const SearchBar = (props) => {
     dispatch(fetchSubDistricts({ district: selectedDistrict }));
   }, [selectedDistrict]);
   useEffect(() => {
-    props.setSelectedVillage(null);
+    setSelectedVillage(null);
     dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
   }, [selectedSubDistrict]);
 
@@ -51,6 +53,7 @@ const SearchBar = (props) => {
             id="district"
             placeholder="Select District"
             height="45px"
+            borderColor="#c7cedd"
             options={districts}
             optionLabel={({ name }) => name}
             selectedOption={selectedDistrict}
@@ -60,6 +63,7 @@ const SearchBar = (props) => {
             id="subdistrict"
             placeholder="Select Upazila"
             height="45px"
+            borderColor="#c7cedd"
             options={subDistricts}
             optionLabel={({ name }) => name}
             selectedOption={selectedSubDistrict}
@@ -69,10 +73,11 @@ const SearchBar = (props) => {
             id="village"
             placeholder="Select Village"
             height="45px"
+            borderColor="#c7cedd"
             options={villages}
             optionLabel={({ name }) => name}
-            selectedOption={props.selectedVillage}
-            setSelectedOption={props.setSelectedVillage}
+            selectedOption={selectedVillage}
+            setSelectedOption={setSelectedVillage}
           />
         </SimpleGrid>
         {breakpointValue === "md" && (
@@ -87,8 +92,9 @@ const SearchBar = (props) => {
               borderRadius="6px"
               _focus={{ boxShadow: "none" }}
               ml={6}
+              disabled={!selectedVillage}
               onClick={() => {
-                
+                router.push(`/village/${selectedVillage.href}`);
               }}
             >
               Find Village
@@ -101,12 +107,16 @@ const SearchBar = (props) => {
         <Button
           w="full"
           h="45px"
-          bgColor="purpleTone"
+          bgColor="greenTone"
           fontSize="14px"
           fontWeight="400"
           color="white"
           borderRadius="6px"
           mt={6}
+          disabled={!selectedVillage}
+          onClick={() => {
+            router.push(`/village/${selectedVillage.href}`);
+          }}
         >
           Find Village
         </Button>
