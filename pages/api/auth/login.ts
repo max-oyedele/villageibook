@@ -10,25 +10,29 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     username: body.email,
     password: body.password,
     grant_type: "password",
-    client_id: "villageibook-client",
-    client_secret: "4C6JYPsCJ795vFVS",
+    client_id: process.env.NEXT_PUBLIC_OAUTH_CLIENT_ID,
+    client_secret: process.env.NEXT_PUBLIC_OAUTH_CLIENT_SECRET,
   });
 
   try {
     const { data, headers: returnedHeaders } = await axios.post(
-      "https://villageibook-api.abosit.com/oauth/token", // api backend path
+      process.env.NEXT_PUBLIC_BASE_URL + "/oauth/token", // api backend path
       params,
       {
         headers: {
-          "authorization": "Basic " + Buffer.from("villageibook-client" + ":" + "4C6JYPsCJ795vFVS").toString("base64"),
-          "content-type": "application/x-www-form-urlencoded"
-        }
+          authorization:
+            "Basic " +
+            Buffer.from(
+              `${process.env.NEXT_PUBLIC_OAUTH_CLIENT_ID}:${process.env.NEXT_PUBLIC_OAUTH_CLIENT_SECRET}`
+            ).toString("base64"),
+          "content-type": "application/x-www-form-urlencoded",
+        },
       }
     );
-    
+
     res.send(data); // Send data from Node.js server response
   } catch (error) {
     // Send status (probably 401) so the axios interceptor can run.
-    res.status(401).json(error.response?.data)
+    res.status(401).json(error.response?.data);
   }
 };

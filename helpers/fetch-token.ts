@@ -5,20 +5,20 @@ export async function fetchToken() {
   const params = querystring.stringify({
     grant_type: "client_credentials",
     scope: "read write",
-    client_id: "villageibook-client",
-    client_secret: "4C6JYPsCJ795vFVS",
+    client_id: process.env.NEXT_PUBLIC_OAUTH_CLIENT_ID,
+    client_secret: process.env.NEXT_PUBLIC_OAUTH_CLIENT_SECRET,
   });
 
   try {
     const { data } = await axios.post(
-      "https://villageibook-api.abosit.com/oauth/token",
+      process.env.NEXT_PUBLIC_BASE_URL + "/oauth/token",
       params,
       {
         headers: {
           Authorization:
             "Basic " +
             Buffer.from(
-              "villageibook-client" + ":" + "4C6JYPsCJ795vFVS"
+              `${process.env.NEXT_PUBLIC_OAUTH_CLIENT_ID}:${process.env.NEXT_PUBLIC_OAUTH_CLIENT_SECRET}`
             ).toString("base64"),
           "content-type": "application/x-www-form-urlencoded",
         },

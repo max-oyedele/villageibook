@@ -1,7 +1,7 @@
 import { fetchToken } from "helpers/fetch-token";
 import { fetchWrapper } from "helpers/fetch-wrapper";
 
-const baseUrl = "https://villageibook-api.abosit.com";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 async function handler(req, res) {
   const { access_token } = await fetchToken();

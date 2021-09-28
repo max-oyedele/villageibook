@@ -17,7 +17,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const { data, headers: returnedHeaders } = await axios.post(
-      "https://villageibook-api.abosit.com/signup", // api backend path
+      process.env.NEXT_PUBLIC_BASE_URL + '/signup',      
       params,
       {
         headers: {

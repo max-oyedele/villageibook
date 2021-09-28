@@ -5,6 +5,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { headers, body } = req;
   // console.log("body", body);
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
   const { access_token } = await fetchToken();
 
@@ -21,7 +22,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           });
 
     await axios.patch(
-      `https://villageibook-api.abosit.com/users/${body.uuid}`,
+      `${baseUrl}/users/${body.uuid}`,
       params,
       {
         headers: {
@@ -37,7 +38,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         name: body.education.graduatedIn.name,
       });
       await axios.post(
-        `https://villageibook-api.abosit.com/users/${body.uuid}/GRADUATED_IN/countries/[name=${body.education.graduatedIn.name}]`,
+        `${baseUrl}/users/${body.uuid}/GRADUATED_IN/countries/[name=${body.education.graduatedIn.name}]`,
         params,
         {
           headers: {
@@ -51,7 +52,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         name: body.location.village.name,
       });
       await axios.post(
-        `https://villageibook-api.abosit.com/users/${body.uuid}/JOINED/villages`,
+        `${baseUrl}/users/${body.uuid}/JOINED/villages`,
         params,
         {
           headers: {
