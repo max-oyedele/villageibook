@@ -15,9 +15,10 @@ const LeftVillageDivider:React.FC<{title?: string, village: string}> = ({title, 
           color="white"
           fontSize="13px"
           fontWeight="400"
+          px={8}
           _focus={{ boxShadow: "none" }}
         >
-          <Link href={`/village/${village}`}>{title??"GO VILLAGE"}</Link>
+          <Link href={`/village/${village}`}>{title??"Go Village"}</Link>
         </Button>
         <Divider />
       </HStack>

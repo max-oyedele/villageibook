@@ -43,7 +43,7 @@ const Personalities: NextPage = () => {
   useEffect(() => {
     dispatch(fetchVillagePageData({villageName: vid}));
   }, []);
-  
+
   return (
     <Fragment>
       <Header />
@@ -52,7 +52,7 @@ const Personalities: NextPage = () => {
         <Flex>
           {breakpointValue === "md" && (
             <Box>
-              <LeftVillageCard village={vid} fixed={fixed} />
+              <LeftVillageCard village={vid as string} fixed={fixed} />
             </Box>
           )}
 

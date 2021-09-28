@@ -72,7 +72,7 @@ const Posts: NextPage = () => {
         <Flex>
           {breakpointValue === "md" && (
             <Box>
-              <LeftVillageCard village={vid} fixed={fixed} />
+              <LeftVillageCard village={vid as string} fixed={fixed} />
               {/* <Text fontSize="24px" my={10}>
                 Filters
               </Text>

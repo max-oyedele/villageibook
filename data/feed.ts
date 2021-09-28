@@ -131,13 +131,7 @@ export const recentVillages: Village[] = [
     name: "Panchpara",
     img: "/images/village-card2.png",
     recentAt: 2,
-  },
-  {
-    id: 2,
-    name: "Rasulpur",
-    img: "/images/village-card1.png",
-    recentAt: 4,
-  },
+  }
 ];
 
 export const recentUsers: User[] = [

@@ -49,7 +49,7 @@ const Feed: NextPage<{ jwt: any }> = ({
   const [activeTab, setActiveTab] = useState(tabsMobile[0]);
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const {user, error} = useSelector((state:OurStore)=>state.authReducer);
+  const { user, error } = useSelector((state: OurStore) => state.authReducer);
   const {
     posts,
     recentVillages,
@@ -67,7 +67,7 @@ const Feed: NextPage<{ jwt: any }> = ({
   return (
     <Fragment>
       <Header />
-      <Container maxW="container.xl" px={6}>
+      <Container maxW="container.xl" px={6} mb={20}>
         {breakpointValue === "base" && (
           <Box mt={12}>
             <TabsMobile
@@ -81,38 +81,51 @@ const Feed: NextPage<{ jwt: any }> = ({
         <Flex mt={8}>
           {breakpointValue === "md" && (
             <Box
-              minW="300px"
-              h="max-content"
-              bgColor="white"
-              p={4}
-              border="1px"
-              borderColor="gray.200"
-              borderRadius="6px"
+              minW="270px"
               pos={fixed ? "fixed" : "static"}
               top={fixed ? "80px" : 0}
-              mb={6}
-            >            
-              <CaptionCard name="VillageiBook" />
-
-              <Box mt={8}>
-                <LeftVillageDivider title="Go My Village" village={user.village} />
+            >
+              <Box
+                bgColor="white"
+                p={4}
+                border="1px"
+                borderColor="gray.200"
+                borderRadius="6px"
+              >
+                <CaptionCard name="VillageiBook" />
+                <Box mt={8}>
+                  <LeftVillageDivider
+                    title="Go My Village"
+                    village={user.village}
+                  />
+                </Box>
+                <Box my={6}>
+                  <LeftVillageItems village={user.village} />
+                </Box>
               </Box>
-              <Box my={6}>
-                <LeftVillageItems village={user.village} />
+
+              <Box>
+                <Text fontSize="24px" mt={12} mb={6}>
+                  Recently developed
+                </Text>
+                <VStack spacing={4}>
+                  {recentVillages.map((village) => (
+                    <RecentVillageCard key={village.name} {...village} />
+                  ))}
+                </VStack>
               </Box>
             </Box>
           )}
 
           <Box
-            w={{ base: "100%", md: "50%" }}
-            ml={
+            w={{ base: "100%", md: "full" }}
+            mx={
               fixed && breakpointValue === "md"
-                ? "324px"
+                ? "294px"
                 : breakpointValue === "md"
                 ? "24px"
                 : "0px"
             }
-            mr={breakpointValue === "md" ? "24px" : "0px"}
           >
             <Box bg="white" borderRadius="4px" mb={4} p={4}>
               <Textarea fontSize="13px" placeholder="Write something here..." />
@@ -194,7 +207,12 @@ const Feed: NextPage<{ jwt: any }> = ({
           </Box>
 
           {breakpointValue === "md" && (
-            <Box w="300px">
+            <Box
+              minW="270px"
+              pos={fixed ? "fixed" : "static"}
+              top={fixed ? "80px" : 0}
+              right={44}
+            >
               <GraduateStatCard
                 totalGraduates={totalGraduates}
                 villageName={user.village}
@@ -210,23 +228,14 @@ const Feed: NextPage<{ jwt: any }> = ({
                   <RecentUserCard key={user.uuid} {...user} />
                 ))}
               </VStack>
-
-              <Text fontSize="24px" mt={12} mb={6}>
-                Recently developed
-              </Text>
-              <VStack spacing={4}>
-                {recentVillages.map((village) => (
-                  <RecentVillageCard key={village.name} {...village} />
-                ))}
-              </VStack>
             </Box>
           )}
         </Flex>
       </Container>
 
-      <Box mt={40}>
+      {/* <Box mt={40}>
         <Footer />
-      </Box>
+      </Box> */}
     </Fragment>
   );
 };

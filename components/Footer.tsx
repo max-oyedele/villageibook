@@ -56,8 +56,7 @@ const Footer = () => {
     <Fragment>
       {breakpointValue === "md" && (
         <Flex
-          // pos="fixed"
-          // bottom={0}
+          bottom={0}
           w="full"
           h="150px"
           bgColor="white"

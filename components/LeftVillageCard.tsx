@@ -14,7 +14,7 @@ import LeftVillageDivider from "./LeftVillageDivider";
 import LeftVillageItems from "./LeftVillageItems";
 import CaptionCard from "./CaptionCard";
 
-const LeftVillageCard = ({village, fixed}) => {
+const LeftVillageCard:React.FC<{village: string, fixed?:boolean}> = ({village, fixed}) => {
   return (
     <Fragment>
       <Box bgColor="white" border="1px" borderRadius="8px" borderColor="gray.200" w="240px" pos={fixed ? "fixed" : "static"} top={fixed ? "80px" : 0}>

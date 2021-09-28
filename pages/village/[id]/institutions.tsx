@@ -54,7 +54,7 @@ const Institutions: NextPage = () => {
         <Flex>
           {breakpointValue === "md" && (
             <Box>
-              <LeftVillageCard village={vid} fixed={fixed} />
+              <LeftVillageCard village={vid as string} fixed={fixed} />
             </Box>
           )}
 
