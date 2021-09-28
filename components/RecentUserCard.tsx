@@ -1,12 +1,12 @@
 import React, { Fragment } from "react";
+import { useRouter } from "next/router";
 import { Flex, HStack, Box, Text, Image } from "@chakra-ui/react";
 
-const RecentUserCard: React.FC<{ firstName: string; lastName: string; img: string; recentAt?: number }> = ({
-  firstName,
-  lastName,
-  img,
-  recentAt,
-}) => {
+import { User } from "types/schema";
+
+const RecentUserCard: React.FC<{ user: User }> = ({ user }) => {
+  const router = useRouter();
+
   return (
     <Fragment>
       <Flex
@@ -16,19 +16,24 @@ const RecentUserCard: React.FC<{ firstName: string; lastName: string; img: strin
         p={4}
         bgColor="white"
         borderRadius="6px"
-        _hover={{transform: "scale(1.03)", transition: "transform 0.2s ease", cursor: "pointer"}}
+        _hover={{
+          transform: "scale(1.03)",
+          transition: "transform 0.2s ease",
+          cursor: "pointer",
+        }}
+        onClick={() => router.push(`/userview/${user.id}`)}
       >
-        <Image src={img} alt="" borderRadius="4px" />
+        <Image src={user.img} alt="" borderRadius="4px" />
         <Box w="full" ml={4}>
           <Text fontSize="13px">
-            {firstName} {lastName}
+            {user.firstName} {user.lastName}
           </Text>
           <Text fontSize="12px" color="GrayText">
-            {recentAt === 0
+            {user.recentAt === 0
               ? "Today"
-              : recentAt === 1
+              : user.recentAt === 1
               ? "Yesterday"
-              : `${recentAt} days ago`}
+              : `${user.recentAt} days ago`}
           </Text>
         </Box>
       </Flex>

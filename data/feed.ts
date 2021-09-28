@@ -28,7 +28,7 @@ export const posts: Post[] = [
     user: {
       id: 1,
       firstName: "sadia",
-      lastName: "ullah",      
+      lastName: "ullah",
       img: "/images/sadia.png",
       email: "sadia@gmail.com",
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
@@ -75,7 +75,7 @@ export const posts: Post[] = [
     user: {
       id: 3,
       firstName: "sarmin",
-      lastName: "ahmed",      
+      lastName: "ahmed",
       img: "/images/sarmin.png",
       email: "sarmin@gmail.com",
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
@@ -96,7 +96,7 @@ export const posts: Post[] = [
     user: {
       id: 4,
       firstName: "sonia",
-      lastName: "bahmi",      
+      lastName: "bahmi",
       img: "/images/sonia.png",
       email: "sonia@gmail.com",
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
@@ -133,27 +133,32 @@ export const recentVillages: Village[] = [
     href: "village2",
     img: "/images/village-card2.png",
     recentAt: 2,
-  }
+  },
 ];
 
 export const recentUsers: User[] = [
   {
-    id: 0,
+    id: 3,
     firstName: "sarmin",
-    lastName: "begum",    
+    lastName: "ahmed",
     img: "/images/sarmin.png",
     email: "sarmin@gmail.com",
-    recentAt: 1,
-    uuid: "3355",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
+    village: "khulna",
+    uuid: "2345",
+    role: "premium",
+    recentAt: 1
   },
   {
-    id: 1,
-    firstName: "nusrat",
-    lastName: "rahman",    
+    id: 4,
+    firstName: "sonia",
+    lastName: "bahmi",
     img: "/images/sonia.png",
-    email: "nusrat@gmail.com",
-    recentAt: 2,
-    uuid: "34555",
+    email: "sonia@gmail.com",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
+    village: "Rajshahi",
+    uuid: "1234",
+    recentAt: 2
   },
 ];
 
