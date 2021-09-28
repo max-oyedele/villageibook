@@ -1,5 +1,6 @@
 import { Fragment, useState } from "react";
 import type { NextPage } from "next";
+import { useRouter } from "next/router";
 
 import {
   Container,
@@ -11,6 +12,7 @@ import {
   Text,
   Image,
   Avatar,
+  Button,
   Grid,
   GridItem,
   useBreakpointValue,
@@ -24,15 +26,19 @@ import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
-import InstitutionCard from "components/InstitutionCard";
+import ArticleCard from "components/ArticleCard";
 
 import UseLeftFixed from "hooks/use-left-fixed";
 
-const Institutions: NextPage = () => {
+const Society: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { fixed } = UseLeftFixed();
+  const router = useRouter();
+  const {query} = router;
+  const vid = query.id; //village name currently, but replace to uuid
   
+  const { fixed } = UseLeftFixed();
+
   const dispatch: MyThunkDispatch = useDispatch();
   const { users, articles, personalities, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
 
@@ -40,32 +46,36 @@ const Institutions: NextPage = () => {
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <PageTitle title="Institutions" />
+        <PageTitle title="Society" />
         <Flex>
           {breakpointValue === "md" && (
             <Box>
-              <LeftVillageCard fixed={fixed} />
+              <LeftVillageCard village={vid} fixed={fixed} />
             </Box>
           )}
 
           <Box
             w="full"
-            ml={
-              fixed && breakpointValue === "md"
-                ? "264px"
-                : breakpointValue === "md"
-                ? "24px"
-                : "0px"
-            }
+            ml={fixed && breakpointValue === "md" ? "264px" : breakpointValue === "md" ? "24px" : "0px"}
           >
-            <VStack spacing={2}>
-              {institutions.map((institution) => (
-                <InstitutionCard
-                  key={institution.id}
-                  institution={institution}
-                />
-              ))}
-            </VStack>
+            <Box bgColor="white" p={6}>
+              <Text fontSize="14px">
+                SEE ALL ARTICLES
+                <Text display="inline" color="#36CFD1" ml={1}>
+                  ({articles.length})
+                </Text>
+              </Text>
+              <Grid
+                templateColumns={breakpointValue === "base" ? "repeat(1, 1fr)" : "repeat(2, 1fr)"}
+                columnGap={6}
+                rowGap={12}
+                mt={6}
+              >
+                {articles.map((article) => (
+                  <ArticleCard key={article.id} article={article} />
+                ))}
+              </Grid>
+            </Box>
           </Box>
         </Flex>
       </Container>
@@ -77,4 +87,4 @@ const Institutions: NextPage = () => {
   );
 };
 
-export default Institutions;
+export default Society;

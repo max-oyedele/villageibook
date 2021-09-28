@@ -10,6 +10,7 @@ import querystring from "querystring";
 
 import { Status, Register, AuthState } from "../types";
 import {
+  User,
   Degree,
   Country,
   Region,
@@ -105,7 +106,7 @@ export const submit = createAsyncThunk(
         firstname: string;
         lastname: string;
       };
-      education?: { degree: Degree; graduatedIn: Country; university: string };
+      education?: { degree: Degree; graduatedAt: Country; university: string };
       location?: {
         country: Country;
         region: Region;
@@ -152,6 +153,7 @@ const initialState: AuthState = {
     email: "sdf@gmail.com",
     uuid: "879a1f43-d496-43eb-a658-648071820d31",
     role: "premium",
+    village: "village1"
   },
   error: null,
 };

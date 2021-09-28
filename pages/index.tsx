@@ -95,7 +95,7 @@ const Feed: NextPage<{ jwt: any }> = ({
               <CaptionCard name="VillageiBook" />
 
               <Box mt={8}>
-                <LeftVillageDivider title="Go My Village" />
+                <LeftVillageDivider title="Go My Village" village={user.village} />
               </Box>
               <Box my={6}>
                 <LeftVillageItems />

@@ -18,7 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         : JSON.stringify({
             degree: body.education.degree.value,
             university: body.education.university,
-            graduatedIn: body.education.graduatedIn.name,
+            graduatedAt: body.education.graduatedAt.name,
           });
 
     await axios.patch(
@@ -35,10 +35,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (body.type === "json") {
       params = JSON.stringify({
-        name: body.education.graduatedIn.name,
+        name: body.education.graduatedAt.name,
       });
       await axios.post(
-        `${baseUrl}/users/${body.uuid}/GRADUATED_IN/countries/[name=${body.education.graduatedIn.name}]`,
+        `${baseUrl}/users/${body.uuid}/GRADUATED_AT/universities/[name=${body.education.graduatedAt.name}]`,
         params,
         {
           headers: {
@@ -52,7 +52,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         name: body.location.village.name,
       });
       await axios.post(
-        `${baseUrl}/users/${body.uuid}/JOINED/villages`,
+        `${baseUrl}/users/${body.uuid}/LIVES_IN/villages`,
         params,
         {
           headers: {

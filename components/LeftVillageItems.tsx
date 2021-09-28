@@ -23,7 +23,7 @@ const villageItems = [
     name: "My Page",
     value: "users",
     img: "/icons/village-mypage.svg",
-    path: '/village/users',
+    path: 'users',
     activeBgColor: '#EFFBFA',
     badgeColor: '#36CFD1'
   },
@@ -32,7 +32,7 @@ const villageItems = [
     name: "Graduates",
     value: "graduates",
     img: "/icons/village-graduate.svg",
-    path: '/graduates',
+    path: 'graduates',
     activeBgColor: '#AD5BFF',
     badgeColor: '#BF5AFF'
   },
@@ -41,16 +41,16 @@ const villageItems = [
     name: "Society",
     value: "articles",
     img: "/icons/village-society.svg",
-    path: '/village/society',
+    path: 'society',
     activeBgColor: '#F4F4FB',
     badgeColor: '#BBBBD7'
   },
   {
     id: 3,
     name: "Personalities",
-    value: "users",
+    value: "personalities",
     img: "/icons/village-personality.svg",
-    path: '/village/personalities',
+    path: 'personalities',
     activeBgColor: '#FFF9E8',
     badgeColor: '#FFB425'
   },
@@ -59,7 +59,7 @@ const villageItems = [
     name: "Institutions",
     value: "institutions",
     img: "/icons/village-institution.svg",
-    path: '/village/institutions',
+    path: 'institutions',
     activeBgColor: '#5B8FFF22',
     badgeColor: '#5A8FFF'
   },
@@ -68,33 +68,34 @@ const villageItems = [
     name: "Videos",
     value: "videos",
     img: "/icons/village-video.svg",
-    path: '/village/videos',
+    path: 'videos',
     activeBgColor: '#FF5B5B22',
     badgeColor: '#FF645A'
   },
 ];
 
-const LeftVillageItems: React.FC = () => {
+const LeftVillageItems: React.FC<{village: string}> = ({village}) => {
   const router = useRouter();
   const { pathname } = router;
+  console.log('werwe', pathname)
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { villageStats } = UseVillageStats("jammura");
-  
+  const { villageStats } = UseVillageStats(village);
+    
   return (
     <VStack
       spacing={1}
       divider={breakpointValue === "base" ? <Divider /> : null}
     >
       {villageItems.map((item) => (
-        <Link key={item.name} href={item.path}>
+        <Link key={item.name} href={`/village/${village}/${item.path}`}>
           <HStack
             w="full"
             h={{ base: "60px", md: "40px" }}
             spacing={4}
             bgColor={
-              item.path === pathname ? item.activeBgColor : "transparent"
+              pathname === `/village/[id]/${item.path}` ? item.activeBgColor : "transparent"
             }
             borderRadius="8px"
             px={2}
@@ -114,8 +115,8 @@ const LeftVillageItems: React.FC = () => {
             </Text>
 
             <Badge
-              bgColor={item.path === pathname ? item.badgeColor : "#FBFBFA"}
-              color={item.path === pathname ? "white" : ""}
+              bgColor={pathname === `/village/[id]/${item.path}` ? item.badgeColor : "#FBFBFA"}
+              color={pathname === `/village/[id]/${item.path}` ? "white" : ""}
               fontSize="11px"
               fontWeight="400"
               lineHeight={2}

@@ -9,7 +9,7 @@ export type User = {
   };
   desc?: string;
   village?: string;
-  graduatedIn?: string;
+  graduatedAt?: string;
   university?: string;
   degree?: string;
   recentAt?: number;

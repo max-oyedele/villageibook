@@ -59,8 +59,8 @@ const Header = () => {
   const [showMenuMobile, setShowMenuMobile] = useState(false);
 
   const [activeTab, setActiveTab] = useState(
-      pathname === "/"
-      ? tabs[0] 
+    pathname === "/"
+      ? tabs[0]
       : pathname.includes("village")
       ? tabs[1]
       : pathname.includes("graduates")
@@ -79,49 +79,61 @@ const Header = () => {
       {breakpointValue === "md" && (
         <Box bg="white" pos="sticky" top={0} zIndex={10} shadow="md">
           <Container maxW="container.xl" px={6}>
-          <Flex justifyContent="space-between">
-            <HStack spacing={6} mr={1}>
-              <Logo />
-              {tabs.map((tab) => (
-                <Link key={tab.name} href={tab.path}>
-                  <Flex
-                    h="55px"
-                    alignItems="center"
-                    fontSize="14px"
-                    borderBottom={activeTab?.name === tab.name ? "2px" : ""}
-                    borderColor={
-                      activeTab?.name === tab.name ? "purpleTone" : ""
-                    }
-                    color={
-                      activeTab?.name === tab.name ? "purpleTone" : "GrayText"
-                    }
-                    cursor="pointer"
-                  >
-                    {tab.name}
-                  </Flex>
-                </Link>
-              ))}
-            </HStack>
-            <HStack spacing={6} ml={1}>
-              <Flex h="full" alignItems="center" fontSize="12px" borderBottom={pathname.includes("accountedit") ? "2px" : ""} borderColor={pathname.includes("accountedit") ? "purpleTone": ""}>
-                <Link href="/accountedit"><Text mt={1} cursor="pointer">ACCOUNT</Text></Link>
-              </Flex>
-              <Box
-                px={4}
-                h="24px"
-                textAlign="center"
-                color="purpleTone"
-                fontSize="12px"
-                border="1px"
-                borderColor="purpleTone"
-                borderRadius="6px"
-                cursor="pointer"
-                onClick={() => logout()}
-              >
-                <Text>LOGOUT</Text>
-              </Box>
-            </HStack>
-          </Flex>
+            <Flex justifyContent="space-between">
+              <HStack spacing={6} mr={1}>
+                <Logo />
+                {tabs.map((tab) => (
+                  <Link key={tab.name} href={tab.path}>
+                    <Flex
+                      h="55px"
+                      alignItems="center"
+                      fontSize="14px"
+                      borderBottom={activeTab?.name === tab.name ? "2px" : ""}
+                      borderColor={
+                        activeTab?.name === tab.name ? "purpleTone" : ""
+                      }
+                      color={
+                        activeTab?.name === tab.name ? "purpleTone" : "GrayText"
+                      }
+                      cursor="pointer"
+                    >
+                      {tab.name}
+                    </Flex>
+                  </Link>
+                ))}
+              </HStack>
+              <HStack spacing={6} ml={1}>
+                <Flex
+                  h="full"
+                  alignItems="center"
+                  fontSize="12px"
+                  borderBottom={pathname.includes("accountedit") ? "2px" : ""}
+                  borderColor={
+                    pathname.includes("accountedit") ? "purpleTone" : ""
+                  }
+                >
+                  <Link href="/accountedit">
+                    <Text mt={1} cursor="pointer">
+                      ACCOUNT
+                    </Text>
+                  </Link>
+                </Flex>
+                <Box
+                  px={4}
+                  h="24px"
+                  textAlign="center"
+                  color="purpleTone"
+                  fontSize="12px"
+                  border="1px"
+                  borderColor="purpleTone"
+                  borderRadius="6px"
+                  cursor="pointer"
+                  onClick={() => logout()}
+                >
+                  <Text>LOGOUT</Text>
+                </Box>
+              </HStack>
+            </Flex>
           </Container>
 
           {status === Status.LOADING && (
@@ -135,12 +147,16 @@ const Header = () => {
       {breakpointValue === "base" && (
         <Box>
           <Flex
+            pos="fixed"
+            top={0}
+            zIndex={20}
+            w="full"
             h="55px"
-            justifyContent="space-between"
+            justifyContent="right"
             alignItems="center"
             px={6}
           >
-            <Logo />
+            {/* <Logo /> */}
             <IconButton
               aria-label=""
               icon={showMenuMobile ? <BiX /> : <BiMenu />}
@@ -152,39 +168,37 @@ const Header = () => {
           {showMenuMobile && (
             <Box
               pos="fixed"
-              top="55px"
-              left="0"
+              top={0}
+              left={0}
               w="full"
               h="100vh"
               bgColor="white"
               zIndex="10"
             >
-              <Flex w="full" flexDirection="column" alignItems="center" mt={10}>
-                <Avatar size="lg" src="/images/mohammed-shah.png" />
-                <Text fontSize="15px" mt={4} textTransform="capitalize">
-                  Mohammed Shah
-                </Text>
-                <Text
-                  fontSize="12px"
-                  fontWeight="400"
-                  color="GrayText"
-                  mt={2}
-                  textTransform="capitalize"
-                >
-                  Jammura
-                </Text>
-              </Flex>
               <VStack divider={<StackDivider />} mt={8}>
-                {tabs.map((tab) => (
-                  <Flex
-                    key={tab.name}
-                    h="55px"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Link href={tab.path}>{tab.name}</Link>
-                  </Flex>
-                ))}
+                {tabs
+                  .concat([
+                    {
+                      id: 3,
+                      name: "Account",
+                      path: "/accountedit",
+                    },
+                    {
+                      id: 4,
+                      name: "Logout",
+                      path: "/signout",
+                    },
+                  ])
+                  .map((tab) => (
+                    <Flex
+                      key={tab.name}
+                      h="55px"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <Link href={tab.path}>{tab.name}</Link>
+                    </Flex>
+                  ))}
               </VStack>
 
               <Box mt={16}>

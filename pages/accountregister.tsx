@@ -81,7 +81,7 @@ export const degrees: Degree[] = [
 
 const accountSchema = yup.object({
   degree: yup.object().nullable(),
-  graduatedIn: yup.object().nullable(),
+  graduatedAt: yup.object().nullable(),
   university: yup.string().nullable(),
   country: yup.object().nullable().required("Country must be selected."),
   region: yup.object().nullable().required("Region must be selected."),
@@ -94,7 +94,7 @@ const AccountToRegister: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const [selectedDegree, setSelectedDegree] = useState(null);
-  const [selectedGraduatedIn, setSelectedGraduatedIn] = useState(null);
+  const [selectedGraduatedAt, setSelectedGraduatedAt] = useState(null);
   const [university, setUniversity] = useState<string | null>(null);
 
   const [selectedCountry, setSelectedCountry] = useState<Country>(null);
@@ -148,7 +148,7 @@ const AccountToRegister: NextPage = () => {
         <Formik
           initialValues={{
             degree: selectedDegree,
-            graduatedIn: selectedGraduatedIn,
+            graduatedAt: selectedGraduatedAt,
             university: university,
             country: selectedCountry,
             region: selectedRegion,
@@ -166,7 +166,7 @@ const AccountToRegister: NextPage = () => {
               uuid: user.uuid,
               education: {
                 degree: selectedDegree,
-                graduatedIn: selectedGraduatedIn,
+                graduatedAt: selectedGraduatedAt,
                 university: university,
               },
               location: {
@@ -292,15 +292,15 @@ const AccountToRegister: NextPage = () => {
                         </Text>
 
                         <InputBoxWithSelect
-                          id="graduatedIn"
+                          id="graduatedAt"
                           label="Graduated in"
                           options={countries}
                           optionLabel={({ name }) => name}
-                          selectedOption={selectedGraduatedIn}
-                          setSelectedOption={setSelectedGraduatedIn}
+                          selectedOption={selectedGraduatedAt}
+                          setSelectedOption={setSelectedGraduatedAt}
                           isRequired={false}
-                          isInvalid={!selectedGraduatedIn}
-                          error={errors.graduatedIn}
+                          isInvalid={!selectedGraduatedAt}
+                          error={errors.graduatedAt}
                         />
 
                         <InputBox

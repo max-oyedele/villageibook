@@ -27,7 +27,7 @@ import { OurStore } from "rdx/store";
 import { reset } from "rdx/slices/auth";
 import { Status, Register } from "rdx/types";
 
-const HeaderForGuide:React.FC<{title: string}> = ({title}) => {
+const HeaderForGuide: React.FC<{ title: string }> = ({ title }) => {
   const router = useRouter();
   const { pathname } = router;
 
@@ -70,12 +70,16 @@ const HeaderForGuide:React.FC<{title: string}> = ({title}) => {
       {breakpointValue === "base" && (
         <Box>
           <Flex
+            pos="fixed"
+            top={0}
+            zIndex={20}
+            w="full"
             h="55px"
-            justifyContent="space-between"
+            justifyContent="right"
             alignItems="center"
             px={6}
           >
-            <Logo />
+            {/* <Logo /> */}
             <IconButton
               aria-label=""
               icon={showMenuMobile ? <BiX /> : <BiMenu />}
@@ -87,28 +91,13 @@ const HeaderForGuide:React.FC<{title: string}> = ({title}) => {
           {showMenuMobile && (
             <Box
               pos="fixed"
-              top="55px"
-              left="0"
+              top={0}
+              left={0}
               w="full"
               h="100vh"
               bgColor="white"
               zIndex="10"
             >
-              <Flex w="full" flexDirection="column" alignItems="center" mt={10}>
-                <Avatar size="lg" src="/images/mohammed-shah.png" />
-                <Text fontSize="15px" mt={4} textTransform="capitalize">
-                  Mohammed Shah
-                </Text>
-                <Text
-                  fontSize="12px"
-                  fontWeight="400"
-                  color="GrayText"
-                  mt={2}
-                  textTransform="capitalize"
-                >
-                  Jammura
-                </Text>
-              </Flex>
 
               <Box mt={16}>
                 <SocialLinkBar />

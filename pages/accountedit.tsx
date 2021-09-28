@@ -176,7 +176,7 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
   const [lastname, setLastname] = useState<string | null>(user.lastName);
 
   const [selectedDegree, setSelectedDegree] = useState(null);
-  const [selectedGraduatedIn, setSelectedGraduatedIn] = useState(null);
+  const [selectedGraduatedAt, setSelectedGraduatedAt] = useState(null);
   const [university, setUniversity] = useState<string | null>(null);
 
   const [selectedCountry, setSelectedCountry] = useState<Country>(null);
@@ -213,7 +213,7 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
     firstname: yup.string().nullable().required("First Name is required."),
     lastname: yup.string().nullable().required("Last Name is required."),
     degree: yup.object().nullable(),
-    graduatedIn: yup.object().nullable(),
+    graduatedAt: yup.object().nullable(),
     university: yup.string().nullable(),
     country: yup.object().nullable().required("Country must be selected."),
     region: yup.object().nullable().required("Region must be selected."),
@@ -228,7 +228,7 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
         firstname: firstname,
         lastname: lastname,
         degree: selectedDegree,
-        graduatedIn: selectedGraduatedIn,
+        graduatedAt: selectedGraduatedAt,
         university: university,
         country: selectedCountry,
         region: selectedRegion,
@@ -245,7 +245,7 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
           general: { firstname, lastname },
           education: {
             degree: selectedDegree,
-            graduatedIn: selectedGraduatedIn,
+            graduatedAt: selectedGraduatedAt,
             university: university,
           },
           location: {
@@ -359,15 +359,15 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
               </Text>
 
               <InputBoxWithSelect
-                id="graduatedIn"
+                id="graduatedAt"
                 label="Graduated in"
                 options={countries}
                 optionLabel={({ name }) => name}
-                selectedOption={selectedGraduatedIn}
-                setSelectedOption={setSelectedGraduatedIn}
+                selectedOption={selectedGraduatedAt}
+                setSelectedOption={setSelectedGraduatedAt}
                 isRequired={false}
-                isInvalid={!selectedGraduatedIn}
-                error={errors.graduatedIn}
+                isInvalid={!selectedGraduatedAt}
+                error={errors.graduatedAt}
               />
 
               <InputBox

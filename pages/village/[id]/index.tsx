@@ -43,26 +43,26 @@ const Posts: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const router = useRouter();
   const {query} = router;
-  console.log('asdf', router)
+  const vid = query.id; //village name currently, but replace to uuid
 
   const dispatch: MyThunkDispatch = useDispatch();
   const { posts, recentVillages, recentUsers, totalGraduates, villageGraduates, countryGraduates, bangladeshGraduates } = useSelector((state:OurStore)=>state.feedPageReducer.pageData)
   const { users, articles, personalities, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
 
   const { fixed } = UseLeftFixed();
-  const { villageStats } = UseVillageStats("jammura");
+  const { villageStats } = UseVillageStats(vid);
   
   const [selectedVillage, setSelectedVillage] = useState(null);
   
   useEffect(()=>{
-    dispatch(fetchVillagePageData({villageName: "jammura"}))
+    dispatch(fetchVillagePageData({villageName: vid}))
   }, [])
 
   return (
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <Box px={{ lg: 20 }} my={8}>
+        <Box px={{ lg: 20 }} my={{base: 16, md: 8}}>
           <SearchBar
             selectedVillage={selectedVillage}
             setSelectedVillage={setSelectedVillage}
@@ -72,7 +72,7 @@ const Posts: NextPage = () => {
         <Flex>
           {breakpointValue === "md" && (
             <Box>
-              <LeftVillageCard fixed={fixed} />
+              <LeftVillageCard village={vid} fixed={fixed} />
               {/* <Text fontSize="24px" my={10}>
                 Filters
               </Text>
@@ -131,7 +131,7 @@ const Posts: NextPage = () => {
               <Divider mt={6} mb={8} />
               <VillageGraduatesCard
                 totalGraduates={totalGraduates}
-                villageName={"jammura"}
+                villageName={vid as string}
                 villageGraduates={villageGraduates}
                 countryGraduates={countryGraduates}
               />

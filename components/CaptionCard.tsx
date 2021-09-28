@@ -13,9 +13,9 @@ const CaptionCard = ({name}) => {
         color="purpleTone"
         borderRadius="6px"
       >
-        <Text fontSize="24px">Welcome</Text>
-        <Text fontSize="24px" fontWeight="700" mt={2}>
-          to {name}
+        <Text fontSize="24px" textAlign="center">Welcome to</Text>
+        <Text fontSize="24px" fontWeight="700" textAlign="center" mt={2}>
+          {name}
         </Text>
       </Flex>
     </Fragment>
