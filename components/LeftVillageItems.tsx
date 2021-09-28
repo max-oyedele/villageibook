@@ -77,7 +77,6 @@ const villageItems = [
 const LeftVillageItems: React.FC<{village: string}> = ({village}) => {
   const router = useRouter();
   const { pathname } = router;
-  console.log('werwe', pathname)
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 

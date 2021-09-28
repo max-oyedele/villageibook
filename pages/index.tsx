@@ -98,7 +98,7 @@ const Feed: NextPage<{ jwt: any }> = ({
                 <LeftVillageDivider title="Go My Village" village={user.village} />
               </Box>
               <Box my={6}>
-                <LeftVillageItems />
+                <LeftVillageItems village={user.village} />
               </Box>
             </Box>
           )}
@@ -151,7 +151,7 @@ const Feed: NextPage<{ jwt: any }> = ({
             )}
             {breakpointValue === "base" && activeTab === "Village" && (
               <Box>
-                <LeftVillageItems />
+                <LeftVillageItems village={user.village} />
                 <Text fontSize="20px" mt={12} mb={6}>
                   Recently developed
                 </Text>

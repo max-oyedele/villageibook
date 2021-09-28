@@ -48,11 +48,13 @@ const tabs = [
 
 const Header = () => {
   const router = useRouter();
-  const { pathname } = router;
-
-  const { status } = useSelector((state: OurStore) => state.authReducer);
+  const { pathname, query:{id} } = router;
 
   const dispatch = useDispatch();
+  const {user, status } = useSelector((state: OurStore) => state.authReducer);
+
+  const village = id??user.village
+  
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -83,7 +85,7 @@ const Header = () => {
               <HStack spacing={6} mr={1}>
                 <Logo />
                 {tabs.map((tab) => (
-                  <Link key={tab.name} href={tab.path}>
+                  <Link key={tab.name} href={tab.path === "/village" ? `${tab.path}/${village}` : tab.path}>
                     <Flex
                       h="55px"
                       alignItems="center"
@@ -196,7 +198,7 @@ const Header = () => {
                       justifyContent="center"
                       alignItems="center"
                     >
-                      <Link href={tab.path}>{tab.name}</Link>
+                      <Link href={tab.path === "/village" ? `${tab.path}/${village}` : tab.path}>{tab.name}</Link>
                     </Flex>
                   ))}
               </VStack>

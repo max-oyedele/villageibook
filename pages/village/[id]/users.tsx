@@ -33,14 +33,19 @@ const Users: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const router = useRouter();
-  const {query} = router;
+  const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
 
-  const {fixed} = UseLeftFixed();
+  const { fixed } = UseLeftFixed();
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { users, articles, personalities, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
-
+  const { users, articles, personalities, institutions, videos } = useSelector(
+    (state: OurStore) => state.villagePageReducer.pageData
+  );
+  useEffect(() => {
+    dispatch(fetchVillagePageData({ villageName: vid }));
+  }, []);
+  
   return (
     <Fragment>
       <Header />
@@ -53,13 +58,19 @@ const Users: NextPage = () => {
             </Box>
           )}
 
-          <Box w="full" ml={fixed && breakpointValue === "md" ? "264px" : breakpointValue === "md" ? "24px" : "0px"}>
+          <Box
+            w="full"
+            ml={
+              fixed && breakpointValue === "md"
+                ? "264px"
+                : breakpointValue === "md"
+                ? "24px"
+                : "0px"
+            }
+          >
             <VStack spacing={2}>
               {users.map((user) => (
-                <PersonalityCard
-                  key={user.id}
-                  user={user}
-                />
+                <PersonalityCard key={user.id} user={user} />
               ))}
             </VStack>
           </Box>

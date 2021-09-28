@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 
@@ -34,13 +34,18 @@ const Society: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const router = useRouter();
-  const {query} = router;
+  const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
-  
+
   const { fixed } = UseLeftFixed();
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { users, articles, personalities, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
+  const { users, articles, personalities, institutions, videos } = useSelector(
+    (state: OurStore) => state.villagePageReducer.pageData
+  );
+  useEffect(() => {
+    dispatch(fetchVillagePageData({ villageName: vid }));
+  }, []);
 
   return (
     <Fragment>
@@ -56,7 +61,13 @@ const Society: NextPage = () => {
 
           <Box
             w="full"
-            ml={fixed && breakpointValue === "md" ? "264px" : breakpointValue === "md" ? "24px" : "0px"}
+            ml={
+              fixed && breakpointValue === "md"
+                ? "264px"
+                : breakpointValue === "md"
+                ? "24px"
+                : "0px"
+            }
           >
             <Box bgColor="white" p={6}>
               <Text fontSize="14px">
@@ -66,7 +77,11 @@ const Society: NextPage = () => {
                 </Text>
               </Text>
               <Grid
-                templateColumns={breakpointValue === "base" ? "repeat(1, 1fr)" : "repeat(2, 1fr)"}
+                templateColumns={
+                  breakpointValue === "base"
+                    ? "repeat(1, 1fr)"
+                    : "repeat(2, 1fr)"
+                }
                 columnGap={6}
                 rowGap={12}
                 mt={6}

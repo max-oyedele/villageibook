@@ -1,6 +1,6 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import type { NextPage } from "next";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 import {
   Container,
@@ -35,11 +35,16 @@ const Institutions: NextPage = () => {
   const { fixed } = UseLeftFixed();
 
   const router = useRouter();
-  const {query} = router;
+  const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
-  
+
   const dispatch: MyThunkDispatch = useDispatch();
-  const { users, articles, personalities, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
+  const { users, articles, personalities, institutions, videos } = useSelector(
+    (state: OurStore) => state.villagePageReducer.pageData
+  );
+  useEffect(() => {
+    dispatch(fetchVillagePageData({villageName: vid}));
+  }, []);
 
   return (
     <Fragment>
