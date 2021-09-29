@@ -18,9 +18,10 @@ export const fetchVillagePageData = createAsyncThunk(
     try {
       // const response = await axios.get('api/village-page-data', {params: params})
       // return response.data.villagePageData; // data: {villagePageData: []}
-      
+
       return {
         users: users.filter((item) => item.village === params.villageName),
+        graduates: users.filter((item)=>item.village === params.villageName && !item.university),
         articles: articles.filter((item) => item.village === params.villageName),
         personalities: personalities.filter((item) => item.village === params.villageName),
         institutions: institutions.filter((item) => item.village === params.villageName),
@@ -37,6 +38,7 @@ const initialState: VillagePageState = {
   status: Status.IDLE,
   pageData: {
     users: [],
+    graduates: [],
     articles: [],
     personalities: [],
     institutions: [],

@@ -37,7 +37,6 @@ import VideoCard from "components/VideoCard";
 import FilterCard from "components/FilterCard";
 
 import UseLeftFixed from "hooks/use-left-fixed";
-import UseVillageStats from "hooks/use-village-stats";
 
 const Posts: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -50,7 +49,6 @@ const Posts: NextPage = () => {
   const { users, articles, personalities, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
 
   const { fixed } = UseLeftFixed();
-  const { villageStats } = UseVillageStats(vid);
   
   useEffect(()=>{
     dispatch(fetchVillagePageData({villageName: vid}))
@@ -114,7 +112,7 @@ const Posts: NextPage = () => {
                       cursor="pointer"
                       mt={8}
                     >
-                      SEE ALL MY PAGES ({villageStats["users"]})
+                      SEE ALL MY PAGES ({users.length})
                     </Text>
                   </Link>
                 </Box>
@@ -154,7 +152,7 @@ const Posts: NextPage = () => {
                       textAlign="center"
                       cursor="pointer"
                     >
-                      SEE ALL ARTICLES ({villageStats["articles"]})
+                      SEE ALL ARTICLES ({articles.length})
                     </Text>
                   </Link>
                 </Box>
@@ -187,7 +185,7 @@ const Posts: NextPage = () => {
                       cursor="pointer"
                       mt={8}
                     >
-                      SEE ALL PERSONALITIES ({villageStats["personalities"]})
+                      SEE ALL PERSONALITIES ({personalities.length})
                     </Text>
                   </Link>
                 </Box>
@@ -216,7 +214,7 @@ const Posts: NextPage = () => {
                       mt={8}
                       cursor="pointer"
                     >
-                      SEE ALL INSTITUTIONS ({villageStats["institutions"]})
+                      SEE ALL INSTITUTIONS ({institutions.length})
                     </Text>
                   </Link>
                 </Box>
@@ -245,7 +243,7 @@ const Posts: NextPage = () => {
                       textAlign="center"
                       cursor="pointer"
                     >
-                      SEE ALL VIDEOS ({villageStats["videos"]})
+                      SEE ALL VIDEOS ({videos.length})
                     </Text>
                   </Link>
                 </Box>

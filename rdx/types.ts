@@ -52,6 +52,7 @@ export interface VillagePageState {
   status: Status;
   pageData: {
     users: User[];
+    graduates: User[];
     articles: Article[];
     personalities: Personality[];
     institutions: Institution[];

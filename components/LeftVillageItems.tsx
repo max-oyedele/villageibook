@@ -15,7 +15,6 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { MyThunkDispatch, OurStore } from "rdx/store";
 
-import UseVillageStats from "hooks/use-village-stats";
 
 const villageItems = [
   {
@@ -33,8 +32,8 @@ const villageItems = [
     value: "graduates",
     img: "/icons/village-graduate.svg",
     path: 'graduates',
-    activeBgColor: '#AD5BFF',
-    badgeColor: '#BF5AFF'
+    activeBgColor: '#AD5BFF22',
+    badgeColor: '#BF5AFF66'
   },
   {
     id: 2,
@@ -80,8 +79,10 @@ const LeftVillageItems: React.FC<{village: string}> = ({village}) => {
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { villageStats } = UseVillageStats(village);
-    
+  const { pageData } = useSelector(
+    (state: OurStore) => state.villagePageReducer
+  );
+
   return (
     <VStack
       spacing={1}
@@ -124,7 +125,7 @@ const LeftVillageItems: React.FC<{village: string}> = ({village}) => {
               h={5}
               borderRadius="xl"
             >
-              <Center>{villageStats[item.value]}</Center>
+              <Center>{pageData[item.value].length}</Center>
             </Badge>
           </HStack>
         </Link>

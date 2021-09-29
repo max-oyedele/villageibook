@@ -153,7 +153,7 @@ const initialState: AuthState = {
     email: "sdf@gmail.com",
     uuid: "879a1f43-d496-43eb-a658-648071820d31",
     role: "premium",
-    village: "village1"
+    village: "jammura"
   },
   error: null,
 };
