@@ -9,11 +9,11 @@ import {
   Image,
   Progress,
   Input,
-  Button
+  Button,
 } from "@chakra-ui/react";
 import { BiSearch } from "react-icons/bi";
 
-const GraduateSearchBox = () => {
+const GraduateSearchBox:React.FC<{location: string, setLocation, onFind}> = ({location, setLocation, onFind}) => {
   return (
     <Fragment>
       <Flex
@@ -25,30 +25,43 @@ const GraduateSearchBox = () => {
       >
         <VStack spacing={8}>
           <Box textAlign="center">
-            <Text fontSize="14px">
-              TOTAL GRADUATES
-            </Text>
+            <Text fontSize="14px">TOTAL GRADUATES</Text>
             <Text fontSize="36px" fontWeight="700" color="purpleTone" mt={4}>
               10000
             </Text>
           </Box>
           <HStack
-            w={{base: "100%", md:"90%"}}
+            w={{ base: "100%", md: "90%" }}
             bgColor="white"
             border="1px"
             borderRadius="8px"
             borderColor="gray.300"
             p={1}
           >
-            <Box ml={4}>
+            <Box ml={6}>
               <BiSearch fontSize={20} />
             </Box>
             <Input
-              placeholder="Find a district, subdistrict or village"
+              placeholder="Find a District, Upazila or Village"
               size="md"
               border="none"
+              value={location}
+              _focus={{outline: "none"}}
+              onChange={(e)=>setLocation(e.target.value)}
             />
-            <Button w="140px" h="42px" bgColor="purpleTone" color="white" fontSize="14px" fontWeight="400" _focus={{boxShadow: "none"}}>Find now</Button>
+            <Button
+              w="140px"
+              h="42px"
+              bgColor="purpleTone"
+              color="white"
+              fontSize="14px"
+              fontWeight="400"
+              disabled={!location}
+              _focus={{ boxShadow: "none" }}
+              onClick={onFind}
+            >
+              Find now
+            </Button>
           </HStack>
         </VStack>
       </Flex>

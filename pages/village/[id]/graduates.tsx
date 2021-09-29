@@ -32,33 +32,10 @@ import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
 import VillageGraduatesCountryStatCard from "components/VillageGraduatesCountryStatCard";
-
-import {
-  interCountry,
-  Stats,
-  districtGraduates,
-  districts,
-} from "data/graduates";
+import PersonalityCard from "components/PersonalityCard";
 
 import UseLeftFixed from "hooks/use-left-fixed";
 
-const menuItems = [
-  {
-    id: 0,
-    label: "DISTRICT",
-    value: "district",
-  },
-  {
-    id: 1,
-    label: "UPAZILA",
-    value: "subDistrict",
-  },
-  {
-    id: 2,
-    label: "VILLAGE",
-    value: "village",
-  },
-];
 
 const Graduates: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -70,21 +47,13 @@ const Graduates: NextPage = () => {
   const vid = query.id; //village name currently, but replace to uuid
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { users, articles, personalities, institutions, videos } = useSelector(
-    (state: OurStore) => state.villagePageReducer.pageData
-  );
+  const { users, graduates, articles, personalities, institutions, videos } =
+    useSelector((state: OurStore) => state.villagePageReducer.pageData);
 
   useEffect(() => {
     dispatch(fetchVillagePageData({ villageName: vid }));
   }, [vid]);
 
-  const [activeMenuItem, setActiveMenuItem] = useState(menuItems[0]);
-
-  const [expandedDistrict, setExpandedDistrict] = useState(
-    districtGraduates[0]
-  );
-  const [selectedDistrict, setSelectedDistrict] = useState(districts);
-  const [selectedLetter, setSelectedLetter] = useState("a");
 
   return (
     <Fragment>
@@ -113,6 +82,12 @@ const Graduates: NextPage = () => {
               village={vid as string}
               direction="row"
             />
+
+            <VStack spacing={2} mt={6}>
+              {graduates.map((user) => (
+                <PersonalityCard key={user.id} user={user} />
+              ))}
+            </VStack>
           </Box>
         </Flex>
       </Container>
