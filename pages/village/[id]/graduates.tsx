@@ -73,7 +73,7 @@ const Graduates: NextPage = () => {
   const { users, articles, personalities, institutions, videos } = useSelector(
     (state: OurStore) => state.villagePageReducer.pageData
   );
-  
+
   useEffect(() => {
     dispatch(fetchVillagePageData({ villageName: vid }));
   }, [vid]);
@@ -109,12 +109,10 @@ const Graduates: NextPage = () => {
                 : "0px"
             }
           >
-            <Box bgColor="white" border="1px" borderRadius="8px" borderColor="gray.200" p={6}>
-              <VillageGraduatesCountryStatCard
-                village={vid as string}
-              />
-            </Box>
-
+            <VillageGraduatesCountryStatCard
+              village={vid as string}
+              direction="row"
+            />
           </Box>
         </Flex>
       </Container>

@@ -25,7 +25,6 @@ import {
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
-import VillageGraduatesRegionStatCard from "components/VillageGraduatesRegionStatCard";
 import GraduateSearchBox from "components/GraduateSearchBox";
 import GraduateStatCapsule from "components/GraduateStatCapsule";
 import SelectBox from "components/widgets/SelectBox";
@@ -77,153 +76,130 @@ const Graduates: NextPage = () => {
       <Container maxW="container.xl" px={6}>
         {/* <PageTitle title="Graduates" /> */}
 
-        <Flex mt={8}>
-          {breakpointValue === "md" && (
-            <Box>
-              <VillageGraduatesRegionStatCard village={"Jammura"} />
+        <Box mt={8}>
+          <GraduateSearchBox />
+        </Box>
+
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          borderBottom="1px"
+          borderBottomColor="gray.300"
+          mt={6}
+        >
+          {menuItems.map((item) => (
+            <Box
+              key={item.id}
+              h={8}
+              mx={8}
+              fontSize="13px"
+              borderBottom={item.id === activeMenuItem.id ? "2px" : "none"}
+              borderBottomColor={
+                item.id === activeMenuItem.id ? "purpleTone" : "none"
+              }
+              cursor="pointer"
+              onClick={() => setActiveMenuItem(item)}
+            >
+              {item.label}
             </Box>
-          )}
-
-          <Box
-            w="full"
-            ml={
-              fixed && breakpointValue === "md"
-                ? "264px"
-                : breakpointValue === "md"
-                ? "24px"
-                : "0px"
-            }
-          >
-            {breakpointValue === "base" && (
-              <Box mb={6}>
-                <VillageGraduatesRegionStatCard village={"Jammura"} />
-              </Box>
-            )}
-
-            <GraduateSearchBox />
-
-            <Flex
-              justifyContent="center"
-              alignItems="center"
-              borderBottom="1px"
-              borderBottomColor="gray.300"
-              mt={6}
-            >
-              {menuItems.map((item) => (
-                <Box
-                  key={item.id}
-                  h={8}
-                  mx={8}
-                  fontSize="13px"
-                  borderBottom={item.id === activeMenuItem.id ? "2px" : "none"}
-                  borderBottomColor={
-                    item.id === activeMenuItem.id ? "purpleTone" : "none"
-                  }
-                  cursor="pointer"
-                  onClick={() => setActiveMenuItem(item)}
-                >
-                  {item.label}
-                </Box>
-              ))}
-            </Flex>
-
-            {activeMenuItem.value === "subDistrict" && (
-              <VStack>
-                <Box w={{ base: "full", md: "40%" }} mt={6}>
-                  <SelectBox
-                    options={districts}
-                    selectedOption={selectedDistrict}
-                    setSelectedOption={setSelectedDistrict}
-                    borderColor="#36CFD1"
-                    height="45px"
-                  />
-                </Box>
-              </VStack>
-            )}
-
-            {activeMenuItem.value === "village" && (
-              <Box mt={6}>
-                <AlphaBetaBar
-                  selectedLetter={selectedLetter}
-                  setSelectedLetter={setSelectedLetter}
-                />
-              </Box>
-            )}
-
-            <Accordion
-              w="full"
-              allowToggle
-              mt={6}
-              defaultIndex={0}
-              onChange={(index) => {
-                typeof index === "number"
-                  ? setExpandedDistrict(districtGraduates[index])
-                  : setExpandedDistrict(districtGraduates[index[0]]);
-              }}
-            >
-              {districtGraduates.map((districtGraduate) => (
-                <AccordionItem
-                  key={districtGraduate.id}
-                  id={districtGraduate.id.toString()}
-                  border="none"
-                  bgColor="white"
-                  mt={4}
-                >
-                  <AccordionButton h={14} _focus={{ boxShadow: "none" }}>
-                    <Box
-                      flex="1"
-                      textAlign="left"
-                      fontSize="16px"
-                      textTransform="capitalize"
-                      color={
-                        districtGraduate.id === expandedDistrict?.id
-                          ? "purpleTone"
-                          : "primary"
-                      }
-                    >
-                      {districtGraduate.name}
-                    </Box>
-                    {breakpointValue === "md" && (
-                      <TotalCapsule districtGraduate={districtGraduate} />
-                    )}
-                    <AccordionIcon ml={4} />
-                  </AccordionButton>
-
-                  <AccordionPanel pb={4}>
-                    <Divider />
-                    {breakpointValue === "base" && (
-                      <Flex justifyContent="center" alignItems="center" mt={6}>
-                        <TotalCapsule districtGraduate={districtGraduate} />
-                      </Flex>
-                    )}
-                    <VStack spacing={2} divider={<Divider />} p={6}>
-                      {Object.entries(districtGraduate.stats).map((item) => (
-                        <Flex
-                          key={item[0]}
-                          w="full"
-                          justifyContent="space-between"
-                          alignItems="center"
-                        >
-                          <Text fontSize="13px" textTransform="capitalize">
-                            {item[0]}
-                          </Text>
-                          <Badge
-                            px={4}
-                            borderRadius="full"
-                            fontSize="12px"
-                            fontWeight="400"
-                          >
-                            {item[1]}
-                          </Badge>
-                        </Flex>
-                      ))}
-                    </VStack>
-                  </AccordionPanel>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </Box>
+          ))}
         </Flex>
+
+        {activeMenuItem.value === "subDistrict" && (
+          <VStack>
+            <Box w={{ base: "full", md: "40%" }} mt={6}>
+              <SelectBox
+                options={districts}
+                selectedOption={selectedDistrict}
+                setSelectedOption={setSelectedDistrict}
+                borderColor="#36CFD1"
+                height="45px"
+              />
+            </Box>
+          </VStack>
+        )}
+
+        {activeMenuItem.value === "village" && (
+          <Box mt={6}>
+            <AlphaBetaBar
+              selectedLetter={selectedLetter}
+              setSelectedLetter={setSelectedLetter}
+            />
+          </Box>
+        )}
+
+        <Accordion
+          w="full"
+          allowToggle
+          mt={6}
+          defaultIndex={0}
+          onChange={(index) => {
+            typeof index === "number"
+              ? setExpandedDistrict(districtGraduates[index])
+              : setExpandedDistrict(districtGraduates[index[0]]);
+          }}
+        >
+          {districtGraduates.map((districtGraduate) => (
+            <AccordionItem
+              key={districtGraduate.id}
+              id={districtGraduate.id.toString()}
+              border="none"
+              bgColor="white"
+              mt={4}
+            >
+              <AccordionButton h={14} _focus={{ boxShadow: "none" }}>
+                <Box
+                  flex="1"
+                  textAlign="left"
+                  fontSize="16px"
+                  textTransform="capitalize"
+                  color={
+                    districtGraduate.id === expandedDistrict?.id
+                      ? "purpleTone"
+                      : "primary"
+                  }
+                >
+                  {districtGraduate.name}
+                </Box>
+                {breakpointValue === "md" && (
+                  <TotalCapsule districtGraduate={districtGraduate} />
+                )}
+                <AccordionIcon ml={4} />
+              </AccordionButton>
+
+              <AccordionPanel pb={4}>
+                <Divider />
+                {breakpointValue === "base" && (
+                  <Flex justifyContent="center" alignItems="center" mt={6}>
+                    <TotalCapsule districtGraduate={districtGraduate} />
+                  </Flex>
+                )}
+                <VStack spacing={2} divider={<Divider />} p={6}>
+                  {Object.entries(districtGraduate.stats).map((item) => (
+                    <Flex
+                      key={item[0]}
+                      w="full"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <Text fontSize="13px" textTransform="capitalize">
+                        {item[0]}
+                      </Text>
+                      <Badge
+                        px={4}
+                        borderRadius="full"
+                        fontSize="12px"
+                        fontWeight="400"
+                      >
+                        {item[1]}
+                      </Badge>
+                    </Flex>
+                  ))}
+                </VStack>
+              </AccordionPanel>
+            </AccordionItem>
+          ))}
+        </Accordion>
       </Container>
 
       <Box mt={20}>

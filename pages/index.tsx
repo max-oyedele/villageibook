@@ -33,7 +33,7 @@ import LeftVillageItems from "components/LeftVillageItems";
 import RecentVillageCard from "components/RecentVillageCard";
 import PostCard from "components/PostCard";
 import CaptionCard from "components/CaptionCard";
-import VillageGraduatesRegionStatCard from "components/VillageGraduatesRegionStatCard";
+import VillageGraduatesCountryStatCard from "components/VillageGraduatesCountryStatCard";
 import RecentUserCard from "components/RecentUserCard";
 import VideoBox from "components/VideoBox";
 
@@ -178,7 +178,7 @@ const Feed: NextPage<{ jwt: any }> = ({
             )}
             {breakpointValue === "base" && activeTab === "Graduates" && (
               <Box>
-                <VillageGraduatesRegionStatCard village={user.village} />
+                <VillageGraduatesCountryStatCard village={user.village} direction="column" />
                 <Box mt={12}>
                   <VideoBox
                     video={{
@@ -208,7 +208,7 @@ const Feed: NextPage<{ jwt: any }> = ({
               // pos={fixed ? "fixed" : "static"}
               // top={fixed ? "80px" : 0}
             >
-              <VillageGraduatesRegionStatCard village={user.village} />
+              <VillageGraduatesCountryStatCard village={user.village} direction="column" />
 
               <Text fontSize="24px" mt={12} mb={6}>
                 Recently joined

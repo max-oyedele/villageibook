@@ -122,8 +122,13 @@ const Posts: NextPage = () => {
 
             <Box bgColor="white" p={6} mb={6}>
               <Text fontSize="14px">VILLAGE GRADUATES</Text>
-              <Divider mt={6} mb={8} />
-              <VillageGraduatesCountryStatCard village={vid as string} />
+              {/* <Divider mt={6} mb={8} /> */}
+              <Box mt={4}>
+                <VillageGraduatesCountryStatCard
+                  village={vid as string}
+                  direction="row"
+                />
+              </Box>
             </Box>
 
             {articles.length > 0 && (

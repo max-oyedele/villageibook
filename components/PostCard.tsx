@@ -36,6 +36,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
               <Text
                 display="inline"
                 fontSize="13px"
+                textTransform="capitalize"
                 _hover={{ textDecoration: "underline", cursor: "pointer" }}
               >
                 {post.user.firstName} {post.user.lastName}
