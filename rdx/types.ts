@@ -56,3 +56,11 @@ export interface VillagePageState {
   };
   error?: SerializedError;
 }
+
+export interface GraduatePageState {
+  status: Status;
+  pageData: {
+    totalGraduates: User[];
+  };
+  error?: SerializedError;
+}

@@ -26,10 +26,13 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { MyThunkDispatch, OurStore } from "rdx/store";
 import {
+  fetchCountries,
+  fetchRegions,
   fetchDistricts,
   fetchSubDistricts,
   fetchVillages,
 } from "rdx/slices/location";
+import { fetchGraduatePageData } from "rdx/slices/graduatePage";
 
 import Header from "components/Header";
 import Footer from "components/Footer";
@@ -63,20 +66,22 @@ const Graduates: NextPage = () => {
 
   const dispatch: MyThunkDispatch = useDispatch();
   const { user, error } = useSelector((state: OurStore) => state.authReducer);
-  const { status, districts, subDistricts, villages } = useSelector(
+  const { totalGraduates } = useSelector((state: OurStore) => state.graduatePageReducer.pageData);
+  const { status, countries, regions, districts, subDistricts, villages } = useSelector(
     (state: OurStore) => state.locationReducer
   );
 
   useEffect(() => {
+    dispatch(fetchCountries());
     dispatch(fetchDistricts(null));
     dispatch(fetchSubDistricts(null));
     dispatch(fetchVillages(null));
+    dispatch(fetchGraduatePageData(null));
   }, []);
 
   const [expandedItem, setExpandedItem] = useState(null);
   const [items, setItems] = useState([]);
   const [location, setLocation] = useState("");
-  const [selectedLetter, setSelectedLetter] = useState("a");
 
   useEffect(() => {
     if (activeMenuItem.value === "district") setItems(districts);
@@ -213,15 +218,15 @@ const Graduates: NextPage = () => {
         </Accordion>
       </Container>
 
-      <Box mt={20}>
+      {/* <Box mt={20}>
         <Footer />
-      </Box>
+      </Box> */}
     </Fragment>
   );
 };
 
 const TotalCapsule = ({ locationItem }) => {
-  // const calcGraduates: (stats: Stats) => number[] = (stats) => {
+  // const calcGraduates = (stats) => {
   //   //{ bangladesh: 6, australia: 1, canada: 1, europe: 1, uk: 1, usa: 1, other: 1 }
   //   const inter = stats[interCountry];
   //   let oversea = 0;
