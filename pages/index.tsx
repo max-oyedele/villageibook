@@ -22,6 +22,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { MyThunkDispatch, OurStore } from "rdx/store";
 import { updateJWT } from "rdx/slices/auth";
 import { fetchFeedPageData } from "rdx/slices/feedPage";
+import { fetchVillagePageData } from "rdx/slices/villagePage";
 
 import Header from "components/Header";
 import Footer from "components/Footer";
@@ -32,7 +33,7 @@ import LeftVillageItems from "components/LeftVillageItems";
 import RecentVillageCard from "components/RecentVillageCard";
 import PostCard from "components/PostCard";
 import CaptionCard from "components/CaptionCard";
-import GraduateStatCard from "components/GraduateStatCard";
+import VillageGraduatesRegionStatCard from "components/VillageGraduatesRegionStatCard";
 import RecentUserCard from "components/RecentUserCard";
 import VideoBox from "components/VideoBox";
 
@@ -49,20 +50,19 @@ const Feed: NextPage<{ jwt: any }> = ({
   const [activeTab, setActiveTab] = useState(tabsMobile[0]);
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { user, error } = useSelector((state: OurStore) => state.authReducer);
-  const {
-    posts,
-    recentVillages,
-    recentUsers,
-    totalGraduates,
-    villageGraduates,
-    bangladeshGraduates,
-  } = useSelector((state: OurStore) => state.feedPageReducer.pageData);
-
   useEffect(() => {
     dispatch(updateJWT({ jwt }));
     dispatch(fetchFeedPageData());
+    dispatch(fetchVillagePageData({ villageName: user.village }));
   }, [jwt]);
+
+  const { user, error } = useSelector((state: OurStore) => state.authReducer);
+  const { posts, recentVillages, recentUsers } = useSelector(
+    (state: OurStore) => state.feedPageReducer.pageData
+  );
+  const { graduates } = useSelector(
+    (state: OurStore) => state.villagePageReducer.pageData
+  );
 
   return (
     <Fragment>
@@ -178,12 +178,7 @@ const Feed: NextPage<{ jwt: any }> = ({
             )}
             {breakpointValue === "base" && activeTab === "Graduates" && (
               <Box>
-                <GraduateStatCard
-                  totalGraduates={totalGraduates}
-                  villageName={user.village}
-                  villageGraduates={villageGraduates}
-                  bangladeshGraduates={bangladeshGraduates}
-                />
+                <VillageGraduatesRegionStatCard village={user.village} />
                 <Box mt={12}>
                   <VideoBox
                     video={{
@@ -213,12 +208,7 @@ const Feed: NextPage<{ jwt: any }> = ({
               // pos={fixed ? "fixed" : "static"}
               // top={fixed ? "80px" : 0}
             >
-              <GraduateStatCard
-                totalGraduates={totalGraduates}
-                villageName={user.village}
-                villageGraduates={villageGraduates}
-                bangladeshGraduates={bangladeshGraduates}
-              />
+              <VillageGraduatesRegionStatCard village={user.village} />
 
               <Text fontSize="24px" mt={12} mb={6}>
                 Recently joined

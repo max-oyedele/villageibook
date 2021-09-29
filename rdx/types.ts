@@ -41,10 +41,6 @@ export interface FeedPageState {
     posts: Post[];
     recentVillages: Village[];
     recentUsers: User[];
-    totalGraduates: number;
-    villageGraduates: number;
-    countryGraduates: any;
-    bangladeshGraduates: any;
   };
   error?: SerializedError;
 }

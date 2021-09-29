@@ -14,27 +14,19 @@ import {
   posts,
   recentVillages,
   recentUsers,
-  totalGraduates,
-  villageGraduates,
-  countryGraduates,
-  bangladeshGraduates,
 } from "data/feed";
 
 export const fetchFeedPageData = createAsyncThunk(
   "feedPage/fetchData",
   async (_, thunkAPI) => {
     try {
-      // const response = await axios.get('api/feed-page-data')
+      // const response = await axios.get('/api/feed-page-data')
       // return response.data.villagePageData; // data: {feedPageData: []}
 
       return {
         posts,
         recentVillages,
         recentUsers,
-        totalGraduates,
-        villageGraduates,
-        countryGraduates,
-        bangladeshGraduates,        
       };
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -49,10 +41,6 @@ const initialState: FeedPageState = {
     posts: [],
     recentVillages: [],
     recentUsers: [],
-    totalGraduates: 0,
-    villageGraduates: 0,
-    countryGraduates: {},
-    bangladeshGraduates: {},
   },
   error: null,
 };

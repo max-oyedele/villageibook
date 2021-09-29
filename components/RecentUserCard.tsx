@@ -25,7 +25,7 @@ const RecentUserCard: React.FC<{ user: User }> = ({ user }) => {
       >
         <Image src={user.img} alt="" borderRadius="4px" />
         <Box w="full" ml={4}>
-          <Text fontSize="13px">
+          <Text fontSize="13px" textTransform="capitalize">
             {user.firstName} {user.lastName}
           </Text>
           <Text fontSize="12px" color="GrayText">

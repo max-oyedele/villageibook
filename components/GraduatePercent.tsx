@@ -10,20 +10,20 @@ import {
   Progress,
 } from "@chakra-ui/react";
 
-const VillageGraduatePercent: React.FC<{
-  villageName: string;
-  totalGraduates: number;
-  villageGraduates: number;
-}> = ({ villageName, totalGraduates, villageGraduates }) => {
+const GraduatePercent: React.FC<{
+  village: string;
+  totalCount: number;
+  graduatesCount: number;
+}> = ({ village, totalCount, graduatesCount }) => {
   return (
     <Fragment>
       <Box w="full">
         <Text fontSize="13px" textTransform="capitalize">
-          {villageName} Graduates
+          {village} Graduates
         </Text>
         <Progress
-          max={totalGraduates}
-          value={villageGraduates}
+          max={totalCount}
+          value={graduatesCount}
           size="xs"
           colorScheme="purple"
           mt={4}
@@ -31,14 +31,14 @@ const VillageGraduatePercent: React.FC<{
         <Flex justifyContent="space-between" mt={4}>
           <HStack>
             <Text fontSize="26px" fontWeight="bold" color="purpleTone">
-              {villageGraduates}
+              {graduatesCount}
             </Text>
             <Text fontSize="11px">
-              /{totalGraduates}
+              /{totalCount}
             </Text>
           </HStack>
           <Text fontSize="11px">
-            {(villageGraduates / totalGraduates) * 100}%
+            {(graduatesCount / totalCount) * 100}%
           </Text>
         </Flex>
       </Box>
@@ -46,4 +46,4 @@ const VillageGraduatePercent: React.FC<{
   );
 };
 
-export default VillageGraduatePercent;
+export default GraduatePercent;

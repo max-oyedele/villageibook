@@ -25,17 +25,12 @@ import {
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
-import GraduateStatCard from "components/GraduateStatCard";
+import VillageGraduatesRegionStatCard from "components/VillageGraduatesRegionStatCard";
 import GraduateSearchBox from "components/GraduateSearchBox";
 import GraduateStatCapsule from "components/GraduateStatCapsule";
 import SelectBox from "components/widgets/SelectBox";
 import AlphaBetaBar from "components/widgets/AlphaBetaBar";
 
-import {
-  totalGraduates,
-  villageGraduates,
-  bangladeshGraduates,
-} from "data/feed";
 import {
   interCountry,
   Stats,
@@ -65,7 +60,7 @@ const menuItems = [
 
 const Graduates: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-  
+
   const [activeMenuItem, setActiveMenuItem] = useState(menuItems[0]);
 
   const [expandedDistrict, setExpandedDistrict] = useState(
@@ -74,36 +69,34 @@ const Graduates: NextPage = () => {
   const [selectedDistrict, setSelectedDistrict] = useState(districts);
   const [selectedLetter, setSelectedLetter] = useState("a");
 
-  const {fixed} = UseLeftFixed();
+  const { fixed } = UseLeftFixed();
 
   return (
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <PageTitle title="Graduates" />
+        {/* <PageTitle title="Graduates" /> */}
 
-        <Flex>
+        <Flex mt={8}>
           {breakpointValue === "md" && (
             <Box>
-              <GraduateStatCard
-                totalGraduates={totalGraduates}
-                villageName={"Jammura"}
-                villageGraduates={villageGraduates}
-                bangladeshGraduates={bangladeshGraduates}
-                fixed={fixed}
-              />
+              <VillageGraduatesRegionStatCard village={"Jammura"} />
             </Box>
           )}
 
-          <Box w="full" ml={fixed && breakpointValue === "md" ? "264px" : breakpointValue === "md" ? "24px" : "0px"}>
+          <Box
+            w="full"
+            ml={
+              fixed && breakpointValue === "md"
+                ? "264px"
+                : breakpointValue === "md"
+                ? "24px"
+                : "0px"
+            }
+          >
             {breakpointValue === "base" && (
               <Box mb={6}>
-                <GraduateStatCard
-                  totalGraduates={totalGraduates}
-                  villageName={"Jammura"}
-                  villageGraduates={villageGraduates}
-                  bangladeshGraduates={bangladeshGraduates}
-                />
+                <VillageGraduatesRegionStatCard village={"Jammura"} />
               </Box>
             )}
 

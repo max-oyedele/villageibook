@@ -38,7 +38,7 @@ export const login = createAsyncThunk(
   async (credentials: { email: string; password: string }, thunkAPI) => {
     try {
       const response = await axios.post<{ jwt: any }>(
-        "api/auth/login",
+        "/api/auth/login",
         credentials
       );
       // // const refetch = await axios.get<{ name: string }>('api/me', {
@@ -66,7 +66,7 @@ export const signup = createAsyncThunk(
   ) => {
     try {
       // const response = await axios.post<{ user: any }>(
-      //   "api/auth/signup",
+      //   "/api/auth/signup",
       //   credentials
       // );
 
@@ -120,7 +120,7 @@ export const submit = createAsyncThunk(
     thunkAPI
   ) => {
     try {
-      const response = await axios.post<{ user: any }>("api/auth/submit", body);
+      const response = await axios.post<{ user: any }>("/api/auth/submit", body);
       console.log("responsedata", response.data);
       return response.data;
     } catch (error) {
@@ -132,7 +132,7 @@ export const submit = createAsyncThunk(
 
 export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   try {
-    const response = await axios.delete<{ accessToken: string }>("api/logout");
+    const response = await axios.delete<{ accessToken: string }>("/api/auth/logout");
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.message });

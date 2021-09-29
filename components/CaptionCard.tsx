@@ -14,7 +14,7 @@ const CaptionCard = ({name}) => {
         borderRadius="6px"
       >
         <Text fontSize="24px" textAlign="center">Welcome to</Text>
-        <Text fontSize="24px" fontWeight="700" textAlign="center" mt={2}>
+        <Text fontSize="24px" fontWeight="700" textAlign="center" textTransform="capitalize" mt={2}>
           {name}
         </Text>
       </Flex>

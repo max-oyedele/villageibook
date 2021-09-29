@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Link from "next/link";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 import {
   Container,
@@ -29,7 +29,7 @@ import PageTitle from "components/widgets/PageTitle";
 import SearchBar from "components/SearchBar";
 import LeftVillageCard from "components/LeftVillageCard";
 import UserCard from "components/UserCard";
-import VillageGraduatesCard from "components/VillageGraduatesCard";
+import VillageGraduatesCountryStatCard from "components/VillageGraduatesCountryStatCard";
 import ArticleCard from "components/ArticleCard";
 import PersonalityCard from "components/PersonalityCard";
 import InstitutionCard from "components/InstitutionCard";
@@ -41,24 +41,25 @@ import UseLeftFixed from "hooks/use-left-fixed";
 const Posts: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const router = useRouter();
-  const {query} = router;
+  const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { posts, recentVillages, recentUsers, totalGraduates, villageGraduates, countryGraduates, bangladeshGraduates } = useSelector((state:OurStore)=>state.feedPageReducer.pageData)
-  const { users, articles, personalities, institutions, videos } = useSelector((state:OurStore)=>state.villagePageReducer.pageData)
+  const { users, articles, personalities, institutions, videos } = useSelector(
+    (state: OurStore) => state.villagePageReducer.pageData
+  );
 
   const { fixed } = UseLeftFixed();
-  
-  useEffect(()=>{
-    dispatch(fetchVillagePageData({villageName: vid}))
-  }, [vid])
+
+  useEffect(() => {
+    dispatch(fetchVillagePageData({ villageName: vid }));
+  }, [vid]);
 
   return (
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <Box px={{ lg: 20 }} my={{base: 16, md: 8}}>
+        <Box px={{ lg: 20 }} my={{ base: 16, md: 8 }}>
           <SearchBar />
         </Box>
 
@@ -122,12 +123,7 @@ const Posts: NextPage = () => {
             <Box bgColor="white" p={6} mb={6}>
               <Text fontSize="14px">VILLAGE GRADUATES</Text>
               <Divider mt={6} mb={8} />
-              <VillageGraduatesCard
-                totalGraduates={totalGraduates}
-                villageName={vid as string}
-                villageGraduates={villageGraduates}
-                countryGraduates={countryGraduates}
-              />
+              <VillageGraduatesCountryStatCard village={vid as string} />
             </Box>
 
             {articles.length > 0 && (
@@ -196,14 +192,12 @@ const Posts: NextPage = () => {
               <Box bgColor="white" p={6} mb={6}>
                 <Text fontSize="14px">INSTITUTIONS</Text>
                 <VStack spacing={2} mt={6}>
-                  {institutions
-                    .slice(0, 3)
-                    .map((institution) => (
-                      <InstitutionCard
-                        key={institution.id}
-                        institution={institution}
-                      />
-                    ))}
+                  {institutions.slice(0, 3).map((institution) => (
+                    <InstitutionCard
+                      key={institution.id}
+                      institution={institution}
+                    />
+                  ))}
                 </VStack>
                 <Box>
                   <Link href="/village/institutions">

@@ -11,6 +11,7 @@ export type User = {
   village?: string;
   graduatedAt?: string;
   university?: string;
+  universityCountry?: string;
   degree?: string;
   recentAt?: number;
   uuid: string;

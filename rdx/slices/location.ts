@@ -12,7 +12,7 @@ import {Status, LocationState} from "../types"
 /*********************** */
 export const fetchCountries = createAsyncThunk('location/countries', async (_, thunkAPI) => {
   try {
-    // const response = await axios.get('api/countries')
+    // const response = await axios.get('/api/countries')
     // return response.data.countries; // data: {pagination: {}, countries: []}
     return [
       {
@@ -65,7 +65,7 @@ export const fetchCountries = createAsyncThunk('location/countries', async (_, t
 
 export const fetchRegions = createAsyncThunk('location/regions', async (params:any, thunkAPI) => {
   try {
-    const response = await axios.get('api/regions', {params})
+    const response = await axios.get('/api/regions', {params})
     return response.data.regions;
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.message })
@@ -74,7 +74,7 @@ export const fetchRegions = createAsyncThunk('location/regions', async (params:a
 
 export const fetchDistricts = createAsyncThunk('location/districts', async (params:any, thunkAPI) => {
   try {
-    const response = await axios.get('api/districts', {params})
+    const response = await axios.get('/api/districts', {params})
     return response.data.districts; // data: {pagination: {}, districts: []}
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.message })
@@ -83,7 +83,7 @@ export const fetchDistricts = createAsyncThunk('location/districts', async (para
 
 export const fetchSubDistricts = createAsyncThunk('location/subDistricts', async (params:any, thunkAPI) => {
   try {
-    const response = await axios.get('api/subDistricts', {params})
+    const response = await axios.get('/api/subDistricts', {params})
     return response.data['sub-districts']; // data: {pagination: {}, sub-districts: []}
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.message })
@@ -92,7 +92,7 @@ export const fetchSubDistricts = createAsyncThunk('location/subDistricts', async
 
 export const fetchVillages = createAsyncThunk('location/villages', async (params:any, thunkAPI) => {
   try {
-    // const response = await axios.get('api/villages', {params: params})
+    // const response = await axios.get('/api/villages', {params: params})
     // return response.data.villages; // data: {pagination: {}, villages: []}
     return [
       {

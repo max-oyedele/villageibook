@@ -31,13 +31,8 @@ import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
-import VillageGraduatesCard from "components/VillageGraduatesCard";
+import VillageGraduatesCountryStatCard from "components/VillageGraduatesCountryStatCard";
 
-import {
-  totalGraduates,
-  villageGraduates,
-  bangladeshGraduates,
-} from "data/feed";
 import {
   interCountry,
   Stats,
@@ -78,13 +73,7 @@ const Graduates: NextPage = () => {
   const { users, articles, personalities, institutions, videos } = useSelector(
     (state: OurStore) => state.villagePageReducer.pageData
   );
-  const {
-    totalGraduates,
-    villageGraduates,
-    countryGraduates,
-    bangladeshGraduates,
-  } = useSelector((state: OurStore) => state.feedPageReducer.pageData);
-
+  
   useEffect(() => {
     dispatch(fetchVillagePageData({ villageName: vid }));
   }, [vid]);
@@ -120,15 +109,12 @@ const Graduates: NextPage = () => {
                 : "0px"
             }
           >
-            <Box bgColor="white" p={6}>
-              <VillageGraduatesCard
-                totalGraduates={totalGraduates}
-                villageName={vid as string}
-                villageGraduates={villageGraduates}
-                countryGraduates={countryGraduates}
+            <Box bgColor="white" border="1px" borderRadius="8px" borderColor="gray.200" p={6}>
+              <VillageGraduatesCountryStatCard
+                village={vid as string}
               />
             </Box>
-            
+
           </Box>
         </Flex>
       </Container>

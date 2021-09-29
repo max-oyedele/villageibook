@@ -24,7 +24,7 @@ async function handler(req, res) {
         const href = JSON.parse(region)?.href;
         district = fetchWrapper.get(baseUrl + `/region/[href=${href}]/districts.json`, access_token);
       }
-
+      
       await district.then(response=>{
         res.status(200).json(response);
       })
