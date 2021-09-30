@@ -18,8 +18,7 @@ export const users: User[] = [
     },
     village: "jammura",
     graduatedAt: "australia",
-    university: "Sydney University",
-    universityCountry: "australia",
+    university: "Sydney University",    
     degree: "master",
     uuid: "23423",
     role: "premium",
@@ -57,8 +56,7 @@ export const users: User[] = [
     },
     village: "jammura",
     graduatedAt: "uk",
-    university: "oxford University",
-    universityCountry: "uk",
+    university: "oxford University",    
     degree: "bachelor's",
     uuid: "43534",
     role: "premium",
@@ -96,6 +94,8 @@ export const users: User[] = [
       ],
     },
     village: "village2",
+    graduatedAt: "bangladesh",
+    university: "bangladesh national University",    
     uuid: "345435"
   },
 ];

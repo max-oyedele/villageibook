@@ -119,7 +119,7 @@ const UserView: NextPage = () => {
                 {user?.graduatedAt && (
                   <HStack w="full">
                     <Box w="full" fontSize="13px" color="purpleTone">
-                      Graduated in
+                      Graduated at
                     </Box>
                     <Box
                       w="full"

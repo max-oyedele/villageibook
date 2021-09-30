@@ -109,9 +109,9 @@ export const submit = createAsyncThunk(
       education?: { degree: Degree; graduatedAt: Country; university: string };
       location?: {
         country: Country;
-        region: Region;
-        district: District;
-        subDistrict: SubDistrict;
+        // region: Region;
+        // district: District;
+        // subDistrict: SubDistrict;
         village: Village;
       };
       aboutMe?: string;
@@ -147,13 +147,17 @@ const initialState: AuthState = {
   // user: null,
   user: {
     id: 584,
-    firstName: "sdf",
-    lastName: "bbb",
+    firstName: "James",
+    lastName: "Smith",
     img: "/images/avatar.png",
-    email: "sdf@gmail.com",
+    email: "jsmith@gmail.com",
     uuid: "879a1f43-d496-43eb-a658-648071820d31",
     role: "premium",
-    village: "jammura"
+    village: "jammura",
+    graduatedAt: "uk",
+    university: "Oxford",
+    profession: "computer science",
+    degree: "bachelor"
   },
   error: null,
 };

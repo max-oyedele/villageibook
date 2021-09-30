@@ -74,7 +74,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
                   country={country}
                   count={
                     graduates.filter(
-                      (user) => user.universityCountry === country.href
+                      (user) => user.graduatedAt === country.href
                     ).length
                   }
                 />
@@ -93,7 +93,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
                       country={country}
                       count={
                         graduates.filter(
-                          (user) => user.universityCountry === country.href
+                          (user) => user.graduatedAt === country.href
                         ).length
                       }
                     />
@@ -109,7 +109,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
                       country={country}
                       count={
                         graduates.filter(
-                          (user) => user.universityCountry === country.href
+                          (user) => user.graduatedAt === country.href
                         ).length
                       }
                     />
@@ -142,7 +142,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
                 country={country}
                 count={
                   graduates.filter(
-                    (user) => user.universityCountry === country.href
+                    (user) => user.graduatedAt === country.href
                   ).length
                 }
               />

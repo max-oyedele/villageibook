@@ -8,34 +8,45 @@ import {
   Text,
   Image,
   Button,
+  Tooltip,
 } from "@chakra-ui/react";
 
 const AccountQuestionBar: React.FC<{
   question: string;
   isTrue: boolean;
   setIsTrue;
-}> = ({ question, isTrue, setIsTrue }) => {
+  yesTooltip: string;
+  noTooltip: string;
+}> = ({ question, isTrue, setIsTrue, yesTooltip, noTooltip }) => {
   return (
     <Fragment>
       <Box justifyContent="space-between" fontSize="14px">
-        <Text>{question}</Text>
+        <Text fontSize="13px" color="GrayText">
+          {question}
+        </Text>
 
         <HStack mt={2}>
-          <Text
-            color={isTrue ? "purpleTone" : ""}
-            cursor="pointer"
-            onClick={() => setIsTrue(true)}
-          >
-            Yes
-          </Text>
+          <Tooltip label={yesTooltip} placement="bottom-start">
+            <Text
+              color={isTrue ? "purpleTone" : "GrayText"}
+              cursor="pointer"
+              onClick={() => setIsTrue(true)}
+            >
+              Yes
+            </Text>
+          </Tooltip>
+
           <Text color="gray.200">|</Text>
-          <Text
-            color={isTrue ? "" : "purpleTone"}
-            cursor="pointer"
-            onClick={() => setIsTrue(false)}
-          >
-            No
-          </Text>
+
+          <Tooltip label={noTooltip} placement="bottom-start">
+            <Text
+              color={isTrue ? "GrayText" : "purpleTone"}
+              cursor="pointer"
+              onClick={() => setIsTrue(false)}
+            >
+              No
+            </Text>
+          </Tooltip>
         </HStack>
       </Box>
     </Fragment>

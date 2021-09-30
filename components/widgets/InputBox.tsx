@@ -11,11 +11,13 @@ import {
 const InputBox: React.FC<{
   id: string;
   label: string;
+  value?: string;
   onChange: React.Dispatch<React.SetStateAction<string | null>>;
   isRequired: boolean;
   isInvalid: boolean;
   error: any;
-}> = ({ id, label, onChange, isRequired, isInvalid, error }) => {
+}> = ({ id, label, value, onChange, isRequired, isInvalid, error }) => {
+  console.log("wvwee", value);
   return (
     <Fragment>
       <FormControl id={id} isRequired={isRequired} isInvalid={isInvalid}>
@@ -24,7 +26,12 @@ const InputBox: React.FC<{
             {label}
           </FormLabel>
           <Box w="full">
-            <Input onChange={(e) => onChange(e.target.value)} />
+            <Input
+              color="GrayText"
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              _focus={{ outline: "none" }}
+            />
           </Box>
         </HStack>
         <HStack spacing={5}>

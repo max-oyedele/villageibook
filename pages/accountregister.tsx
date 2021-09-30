@@ -6,6 +6,7 @@ import { useCookies } from "react-cookie";
 
 import {
   Container,
+  Stack,
   HStack,
   VStack,
   Divider,
@@ -62,32 +63,24 @@ import AvatarUpload from "components/widgets/AvatarUpload";
 
 import { Register } from "rdx/types";
 import { submit } from "rdx/slices/auth";
-import { Degree } from "types/schema";
 import { Country, Region, District, SubDistrict, Village } from "types/schema";
-import { filterUndefined } from "@chakra-ui/react-utils/node_modules/@chakra-ui/utils";
 
-export const degrees: Degree[] = [
-  {
-    id: 0,
-    label: "Master",
-    value: "master",
-  },
-  {
-    id: 1,
-    label: "Bachelor's",
-    value: "bachelor",
-  },
-];
+import { degrees, professions } from "constants/account";
 
 const accountSchema = yup.object({
   degree: yup.object().nullable(),
   graduatedAt: yup.object().nullable(),
   university: yup.string().nullable(),
-  country: yup.object().nullable().required("Country must be selected."),
-  region: yup.object().nullable().required("Region must be selected."),
-  district: yup.object().nullable().required("District must be selected."),
-  subDistrict: yup.object().nullable().required("Upazila must be selected."),
+  profession: yup.string().nullable(),
+  residenceCountry: yup
+    .object()
+    .nullable()
+    .required("Country must be selected."),
+  // region: yup.object().nullable().required("Region must be selected."),
+  // district: yup.object().nullable().required("District must be selected."),
+  // subDistrict: yup.object().nullable().required("Upazila must be selected."),
   village: yup.object().nullable().required("Village must be selected."),
+  originCountry: yup.object().nullable().required("Country must be selected."),
 });
 
 const AccountToRegister: NextPage = () => {
@@ -96,13 +89,17 @@ const AccountToRegister: NextPage = () => {
   const [selectedDegree, setSelectedDegree] = useState(null);
   const [selectedGraduatedAt, setSelectedGraduatedAt] = useState(null);
   const [university, setUniversity] = useState<string | null>(null);
+  const [profession, setProfession] = useState<string | null>(null);
 
-  const [selectedCountry, setSelectedCountry] = useState<Country>(null);
+  const [selectedResidenceCountry, setSelectedResidenceCountry] =
+    useState<Country>(null);
   const [selectedRegion, setSelectedRegion] = useState<Region>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
   const [selectedSubDistrict, setSelectedSubDistrict] =
     useState<SubDistrict>(null);
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
+  const [selectedOriginCountry, setSelectedOriginCountry] =
+    useState<Country>(null);
 
   const dispatch: MyThunkDispatch = useDispatch();
   const {
@@ -123,21 +120,26 @@ const AccountToRegister: NextPage = () => {
     dispatch(fetchCountries());
   }, []);
   useEffect(() => {
-    setSelectedRegion(null);
-    dispatch(fetchRegions({ country: selectedCountry }));
-  }, [selectedCountry]);
-  useEffect(() => {
-    setSelectedDistrict(null);
-    dispatch(fetchDistricts({ region: selectedRegion }));
-  }, [selectedRegion]);
-  useEffect(() => {
-    setSelectedSubDistrict(null);
-    dispatch(fetchSubDistricts({ district: selectedDistrict }));
-  }, [selectedDistrict]);
-  useEffect(() => {
     setSelectedVillage(null);
-    dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
-  }, [selectedSubDistrict]);
+    dispatch(fetchVillages({ country: selectedResidenceCountry }));
+  }, [selectedResidenceCountry]);
+
+  // useEffect(() => {
+  //   setSelectedRegion(null);
+  //   dispatch(fetchRegions({ country: selectedCountry }));
+  // }, [selectedCountry]);
+  // useEffect(() => {
+  //   setSelectedDistrict(null);
+  //   dispatch(fetchDistricts({ region: selectedRegion }));
+  // }, [selectedRegion]);
+  // useEffect(() => {
+  //   setSelectedSubDistrict(null);
+  //   dispatch(fetchSubDistricts({ district: selectedDistrict }));
+  // }, [selectedDistrict]);
+  // useEffect(() => {
+  //   setSelectedVillage(null);
+  //   dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
+  // }, [selectedSubDistrict]);
 
   return (
     <Fragment>
@@ -150,10 +152,12 @@ const AccountToRegister: NextPage = () => {
             degree: selectedDegree,
             graduatedAt: selectedGraduatedAt,
             university: university,
-            country: selectedCountry,
-            region: selectedRegion,
-            district: selectedDistrict,
-            subDistrict: selectedSubDistrict,
+            profession: profession,
+            residenceCountry: selectedResidenceCountry,
+            // region: selectedRegion,
+            // district: selectedDistrict,
+            // subDistrict: selectedSubDistrict,
+            originCountry: selectedOriginCountry,
             village: selectedVillage,
           }}
           enableReinitialize={true}
@@ -169,12 +173,15 @@ const AccountToRegister: NextPage = () => {
                 graduatedAt: selectedGraduatedAt,
                 university: university,
               },
-              location: {
-                country: selectedCountry,
-                region: selectedRegion,
-                district: selectedDistrict,
-                subDistrict: selectedSubDistrict,
+              residence: {
+                country: selectedResidenceCountry,
+                // region: selectedRegion,
+                // district: selectedDistrict,
+                // subDistrict: selectedSubDistrict,
                 village: selectedVillage,
+              },
+              origin: {
+                country: selectedOriginCountry,
               },
             };
 
@@ -199,8 +206,12 @@ const AccountToRegister: NextPage = () => {
                   </Box>
                 )}
 
-                <Box w="full">
-                  {breakpointValue === "base" && <AvatarUpload />}
+                <Box w="full" mb={12}>
+                  {breakpointValue === "base" && (
+                    <Box mb={6}>
+                      <AvatarUpload />
+                    </Box>
+                  )}
                   <Flex
                     flexDirection="column"
                     bgColor="white"
@@ -213,10 +224,12 @@ const AccountToRegister: NextPage = () => {
                       USER DETAILS
                     </Text>
                     <Divider my={6} />
-                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
-                      <Box>
+                    <Stack
+                      direction={breakpointValue === "base" ? "column" : "row"}
+                      spacing={8}
+                    >
+                      <Box w="full">
                         <Text
-                          display="inline"
                           fontSize="11px"
                           color="purpleTone"
                           mb={4}
@@ -225,18 +238,18 @@ const AccountToRegister: NextPage = () => {
                         </Text>
 
                         <InputBoxWithSelect
-                          id="country"
+                          id="residenceCountry"
                           label="Country"
                           options={countries}
                           optionLabel={({ name }) => name}
-                          selectedOption={selectedCountry}
-                          setSelectedOption={setSelectedCountry}
+                          selectedOption={selectedResidenceCountry}
+                          setSelectedOption={setSelectedResidenceCountry}
                           isRequired={true}
-                          isInvalid={!selectedCountry}
-                          error={errors.country}
+                          isInvalid={!selectedResidenceCountry}
+                          error={errors.residenceCountry}
                         />
 
-                        <InputBoxWithSelect
+                        {/* <InputBoxWithSelect
                           id="region"
                           label="Division"
                           options={regions}
@@ -268,7 +281,7 @@ const AccountToRegister: NextPage = () => {
                           isRequired={true}
                           isInvalid={!selectedSubDistrict}
                           error={errors.subDistrict}
-                        />
+                        /> */}
                         <InputBoxWithSelect
                           id="village"
                           label="Village"
@@ -280,10 +293,29 @@ const AccountToRegister: NextPage = () => {
                           isInvalid={!selectedVillage}
                           error={errors.village}
                         />
+
+                          <Text
+                            fontSize="11px"
+                            color="purpleTone"
+                            mt={8}
+                          >
+                            Where are you from?
+                          </Text>
+
+                        <InputBoxWithSelect
+                          id="originCountry"
+                          label="Country"
+                          options={countries}
+                          optionLabel={({ name }) => name}
+                          selectedOption={selectedOriginCountry}
+                          setSelectedOption={setSelectedOriginCountry}
+                          isRequired={true}
+                          isInvalid={!selectedOriginCountry}
+                          error={errors.originCountry}
+                        />
                       </Box>
-                      <Box>
+                      <Box w="full">
                         <Text
-                          display="inline"
                           fontSize="11px"
                           color="purpleTone"
                           mb={4}
@@ -293,7 +325,7 @@ const AccountToRegister: NextPage = () => {
 
                         <InputBoxWithSelect
                           id="graduatedAt"
-                          label="Graduated in"
+                          label="Graduated at"
                           options={countries}
                           optionLabel={({ name }) => name}
                           selectedOption={selectedGraduatedAt}
@@ -312,6 +344,15 @@ const AccountToRegister: NextPage = () => {
                           error={errors.university}
                         />
 
+                        <InputBox
+                          id="profession"
+                          label="Profession"
+                          onChange={setProfession}
+                          isRequired={false}
+                          isInvalid={!!errors.profession}
+                          error={errors.profession}
+                        />
+
                         <InputBoxWithSelect
                           id="degree"
                           label="Degree"
@@ -324,9 +365,9 @@ const AccountToRegister: NextPage = () => {
                           error={errors.degree}
                         />
                       </Box>
-                    </SimpleGrid>
+                    </Stack>
                   </Flex>
-                  <Box w={{ base: "100%", md: "50%" }} mt={10}>
+                  <VStack mt={10} align={{ base: "center", md: "start" }}>
                     <Button
                       type="submit"
                       w="50%"
@@ -339,7 +380,7 @@ const AccountToRegister: NextPage = () => {
                     >
                       SAVE
                     </Button>
-                  </Box>
+                  </VStack>
                 </Box>
               </HStack>
             </Form>

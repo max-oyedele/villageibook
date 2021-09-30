@@ -20,7 +20,7 @@ export const fetchGraduatePageData = createAsyncThunk(
       // return response.data.graduatePageData; // data: {graduatePageData: []}
 
       return {
-        totalGraduates: users.filter((item)=>item.village === item.university),
+        totalGraduates: users.filter((item)=>item.university),
       };
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });

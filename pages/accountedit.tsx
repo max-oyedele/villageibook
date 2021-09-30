@@ -6,6 +6,7 @@ import { useCookies } from "react-cookie";
 
 import {
   Container,
+  Stack,
   HStack,
   VStack,
   Divider,
@@ -68,21 +69,8 @@ import PremiumCard from "components/PremiumCard";
 import Stepper from "components/widgets/Stepper";
 
 import { submit } from "rdx/slices/auth";
-import { Degree } from "types/schema";
-import { Country, Region, District, SubDistrict, Village } from "types/schema";
-
-export const degrees: Degree[] = [
-  {
-    id: 0,
-    label: "Master",
-    value: "master",
-  },
-  {
-    id: 1,
-    label: "Bachelor's",
-    value: "bachelor",
-  },
-];
+import { Country, Region, District, SubDistrict, Village, Degree } from "types/schema";
+import { degrees, professions } from "constants/account";
 
 const AccountToEdit: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -91,7 +79,7 @@ const AccountToEdit: NextPage = () => {
     (state: OurStore) => state.authReducer
   );
 
-  const [activeStep, setActiveStep] = useState<number>(2);
+  const [activeStep, setActiveStep] = useState<number>(1);
 
   return (
     <Fragment>
@@ -167,6 +155,8 @@ const AccountToEdit: NextPage = () => {
 };
 
 const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
+  const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
+
   const dispatch: MyThunkDispatch = useDispatch();
   const { countries, regions, districts, subDistricts, villages } = useSelector(
     (state: OurStore) => state.locationReducer
@@ -175,39 +165,47 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
   const [firstname, setFirstname] = useState<string | null>(user.firstName);
   const [lastname, setLastname] = useState<string | null>(user.lastName);
 
-  const [selectedDegree, setSelectedDegree] = useState(null);
-  const [selectedGraduatedAt, setSelectedGraduatedAt] = useState(null);
-  const [university, setUniversity] = useState<string | null>(null);
+  const [selectedDegree, setSelectedDegree] = useState<Degree>(degrees.find(e=>e.value === user.degree));
+  const [selectedGraduatedAt, setSelectedGraduatedAt] = useState<Country>(countries.find(e=>e.href === user.graduatedAt));
+  const [university, setUniversity] = useState<string | null>(user.university);
+  const [profession, setProfession] = useState<string | null>(user.profession);
 
-  const [selectedCountry, setSelectedCountry] = useState<Country>(null);
+  const [selectedResidenceCountry, setSelectedResidenceCountry] =
+    useState<Country>(null);
   const [selectedRegion, setSelectedRegion] = useState<Region>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
   const [selectedSubDistrict, setSelectedSubDistrict] =
     useState<SubDistrict>(null);
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
+  const [selectedOriginCountry, setSelectedOriginCountry] =
+    useState<Country>(null);
 
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [isSelf, setIsSelf] = useState(true);
+  const [isBySupport, setIsBySupport] = useState(false);
 
   useEffect(() => {
     dispatch(fetchCountries());
   }, []);
   useEffect(() => {
-    setSelectedRegion(null);
-    dispatch(fetchRegions({ country: selectedCountry }));
-  }, [selectedCountry]);
-  useEffect(() => {
-    setSelectedDistrict(null);
-    dispatch(fetchDistricts({ region: selectedRegion }));
-  }, [selectedRegion]);
-  useEffect(() => {
-    setSelectedSubDistrict(null);
-    dispatch(fetchSubDistricts({ district: selectedDistrict }));
-  }, [selectedDistrict]);
-  useEffect(() => {
     setSelectedVillage(null);
-    dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
-  }, [selectedSubDistrict]);
+    dispatch(fetchVillages({ country: selectedResidenceCountry }));
+  }, [selectedResidenceCountry]);
+  // useEffect(() => {
+  //   setSelectedRegion(null);
+  //   dispatch(fetchRegions({ country: selectedCountry }));
+  // }, [selectedCountry]);
+  // useEffect(() => {
+  //   setSelectedDistrict(null);
+  //   dispatch(fetchDistricts({ region: selectedRegion }));
+  // }, [selectedRegion]);
+  // useEffect(() => {
+  //   setSelectedSubDistrict(null);
+  //   dispatch(fetchSubDistricts({ district: selectedDistrict }));
+  // }, [selectedDistrict]);
+  // useEffect(() => {
+  //   setSelectedVillage(null);
+  //   dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
+  // }, [selectedSubDistrict]);
 
   const step1Schema = yup.object({
     firstname: yup.string().nullable().required("First Name is required."),
@@ -215,11 +213,19 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
     degree: yup.object().nullable(),
     graduatedAt: yup.object().nullable(),
     university: yup.string().nullable(),
-    country: yup.object().nullable().required("Country must be selected."),
-    region: yup.object().nullable().required("Region must be selected."),
-    district: yup.object().nullable().required("District must be selected."),
-    subDistrict: yup.object().nullable().required("Upazila must be selected."),
+    profession: yup.string().nullable(),
+    residenceCountry: yup
+      .object()
+      .nullable()
+      .required("Country must be selected."),
+    // region: yup.object().nullable().required("Region must be selected."),
+    // district: yup.object().nullable().required("District must be selected."),
+    // subDistrict: yup.object().nullable().required("Upazila must be selected."),
     village: yup.object().nullable().required("Village must be selected."),
+    originCountry: yup
+      .object()
+      .nullable()
+      .required("Country must be selected."),
   });
 
   return (
@@ -230,11 +236,13 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
         degree: selectedDegree,
         graduatedAt: selectedGraduatedAt,
         university: university,
-        country: selectedCountry,
-        region: selectedRegion,
-        district: selectedDistrict,
-        subDistrict: selectedSubDistrict,
+        profession: profession,
+        residenceCountry: selectedResidenceCountry,
+        // region: selectedRegion,
+        // district: selectedDistrict,
+        // subDistrict: selectedSubDistrict,
         village: selectedVillage,
+        originCountry: selectedOriginCountry,
       }}
       enableReinitialize={true}
       validationSchema={step1Schema}
@@ -248,17 +256,20 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
             graduatedAt: selectedGraduatedAt,
             university: university,
           },
-          location: {
-            country: selectedCountry,
-            region: selectedRegion,
-            district: selectedDistrict,
-            subDistrict: selectedSubDistrict,
+          residence: {
+            country: selectedResidenceCountry,
+            // region: selectedRegion,
+            // district: selectedDistrict,
+            // subDistrict: selectedSubDistrict,
             village: selectedVillage,
+          },
+          origin: {
+            country: selectedOriginCountry,
           },
         };
         actions.setSubmitting(true);
         await dispatch(submit(body));
-        if (!error) setActiveStep(activeStep + 1);
+        if (!error && !isBySupport) setActiveStep(activeStep + 1);
         actions.setSubmitting(false);
       }}
     >
@@ -271,14 +282,15 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
         handleSubmit,
       }) => (
         <Form noValidate>
-          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
-            <Box>
-              <Text fontSize="13px" textDecoration="underline" mt={6} mb={4}>
-                General information
-              </Text>
+          <Stack
+            direction={breakpointValue === "base" ? "column" : "row"}
+            spacing={8}
+          >
+            <Box w="full">
               <InputBox
                 id="firstname"
                 label="First name"
+                value={firstname}
                 onChange={setFirstname}
                 isRequired={true}
                 isInvalid={!!errors.firstname}
@@ -287,13 +299,14 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
               <InputBox
                 id="lastname"
                 label="Last name"
+                value={lastname}
                 onChange={setLastname}
                 isRequired={true}
                 isInvalid={!!errors.lastname}
                 error={errors.lastname}
               />
 
-              <Text fontSize="13px" textDecoration="underline" mt={8} mb={4}>
+              <Text fontSize="11px" color="purpleTone" mt={8}>
                 Where do you live?
               </Text>
               <InputBoxWithSelect
@@ -301,13 +314,13 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
                 label="Country"
                 options={countries}
                 optionLabel={({ name }) => name}
-                selectedOption={selectedCountry}
-                setSelectedOption={setSelectedCountry}
+                selectedOption={selectedResidenceCountry}
+                setSelectedOption={setSelectedResidenceCountry}
                 isRequired={true}
-                isInvalid={!selectedCountry}
-                error={errors.country}
+                isInvalid={!selectedResidenceCountry}
+                error={errors.residenceCountry}
               />
-              <InputBoxWithSelect
+              {/* <InputBoxWithSelect
                 id="region"
                 label="Division"
                 options={regions}
@@ -339,7 +352,7 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
                 isRequired={true}
                 isInvalid={!selectedSubDistrict}
                 error={errors.subDistrict}
-              />
+              /> */}
               <InputBoxWithSelect
                 id="village"
                 label="Village"
@@ -351,16 +364,32 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
                 isInvalid={!selectedVillage}
                 error={errors.village}
               />
+
+              <Text fontSize="11px" color="purpleTone" mt={8}>
+                Where are you from?
+              </Text>
+
+              <InputBoxWithSelect
+                id="originCountry"
+                label="Country"
+                options={countries}
+                optionLabel={({ name }) => name}
+                selectedOption={selectedOriginCountry}
+                setSelectedOption={setSelectedOriginCountry}
+                isRequired={true}
+                isInvalid={!selectedOriginCountry}
+                error={errors.originCountry}
+              />
             </Box>
 
-            <Box>
-              <Text fontSize="13px" textDecoration="underline" my={4}>
+            <Box w="full">
+              <Text fontSize="11px" color="purpleTone" mt={6}>
                 About your education
               </Text>
 
               <InputBoxWithSelect
                 id="graduatedAt"
-                label="Graduated in"
+                label="Graduated at"
                 options={countries}
                 optionLabel={({ name }) => name}
                 selectedOption={selectedGraduatedAt}
@@ -373,27 +402,26 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
               <InputBox
                 id="university"
                 label="University"
+                value={university}
                 onChange={setUniversity}
                 isRequired={false}
                 isInvalid={!!errors.university}
                 error={errors.university}
               />
 
-              <InputBoxWithSelect
-                id="degree"
-                label="Degree"
-                options={degrees}
-                optionLabel={({ label }) => label}
-                selectedOption={selectedDegree}
-                setSelectedOption={setSelectedDegree}
+              <InputBox
+                id="profession"
+                label="Profession"
+                value={profession}
+                onChange={setProfession}
                 isRequired={false}
-                isInvalid={!selectedDegree}
-                error={errors.degree}
+                isInvalid={!!errors.profession}
+                error={errors.profession}
               />
 
               <InputBoxWithSelect
                 id="degree"
-                label="Profession"
+                label="Degree"
                 options={degrees}
                 optionLabel={({ label }) => label}
                 selectedOption={selectedDegree}
@@ -410,26 +438,23 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
               )}
               {user.role === "premium" && (
                 <Box mt={8}>
-                  <Text fontSize="12px" color="GrayText" mt={4}>
-                    Please complete 2nd, 3rd part of your profile pages now.
+                  <Text fontSize="11px" color="purpleTone">
+                    For the Premium User
                   </Text>
-                  <Text fontSize="12px" color="GrayText" my={1}>
-                    or
-                  </Text>
-                  <Text fontSize="12px" color="GrayText">
-                    Please ask assitance from admin team for the completion.
-                  </Text>
+
                   <Box mt={4}>
                     <AccountQuestionBar
-                      question="Do you want admin team write your profile?"
-                      isTrue={isSelf}
-                      setIsTrue={setIsSelf}
+                      question="Do you want admin team write your 2nd and 3rd step of profile?"
+                      isTrue={isBySupport}
+                      setIsTrue={setIsBySupport}
+                      yesTooltip="You will receive email and send back support team your additional data"
+                      noTooltip="You might have to complete other steps yourself"
                     />
                   </Box>
                 </Box>
               )}
             </Box>
-          </SimpleGrid>
+          </Stack>
 
           <HStack spacing={4} w={{ base: "100%", md: "50%" }} mt={10}>
             {user.role === "premium" && activeStep >= 2 && (
@@ -503,16 +528,14 @@ const Step2Form = ({ user, error, activeStep, setActiveStep }) => {
         handleSubmit,
       }) => (
         <Form noValidate>
-          
-            <InputTextArea
-              id="aboutme"
-              label="About Me"
-              onChange={setAboutMe}
-              isRequired={true}
-              isInvalid={!!errors.aboutMe}
-              error={errors.aboutMe}
-            />
-          
+          <InputTextArea
+            id="aboutme"
+            label="About Me"
+            onChange={setAboutMe}
+            isRequired={true}
+            isInvalid={!!errors.aboutMe}
+            error={errors.aboutMe}
+          />
 
           <HStack spacing={4} w={{ base: "100%", md: "50%" }} mt={10}>
             {user.role === "premium" && activeStep >= 2 && (

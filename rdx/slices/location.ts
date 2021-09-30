@@ -113,6 +113,18 @@ export const fetchVillages = createAsyncThunk('location/villages', async (params
         href: "village2",
         uuid: "002"
       },
+      {
+        id: 3,
+        name: "Town1",
+        href: "town1",
+        uuid: "003"
+      },
+      {
+        id: 4,
+        name: "Town2",
+        href: "town2",
+        uuid: "004"
+      },
     ]
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.message })

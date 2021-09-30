@@ -11,7 +11,7 @@ export type User = {
   village?: string;
   graduatedAt?: string;
   university?: string;
-  universityCountry?: string;
+  profession?: string;
   degree?: string;
   recentAt?: number;
   uuid: string;
@@ -56,6 +56,12 @@ export type Village = {
 }
 
 export type Degree = {
+  id: number;
+  label: string;
+  value: string;
+};
+
+export type Profession = {
   id: number;
   label: string;
   value: string;

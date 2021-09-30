@@ -20,7 +20,7 @@ import {
   AccordionIcon,
   Badge,
   useBreakpointValue,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -59,6 +59,8 @@ const menuItems = [
   },
 ];
 
+const homeCountry = "bangladesh";
+
 const Graduates: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
@@ -66,10 +68,11 @@ const Graduates: NextPage = () => {
 
   const dispatch: MyThunkDispatch = useDispatch();
   const { user, error } = useSelector((state: OurStore) => state.authReducer);
-  const { totalGraduates } = useSelector((state: OurStore) => state.graduatePageReducer.pageData);
-  const { status, countries, regions, districts, subDistricts, villages } = useSelector(
-    (state: OurStore) => state.locationReducer
+  const { status: graduateStatus, pageData: {totalGraduates} } = useSelector(
+    (state: OurStore) => state.graduatePageReducer
   );
+  const { status, countries, regions, districts, subDistricts, villages } =
+    useSelector((state: OurStore) => state.locationReducer);
 
   useEffect(() => {
     dispatch(fetchCountries());
@@ -78,6 +81,11 @@ const Graduates: NextPage = () => {
     dispatch(fetchVillages(null));
     dispatch(fetchGraduatePageData(null));
   }, []);
+
+  const [refresh, setRefresh] = useState(false);
+  useEffect(()=>{
+    setRefresh(!refresh)
+  }, [graduateStatus])
 
   const [expandedItem, setExpandedItem] = useState(null);
   const [items, setItems] = useState([]);
@@ -111,6 +119,15 @@ const Graduates: NextPage = () => {
     }
   };
 
+  const calcGraduates = (locationItem) => {
+    const totalGraduatesCount = totalGraduates.filter(e=>e.village === locationItem.href).length;
+    const homeGraduatesCount = totalGraduates.filter(e=>e.village === locationItem.href && e.graduatedAt === homeCountry).length;
+    const overseaGraduateCount = totalGraduatesCount - homeGraduatesCount;
+    
+    //[total=12, inter=6, oversea=6]
+    return [totalGraduatesCount, homeGraduatesCount, overseaGraduateCount];
+  };
+
   return (
     <Fragment>
       <Header />
@@ -118,7 +135,11 @@ const Graduates: NextPage = () => {
         {/* <PageTitle title="Graduates" /> */}
 
         <Box mt={8}>
-          <GraduateSearchBox location={location} setLocation={setLocation} onFind={onFind} />
+          <GraduateSearchBox
+            location={location}
+            setLocation={setLocation}
+            onFind={onFind}
+          />
         </Box>
 
         <Flex
@@ -157,41 +178,42 @@ const Graduates: NextPage = () => {
               : setExpandedItem(items[index[0]]);
           }}
         >
-          {items.map((item) => (
-            <AccordionItem
-              key={item.id}
-              id={item.id.toString()}
-              border="none"
-              bgColor="white"
-              mt={4}
-            >
-              <AccordionButton h={14} _focus={{ boxShadow: "none" }}>
-                <Box
-                  flex="1"
-                  textAlign="left"
-                  fontSize="16px"
-                  textTransform="capitalize"
-                  color={
-                    item.id === expandedItem?.id ? "purpleTone" : "primary"
-                  }
-                >
-                  {item.name}
-                </Box>
-                {breakpointValue === "md" && (
-                  <TotalCapsule locationItem={item} />
-                )}
-                <AccordionIcon ml={4} />
-              </AccordionButton>
+          {items.map((item) => {
+            return (
+              <AccordionItem
+                key={item.id}
+                id={item.id.toString()}
+                border="none"
+                bgColor="white"
+                mt={4}
+              >
+                <AccordionButton h={14} _focus={{ boxShadow: "none" }}>
+                  <Box
+                    flex="1"
+                    textAlign="left"
+                    fontSize="16px"
+                    textTransform="capitalize"
+                    color={
+                      item.id === expandedItem?.id ? "purpleTone" : "primary"
+                    }
+                  >
+                    {item.name}
+                  </Box>
+                  {breakpointValue === "md" && (
+                    <TotalCapsule locationItem={item} stats={calcGraduates(item)} />
+                  )}
+                  <AccordionIcon ml={4} />
+                </AccordionButton>
 
-              <AccordionPanel pb={4}>
-                <Divider />
-                {breakpointValue === "base" && (
-                  <Flex justifyContent="center" alignItems="center" mt={6}>
-                    <TotalCapsule locationItem={item} />
-                  </Flex>
-                )}
-                <VStack spacing={2} divider={<Divider />} p={6}>
-                  {/* {Object.entries(districtGraduate.stats).map((item) => (
+                <AccordionPanel pb={4}>
+                  <Divider />
+                  {breakpointValue === "base" && (
+                    <Flex justifyContent="center" alignItems="center" mt={6}>
+                      <TotalCapsule locationItem={item} stats={calcGraduates(item)} />
+                    </Flex>
+                  )}
+                  <VStack spacing={2} divider={<Divider />} p={6}>
+                    {/* {Object.entries(districtGraduate.stats).map((item) => (
                     <Flex
                       key={item[0]}
                       w="full"
@@ -211,10 +233,11 @@ const Graduates: NextPage = () => {
                       </Badge>
                     </Flex>
                   ))} */}
-                </VStack>
-              </AccordionPanel>
-            </AccordionItem>
-          ))}
+                  </VStack>
+                </AccordionPanel>
+              </AccordionItem>
+            );
+          })}
         </Accordion>
       </Container>
 
@@ -225,31 +248,19 @@ const Graduates: NextPage = () => {
   );
 };
 
-const TotalCapsule = ({ locationItem }) => {
-  // const calcGraduates = (stats) => {
-  //   //{ bangladesh: 6, australia: 1, canada: 1, europe: 1, uk: 1, usa: 1, other: 1 }
-  //   const inter = stats[interCountry];
-  //   let oversea = 0;
-  //   for (const [key, value] of Object.entries(stats)) {
-  //     oversea += key === interCountry ? 0 : value;
-  //   }
-
-  //   //[total=12, inter=6, oversea=6]
-  //   return [inter + oversea, inter, oversea];
-  // };
-
+const TotalCapsule = ({ locationItem, stats }) => {
   return (
     <HStack spacing={0}>
-      {/* <Box fontSize="14px" color="GrayText" mr={4} textTransform="capitalize">
-        {districtGraduate.name} Graduates Total -{" "}
+      <Box fontSize="14px" color="GrayText" mr={4} textTransform="capitalize">
+        {locationItem.name} Graduates Total -{" "}
         <Text color="greenTone" display="inline">
-          {calcGraduates(districtGraduate.stats)[0]}
+          {stats[0]}
         </Text>
       </Box>
       <GraduateStatCapsule
-        inter={calcGraduates(districtGraduate.stats)[1]}
-        oversea={calcGraduates(districtGraduate.stats)[2]}
-      /> */}
+        inter={stats[1]}
+        oversea={stats[2]}
+      />
     </HStack>
   );
 };
