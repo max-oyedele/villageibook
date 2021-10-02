@@ -15,8 +15,13 @@ import {
   Grid,
   GridItem,
   SimpleGrid,
+  Badge,
   useBreakpointValue,
 } from "@chakra-ui/react";
+
+import { useSelector, useDispatch } from "react-redux";
+import { MyThunkDispatch, OurStore } from "rdx/store";
+import { fetchUser } from "rdx/slices/user";
 
 import Header from "components/Header";
 import Footer from "components/Footer";
@@ -24,30 +29,32 @@ import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
 import PersonalityCard from "components/PersonalityCard";
 
-import { users } from "data/village";
-import { User } from "types/schema";
-
 const UserView: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const [user, setUser] = useState<User | undefined>(undefined);
-  useEffect(() => {
-    const user = users.find((item) => item.id == Number(id));
-    setUser(user);
-  }, [id]);
+  const dispatch: MyThunkDispatch = useDispatch();
+  const { user, status, error } = useSelector(
+    (state: OurStore) => state.userReducer
+  );
 
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchUser({ uuid: id }));
+    }
+  }, [id]);
+  
   return (
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6} mt={8} mb={48}>
         {/* <PageTitle title={user?.firstName + " " + user?.lastName ?? ""} /> */}
 
-        <HStack spacing={6} align="start">
+        <Flex>
           {breakpointValue === "md" && (
-            <VStack minW="max-content" spacing={6}>
+            <VStack minW="max-content" pos="fixed" top="80px" spacing={6}>
               <Image
                 src={user?.img}
                 w="200px"
@@ -58,22 +65,25 @@ const UserView: NextPage = () => {
               />
 
               <Text fontSize="18px" textTransform="capitalize">
-                {user.firstName} {user.lastName}
+                {user?.firstName} {user?.lastName}
               </Text>
 
-              {/* <Text fontSize="18px" mt={12}>
-                My Photos
-              </Text> */}
-              {/* <VStack spacing={6} mt={8}>
-                {user?.details?.photos.map((photo, index) => (
-                  <Image key={index} src={photo} w="200px" fit="cover" alt="" />
-                ))}
-              </VStack> */}
+              {user?.role === "premium" && (
+                <Badge
+                  bgColor="yellow.400"
+                  borderRadius="4px"
+                  color="white"
+                  fontWeight="400"
+                >
+                  Premium
+                </Badge>
+              )}
             </VStack>
           )}
 
           <Box
             w="full"
+            ml={breakpointValue === "base" ? 0 : "224px"}
             bgColor="white"
             borderRadius="8px"
             border="1px"
@@ -146,12 +156,32 @@ const UserView: NextPage = () => {
                     </Box>
                   </HStack>
                 )}
+                {user?.profession && (
+                  <HStack w="full">
+                    <Box w="full" fontSize="13px" color="purpleTone">
+                      Profession
+                    </Box>
+                    <Box
+                      w="full"
+                      fontSize="13px"
+                      color="GrayText"
+                      textTransform="capitalize"
+                    >
+                      {user?.profession}
+                    </Box>
+                  </HStack>
+                )}
                 {user?.degree && (
                   <HStack w="full">
                     <Box w="full" fontSize="13px" color="purpleTone">
                       Degree
                     </Box>
-                    <Box w="full" fontSize="13px" color="GrayText" textTransform="capitalize">
+                    <Box
+                      w="full"
+                      fontSize="13px"
+                      color="GrayText"
+                      textTransform="capitalize"
+                    >
                       {user?.degree}
                     </Box>
                   </HStack>
@@ -160,11 +190,7 @@ const UserView: NextPage = () => {
                   <Box w="full" fontSize="13px" color="purpleTone">
                     Email
                   </Box>
-                  <Box
-                    w="full"
-                    fontSize="13px"
-                    color="GrayText"
-                  >
+                  <Box w="full" fontSize="13px" color="GrayText">
                     {user?.email}
                   </Box>
                 </HStack>
@@ -218,7 +244,7 @@ const UserView: NextPage = () => {
               )} */}
             </Flex>
           </Box>
-        </HStack>
+        </Flex>
       </Container>
 
       {/* <Box pos="fixed" w="full" bottom={0}>

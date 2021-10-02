@@ -19,7 +19,7 @@ const Capsule: React.FC<{ inter: number; oversea: number, color?: string }> = ({
     <Fragment>
       <Flex>
         <HStack w="50px" borderLeftRadius="25px" border="1px" borderColor="gray.300" px={2}>
-          <Image src="/icons/graduate-inter.svg" alt="" />
+          <Image src="/icons/graduate-home.svg" alt="" />
           <Text fontSize="10px" lineHeight={2}>
             {inter}
           </Text>

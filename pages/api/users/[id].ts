@@ -1,35 +1,52 @@
+import { fetchToken } from "helpers/fetch-token";
+import { fetchWrapper } from "helpers/fetch-wrapper";
+
 import { usersRepo } from "helpers/user-repo";
 
-export default handler;
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-function handler(req, res) {
-    switch (req.method) {
-        case 'GET':
-            return getUserById();
-        case 'PUT':
-            return updateUser();
-        case 'DELETE':
-            return deleteUser();
-        default:
-            return res.status(405).end(`Method ${req.method} Not Allowed`)
-    }
+async function handler(req, res) {
+  const { access_token } = await fetchToken();
 
-    function getUserById() {
-        const user = usersRepo.getById(req.query.id);
-        return res.status(200).json(user);
-    }
+  switch (req.method) {
+    case "GET":
+      return getUserById();
+    case "PUT":
+      return updateUser();
+    case "DELETE":
+      return deleteUser();
+    default:
+      return res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
 
-    function updateUser() {
-        try {
-            usersRepo.update(req.query.id, req.body);
-            return res.status(200).json({});
-        } catch (error) {
-            return res.status(400).json({ message: error });
-        }
-    }
+  async function getUserById() {
+    try {
+      let user = fetchWrapper.get(
+        baseUrl + `/users/${req.query.id}.json`,
+        access_token
+      );
 
-    function deleteUser() {
-        usersRepo.delete(req.query.id);
-        return res.status(200).json({});
+      await user.then((response) => {
+        res.status(200).json(response);
+      });
+    } catch (error) {
+      return res.status(400).json({ message: error });
     }
+  }
+
+  function updateUser() {
+    try {
+    //   usersRepo.update(req.query.id, req.body);
+      return res.status(200).json({});
+    } catch (error) {
+      return res.status(400).json({ message: error });
+    }
+  }
+
+  function deleteUser() {
+    // usersRepo.delete(req.query.id);
+    return res.status(200).json({});
+  }
 }
+
+export default handler;

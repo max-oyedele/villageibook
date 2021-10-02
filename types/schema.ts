@@ -2,7 +2,7 @@ export type User = {
   id: number;
   firstName: string;
   lastName: string;
-  img: string;
+  img?: string;
   email: string;
   details?: {
     photos: string[]

@@ -25,7 +25,7 @@ import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
-import PersonalityCard from "components/PersonalityCard";
+import UserCard from "components/UserCard";
 
 import UseLeftFixed from "hooks/use-left-fixed";
 
@@ -70,7 +70,7 @@ const Users: NextPage = () => {
           >
             <VStack spacing={2}>
               {users.map((user) => (
-                <PersonalityCard key={user.id} user={user} />
+                <UserCard key={user.id} user={user} />
               ))}
             </VStack>
           </Box>

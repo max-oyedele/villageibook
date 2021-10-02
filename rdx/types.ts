@@ -26,6 +26,12 @@ export interface AuthState {
   user?: User;
   error?: SerializedError;
 }
+
+export interface UserState {
+  status: Status;
+  user?: User;
+  error: SerializedError;
+}
 export interface LocationState {
   status: Status;
   countries: Country[];

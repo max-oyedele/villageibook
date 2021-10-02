@@ -27,6 +27,7 @@ import {
 import GraduatePercent from "./GraduatePercent";
 
 const totalGraduatesCount = 1000;
+const homeCountry = "bangladesh";
 
 const VillageGraduatesCountryStatCard: React.FC<{
   village: string;
@@ -165,12 +166,12 @@ const CountryBox: React.FC<{ country: Country; count: number }> = ({
       <Text fontSize="12px" textTransform="capitalize">
         {country.name}
       </Text>
-      <Capsule oversea={count} />
+      <Capsule count={count} flag={country.href === homeCountry ? "home" : "oversea"} />
     </Flex>
   );
 };
 
-const Capsule: React.FC<{ oversea: number }> = ({ oversea }) => {
+const Capsule: React.FC<{ count: number, flag: string }> = ({ count, flag }) => {
   return (
     <Fragment>
       <Flex>
@@ -181,9 +182,9 @@ const Capsule: React.FC<{ oversea: number }> = ({ oversea }) => {
           borderColor="gray.300"
           px={2}
         >
-          <Image src="/icons/graduate-oversea.svg" alt="" />
+          <Image src={`/icons/graduate-${flag}.svg`} alt="" />
           <Text fontSize="10px" lineHeight={2}>
-            {oversea}
+            {count}
           </Text>
         </HStack>
       </Flex>

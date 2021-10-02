@@ -74,7 +74,7 @@ const UserCard: React.FC<{ user: User }> = ({
                 h="26px"
                 fontSize="12px"
                 fontWeight="400"
-                bgColor="purpleTone"
+                bgColor="greenTone"
                 color="white"
                 _focus={{ boxShadow: "none" }}
               >
@@ -140,7 +140,7 @@ const UserCard: React.FC<{ user: User }> = ({
               h={8}
               fontSize="12px"
               fontWeight="400"
-              bgColor="purpleTone"
+              bgColor="greenTone"
               color="white"
             >
               View Profile

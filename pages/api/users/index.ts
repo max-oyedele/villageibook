@@ -13,13 +13,13 @@ function handler(req, res) {
   }
 
   function getUsers() {
-    const users = usersRepo.getAll();
-    return res.status(200).json(users);
+    // const users = usersRepo.getAll();
+    // return res.status(200).json(users);
   }
 
   function createUser() {
     try {
-      usersRepo.create(req.body);
+      // usersRepo.create(req.body);
       return res.status(200).json({});
     } catch (error) {
       return res.status(400).json({ message: error });

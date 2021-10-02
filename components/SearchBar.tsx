@@ -85,7 +85,7 @@ const SearchBar = (props) => {
             <Button
               w="165px"
               h="full"
-              bgColor="greenTone"
+              bgColor="purpleTone"
               fontSize="14px"
               fontWeight="400"
               color="white"
@@ -107,7 +107,7 @@ const SearchBar = (props) => {
         <Button
           w="full"
           h="45px"
-          bgColor="greenTone"
+          bgColor="purpleTone"
           fontSize="14px"
           fontWeight="400"
           color="white"

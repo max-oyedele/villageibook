@@ -19,15 +19,7 @@ import {
   Village,
 } from "types/schema";
 
-// export const fetchUser = createAsyncThunk('auth/me', async (_, thunkAPI) => {
-//   try {
-//     const response = await axios.get<{ name?: string; email?: string; type?: string }>('api/me')
-
-//     return response.data
-//   } catch (error) {
-//     return thunkAPI.rejectWithValue({ error: error.message })
-//   }
-// })
+import { users } from "data/village";
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -41,10 +33,6 @@ export const login = createAsyncThunk(
         "/api/auth/login",
         credentials
       );
-      // // const refetch = await axios.get<{ name: string }>('api/me', {
-      // //   headers: { Authorization: `Bearer ${response.data.accessToken}` },
-      // // })
-      // return { accessToken: response.data.accessToken, me: { name: refetch.data.name } }
 
       return response.data;
     } catch (error) {
@@ -120,7 +108,10 @@ export const submit = createAsyncThunk(
     thunkAPI
   ) => {
     try {
-      const response = await axios.post<{ user: any }>("/api/auth/submit", body);
+      const response = await axios.post<{ user: any }>(
+        "/api/auth/submit",
+        body
+      );
       console.log("responsedata", response.data);
       return response.data;
     } catch (error) {
@@ -132,7 +123,9 @@ export const submit = createAsyncThunk(
 
 export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   try {
-    const response = await axios.delete<{ accessToken: string }>("/api/auth/logout");
+    const response = await axios.delete<{ accessToken: string }>(
+      "/api/auth/logout"
+    );
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.message });
@@ -157,7 +150,7 @@ const initialState: AuthState = {
     graduatedAt: "uk",
     university: "Oxford",
     profession: "computer science",
-    degree: "bachelor"
+    degree: "bachelor",
   },
   error: null,
 };
@@ -190,7 +183,7 @@ export const authSlice = createSlice({
       state.jwt = null;
       state.error = action.payload;
       // throw new Error(action.error.message)
-    });
+    });    
     builder.addCase(signup.pending, (state, action) => {
       state.status = Status.LOADING;
       state.error = null;

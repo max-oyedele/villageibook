@@ -12,7 +12,7 @@ export const posts: Post[] = [
       email: "abdul@gmail.com",
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
       village: "fatepur",
-      uuid: "8897",
+      uuid: "879a1f43-d496-43eb-a658-648071820d31",
       role: "premium",
     },
     lastAt: "3 hours ago",
@@ -86,7 +86,7 @@ export const posts: Post[] = [
     lastAt: "1 day ago",
     contents: {
       text: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim.",
-      img: "/images/sarmin-post.png",
+      img: "",
       video: null,
     },
     village: "jammura",
