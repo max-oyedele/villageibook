@@ -32,9 +32,8 @@ const UserCard: React.FC<{ user: User }> = ({
           <Box pos="relative" minW="max-content">
             <Image
               src={user.img}
+              boxSize="135px"
               alt=""
-              w="135px"
-              h="135px"
               fit="cover"
             />
             {user.role === "premium" && (
@@ -97,9 +96,8 @@ const UserCard: React.FC<{ user: User }> = ({
           <HStack w="full" pos="relative" spacing={2}>
             <Image
               src={user.img}
+              boxSize="44px"
               alt=""
-              w="44px"
-              h="44px"
               fit="cover"
               borderRadius="full"
             />

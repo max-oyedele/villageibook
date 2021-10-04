@@ -107,8 +107,7 @@ const LeftVillageItems: React.FC<{village: string}> = ({village}) => {
             <Image
               src={item.img}
               alt=""
-              w={{ base: "50px", md: "30px" }}
-              h={{ base: "50px", md: "30px" }}
+              boxSize={breakpointValue === "base" ? "50px" : "30px"}
             />
             <Text w="full" fontSize="13px">
               {item.name}

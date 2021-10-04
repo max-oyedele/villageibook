@@ -33,8 +33,7 @@ const PersonalityCard: React.FC<{ user: User }> = ({
             <Image
               src={user.img}
               alt=""
-              w="135px"
-              h="135px"
+              boxSize="135px"
               fit="cover"
             />
           </Box>
@@ -85,8 +84,7 @@ const PersonalityCard: React.FC<{ user: User }> = ({
             <Image
               src={user.img}
               alt=""
-              w="44px"
-              h="44px"
+              boxSize="44px"
               fit="cover"
               borderRadius="full"
             />

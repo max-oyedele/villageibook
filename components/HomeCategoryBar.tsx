@@ -37,7 +37,7 @@ const HomeCategoryBar = () => {
         {
           data.map((item)=>(
             <VStack key={item.id} spacing={4}>
-              <Image src={item.icon} w="50px" h="50px" />
+              <Image src={item.icon} boxSize="50px" />
               <Text fontSize="18px" textTransform="uppercase" textAlign="center">{item.title}</Text>
               <Text fontSize="13px" color="GrayText" textAlign="center">{item.desc}</Text>
             </VStack>

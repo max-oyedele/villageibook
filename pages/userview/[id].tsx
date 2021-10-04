@@ -45,7 +45,7 @@ const UserView: NextPage = () => {
       dispatch(fetchUser({ uuid: id }));
     }
   }, [id]);
-  
+
   return (
     <Fragment>
       <Header />
@@ -57,8 +57,8 @@ const UserView: NextPage = () => {
             <VStack minW="max-content" pos="fixed" top="80px" spacing={6}>
               <Image
                 src={user?.img}
-                w="200px"
-                h="200px"
+                boxSize="200px"
+                loading="eager"
                 fit="cover"
                 alt=""
                 borderRadius="full"

@@ -63,8 +63,7 @@ const AvatarUpload = () => {
         >
           <Image
             src={avatarURL ?? "/icons/upload-avatar.svg"}
-            w="80px"
-            h="80px"
+            boxSize="80px"
             borderRadius="full"
             fit="cover"
             alt=""
