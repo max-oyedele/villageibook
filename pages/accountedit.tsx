@@ -63,6 +63,7 @@ import PageTitle from "components/widgets/PageTitle";
 import InputBox from "components/widgets/InputBox";
 import InputTextArea from "components/widgets/InputTextArea";
 import InputBoxWithSelect from "components/widgets/InputBoxWithSelect";
+import InputBoxWithAutoComplete from "components/widgets/InputBoxWithAutoComplete";
 import AvatarUpload from "components/widgets/AvatarUpload";
 import AccountQuestionBar from "components/AccountQuestionBar";
 import PremiumCard from "components/PremiumCard";
@@ -353,13 +354,23 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
                 isInvalid={!selectedSubDistrict}
                 error={errors.subDistrict}
               /> */}
-              <InputBoxWithSelect
+
+              {/* <InputBoxWithSelect
                 id="village"
                 label="Village"
                 options={villages}
                 optionLabel={({ name }) => name}
                 selectedOption={selectedVillage}
                 setSelectedOption={setSelectedVillage}
+                isRequired={true}
+                isInvalid={!selectedVillage}
+                error={errors.village}
+              /> */}
+              <InputBoxWithAutoComplete
+                id="village"
+                label="Village"
+                selectedValue={selectedVillage}
+                setSelectedValue={setSelectedVillage}
                 isRequired={true}
                 isInvalid={!selectedVillage}
                 error={errors.village}

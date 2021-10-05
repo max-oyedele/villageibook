@@ -51,12 +51,12 @@ export const fetchCountries = createAsyncThunk('location/countries', async (_, t
         href: "usa",
         uuid: "005",
       },
-      {
-        id: 6,
-        name: "Other",
-        href: "other",
-        uuid: "006",
-      },
+      // {
+      //   id: 6,
+      //   name: "Other",
+      //   href: "other",
+      //   uuid: "006",
+      // },
     ]
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.message })
