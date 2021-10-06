@@ -34,6 +34,7 @@ export interface UserState {
 }
 export interface LocationState {
   status: Status;
+  country: Country;
   countries: Country[];
   regions: Region[];
   districts: District[];

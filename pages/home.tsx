@@ -22,14 +22,24 @@ import {
 } from "@chakra-ui/react";
 import Slider from "react-slick";
 
+import { useSelector, useDispatch } from "react-redux";
+import { MyThunkDispatch, OurStore } from "rdx/store";
+
 import Logo from "components/Logo";
 import Footer from "components/Footer";
+import SelectBox from "components/widgets/SelectBox";
 import HomeSlick from "components/HomeSlick";
 import HomeSlickControl from "components/HomeSlickControl";
 import HomeCategoryBar from "components/HomeCategoryBar";
 import VideoBox from "components/VideoBox";
 
 const Home: NextPage = () => {
+  const dispatch: MyThunkDispatch = useDispatch();
+  const { country, countries } = useSelector(
+    (state: OurStore) => state.locationReducer
+  );
+
+  const [selectedCountry, setSelectedCountry] = useState(country);
   const heroImgSlideConf = {
     dots: false,
     arrows: false,
@@ -56,7 +66,19 @@ const Home: NextPage = () => {
           alignItems="center"
           px={6}
         >
-          <Logo />
+          <HStack spacing={8}>
+            <Logo />
+            <SelectBox
+              width="160px"
+              height="40px"
+              id="country"
+              label="Country"
+              options={countries}
+              optionLabel={({ name }) => name}
+              selectedOption={selectedCountry}
+              setSelectedOption={setSelectedCountry}
+            />
+          </HStack>
           <HStack spacing={8}>
             <Box fontSize="14px">
               <Link href="/login">Login</Link>
