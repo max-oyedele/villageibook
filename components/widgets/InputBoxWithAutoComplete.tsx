@@ -1,4 +1,6 @@
 import { Fragment } from "react";
+import getConfig from 'next/config'
+
 import {
   Box,
   HStack,
@@ -9,6 +11,8 @@ import {
 } from "@chakra-ui/react";
 
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
+
+const { publicRuntimeConfig } = getConfig();
 
 const InputBoxWithAutoComplete: React.FC<{
   id: string;
@@ -27,6 +31,7 @@ const InputBoxWithAutoComplete: React.FC<{
   isInvalid,
   error,
 }) => {
+  
   return (
     <Fragment>
       <FormControl id={id} isRequired={isRequired} isInvalid={isInvalid}>
@@ -36,7 +41,7 @@ const InputBoxWithAutoComplete: React.FC<{
           </FormLabel>
           <Box w="full">
             <GooglePlacesAutocomplete
-              apiKey={process.env.GOOGLE_API_KEY}
+              apiKey={publicRuntimeConfig.googleApiKey}
               selectProps={{
                 value: selectedValue,
                 onChange: setSelectedValue,
