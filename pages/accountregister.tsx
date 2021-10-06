@@ -59,6 +59,7 @@ import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import InputBox from "components/widgets/InputBox";
 import InputBoxWithSelect from "components/widgets/InputBoxWithSelect";
+import InputBoxWithAutoComplete from "components/widgets/InputBoxWithAutoComplete";
 import AvatarUpload from "components/widgets/AvatarUpload";
 
 import { Register } from "rdx/types";
@@ -72,15 +73,16 @@ const accountSchema = yup.object({
   graduatedAt: yup.object().nullable(),
   university: yup.string().nullable(),
   profession: yup.string().nullable(),
-  residenceCountry: yup
-    .object()
-    .nullable()
-    .required("Country must be selected."),
+  // residenceCountry: yup
+  //   .object()
+  //   .nullable()
+  //   .required("Country must be selected."),
   // region: yup.object().nullable().required("Region must be selected."),
   // district: yup.object().nullable().required("District must be selected."),
   // subDistrict: yup.object().nullable().required("Upazila must be selected."),
   village: yup.object().nullable().required("Village must be selected."),
   originCountry: yup.object().nullable().required("Country must be selected."),
+  originVillage: yup.object().nullable().required("Village must be selected."),
 });
 
 const AccountToRegister: NextPage = () => {
@@ -100,6 +102,8 @@ const AccountToRegister: NextPage = () => {
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
   const [selectedOriginCountry, setSelectedOriginCountry] =
     useState<Country>(null);
+  const [selectedOriginVillage, setSelectedOriginVillage] =
+    useState<Village>(null);
 
   const dispatch: MyThunkDispatch = useDispatch();
   const {
@@ -108,9 +112,8 @@ const AccountToRegister: NextPage = () => {
     user,
     error: authError,
   } = useSelector((state: OurStore) => state.authReducer);
-  const { countries, regions, districts, subDistricts, villages } = useSelector(
-    (state: OurStore) => state.locationReducer
-  );
+  const { country, countries, regions, districts, subDistricts, villages } =
+    useSelector((state: OurStore) => state.locationReducer);
 
   const router = useRouter();
   const toast = useToast();
@@ -153,12 +156,13 @@ const AccountToRegister: NextPage = () => {
             graduatedAt: selectedGraduatedAt,
             university: university,
             profession: profession,
-            residenceCountry: selectedResidenceCountry,
+            // residenceCountry: selectedResidenceCountry,
             // region: selectedRegion,
             // district: selectedDistrict,
             // subDistrict: selectedSubDistrict,
-            originCountry: selectedOriginCountry,
             village: selectedVillage,
+            originCountry: selectedOriginCountry,
+            originVillage: selectedOriginVillage,
           }}
           enableReinitialize={true}
           validationSchema={accountSchema}
@@ -229,15 +233,11 @@ const AccountToRegister: NextPage = () => {
                       spacing={8}
                     >
                       <Box w="full">
-                        <Text
-                          fontSize="11px"
-                          color="purpleTone"
-                          mb={4}
-                        >
-                          Where do you live?
+                        <Text fontSize="11px" color="purpleTone" mb={4}>
+                          Where do you live? (in {country.name})
                         </Text>
 
-                        <InputBoxWithSelect
+                        {/* <InputBoxWithSelect
                           id="residenceCountry"
                           label="Country"
                           options={countries}
@@ -247,7 +247,7 @@ const AccountToRegister: NextPage = () => {
                           isRequired={true}
                           isInvalid={!selectedResidenceCountry}
                           error={errors.residenceCountry}
-                        />
+                        /> */}
 
                         {/* <InputBoxWithSelect
                           id="region"
@@ -282,7 +282,7 @@ const AccountToRegister: NextPage = () => {
                           isInvalid={!selectedSubDistrict}
                           error={errors.subDistrict}
                         /> */}
-                        <InputBoxWithSelect
+                        {/* <InputBoxWithSelect
                           id="village"
                           label="Village"
                           options={villages}
@@ -292,15 +292,20 @@ const AccountToRegister: NextPage = () => {
                           isRequired={true}
                           isInvalid={!selectedVillage}
                           error={errors.village}
+                        /> */}
+                        <InputBoxWithAutoComplete
+                          id="village"
+                          label="Village"
+                          selectedValue={selectedVillage}
+                          setSelectedValue={setSelectedVillage}
+                          isRequired={true}
+                          isInvalid={!selectedVillage}
+                          error={errors.village}
                         />
 
-                          <Text
-                            fontSize="11px"
-                            color="purpleTone"
-                            mt={8}
-                          >
-                            Where are you from?
-                          </Text>
+                        <Text fontSize="11px" color="purpleTone" mt={8}>
+                          Where are you from?
+                        </Text>
 
                         <InputBoxWithSelect
                           id="originCountry"
@@ -313,13 +318,29 @@ const AccountToRegister: NextPage = () => {
                           isInvalid={!selectedOriginCountry}
                           error={errors.originCountry}
                         />
+                        {/* <InputBoxWithSelect
+                          id="originVillage"
+                          label="Village"
+                          options={villages}
+                          optionLabel={({ name }) => name}
+                          selectedOption={selectedOriginVillage}
+                          setSelectedOption={setSelectedOriginVillage}
+                          isRequired={true}
+                          isInvalid={!selectedOriginVillage}
+                          error={errors.originVillage}
+                        /> */}
+                        <InputBoxWithAutoComplete
+                          id="originVillage"
+                          label="Village"
+                          selectedValue={selectedOriginVillage}
+                          setSelectedValue={setSelectedOriginVillage}
+                          isRequired={true}
+                          isInvalid={!selectedOriginVillage}
+                          error={errors.originVillage}
+                        />
                       </Box>
                       <Box w="full">
-                        <Text
-                          fontSize="11px"
-                          color="purpleTone"
-                          mb={4}
-                        >
+                        <Text fontSize="11px" color="purpleTone" mb={4}>
                           About your education
                         </Text>
 

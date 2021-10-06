@@ -70,7 +70,14 @@ import PremiumCard from "components/PremiumCard";
 import Stepper from "components/widgets/Stepper";
 
 import { submit } from "rdx/slices/auth";
-import { Country, Region, District, SubDistrict, Village, Degree } from "types/schema";
+import {
+  Country,
+  Region,
+  District,
+  SubDistrict,
+  Village,
+  Degree,
+} from "types/schema";
 import { degrees, professions } from "constants/account";
 
 const AccountToEdit: NextPage = () => {
@@ -159,15 +166,18 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { countries, regions, districts, subDistricts, villages } = useSelector(
-    (state: OurStore) => state.locationReducer
-  );
+  const { country, countries, regions, districts, subDistricts, villages } =
+    useSelector((state: OurStore) => state.locationReducer);
 
   const [firstname, setFirstname] = useState<string | null>(user.firstName);
   const [lastname, setLastname] = useState<string | null>(user.lastName);
 
-  const [selectedDegree, setSelectedDegree] = useState<Degree>(degrees.find(e=>e.value === user.degree));
-  const [selectedGraduatedAt, setSelectedGraduatedAt] = useState<Country>(countries.find(e=>e.href === user.graduatedAt));
+  const [selectedDegree, setSelectedDegree] = useState<Degree>(
+    degrees.find((e) => e.value === user.degree)
+  );
+  const [selectedGraduatedAt, setSelectedGraduatedAt] = useState<Country>(
+    countries.find((e) => e.href === user.graduatedAt)
+  );
   const [university, setUniversity] = useState<string | null>(user.university);
   const [profession, setProfession] = useState<string | null>(user.profession);
 
@@ -180,6 +190,7 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
   const [selectedOriginCountry, setSelectedOriginCountry] =
     useState<Country>(null);
+    const [selectedOriginVillage, setSelectedOriginVillage] = useState<Village>(null);
 
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isBySupport, setIsBySupport] = useState(false);
@@ -215,10 +226,10 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
     graduatedAt: yup.object().nullable(),
     university: yup.string().nullable(),
     profession: yup.string().nullable(),
-    residenceCountry: yup
-      .object()
-      .nullable()
-      .required("Country must be selected."),
+    // residenceCountry: yup
+    //   .object()
+    //   .nullable()
+    //   .required("Country must be selected."),
     // region: yup.object().nullable().required("Region must be selected."),
     // district: yup.object().nullable().required("District must be selected."),
     // subDistrict: yup.object().nullable().required("Upazila must be selected."),
@@ -227,6 +238,10 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
       .object()
       .nullable()
       .required("Country must be selected."),
+    originVillage: yup
+      .object()
+      .nullable()
+      .required("Village must be selected."),
   });
 
   return (
@@ -238,12 +253,13 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
         graduatedAt: selectedGraduatedAt,
         university: university,
         profession: profession,
-        residenceCountry: selectedResidenceCountry,
+        // residenceCountry: selectedResidenceCountry,
         // region: selectedRegion,
         // district: selectedDistrict,
         // subDistrict: selectedSubDistrict,
         village: selectedVillage,
         originCountry: selectedOriginCountry,
+        originVillage: selectedOriginVillage
       }}
       enableReinitialize={true}
       validationSchema={step1Schema}
@@ -308,9 +324,9 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
               />
 
               <Text fontSize="11px" color="purpleTone" mt={8}>
-                Where do you live?
+                Where do you live? (in {country.name})
               </Text>
-              <InputBoxWithSelect
+              {/* <InputBoxWithSelect
                 id="country"
                 label="Country"
                 options={countries}
@@ -320,7 +336,7 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
                 isRequired={true}
                 isInvalid={!selectedResidenceCountry}
                 error={errors.residenceCountry}
-              />
+              /> */}
               {/* <InputBoxWithSelect
                 id="region"
                 label="Division"
@@ -390,6 +406,15 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
                 isRequired={true}
                 isInvalid={!selectedOriginCountry}
                 error={errors.originCountry}
+              />
+              <InputBoxWithAutoComplete
+                id="originVillage"
+                label="Village"
+                selectedValue={selectedOriginVillage}
+                setSelectedValue={setSelectedOriginVillage}
+                isRequired={true}
+                isInvalid={!selectedOriginVillage}
+                error={errors.originVillage}
               />
             </Box>
 

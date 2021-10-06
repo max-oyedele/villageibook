@@ -17,7 +17,7 @@ const InputBox: React.FC<{
   isInvalid: boolean;
   error: any;
 }> = ({ id, label, value, onChange, isRequired, isInvalid, error }) => {
-  console.log("wvwee", value);
+  
   return (
     <Fragment>
       <FormControl id={id} isRequired={isRequired} isInvalid={isInvalid}>

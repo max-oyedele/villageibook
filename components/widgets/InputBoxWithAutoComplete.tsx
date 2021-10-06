@@ -40,8 +40,17 @@ const InputBoxWithAutoComplete: React.FC<{
               selectProps={{
                 value: selectedValue,
                 onChange: setSelectedValue,
-                placeholder: ""
-              }}              
+                placeholder: "",
+                styles: {
+                  indicatorSeparator: () => ({}),
+                  dropdownIndicator: () => ({ display: "none" }),
+                  control: () => ({
+                    display: 'flex',
+                    border: "1px solid #E5E7EB",
+                    borderRadius: 4,
+                  }),
+                },
+              }}
             />
           </Box>
         </HStack>
