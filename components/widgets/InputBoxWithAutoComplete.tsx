@@ -36,7 +36,7 @@ const InputBoxWithAutoComplete: React.FC<{
           </FormLabel>
           <Box w="full">
             <GooglePlacesAutocomplete
-              apiKey="AIzaSyBXfx1w1UtpfddO2AbnuHx04AM1MtJMC6A"
+              apiKey={process.env.GOOGLE_API_KEY}
               selectProps={{
                 value: selectedValue,
                 onChange: setSelectedValue,
