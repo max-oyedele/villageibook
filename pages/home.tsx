@@ -73,7 +73,7 @@ const Home: NextPage = () => {
               height="40px"
               id="country"
               label="Country"
-              options={countries}
+              options={[]}
               optionLabel={({ name }) => name}
               selectedOption={selectedCountry}
               setSelectedOption={setSelectedCountry}
