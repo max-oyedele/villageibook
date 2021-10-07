@@ -39,7 +39,6 @@ const Home: NextPage = () => {
     (state: OurStore) => state.locationReducer
   );
 
-  const [selectedCountry, setSelectedCountry] = useState(country);
   const heroImgSlideConf = {
     dots: false,
     arrows: false,
@@ -66,19 +65,7 @@ const Home: NextPage = () => {
           alignItems="center"
           px={6}
         >
-          <HStack spacing={8}>
-            <Logo />
-            <SelectBox
-              width="160px"
-              height="40px"
-              id="country"
-              label="Country"
-              options={[]}
-              optionLabel={({ name }) => name}
-              selectedOption={selectedCountry}
-              setSelectedOption={setSelectedCountry}
-            />
-          </HStack>
+          <Logo />
           <HStack spacing={8}>
             <Box fontSize="14px">
               <Link href="/login">Login</Link>
@@ -109,7 +96,7 @@ const Home: NextPage = () => {
                 color="purpleTone"
                 lineHeight={1.2}
               >
-                Connecting village community worldwide
+                Welcome to Bangladesh Community
               </Text>
               <Text
                 textAlign={{ base: "center", md: "left" }}
@@ -117,7 +104,8 @@ const Home: NextPage = () => {
                 color="GrayText"
                 mt={8}
               >
-                Know your people, culture and history
+                Connecting village community, Know your people, culture and
+                history
               </Text>
               <Text
                 textAlign={{ base: "center", md: "left" }}

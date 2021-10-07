@@ -67,6 +67,7 @@ import { submit } from "rdx/slices/auth";
 import { Country, Region, District, SubDistrict, Village } from "types/schema";
 
 import { degrees, professions } from "constants/account";
+import { platformCountry } from "constants/global";
 
 const accountSchema = yup.object({
   degree: yup.object().nullable(),
@@ -77,12 +78,12 @@ const accountSchema = yup.object({
   //   .object()
   //   .nullable()
   //   .required("Country must be selected."),
-  // region: yup.object().nullable().required("Region must be selected."),
-  // district: yup.object().nullable().required("District must be selected."),
-  // subDistrict: yup.object().nullable().required("Upazila must be selected."),
+  region: yup.object().nullable().required("Region must be selected."),
+  district: yup.object().nullable().required("District must be selected."),
+  subDistrict: yup.object().nullable().required("Upazila must be selected."),
   village: yup.object().nullable().required("Village must be selected."),
   originCountry: yup.object().nullable().required("Country must be selected."),
-  originVillage: yup.object().nullable().required("Village must be selected."),
+  // originVillage: yup.object().nullable().required("Village must be selected."),
 });
 
 const AccountToRegister: NextPage = () => {
@@ -94,7 +95,7 @@ const AccountToRegister: NextPage = () => {
   const [profession, setProfession] = useState<string | null>(null);
 
   const [selectedResidenceCountry, setSelectedResidenceCountry] =
-    useState<Country>(null);
+    useState<Country>(platformCountry);
   const [selectedRegion, setSelectedRegion] = useState<Region>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
   const [selectedSubDistrict, setSelectedSubDistrict] =
@@ -126,23 +127,18 @@ const AccountToRegister: NextPage = () => {
     setSelectedVillage(null);
     dispatch(fetchVillages({ country: selectedResidenceCountry }));
   }, [selectedResidenceCountry]);
-
-  // useEffect(() => {
-  //   setSelectedRegion(null);
-  //   dispatch(fetchRegions({ country: selectedCountry }));
-  // }, [selectedCountry]);
-  // useEffect(() => {
-  //   setSelectedDistrict(null);
-  //   dispatch(fetchDistricts({ region: selectedRegion }));
-  // }, [selectedRegion]);
-  // useEffect(() => {
-  //   setSelectedSubDistrict(null);
-  //   dispatch(fetchSubDistricts({ district: selectedDistrict }));
-  // }, [selectedDistrict]);
-  // useEffect(() => {
-  //   setSelectedVillage(null);
-  //   dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
-  // }, [selectedSubDistrict]);
+  useEffect(() => {
+    setSelectedDistrict(null);
+    dispatch(fetchDistricts({ region: selectedRegion }));
+  }, [selectedRegion]);
+  useEffect(() => {
+    setSelectedSubDistrict(null);
+    dispatch(fetchSubDistricts({ district: selectedDistrict }));
+  }, [selectedDistrict]);
+  useEffect(() => {
+    setSelectedVillage(null);
+    dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
+  }, [selectedSubDistrict]);
 
   return (
     <Fragment>
@@ -156,10 +152,10 @@ const AccountToRegister: NextPage = () => {
             graduatedAt: selectedGraduatedAt,
             university: university,
             profession: profession,
-            // residenceCountry: selectedResidenceCountry,
-            // region: selectedRegion,
-            // district: selectedDistrict,
-            // subDistrict: selectedSubDistrict,
+            residenceCountry: selectedResidenceCountry,
+            region: selectedRegion,
+            district: selectedDistrict,
+            subDistrict: selectedSubDistrict,
             village: selectedVillage,
             originCountry: selectedOriginCountry,
             originVillage: selectedOriginVillage,
@@ -234,7 +230,7 @@ const AccountToRegister: NextPage = () => {
                     >
                       <Box w="full">
                         <Text fontSize="11px" color="purpleTone" mb={4}>
-                          Where do you live? (in {country.name})
+                          Where do you live?
                         </Text>
 
                         {/* <InputBoxWithSelect
@@ -249,7 +245,7 @@ const AccountToRegister: NextPage = () => {
                           error={errors.residenceCountry}
                         /> */}
 
-                        {/* <InputBoxWithSelect
+                        <InputBoxWithSelect
                           id="region"
                           label="Division"
                           options={regions}
@@ -281,8 +277,8 @@ const AccountToRegister: NextPage = () => {
                           isRequired={true}
                           isInvalid={!selectedSubDistrict}
                           error={errors.subDistrict}
-                        /> */}
-                        {/* <InputBoxWithSelect
+                        />
+                        <InputBoxWithSelect
                           id="village"
                           label="Village"
                           options={villages}
@@ -292,16 +288,8 @@ const AccountToRegister: NextPage = () => {
                           isRequired={true}
                           isInvalid={!selectedVillage}
                           error={errors.village}
-                        /> */}
-                        <InputBoxWithAutoComplete
-                          id="village"
-                          label="Village"
-                          selectedValue={selectedVillage}
-                          setSelectedValue={setSelectedVillage}
-                          isRequired={true}
-                          isInvalid={!selectedVillage}
-                          error={errors.village}
                         />
+                        
 
                         <Text fontSize="11px" color="purpleTone" mt={8}>
                           Where are you from?
@@ -329,15 +317,7 @@ const AccountToRegister: NextPage = () => {
                           isInvalid={!selectedOriginVillage}
                           error={errors.originVillage}
                         /> */}
-                        <InputBoxWithAutoComplete
-                          id="originVillage"
-                          label="Village"
-                          selectedValue={selectedOriginVillage}
-                          setSelectedValue={setSelectedOriginVillage}
-                          isRequired={true}
-                          isInvalid={!selectedOriginVillage}
-                          error={errors.originVillage}
-                        />
+                        
                       </Box>
                       <Box w="full">
                         <Text fontSize="11px" color="purpleTone" mb={4}>
