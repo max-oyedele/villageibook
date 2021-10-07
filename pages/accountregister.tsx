@@ -59,7 +59,6 @@ import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import InputBox from "components/widgets/InputBox";
 import InputBoxWithSelect from "components/widgets/InputBoxWithSelect";
-import InputBoxWithAutoComplete from "components/widgets/InputBoxWithAutoComplete";
 import AvatarUpload from "components/widgets/AvatarUpload";
 
 import { Register } from "rdx/types";
