@@ -8,6 +8,7 @@ export const users: User[] = [
     lastName: "ullah",    
     img: "/images/abdul.png",
     email: "abdul@gmail.com",
+    password: "123",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
     details: {
       photos: [
@@ -29,6 +30,7 @@ export const users: User[] = [
     lastName: "ullah",    
     img: "/images/sadia.png",
     email: "sadia@gmail.com",
+    password: "123",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
     details: {
       photos: [
@@ -46,6 +48,7 @@ export const users: User[] = [
     lastName: "ahmed",    
     img: "/images/taslim.png",
     email: "taslim@gmail.com",
+    password: "123",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
     details: {
       photos: [
@@ -67,6 +70,7 @@ export const users: User[] = [
     lastName: "ahmed",    
     img: "/images/sarmin.png",
     email: "sarmin@gmail.com",
+    password: "123",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
     details: {
       photos: [
@@ -85,6 +89,7 @@ export const users: User[] = [
     lastName: "bahmi",    
     img: "/images/sonia.png",
     email: "sonia@gmail.com",
+    password: "123",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id purus aliquam, molestie augue et, faucibus lectus. Aliquam augue ipsum.",
     details: {
       photos: [
