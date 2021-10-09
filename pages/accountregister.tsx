@@ -66,17 +66,17 @@ import { submitStepOne } from "rdx/slices/profile";
 import { Country, Region, District, SubDistrict, Village } from "types/schema";
 
 import { degrees, professions } from "constants/account";
-import { platformCountry } from "constants/global";
+import { platformCountries } from "constants/global";
 
 const accountSchema = yup.object({
   graduatedAt: yup.object().nullable(),
   university: yup.string().nullable(),
   profession: yup.string().nullable(),
   degree: yup.object().nullable(),
-  // country: yup
-  //   .object()
-  //   .nullable()
-  //   .required("Country must be selected."),
+  country: yup
+    .object()
+    .nullable()
+    .required("Country must be selected."),
   // region: yup.object().nullable().required("Region must be selected."),
   district: yup.object().nullable().required("District must be selected."),
   subDistrict: yup.object().nullable().required("Upazila must be selected."),
@@ -96,7 +96,7 @@ const AccountToRegister: NextPage = () => {
   const [profession, setProfession] = useState<string | null>(null);
 
   const [selectedCountry, setSelectedCountry] =
-    useState<Country>(platformCountry);
+    useState<Country>(platformCountries[0]);
   const [selectedRegion, setSelectedRegion] = useState<Region>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
   const [selectedSubDistrict, setSelectedSubDistrict] =
@@ -153,7 +153,7 @@ const AccountToRegister: NextPage = () => {
             university: university,
             profession: profession,
             degree: selectedDegree,
-            // country: selectedCountry,
+            country: selectedCountry,
             // region: selectedRegion,
             district: selectedDistrict,
             subDistrict: selectedSubDistrict,
@@ -224,21 +224,49 @@ const AccountToRegister: NextPage = () => {
                       spacing={8}
                     >
                       <Box w="full">
-                        <Text fontSize="11px" color="purpleTone">
-                          Where are you from in Bangladesh?
+                      <Text fontSize="11px" color="purpleTone">
+                          Where do you live?
                         </Text>
 
-                        {/* <InputBoxWithSelect
-                          id="country"
+                        <InputBoxWithSelect
+                          id="livingCountry"
                           label="Country"
                           options={countries}
+                          optionLabel={({ name }) => name}
+                          selectedOption={selectedLivingCountry}
+                          setSelectedOption={setSelectedLivingCountry}
+                          isRequired={true}
+                          isInvalid={!selectedLivingCountry}
+                          error={errors.livingCountry}
+                        />
+
+                        {/* <InputBoxWithSelect
+                          id="livingVillage"
+                          label="Village"
+                          options={villages}
+                          optionLabel={({ name }) => name}
+                          selectedOption={selectedLivingVillage}
+                          setSelectedOption={setSelectedLivingVillage}
+                          isRequired={true}
+                          isInvalid={!selectedLivingVillage}
+                          error={errors.livingVillage}
+                        /> */}
+
+                        <Text fontSize="11px" color="purpleTone" mt={8}>
+                          Where are you from?
+                        </Text>
+
+                        <InputBoxWithSelect
+                          id="country"
+                          label="Country"
+                          options={platformCountries}
                           optionLabel={({ name }) => name}
                           selectedOption={selectedCountry}
                           setSelectedOption={setSelectedCountry}
                           isRequired={true}
                           isInvalid={!selectedCountry}
                           error={errors.country}
-                        /> */}
+                        />
                         {/* <InputBoxWithSelect
                           id="region"
                           label="Division"
@@ -282,35 +310,7 @@ const AccountToRegister: NextPage = () => {
                           isRequired={true}
                           isInvalid={!selectedVillage}
                           error={errors.village}
-                        />
-
-                        <Text fontSize="11px" color="purpleTone" mt={8}>
-                          Where do you live?
-                        </Text>
-
-                        <InputBoxWithSelect
-                          id="livingCountry"
-                          label="Country"
-                          options={countries}
-                          optionLabel={({ name }) => name}
-                          selectedOption={selectedLivingCountry}
-                          setSelectedOption={setSelectedLivingCountry}
-                          isRequired={true}
-                          isInvalid={!selectedLivingCountry}
-                          error={errors.livingCountry}
-                        />
-
-                        {/* <InputBoxWithSelect
-                          id="livingVillage"
-                          label="Village"
-                          options={villages}
-                          optionLabel={({ name }) => name}
-                          selectedOption={selectedLivingVillage}
-                          setSelectedOption={setSelectedLivingVillage}
-                          isRequired={true}
-                          isInvalid={!selectedLivingVillage}
-                          error={errors.livingVillage}
-                        /> */}
+                        />                        
                       </Box>
 
                       <Box w="full">
