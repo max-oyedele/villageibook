@@ -1,0 +1,199 @@
+import {
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+  SerializedError,
+} from "@reduxjs/toolkit";
+
+import axios from "axios";
+var FormData = require('form-data');
+
+import { Status, Register, ProfileState } from "../types";
+
+import { fetchUserToken } from "helpers/fetch-user-token";
+
+//mock data
+import { users } from "data/village";
+
+export const submitStepOne = createAsyncThunk(
+  "profile/submitStepOne",
+  async (
+    params: {
+      uuid: string;
+      firstName?: string;
+      lastName?: string;
+      email: string;
+      password: string;
+      avatar?: any;
+      livesIn?: string;
+      comesFrom?: string;
+      graduatedAt?: string;
+      university?: string;
+      degree?: string;
+      profession?: string;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const bodyFormData = new FormData();
+      bodyFormData.append("firstName", params.firstName);
+      bodyFormData.append("lastName", params.lastName);
+      bodyFormData.append("avatar", params.avatar);
+      bodyFormData.append("livesIn", "395c3e54-3a87-4cc9-8e40-dd662e593628");
+      bodyFormData.append("comesFrom", "55d2b61d-2cc2-43af-b78e-d7872ade81af");
+      bodyFormData.append("graduatedAt", "9c1985f2-bf4f-4203-ae86-399bbd28970f");
+      bodyFormData.append("university", params.university);
+      bodyFormData.append("degree", params.degree);
+      bodyFormData.append("profession", params.profession);
+
+      const { access_token } = await fetchUserToken({username: params.email, password: params.password});
+      
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/users/${params.uuid}`,
+        bodyFormData,
+        {
+          headers: {
+            authorization: "Bearer " + access_token,
+            "content-type": `multipart/form-data`
+          },
+        }
+      );
+
+      console.log("responsedata", response.data);
+      return response.data;
+    } catch (error) {
+      // return thunkAPI.rejectWithValue({ error: error.message });
+      return thunkAPI.rejectWithValue(error.response.statusText);
+    }
+  }
+);
+
+export const submitStepTwo = createAsyncThunk(
+  "profile/submitStepTwo",
+  async (
+    params: {
+      uuid: string;
+      email: string;
+      password: string;
+      avatar?: any;
+      aboutMe?: string;
+      media?: any;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const bodyFormData = new FormData();
+      bodyFormData.append("avatar", params.avatar);
+      bodyFormData.append("aboutMe", params.aboutMe);
+      bodyFormData.append("media", params.media);
+
+      const { access_token } = await fetchUserToken({username: params.email, password: params.password});
+      
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/users/${params.uuid}`,
+        bodyFormData,
+        {
+          headers: {
+            authorization: "Bearer " + access_token,
+            "content-type": `multipart/form-data`
+          },
+        }
+      );
+
+      console.log("responsedata", response.data);
+      return response.data;
+    } catch (error) {
+      // return thunkAPI.rejectWithValue({ error: error.message });
+      return thunkAPI.rejectWithValue(error.response.statusText);
+    }
+  }
+);
+
+export const fetchProfile = createAsyncThunk(
+  "profile/fetchProfile",
+  async (params: any, thunkAPI) => {
+    try {
+      // const response = await axios.get(`/api/users/${params.uuid}`);
+      // return response.data;
+      return users.find(e=>e.id == params.uuid)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
+/********************************** */
+const initialState: ProfileState = {
+  status: Status.IDLE,
+  // user: null,
+  step: Register.STEP1,
+  user: {
+    id: 584,
+    firstName: "James",
+    lastName: "Smith",
+    img: "/images/avatar.png",
+    email: "test6@gmail.com",
+    password: "123",
+    uuid: "879a1f43-d496-43eb-a658-648071820d31",
+    role: "premium",
+    village: "jammura",
+    graduatedAt: "uk",
+    university: "Oxford",
+    profession: "computer science",
+    degree: "bachelor",
+  },
+  error: null,
+};
+
+export const profileSlice = createSlice({
+  name: "profile",
+  initialState: initialState,
+  reducers: {
+    reset: () => initialState,
+  },
+  extraReducers: (builder) => {
+    builder.addCase(submitStepOne.pending, (state, action) => {
+      state.step = Register.STEP1;
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(submitStepOne.fulfilled, (state, action) => {
+      state.step = Register.STEP2;
+      state.user = action.payload;
+      state.status = Status.IDLE;
+    });
+    builder.addCase(submitStepOne.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(submitStepTwo.pending, (state, action) => {
+      state.step = Register.STEP2;
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(submitStepTwo.fulfilled, (state, action) => {
+      state.step = Register.COMPLETED;
+      state.user = action.payload;
+      state.status = Status.IDLE;
+    });
+    builder.addCase(submitStepTwo.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(fetchProfile.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(fetchProfile.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.status = Status.IDLE;
+    });
+    builder.addCase(fetchProfile.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+  },
+});
+
+export const { reset } = profileSlice.actions;

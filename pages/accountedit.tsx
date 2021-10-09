@@ -56,6 +56,7 @@ import {
   fetchSubDistricts,
   fetchVillages,
 } from "rdx/slices/location";
+import { Register } from "rdx/types";
 
 import Header from "components/Header";
 import Footer from "components/Footer";
@@ -68,7 +69,7 @@ import AccountQuestionBar from "components/AccountQuestionBar";
 import PremiumCard from "components/PremiumCard";
 import Stepper from "components/widgets/Stepper";
 
-import { submit } from "rdx/slices/auth";
+import { submitStepOne, submitStepTwo } from "rdx/slices/profile";
 import {
   Country,
   Region,
@@ -83,28 +84,34 @@ import { platformCountry } from "constants/global";
 const AccountToEdit: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { jwt, user, error } = useSelector(
-    (state: OurStore) => state.authReducer
+  const { step, user, error } = useSelector(
+    (state: OurStore) => state.profileReducer
   );
 
   const [activeStep, setActiveStep] = useState<number>(1);
+
+  useEffect(()=>{
+    if (!error && step === Register.STEP2) setActiveStep(2);
+  }, [error])
+
+  const [avatar, setAvatar] = useState(null);
 
   return (
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <PageTitle title="Account" />
+        {/* <PageTitle title="Account" /> */}
 
-        <HStack spacing={6} align="start">
+        <HStack spacing={6} align="start" mt={8}>
           {breakpointValue === "md" && (
             <Box w="40%">
-              <AvatarUpload />
+              <AvatarUpload setAvatar={setAvatar} />
             </Box>
           )}
           <Box w="full">
             {breakpointValue === "base" && (
               <Box mb={6}>
-                <AvatarUpload />
+                <AvatarUpload setAvatar={setAvatar} />
               </Box>
             )}
             <Flex
@@ -129,25 +136,17 @@ const AccountToEdit: NextPage = () => {
               {activeStep === 1 && (
                 <Step1Form
                   user={user}
-                  error={error}
                   activeStep={activeStep}
                   setActiveStep={setActiveStep}
+                  avatar={avatar}
                 />
               )}
               {activeStep === 2 && (
                 <Step2Form
                   user={user}
-                  error={error}
                   activeStep={activeStep}
                   setActiveStep={setActiveStep}
-                />
-              )}
-              {activeStep === 3 && (
-                <Step3Form
-                  user={user}
-                  error={error}
-                  activeStep={activeStep}
-                  setActiveStep={setActiveStep}
+                  avatar={avatar}
                 />
               )}
             </Flex>
@@ -162,18 +161,18 @@ const AccountToEdit: NextPage = () => {
   );
 };
 
-const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
+const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const dispatch: MyThunkDispatch = useDispatch();
   const { country, countries, regions, districts, subDistricts, villages } =
     useSelector((state: OurStore) => state.locationReducer);
 
-  const [firstname, setFirstname] = useState<string | null>(user.firstName);
-  const [lastname, setLastname] = useState<string | null>(user.lastName);
+  const [firstName, setFirstName] = useState<string | null>(user.firstName);
+  const [lastName, setLastName] = useState<string | null>(user.lastName);
 
   const [selectedDegree, setSelectedDegree] = useState<Degree>(
-    degrees.find((e) => e.value === user.degree)
+    degrees.find((e) => e.name === user.degree)
   );
   const [selectedGraduatedAt, setSelectedGraduatedAt] = useState<Country>(
     countries.find((e) => e.href === user.graduatedAt)
@@ -181,16 +180,17 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
   const [university, setUniversity] = useState<string | null>(user.university);
   const [profession, setProfession] = useState<string | null>(user.profession);
 
-  const [selectedResidenceCountry, setSelectedResidenceCountry] =
+  const [selectedCountry, setSelectedCountry] =
     useState<Country>(platformCountry);
   const [selectedRegion, setSelectedRegion] = useState<Region>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
   const [selectedSubDistrict, setSelectedSubDistrict] =
     useState<SubDistrict>(null);
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
-  const [selectedOriginCountry, setSelectedOriginCountry] =
+  const [selectedLivingCountry, setSelectedLivingCountry] =
     useState<Country>(null);
-    const [selectedOriginVillage, setSelectedOriginVillage] = useState<Village>(null);
+  const [selectedLivingVillage, setSelectedLivingVillage] =
+    useState<Village>(null);
 
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isBySupport, setIsBySupport] = useState(false);
@@ -199,9 +199,9 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
     dispatch(fetchCountries());
   }, []);
   useEffect(() => {
-    setSelectedVillage(null);
-    dispatch(fetchVillages({ country: selectedResidenceCountry }));
-  }, [selectedResidenceCountry]);
+    setSelectedRegion(null);
+    dispatch(fetchRegions({ country: selectedCountry }));
+  }, [selectedCountry]);
   useEffect(() => {
     setSelectedDistrict(null);
     dispatch(fetchDistricts({ region: selectedRegion }));
@@ -213,76 +213,67 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
   useEffect(() => {
     setSelectedVillage(null);
     dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
-  }, [selectedSubDistrict]);
+  }, [selectedSubDistrict]); 
 
   const step1Schema = yup.object({
-    firstname: yup.string().nullable().required("First Name is required."),
-    lastname: yup.string().nullable().required("Last Name is required."),
-    degree: yup.object().nullable(),
+    firstName: yup.string().nullable().required("First Name is required."),
+    lastName: yup.string().nullable().required("Last Name is required."),
     graduatedAt: yup.object().nullable(),
     university: yup.string().nullable(),
     profession: yup.string().nullable(),
-    // residenceCountry: yup
+    degree: yup.object().nullable(),
+    // country: yup
     //   .object()
     //   .nullable()
     //   .required("Country must be selected."),
-    region: yup.object().nullable().required("Region must be selected."),
+    // region: yup.object().nullable().required("Region must be selected."),
     district: yup.object().nullable().required("District must be selected."),
     subDistrict: yup.object().nullable().required("Upazila must be selected."),
     village: yup.object().nullable().required("Village must be selected."),
-    originCountry: yup
+    livingCountry: yup
       .object()
       .nullable()
       .required("Country must be selected."),
-    // originVillage: yup
-    //   .object()
-    //   .nullable()
-    //   .required("Village must be selected."),
+    // livingVillage: yup.object().nullable().required("Village must be selected."),
   });
 
   return (
     <Formik
       initialValues={{
-        firstname: firstname,
-        lastname: lastname,
-        degree: selectedDegree,
+        firstName: firstName,
+        lastName: lastName,
         graduatedAt: selectedGraduatedAt,
         university: university,
         profession: profession,
-        // residenceCountry: selectedResidenceCountry,
-        region: selectedRegion,
+        degree: selectedDegree,
+        // country: selectedCountry,
+        // region: selectedRegion,
         district: selectedDistrict,
         subDistrict: selectedSubDistrict,
         village: selectedVillage,
-        originCountry: selectedOriginCountry,
-        // originVillage: selectedOriginVillage
+        livingCountry: selectedLivingCountry,
+        // livingVillage: selectedLivingVillage,
       }}
       enableReinitialize={true}
       validationSchema={step1Schema}
       onSubmit={async (values, actions) => {
-        const body = {
-          type: "json",
+        const params = {
           uuid: user.uuid,
-          general: { firstname, lastname },
-          education: {
-            degree: selectedDegree,
-            graduatedAt: selectedGraduatedAt,
-            university: university,
-          },
-          residence: {
-            country: selectedResidenceCountry,
-            region: selectedRegion,
-            district: selectedDistrict,
-            subDistrict: selectedSubDistrict,
-            village: selectedVillage,
-          },
-          origin: {
-            country: selectedOriginCountry,
-          },
+          firstName: firstName,
+          lastName: lastName,
+          email: user.email,
+          password: user.password,
+          avatar: avatar,
+          comesFrom: selectedVillage.name,
+          livesIn: selectedLivingCountry.name,
+          graduatedAt: selectedGraduatedAt?.name,
+          university: university,
+          profession: profession,
+          degree: selectedDegree?.name,
         };
+
         actions.setSubmitting(true);
-        await dispatch(submit(body));
-        if (!error && !isBySupport) setActiveStep(activeStep + 1);
+        await dispatch(submitStepOne(params));
         actions.setSubmitting(false);
       }}
     >
@@ -301,39 +292,40 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
           >
             <Box w="full">
               <InputBox
-                id="firstname"
-                label="First name"
-                value={firstname}
-                onChange={setFirstname}
+                id="firstName"
+                label="First Name"
+                value={firstName}
+                onChange={setFirstName}
                 isRequired={true}
-                isInvalid={!!errors.firstname}
-                error={errors.firstname}
+                isInvalid={!!errors.firstName}
+                error={errors.firstName}
               />
               <InputBox
-                id="lastname"
-                label="Last name"
-                value={lastname}
-                onChange={setLastname}
+                id="lastName"
+                label="Last Name"
+                value={lastName}
+                onChange={setLastName}
                 isRequired={true}
-                isInvalid={!!errors.lastname}
-                error={errors.lastname}
+                isInvalid={!!errors.lastName}
+                error={errors.lastName}
               />
 
               <Text fontSize="11px" color="purpleTone" mt={8}>
-                Where do you live?
+                Where are you from in Bangladesh?
               </Text>
+
               {/* <InputBoxWithSelect
                 id="country"
                 label="Country"
                 options={countries}
                 optionLabel={({ name }) => name}
-                selectedOption={selectedResidenceCountry}
-                setSelectedOption={setSelectedResidenceCountry}
+                selectedOption={selectedCountry}
+                setSelectedOption={setSelectedCountry}
                 isRequired={true}
-                isInvalid={!selectedResidenceCountry}
-                error={errors.residenceCountry}
+                isInvalid={!selectedCountry}
+                error={errors.country}
               /> */}
-              <InputBoxWithSelect
+              {/* <InputBoxWithSelect
                 id="region"
                 label="Division"
                 options={regions}
@@ -343,7 +335,7 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
                 isRequired={true}
                 isInvalid={!selectedRegion}
                 error={errors.region}
-              />
+              /> */}
               <InputBoxWithSelect
                 id="district"
                 label="District"
@@ -366,7 +358,6 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
                 isInvalid={!selectedSubDistrict}
                 error={errors.subDistrict}
               />
-
               <InputBoxWithSelect
                 id="village"
                 label="Village"
@@ -380,21 +371,32 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
               />
 
               <Text fontSize="11px" color="purpleTone" mt={8}>
-                Where are you from?
+                Where do you live?
               </Text>
 
               <InputBoxWithSelect
-                id="originCountry"
+                id="livingCountry"
                 label="Country"
                 options={countries}
                 optionLabel={({ name }) => name}
-                selectedOption={selectedOriginCountry}
-                setSelectedOption={setSelectedOriginCountry}
+                selectedOption={selectedLivingCountry}
+                setSelectedOption={setSelectedLivingCountry}
                 isRequired={true}
-                isInvalid={!selectedOriginCountry}
-                error={errors.originCountry}
+                isInvalid={!selectedLivingCountry}
+                error={errors.livingCountry}
               />
-              
+
+              {/* <InputBoxWithSelect
+                id="livingVillage"
+                label="Village"
+                options={villages}
+                optionLabel={({ name }) => name}
+                selectedOption={selectedLivingVillage}
+                setSelectedOption={setSelectedLivingVillage}
+                isRequired={true}
+                isInvalid={!selectedLivingVillage}
+                error={errors.livingVillage}
+              /> */}
             </Box>
 
             <Box w="full">
@@ -438,7 +440,7 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
                 id="degree"
                 label="Degree"
                 options={degrees}
-                optionLabel={({ label }) => label}
+                optionLabel={({ name }) => name}
                 selectedOption={selectedDegree}
                 setSelectedOption={setSelectedDegree}
                 isRequired={false}
@@ -459,11 +461,11 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
 
                   <Box mt={4}>
                     <AccountQuestionBar
-                      question="Do you want admin team write your 2nd and 3rd step of profile?"
+                      question="Do you want admin team write your additional profile?"
                       isTrue={isBySupport}
                       setIsTrue={setIsBySupport}
                       yesTooltip="You will receive email and send back support team your additional data"
-                      noTooltip="You might have to complete other steps yourself"
+                      noTooltip="You might have to complete filling additional data yourself"
                     />
                   </Box>
                 </Box>
@@ -506,10 +508,55 @@ const Step1Form = ({ user, error, activeStep, setActiveStep }) => {
   );
 };
 
-const Step2Form = ({ user, error, activeStep, setActiveStep }) => {
+const Step2Form = ({ user, activeStep, setActiveStep, avatar }) => {
   const dispatch: MyThunkDispatch = useDispatch();
 
   const [aboutMe, setAboutMe] = useState(null);
+
+  const mediaRefs = useRef([]);
+  const [medias, setMedias] = useState(Array(6).fill(null));
+  const [mediaURLs, setMediaURLs] = useState(Array(6).fill(null));
+  const [refresh, setRefresh] = useState(false);
+
+  const [isUploading, setIsUploading] = useState(false);
+
+  const uploadToClient = (event, index) => {
+    if (event.target.files && event.target.files[0]) {
+      const i = event.target.files[0];
+
+      setMedias((medias) => {
+        medias[index] = i;
+        return medias;
+      });
+      setMediaURLs((mediaURLs) => {
+        mediaURLs[index] = URL.createObjectURL(i);
+        return mediaURLs;
+      });
+      setRefresh(!refresh);
+    }
+  };
+
+  const uploadToServer = async () => {
+    setIsUploading(true);
+    Promise.all(
+      medias.map((media) => {
+        const mediaBody = new FormData();
+        mediaBody.append("file", media);
+
+        const body = {
+          type: "media",
+          uuid: user.uuid,          
+          media: mediaBody,
+        };
+
+        // Promise.resolve(dispatch(submitStepTwo(body)));
+        Promise.resolve();
+      })
+    ).then((values) => {
+      console.log(values); // [3, 1337, "foo"]
+      setIsUploading(false);
+    });
+  };
 
   const step2Schema = yup.object({
     aboutMe: yup.string().nullable().required("About me is required."),
@@ -523,14 +570,15 @@ const Step2Form = ({ user, error, activeStep, setActiveStep }) => {
       enableReinitialize={true}
       validationSchema={step2Schema}
       onSubmit={async (values, actions) => {
-        const body = {
-          type: "json",
+        const params = {
           uuid: user.uuid,
+          email: user.email,
+          password: user.password,
+          avatar: avatar,
           aboutMe: aboutMe,
         };
         actions.setSubmitting(true);
-        await dispatch(submit(body));
-        if (!error) setActiveStep(activeStep + 1);
+        await dispatch(submitStepTwo(params));
         actions.setSubmitting(false);
       }}
     >
@@ -552,8 +600,36 @@ const Step2Form = ({ user, error, activeStep, setActiveStep }) => {
             error={errors.aboutMe}
           />
 
+          <Box>
+            <Text fontSize="13px" textDecoration="underline" mt={6} mb={4}>
+              Upload Photos (up to 3)
+            </Text>
+            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
+              {[1, 2, 3].map((e, index) => (
+                <Box w="full" key={e}>
+                  <AspectRatio ratio={4 / 3}>
+                    <Image
+                      src={mediaURLs[index] ?? "/images/default-media.jpg"}
+                      w="full"
+                      fit="cover"
+                      cursor="pointer"
+                      onClick={() => mediaRefs.current[index].click()}
+                    />
+                  </AspectRatio>
+                  <input
+                    ref={(el) => (mediaRefs.current[index] = el)}
+                    type="file"
+                    hidden
+                    accept="image/*"
+                    onChange={(e) => uploadToClient(e, index)}
+                  />
+                </Box>
+              ))}
+            </SimpleGrid>
+          </Box>
+
           <HStack spacing={4} w={{ base: "100%", md: "50%" }} mt={10}>
-            {user.role === "premium" && activeStep >= 2 && (
+            {user.role === "premium" && activeStep == 2 && (
               <Button
                 type="submit"
                 w="50%"
@@ -584,115 +660,6 @@ const Step2Form = ({ user, error, activeStep, setActiveStep }) => {
         </Form>
       )}
     </Formik>
-  );
-};
-
-const Step3Form = ({ user, error, activeStep, setActiveStep }) => {
-  const dispatch: MyThunkDispatch = useDispatch();
-  const [isUploading, setIsUploading] = useState(false);
-
-  const mediaRefs = useRef([]);
-  const [medias, setMedias] = useState(Array(6).fill(null));
-  const [mediaURLs, setMediaURLs] = useState(Array(6).fill(null));
-  const [refresh, setRefresh] = useState(false);
-
-  const uploadToClient = (event, index) => {
-    if (event.target.files && event.target.files[0]) {
-      const i = event.target.files[0];
-
-      setMedias((medias) => {
-        medias[index] = i;
-        return medias;
-      });
-      setMediaURLs((mediaURLs) => {
-        mediaURLs[index] = URL.createObjectURL(i);
-        return mediaURLs;
-      });
-      setRefresh(!refresh);
-    }
-  };
-
-  const uploadToServer = async () => {
-    setIsUploading(true);
-    Promise.all(
-      medias.map((media) => {
-        const mediaBody = new FormData();
-        mediaBody.append("file", media);
-
-        const body = {
-          type: "media",
-          uuid: user.uuid,
-          media: mediaBody,
-        };
-
-        Promise.resolve(dispatch(submit(body)));
-      })
-    ).then((values) => {
-      console.log(values); // [3, 1337, "foo"]
-      setIsUploading(false);
-    });
-  };
-
-  return (
-    <Fragment>
-      <Box>
-        <Text fontSize="13px" textDecoration="underline" mt={6} mb={4}>
-          Upload Photos (up to 3)
-        </Text>
-        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
-          {[1, 2, 3].map((e, index) => (
-            <Box w="full" key={e}>
-              <AspectRatio ratio={4 / 3}>
-                <Image
-                  src={mediaURLs[index] ?? "/images/default-media.jpg"}
-                  w="full"
-                  fit="cover"
-                  cursor="pointer"
-                  onClick={() => mediaRefs.current[index].click()}
-                />
-              </AspectRatio>
-              <input
-                ref={(el) => (mediaRefs.current[index] = el)}
-                type="file"
-                hidden
-                accept="image/*"
-                onChange={(e) => uploadToClient(e, index)}
-              />
-            </Box>
-          ))}
-        </SimpleGrid>
-      </Box>
-
-      <HStack spacing={4} w={{ base: "100%", md: "50%" }} mt={10}>
-        {user.role === "premium" && activeStep >= 2 && (
-          <Button
-            type="submit"
-            w="50%"
-            bgColor="purpleTone"
-            fontSize="12px"
-            fontWeight="400"
-            color="white"
-            _focus={{ boxShadow: "none" }}
-            onClick={() => setActiveStep(activeStep - 1)}
-          >
-            PREV
-          </Button>
-        )}
-
-        <Button
-          w="50%"
-          bgColor="purpleTone"
-          fontSize="12px"
-          fontWeight="400"
-          color="white"
-          _focus={{ boxShadow: "none" }}
-          isLoading={isUploading}
-          onClick={() => uploadToServer()}
-        >
-          SAVE
-        </Button>
-      </HStack>
-    </Fragment>
   );
 };
 

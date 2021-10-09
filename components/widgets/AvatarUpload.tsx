@@ -1,22 +1,10 @@
 import { Fragment, useState, useRef } from "react";
 import { Flex, Text, Divider, Image, Button } from "@chakra-ui/react";
 
-import { useSelector, useDispatch } from "react-redux";
-
-import { submit } from "rdx/slices/auth";
-import { MyThunkDispatch, OurStore } from "rdx/store";
-
-
-const AvatarUpload = () => {
-  const dispatch: MyThunkDispatch = useDispatch();
-  const { jwt, user } = useSelector((state: OurStore) => state.authReducer);
+const AvatarUpload:React.FC<{setAvatar}> = ({setAvatar}) => {
 
   const avatarRef = useRef(null);
-
-  const [avatar, setAvatar] = useState(null);
   const [avatarURL, setAvatarURL] = useState(null);
-
-  const [isUploading, setIsUploading] = useState(false);
 
   const uploadToClient = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -26,21 +14,6 @@ const AvatarUpload = () => {
       setAvatarURL(URL.createObjectURL(i));
     }
   };
-
-  const uploadToServer = async () => {
-    const avatarBody = new FormData();
-    avatarBody.append("file", avatar);
-
-    const body = {
-      type: "avatar",
-      uuid: user.uuid,
-      avatar: avatarBody
-    }
-
-    setIsUploading(true);
-    await dispatch(submit(body));
-    setIsUploading(false);
-  }
 
   return (
     <Fragment>
@@ -68,8 +41,6 @@ const AvatarUpload = () => {
             fit="cover"
             alt=""
             mt={8}
-            cursor="pointer"
-            onClick={()=>avatarRef.current?.click()}
           />
           <input
             ref={avatarRef}
@@ -88,9 +59,7 @@ const AvatarUpload = () => {
             borderRadius="full"
             _focus={{ boxShadow: "none" }}
             mt={8}
-            onClick={() => uploadToServer()}
-            isLoading={isUploading}
-            disabled={!avatarURL}
+            onClick={() => avatarRef.current?.click()}
           >
             UPLOAD AVATAR
           </Button>

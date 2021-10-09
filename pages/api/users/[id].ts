@@ -1,4 +1,4 @@
-import { fetchToken } from "helpers/fetch-token";
+import { fetchClientToken } from "helpers/fetch-client-token";
 import { fetchWrapper } from "helpers/fetch-wrapper";
 
 import { usersRepo } from "helpers/user-repo";
@@ -6,7 +6,7 @@ import { usersRepo } from "helpers/user-repo";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 async function handler(req, res) {
-  const { access_token } = await fetchToken();
+  const { access_token } = await fetchClientToken();
 
   switch (req.method) {
     case "GET":

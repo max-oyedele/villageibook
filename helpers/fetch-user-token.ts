@@ -1,12 +1,14 @@
 import querystring from "querystring";
 import axios from "axios";
 
-export async function fetchToken() {
+export async function fetchUserToken({username, password}) {
   const params = querystring.stringify({
-    grant_type: "client_credentials",
+    grant_type: "password",
     scope: "read write",
     client_id: process.env.NEXT_PUBLIC_OAUTH_CLIENT_ID,
     client_secret: process.env.NEXT_PUBLIC_OAUTH_CLIENT_SECRET,
+    username: username,
+    password: password
   });
 
   try {

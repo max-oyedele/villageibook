@@ -3,46 +3,38 @@ import { Degree, Profession } from "types/schema"
 export const degrees: Degree[] = [
   {
     id: 0,
-    label: "Doctoral",
-    value: "doctor",
+    name: "Doctor",
   },
   {
     id: 1,
-    label: "Master",
-    value: "master",
+    name: "Master",
   },
   {
     id: 2,
-    label: "Graduate",
-    value: "graduate",
+    name: "Graduate",
   },
   {
     id: 3,
-    label: "Bachelor's",
-    value: "bachelor",
+    name: "Bachelor's",
   },
   {
     id: 4,
-    label: "Associate",
-    value: "associate",
+    name: "Associate",
   },
   {
     id: 5,
-    label: "Transfer",
-    value: "transfer",
+    name: "Transfer",
   },
 ];
 
 export const professions: Profession[] = [
   {
     id: 0,
-    label: "Computer Science",
-    value: "computerScience",
+    name: "Computer Science",
   },
   {
     id: 1,
-    label: "Medical Treat",
-    value: "medicalTreat",
+    name: "Medical Treat",
   },
 ];
 

@@ -6,6 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 
 import axios from "axios";
+var FormData = require('form-data');
 import querystring from "querystring";
 
 import { Status, Register, AuthState } from "../types";
@@ -20,6 +21,7 @@ import {
 } from "types/schema";
 
 import { users } from "data/village";
+
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -74,46 +76,9 @@ export const signup = createAsyncThunk(
         lastName: "bbb",
         img: "/images/avatar.png",
         email: "sdf@gmail.com",
+        password: "123",
         uuid: "879a1f43-d496-43eb-a658-648071820d31",
       };
-    } catch (error) {
-      // return thunkAPI.rejectWithValue({ error: error.message });
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
-  }
-);
-
-export const submit = createAsyncThunk(
-  "auth/submit",
-  async (
-    body: {
-      type: string;
-      uuid: string;
-      avatar?: FormData;
-      general?: {
-        firstname: string;
-        lastname: string;
-      };
-      education?: { degree: Degree; graduatedAt: Country; university: string };
-      location?: {
-        country: Country;
-        // region: Region;
-        // district: District;
-        // subDistrict: SubDistrict;
-        village: Village;
-      };
-      aboutMe?: string;
-      media?: FormData;
-    },
-    thunkAPI
-  ) => {
-    try {
-      const response = await axios.post<{ user: any }>(
-        "/api/auth/submit",
-        body
-      );
-      console.log("responsedata", response.data);
-      return response.data;
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });
       return thunkAPI.rejectWithValue(error.response.data);
@@ -144,6 +109,7 @@ const initialState: AuthState = {
     lastName: "Smith",
     img: "/images/avatar.png",
     email: "jsmith@gmail.com",
+    password: "123",
     uuid: "879a1f43-d496-43eb-a658-648071820d31",
     role: "premium",
     village: "jammura",
@@ -183,7 +149,7 @@ export const authSlice = createSlice({
       state.jwt = null;
       state.error = action.payload;
       // throw new Error(action.error.message)
-    });    
+    });
     builder.addCase(signup.pending, (state, action) => {
       state.status = Status.LOADING;
       state.error = null;
@@ -194,19 +160,6 @@ export const authSlice = createSlice({
       state.status = Status.IDLE;
     });
     builder.addCase(signup.rejected, (state, action) => {
-      state.status = Status.IDLE;
-      state.error = action.payload;
-    });
-    builder.addCase(submit.pending, (state, action) => {
-      state.status = Status.LOADING;
-      state.error = null;
-    });
-    builder.addCase(submit.fulfilled, (state, action) => {
-      // state.user = action.payload;
-      state.register = Register.COMPLETED;
-      state.status = Status.IDLE;
-    });
-    builder.addCase(submit.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

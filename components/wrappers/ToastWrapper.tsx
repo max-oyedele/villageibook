@@ -10,6 +10,9 @@ const ToastWrapper = ({children}) => {
   const { jwt, register, error: authError } = useSelector(
     (state: OurStore) => state.authReducer
   );
+  const { error: profileError } = useSelector(
+    (state: OurStore) => state.profileReducer
+  );
 
   const toast = useToast();
   useEffect(() => {
@@ -31,7 +34,16 @@ const ToastWrapper = ({children}) => {
         isClosable: true,
       });
     }
-  }, [jwt, authError]);
+    if (profileError) {
+      toast({
+        title: "Submit Failed!",
+        description: profileError,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  }, [jwt, authError, profileError]);
 
   return children;
 };

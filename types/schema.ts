@@ -4,6 +4,7 @@ export type User = {
   lastName: string;
   img?: string;
   email: string;
+  password: string;
   details?: {
     photos: string[]
   };
@@ -57,12 +58,10 @@ export type Village = {
 
 export type Degree = {
   id: number;
-  label: string;
-  value: string;
+  name: string;
 };
 
 export type Profession = {
   id: number;
-  label: string;
-  value: string;
+  name: string;
 };

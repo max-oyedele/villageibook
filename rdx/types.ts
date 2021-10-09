@@ -27,8 +27,9 @@ export interface AuthState {
   error?: SerializedError;
 }
 
-export interface UserState {
+export interface ProfileState {
   status: Status;
+  step: Register;
   user?: User;
   error: SerializedError;
 }

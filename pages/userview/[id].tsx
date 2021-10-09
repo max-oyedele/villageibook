@@ -21,7 +21,7 @@ import {
 
 import { useSelector, useDispatch } from "react-redux";
 import { MyThunkDispatch, OurStore } from "rdx/store";
-import { fetchUser } from "rdx/slices/user";
+import { fetchProfile } from "rdx/slices/profile";
 
 import Header from "components/Header";
 import Footer from "components/Footer";
@@ -37,12 +37,12 @@ const UserView: NextPage = () => {
 
   const dispatch: MyThunkDispatch = useDispatch();
   const { user, status, error } = useSelector(
-    (state: OurStore) => state.userReducer
+    (state: OurStore) => state.profileReducer
   );
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchUser({ uuid: id }));
+      dispatch(fetchProfile({ uuid: id }));
     }
   }, [id]);
 

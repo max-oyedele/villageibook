@@ -1,5 +1,12 @@
 import axios from "axios";
-import { fetchToken } from "helpers/fetch-token";
+var FormData = require('form-data');
+var formidable = require('formidable');
+const util = require("util");
+const multer = require("multer");
+let multiparty = require('multiparty')
+const Busboy = require('busboy');
+
+import { fetchUserToken } from "helpers/fetch-user-token";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -7,65 +14,25 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // console.log("body", body);
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-  const { access_token } = await fetchToken();
-
+  const { access_token } = await fetchUserToken({username: "test6@gmail.com", password: "123"});
+  
   try {
-    let params =
-      body.type === "avatar"
-        ? body.avatar
-        : body.type === "media"
-        ? body.media
-        : JSON.stringify({
-            degree: body.education.degree.value,
-            university: body.education.university,
-            graduatedAt: body.education.graduatedAt.name,
-          });
-
-    await axios.patch(
+    
+    const response = await axios.patch(
       `${baseUrl}/users/${body.uuid}`,
-      params,
+      body,
       {
         headers: {
           authorization: "Bearer " + access_token,
-          "content-type":
-            (body.type === "avatar" || body.type === "media") ? "multipart/form-data" : "application/json",
+          "content-type": `multipart/form-data`
         },
       }
     );
 
-    if (body.type === "json") {
-      params = JSON.stringify({
-        name: body.education.graduatedAt.name,
-      });
-      await axios.post(
-        `${baseUrl}/users/${body.uuid}/GRADUATED_AT/universities/[name=${body.education.graduatedAt.name}]`,
-        params,
-        {
-          headers: {
-            authorization: "Bearer " + access_token,
-            "content-type": "application/json",
-          },
-        }
-      );
-
-      params = JSON.stringify({
-        name: body.location.village.name,
-      });
-      await axios.post(
-        `${baseUrl}/users/${body.uuid}/LIVES_IN/villages`,
-        params,
-        {
-          headers: {
-            authorization: "Bearer " + access_token,
-            "content-type": "application/json",
-          },
-        }
-      );
-    }
-
-    res.send({ result: "success" }); // Send data from Node.js server response
+    res.send(response.data);
   } catch (error) {
     // Send status (probably 401) so the axios interceptor can run.
+    console.log('errr', error.response)
     res.status(401).json(error.response?.data);
   }
 };

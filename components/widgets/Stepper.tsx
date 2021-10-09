@@ -16,7 +16,7 @@ const Stepper: React.FC<{ activeStep: number }> = ({
   return (
     <Fragment>
       <HStack>
-        {[1, 2, 3].map((e) => (
+        {[1, 2].map((e) => (
           <Fragment key={e}>
             <Circle
               size="24px"
@@ -26,8 +26,8 @@ const Stepper: React.FC<{ activeStep: number }> = ({
               {e}
             </Circle>
             {
-              e !== 3 && 
-              <Divider w={12} />
+              e == 1 && 
+              <Divider w={24} />
             }
           </Fragment>
         ))}
