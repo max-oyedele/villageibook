@@ -15,52 +15,8 @@ export const fetchCountries = createAsyncThunk(
   "location/countries",
   async (_, thunkAPI) => {
     try {
-      // const response = await axios.get('/api/location/countries')
-      // return response.data.countries; // data: {pagination: {}, countries: []}
-      return [
-        {
-          id: 0,
-          name: "Bangladesh",
-          href: "bangladesh",
-          uuid: "000",
-        },
-        {
-          id: 1,
-          name: "Australia",
-          href: "australia",
-          uuid: "001",
-        },
-        {
-          id: 2,
-          name: "Canada",
-          href: "canada",
-          uuid: "002",
-        },
-        {
-          id: 3,
-          name: "Europe/EU",
-          href: "europe",
-          uuid: "003",
-        },
-        {
-          id: 4,
-          name: "UK",
-          href: "uk",
-          uuid: "004",
-        },
-        {
-          id: 5,
-          name: "USA",
-          href: "usa",
-          uuid: "005",
-        },
-        {
-          id: 6,
-          name: "Other",
-          href: "other",
-          uuid: "006",
-        },
-      ];
+      const response = await axios.get('/api/location/countries')
+      return response.data.countries; // data: {pagination: {}, countries: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }

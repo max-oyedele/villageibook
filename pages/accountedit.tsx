@@ -79,7 +79,7 @@ import {
   Degree,
 } from "types/schema";
 import { degrees, professions } from "constants/account";
-import { platformCountry } from "constants/global";
+import { platformCountries } from "constants/global";
 
 const AccountToEdit: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -90,9 +90,9 @@ const AccountToEdit: NextPage = () => {
 
   const [activeStep, setActiveStep] = useState<number>(1);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (!error && step === Register.STEP2) setActiveStep(2);
-  }, [error])
+  }, [error]);
 
   const [avatar, setAvatar] = useState(null);
 
@@ -181,7 +181,7 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
   const [profession, setProfession] = useState<string | null>(user.profession);
 
   const [selectedCountry, setSelectedCountry] =
-    useState<Country>(platformCountry);
+    useState<Country>(platformCountries[0]);
   const [selectedRegion, setSelectedRegion] = useState<Region>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
   const [selectedSubDistrict, setSelectedSubDistrict] =
@@ -213,7 +213,7 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
   useEffect(() => {
     setSelectedVillage(null);
     dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
-  }, [selectedSubDistrict]); 
+  }, [selectedSubDistrict]);
 
   const step1Schema = yup.object({
     firstName: yup.string().nullable().required("First Name is required."),
@@ -222,10 +222,10 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
     university: yup.string().nullable(),
     profession: yup.string().nullable(),
     degree: yup.object().nullable(),
-    // country: yup
-    //   .object()
-    //   .nullable()
-    //   .required("Country must be selected."),
+    country: yup
+      .object()
+      .nullable()
+      .required("Country must be selected."),
     // region: yup.object().nullable().required("Region must be selected."),
     district: yup.object().nullable().required("District must be selected."),
     subDistrict: yup.object().nullable().required("Upazila must be selected."),
@@ -246,7 +246,7 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
         university: university,
         profession: profession,
         degree: selectedDegree,
-        // country: selectedCountry,
+        country: selectedCountry,
         // region: selectedRegion,
         district: selectedDistrict,
         subDistrict: selectedSubDistrict,
@@ -311,20 +311,48 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
               />
 
               <Text fontSize="11px" color="purpleTone" mt={8}>
-                Where are you from in Bangladesh?
+                Where do you live?
               </Text>
 
-              {/* <InputBoxWithSelect
-                id="country"
+              <InputBoxWithSelect
+                id="livingCountry"
                 label="Country"
                 options={countries}
+                optionLabel={({ name }) => name}
+                selectedOption={selectedLivingCountry}
+                setSelectedOption={setSelectedLivingCountry}
+                isRequired={true}
+                isInvalid={!selectedLivingCountry}
+                error={errors.livingCountry}
+              />
+
+              {/* <InputBoxWithSelect
+                id="livingVillage"
+                label="Village"
+                options={villages}
+                optionLabel={({ name }) => name}
+                selectedOption={selectedLivingVillage}
+                setSelectedOption={setSelectedLivingVillage}
+                isRequired={true}
+                isInvalid={!selectedLivingVillage}
+                error={errors.livingVillage}
+              /> */}
+
+              <Text fontSize="11px" color="purpleTone" mt={8}>
+                Where are you from?
+              </Text>
+
+              <InputBoxWithSelect
+                id="country"
+                label="Country"
+                options={platformCountries}
                 optionLabel={({ name }) => name}
                 selectedOption={selectedCountry}
                 setSelectedOption={setSelectedCountry}
                 isRequired={true}
                 isInvalid={!selectedCountry}
                 error={errors.country}
-              /> */}
+              />
               {/* <InputBoxWithSelect
                 id="region"
                 label="Division"
@@ -369,34 +397,6 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
                 isInvalid={!selectedVillage}
                 error={errors.village}
               />
-
-              <Text fontSize="11px" color="purpleTone" mt={8}>
-                Where do you live?
-              </Text>
-
-              <InputBoxWithSelect
-                id="livingCountry"
-                label="Country"
-                options={countries}
-                optionLabel={({ name }) => name}
-                selectedOption={selectedLivingCountry}
-                setSelectedOption={setSelectedLivingCountry}
-                isRequired={true}
-                isInvalid={!selectedLivingCountry}
-                error={errors.livingCountry}
-              />
-
-              {/* <InputBoxWithSelect
-                id="livingVillage"
-                label="Village"
-                options={villages}
-                optionLabel={({ name }) => name}
-                selectedOption={selectedLivingVillage}
-                setSelectedOption={setSelectedLivingVillage}
-                isRequired={true}
-                isInvalid={!selectedLivingVillage}
-                error={errors.livingVillage}
-              /> */}
             </Box>
 
             <Box w="full">
@@ -456,7 +456,7 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
               {user.role === "premium" && (
                 <Box mt={8}>
                   <Text fontSize="11px" color="purpleTone">
-                    For the Premium User
+                    For the Premium Page
                   </Text>
 
                   <Box mt={4}>
@@ -545,7 +545,7 @@ const Step2Form = ({ user, activeStep, setActiveStep, avatar }) => {
 
         const body = {
           type: "media",
-          uuid: user.uuid,          
+          uuid: user.uuid,
           media: mediaBody,
         };
 
@@ -594,6 +594,7 @@ const Step2Form = ({ user, activeStep, setActiveStep, avatar }) => {
           <InputTextArea
             id="aboutme"
             label="About Me"
+            rows={10}
             onChange={setAboutMe}
             isRequired={true}
             isInvalid={!!errors.aboutMe}

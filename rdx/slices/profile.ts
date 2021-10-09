@@ -39,9 +39,9 @@ export const submitStepOne = createAsyncThunk(
       bodyFormData.append("firstName", params.firstName);
       bodyFormData.append("lastName", params.lastName);
       bodyFormData.append("avatar", params.avatar);
-      bodyFormData.append("livesIn", "395c3e54-3a87-4cc9-8e40-dd662e593628");
-      bodyFormData.append("comesFrom", "55d2b61d-2cc2-43af-b78e-d7872ade81af");
-      bodyFormData.append("graduatedAt", "9c1985f2-bf4f-4203-ae86-399bbd28970f");
+      bodyFormData.append("livesIn", params.livesIn);
+      bodyFormData.append("comesFrom", params.comesFrom);
+      bodyFormData.append("graduatedAt", params.graduatedAt);
       bodyFormData.append("university", params.university);
       bodyFormData.append("degree", params.degree);
       bodyFormData.append("profession", params.profession);
