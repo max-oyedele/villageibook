@@ -38,12 +38,10 @@ import RecentUserCard from "components/RecentUserCard";
 import VideoBox from "components/VideoBox";
 
 import useLeftFixed from "hooks/use-left-fixed";
-import useJwt from "hooks/use-jwt";
 
 const Feed: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const { fixed } = useLeftFixed();
-  const { jwt } = useJwt();
 
   const tabsMobile = ["Feed", "Village", "Graduates"];
   const [activeTab, setActiveTab] = useState(tabsMobile[0]);
@@ -58,11 +56,9 @@ const Feed: NextPage = () => {
 
   const dispatch: MyThunkDispatch = useDispatch();
   useEffect(() => {
-    dispatch(updateJWT({ jwt }));
     dispatch(fetchFeedPageData());
     dispatch(fetchVillagePageData({ villageName: user.village }));
-  }, [jwt]);
-
+  }, []);
 
   return (
     <Fragment>

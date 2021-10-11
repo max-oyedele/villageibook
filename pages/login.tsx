@@ -1,8 +1,8 @@
 import React, { Fragment, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import cookieCutter from "cookie-cutter";
 
-import { useSelector, useDispatch } from "react-redux";
 import {
   Formik,
   FormikHelpers,
@@ -34,12 +34,11 @@ import {
 } from "@chakra-ui/react";
 import { BiShow, BiHide } from "react-icons/bi";
 
-import Logo from "components/Logo";
-
+import { useSelector, useDispatch } from "react-redux";
 import { MyThunkDispatch, OurStore } from "rdx/store";
 import { reset, login } from "rdx/slices/auth";
 
-import useJwt from "hooks/use-jwt";
+import Logo from "components/Logo";
 
 const loginSchema = yup.object({
   email: yup
@@ -51,7 +50,6 @@ const loginSchema = yup.object({
 
 const Login = () => {
   const router = useRouter();
-  const { setJwt } = useJwt();
 
   const breakpointValue = useBreakpointValue({
     base: "base",
@@ -67,7 +65,7 @@ const Login = () => {
   }, []);
   useEffect(() => {
     if (jwt) {
-      setJwt(jwt);
+      cookieCutter.set("jwt", JSON.stringify(jwt));
       router.push("/feed");
     }
   }, [jwt]);

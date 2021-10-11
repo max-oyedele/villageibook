@@ -37,7 +37,7 @@ const ToastWrapper = ({children}) => {
     if (userError) {
       toast({
         title: "Submit Failed!",
-        description: userError,
+        description: userError.message,
         status: "error",
         duration: 3000,
         isClosable: true,

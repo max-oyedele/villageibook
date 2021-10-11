@@ -2,20 +2,20 @@ import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
 import {useRouter} from "next/router";
 
-import useJwt from "hooks/use-jwt";
+import cookieCutter from "cookie-cutter";
 
 const Index:NextPage = () => {
   const router = useRouter();
 
-  const {jwt} = useJwt();
   useEffect(()=>{
-    if(jwt){
+    let jwtFromCookie = cookieCutter.get("jwt");
+    if(jwtFromCookie){
       router.push("/feed")
     }
     else{
       router.push("/home")
     }
-  }, [jwt]);
+  }, []);
 
   return (
     <></>

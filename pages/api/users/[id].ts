@@ -6,7 +6,7 @@ import { usersRepo } from "helpers/user-repo";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 async function handler(req, res) {
-  const { access_token } = await fetchClientToken();
+  const { access_token } = req.query || await fetchClientToken();
 
   switch (req.method) {
     case "GET":

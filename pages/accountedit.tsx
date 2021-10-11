@@ -1,7 +1,8 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
 import type { NextPage } from "next";
-
 import { useRouter } from "next/router";
+
+import cookieCutter from "cookie-cutter";
 
 import {
   Container,
@@ -83,20 +84,17 @@ import { platformCountries } from "constants/global";
 
 const AccountToEdit: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-
+  
   const dispatch: MyThunkDispatch = useDispatch();
   const { step, user, error } = useSelector(
     (state: OurStore) => state.userReducer
   );
-  useEffect(() => {
-    // dispatch(fetchMe({uuid: user.uuid, username: user.email, password: user.password}));
-    dispatch(
-      fetchMe({
-        uuid: "879a1f43-d496-43eb-a658-648071820d31",
-        username: "test6@gmail.com",
-        password: "123",
-      })
-    );
+  useEffect(() => {    
+    let jwtFromCookie = cookieCutter.get("jwt");
+    if(jwtFromCookie){
+      jwtFromCookie = JSON.parse(jwtFromCookie);
+      dispatch(fetchMe({ uuid: "879a1f43-d496-43eb-a658-648071820d31", access_token: jwtFromCookie.access_token }));
+    }
   }, []);
 
   const [activeStep, setActiveStep] = useState<number>(1);
@@ -122,7 +120,10 @@ const AccountToEdit: NextPage = () => {
           <Box w="full">
             {breakpointValue === "base" && (
               <Box mb={6}>
-                <AvatarUpload avatarUrl={user?.avatarUrl} setAvatar={setAvatar} />
+                <AvatarUpload
+                  avatarUrl={user?.avatarUrl}
+                  setAvatar={setAvatar}
+                />
               </Box>
             )}
             <Flex
@@ -312,7 +313,7 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
               <InputBox
                 id="firstName"
                 label="First Name"
-                value={firstName??""}
+                value={firstName ?? ""}
                 onChange={setFirstName}
                 isRequired={true}
                 isInvalid={!!errors.firstName}
@@ -321,7 +322,7 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
               <InputBox
                 id="lastName"
                 label="Last Name"
-                value={lastName??""}
+                value={lastName ?? ""}
                 onChange={setLastName}
                 isRequired={true}
                 isInvalid={!!errors.lastName}
@@ -437,7 +438,7 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
               <InputBox
                 id="university"
                 label="University"
-                value={university??""}
+                value={university ?? ""}
                 onChange={setUniversity}
                 isRequired={false}
                 isInvalid={!!errors.university}
@@ -447,7 +448,7 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
               <InputBox
                 id="profession"
                 label="Profession"
-                value={profession??""}
+                value={profession ?? ""}
                 onChange={setProfession}
                 isRequired={false}
                 isInvalid={!!errors.profession}
