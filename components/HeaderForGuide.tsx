@@ -2,7 +2,6 @@ import { Fragment, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import { useCookies } from "react-cookie";
 
 import { BiMenu, BiX } from "react-icons/bi";
 import {
@@ -36,8 +35,7 @@ const HeaderForGuide: React.FC<{ title: string }> = ({ title }) => {
   );
 
   const dispatch = useDispatch();
-  const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
-
+  
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);
 

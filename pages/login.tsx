@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -38,6 +39,8 @@ import Logo from "components/Logo";
 import { MyThunkDispatch, OurStore } from "rdx/store";
 import { reset, login } from "rdx/slices/auth";
 
+import useJwt from "hooks/use-jwt";
+
 const loginSchema = yup.object({
   email: yup
     .string()
@@ -47,16 +50,27 @@ const loginSchema = yup.object({
 });
 
 const Login = () => {
-  const [passwordShow, setPasswordShow] = useState(false);
+  const router = useRouter();
+  const { setJwt } = useJwt();
+
   const breakpointValue = useBreakpointValue({
     base: "base",
     md: "md",
   });
 
+  const [passwordShow, setPasswordShow] = useState(false);
+
   const dispatch: MyThunkDispatch = useDispatch();
-  useEffect(()=>{
+  const { status, jwt } = useSelector((state: OurStore) => state.authReducer);
+  useEffect(() => {
     dispatch(reset());
-  }, [])
+  }, []);
+  useEffect(() => {
+    if (jwt) {
+      setJwt(jwt);
+      router.push("/feed");
+    }
+  }, [jwt]);
 
   return (
     <Fragment>

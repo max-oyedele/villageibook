@@ -2,7 +2,6 @@ import React, { Fragment, useState, useEffect, useRef } from "react";
 import type { NextPage } from "next";
 
 import { useRouter } from "next/router";
-import { useCookies } from "react-cookie";
 
 import {
   Container,

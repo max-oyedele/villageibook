@@ -37,14 +37,13 @@ import VillageGraduatesCountryStatCard from "components/VillageGraduatesCountryS
 import RecentUserCard from "components/RecentUserCard";
 import VideoBox from "components/VideoBox";
 
-import { parseCookie } from "helpers/parse-cookie";
-import UseLeftFixed from "hooks/use-left-fixed";
+import useLeftFixed from "hooks/use-left-fixed";
+import useJwt from "hooks/use-jwt";
 
-const Feed: NextPage<{ jwt: any }> = ({
-  jwt,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Feed: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-  const { fixed } = UseLeftFixed();
+  const { fixed } = useLeftFixed();
+  const { jwt } = useJwt();
 
   const tabsMobile = ["Feed", "Village", "Graduates"];
   const [activeTab, setActiveTab] = useState(tabsMobile[0]);
@@ -56,7 +55,7 @@ const Feed: NextPage<{ jwt: any }> = ({
   const { graduates } = useSelector(
     (state: OurStore) => state.villagePageReducer.pageData
   );
-  
+
   const dispatch: MyThunkDispatch = useDispatch();
   useEffect(() => {
     dispatch(updateJWT({ jwt }));
@@ -263,19 +262,3 @@ const TabsMobile: React.FC<{
 };
 
 export default Feed;
-
-export async function getServerSideProps({ req }) {
-  const { jwt } = parseCookie(req ? req.headers.cookie || "" : document.cookie);
-
-  if (jwt) {
-    return {
-      props: { jwt },
-    };
-  }
-  return {
-    redirect: {
-      destination: "/home",
-      permanent: false,
-    },
-  };
-}

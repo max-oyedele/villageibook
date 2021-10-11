@@ -1,32 +1,25 @@
 import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
-import { InferGetServerSidePropsType } from "next";
+import {useRouter} from "next/router";
 
-import { parseCookie } from "helpers/parse-cookie";
+import useJwt from "hooks/use-jwt";
 
 const Index:NextPage = () => {
+  const router = useRouter();
+
+  const {jwt} = useJwt();
+  useEffect(()=>{
+    if(jwt){
+      router.push("/feed")
+    }
+    else{
+      router.push("/home")
+    }
+  }, [jwt]);
+
   return (
     <></>
   )
 }
 
 export default Index;
-
-export async function getServerSideProps({ req }) {
-  const { jwt } = parseCookie(req ? req.headers.cookie || "" : document.cookie);
-
-  if (jwt) {
-    return {
-      redirect: {
-        destination: "/feed",
-        permanent: false,
-      },
-    };
-  }
-  return {
-    redirect: {
-      destination: "/home",
-      permanent: false,
-    },
-  };
-}

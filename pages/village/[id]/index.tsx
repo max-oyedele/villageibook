@@ -36,7 +36,7 @@ import InstitutionCard from "components/InstitutionCard";
 import VideoCard from "components/VideoCard";
 import FilterCard from "components/FilterCard";
 
-import UseLeftFixed from "hooks/use-left-fixed";
+import useLeftFixed from "hooks/use-left-fixed";
 
 const Posts: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -49,7 +49,7 @@ const Posts: NextPage = () => {
     (state: OurStore) => state.villagePageReducer.pageData
   );
 
-  const { fixed } = UseLeftFixed();
+  const { fixed } = useLeftFixed();
 
   useEffect(() => {
     dispatch(fetchVillagePageData({ villageName: vid }));

@@ -56,6 +56,7 @@ const signupSchema = yup.object({
 });
 
 const Signup = () => {
+  const router = useRouter();
   const [passwordShow, setPasswordShow] = useState(false);
   const [cPasswordShow, setCPasswordShow] = useState(false);
 
@@ -65,10 +66,21 @@ const Signup = () => {
   });
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { status } = useSelector((state: OurStore) => state.authReducer);
-  useEffect(()=>{
+  const { status, register } = useSelector(
+    (state: OurStore) => state.authReducer
+  );
+  useEffect(() => {
     dispatch(reset());
-  }, [])
+  }, []);
+  
+  useEffect(() => {
+    if (register === Register.STEP2) {
+      router.push("/accountregister");
+    }
+    else if (register === Register.COMPLETED) {
+      router.push("/login");
+    }
+  }, [register]);
 
   return (
     <Fragment>

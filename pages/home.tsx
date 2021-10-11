@@ -1,6 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Link from "next/link";
+import cookieCutter from "cookie-cutter"
 
 import {
   Container,
@@ -38,6 +39,10 @@ const Home: NextPage = () => {
   const { country, countries } = useSelector(
     (state: OurStore) => state.locationReducer
   );
+
+  useEffect(()=>{
+    cookieCutter.set("jwt", "", {expires: new Date(0)})
+  }, [])
 
   const heroImgSlideConf = {
     dots: false,

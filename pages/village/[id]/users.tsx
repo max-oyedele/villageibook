@@ -27,7 +27,7 @@ import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
 import UserCard from "components/UserCard";
 
-import UseLeftFixed from "hooks/use-left-fixed";
+import useLeftFixed from "hooks/use-left-fixed";
 
 const Users: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -36,7 +36,7 @@ const Users: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
 
-  const { fixed } = UseLeftFixed();
+  const { fixed } = useLeftFixed();
 
   const dispatch: MyThunkDispatch = useDispatch();
   const { users, articles, personalities, institutions, videos } = useSelector(

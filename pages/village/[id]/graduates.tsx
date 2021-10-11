@@ -34,13 +34,13 @@ import LeftVillageCard from "components/LeftVillageCard";
 import VillageGraduatesCountryStatCard from "components/VillageGraduatesCountryStatCard";
 import PersonalityCard from "components/PersonalityCard";
 
-import UseLeftFixed from "hooks/use-left-fixed";
+import useLeftFixed from "hooks/use-left-fixed";
 
 
 const Graduates: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { fixed } = UseLeftFixed();
+  const { fixed } = useLeftFixed();
 
   const router = useRouter();
   const { query } = router;

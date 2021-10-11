@@ -27,12 +27,12 @@ import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
 import InstitutionCard from "components/InstitutionCard";
 
-import UseLeftFixed from "hooks/use-left-fixed";
+import useLeftFixed from "hooks/use-left-fixed";
 
 const Institutions: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { fixed } = UseLeftFixed();
+  const { fixed } = useLeftFixed();
 
   const router = useRouter();
   const { query } = router;

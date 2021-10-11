@@ -2,7 +2,6 @@ import { Fragment, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import { useCookies } from "react-cookie";
 
 import { BiMenu, BiX } from "react-icons/bi";
 import {
@@ -28,6 +27,8 @@ import { OurStore } from "rdx/store";
 import { reset } from "rdx/slices/auth";
 import { Status, Register } from "rdx/types";
 
+import useJwt from "hooks/use-jwt";
+
 const tabs = [
   {
     id: 0,
@@ -50,13 +51,13 @@ const Header = () => {
   const router = useRouter();
   const { pathname, query:{id} } = router;
 
+  const {setJwt} = useJwt();
+
   const dispatch = useDispatch();
   const {user, status } = useSelector((state: OurStore) => state.authReducer);
 
   const village = id??user.village
   
-  const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
-
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);
 
@@ -72,7 +73,7 @@ const Header = () => {
 
   const logout = () => {
     dispatch(reset());
-    removeCookie("jwt");
+    setJwt(null);
     router.push("/");
   };
 

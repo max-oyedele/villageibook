@@ -137,8 +137,7 @@ export const authSlice = createSlice({
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.jwt = action.payload;      
-      state.status = Status.IDLE;
-      console.log('wersdfsf', JSON.parse(atob(action.payload.access_token.split('.')[1])))
+      state.status = Status.IDLE;      
     });
     builder.addCase(login.rejected, (state, action) => {
       // state = { ...internalInitialState, error: action.error.message }
