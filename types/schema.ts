@@ -2,7 +2,7 @@ export type User = {
   id: number;
   firstName: string;
   lastName: string;
-  img?: string;
+  avatarUrl?: string;
   email: string;
   password: string;
   details?: {

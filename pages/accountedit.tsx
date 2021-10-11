@@ -49,6 +49,7 @@ import * as yup from "yup";
 
 import { useSelector, useDispatch } from "react-redux";
 import { MyThunkDispatch, OurStore } from "rdx/store";
+import { fetchMe } from "rdx/slices/user";
 import {
   fetchCountries,
   fetchRegions,
@@ -84,9 +85,20 @@ import { platformCountries } from "constants/global";
 const AccountToEdit: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
+  const dispatch: MyThunkDispatch = useDispatch();
   const { step, user, error } = useSelector(
     (state: OurStore) => state.userReducer
   );
+  useEffect(() => {
+    // dispatch(fetchMe({uuid: user.uuid, username: user.email, password: user.password}));
+    dispatch(
+      fetchMe({
+        uuid: "879a1f43-d496-43eb-a658-648071820d31",
+        username: "test6@gmail.com",
+        password: "123",
+      })
+    );
+  }, []);
 
   const [activeStep, setActiveStep] = useState<number>(1);
 
@@ -105,13 +117,13 @@ const AccountToEdit: NextPage = () => {
         <HStack spacing={6} align="start" mt={8}>
           {breakpointValue === "md" && (
             <Box w="40%">
-              <AvatarUpload setAvatar={setAvatar} />
+              <AvatarUpload avatarUrl={user?.avatarUrl} setAvatar={setAvatar} />
             </Box>
           )}
           <Box w="full">
             {breakpointValue === "base" && (
               <Box mb={6}>
-                <AvatarUpload setAvatar={setAvatar} />
+                <AvatarUpload avatarUrl={user?.avatarUrl} setAvatar={setAvatar} />
               </Box>
             )}
             <Flex
@@ -126,7 +138,7 @@ const AccountToEdit: NextPage = () => {
                 <Text minW="max-content" fontSize="12px" fontWeight="600">
                   USER DETAILS
                 </Text>
-                {user.role === "premium" && (
+                {user?.role === "premium" && (
                   <Flex w="full" justifyContent="center">
                     <Stepper activeStep={activeStep} />
                   </Flex>
@@ -168,20 +180,17 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
   const { country, countries, regions, districts, subDistricts, villages } =
     useSelector((state: OurStore) => state.locationReducer);
 
-  const [firstName, setFirstName] = useState<string | null>(user.firstName);
-  const [lastName, setLastName] = useState<string | null>(user.lastName);
+  const [firstName, setFirstName] = useState<string | null>(null);
+  const [lastName, setLastName] = useState<string | null>(null);
 
-  const [selectedDegree, setSelectedDegree] = useState<Degree>(
-    degrees.find((e) => e.name === user.degree)
-  );
-  const [selectedGraduatedAt, setSelectedGraduatedAt] = useState<Country>(
-    countries.find((e) => e.href === user.graduatedAt)
-  );
-  const [university, setUniversity] = useState<string | null>(user.university);
-  const [profession, setProfession] = useState<string | null>(user.profession);
+  const [selectedGraduatedAt, setSelectedGraduatedAt] = useState<Country>(null);
+  const [university, setUniversity] = useState<string | null>(null);
+  const [profession, setProfession] = useState<string | null>(null);
+  const [selectedDegree, setSelectedDegree] = useState<Degree | null>(null);
 
-  const [selectedCountry, setSelectedCountry] =
-    useState<Country>(platformCountries[0]);
+  const [selectedCountry, setSelectedCountry] = useState<Country>(
+    platformCountries[0]
+  );
   const [selectedRegion, setSelectedRegion] = useState<Region>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
   const [selectedSubDistrict, setSelectedSubDistrict] =
@@ -194,6 +203,19 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
 
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isBySupport, setIsBySupport] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setFirstName(user.firstName);
+      setLastName(user.lastName);
+      setSelectedGraduatedAt(
+        countries.find((e) => e.href === user?.graduatedAt)
+      );
+      setUniversity(user.university);
+      setProfession(user.profession);
+      setSelectedDegree(degrees.find((e) => e.name === user.degree));
+    }
+  }, [user]);
 
   useEffect(() => {
     dispatch(fetchCountries());
@@ -222,10 +244,7 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
     university: yup.string().nullable(),
     profession: yup.string().nullable(),
     degree: yup.object().nullable(),
-    country: yup
-      .object()
-      .nullable()
-      .required("Country must be selected."),
+    country: yup.object().nullable().required("Country must be selected."),
     // region: yup.object().nullable().required("Region must be selected."),
     district: yup.object().nullable().required("District must be selected."),
     subDistrict: yup.object().nullable().required("Upazila must be selected."),
@@ -294,7 +313,7 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
               <InputBox
                 id="firstName"
                 label="First Name"
-                value={firstName}
+                value={firstName??""}
                 onChange={setFirstName}
                 isRequired={true}
                 isInvalid={!!errors.firstName}
@@ -303,7 +322,7 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
               <InputBox
                 id="lastName"
                 label="Last Name"
-                value={lastName}
+                value={lastName??""}
                 onChange={setLastName}
                 isRequired={true}
                 isInvalid={!!errors.lastName}
@@ -419,7 +438,7 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
               <InputBox
                 id="university"
                 label="University"
-                value={university}
+                value={university??""}
                 onChange={setUniversity}
                 isRequired={false}
                 isInvalid={!!errors.university}
@@ -429,7 +448,7 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
               <InputBox
                 id="profession"
                 label="Profession"
-                value={profession}
+                value={profession??""}
                 onChange={setProfession}
                 isRequired={false}
                 isInvalid={!!errors.profession}
@@ -448,12 +467,12 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
                 error={errors.degree}
               />
 
-              {user.role !== "premium" && (
+              {user?.role !== "premium" && (
                 <Box mt={12}>
                   <PremiumCard />
                 </Box>
               )}
-              {user.role === "premium" && (
+              {user?.role === "premium" && (
                 <Box mt={8}>
                   <Text fontSize="11px" color="purpleTone">
                     For the Premium Page
@@ -474,7 +493,7 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
           </Stack>
 
           <HStack spacing={4} w={{ base: "100%", md: "50%" }} mt={10}>
-            {user.role === "premium" && activeStep >= 2 && (
+            {user?.role === "premium" && activeStep >= 2 && (
               <Button
                 type="submit"
                 w="50%"
@@ -630,7 +649,7 @@ const Step2Form = ({ user, activeStep, setActiveStep, avatar }) => {
           </Box>
 
           <HStack spacing={4} w={{ base: "100%", md: "50%" }} mt={10}>
-            {user.role === "premium" && activeStep == 2 && (
+            {user?.role === "premium" && activeStep == 2 && (
               <Button
                 type="submit"
                 w="50%"

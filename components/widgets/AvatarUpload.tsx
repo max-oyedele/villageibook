@@ -1,10 +1,11 @@
-import { Fragment, useState, useRef } from "react";
+import { Fragment, useState, useRef, useEffect } from "react";
 import { Flex, Text, Divider, Image, Button } from "@chakra-ui/react";
 
-const AvatarUpload:React.FC<{setAvatar}> = ({setAvatar}) => {
+const AvatarUpload:React.FC<{avatarUrl?, setAvatar}> = ({avatarUrl, setAvatar}) => {
 
   const avatarRef = useRef(null);
   const [avatarURL, setAvatarURL] = useState(null);
+  useEffect(()=>{setAvatarURL(avatarUrl)}, [avatarUrl])
 
   const uploadToClient = (event) => {
     if (event.target.files && event.target.files[0]) {

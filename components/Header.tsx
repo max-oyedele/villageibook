@@ -32,7 +32,7 @@ const tabs = [
   {
     id: 0,
     name: "Feed",
-    path: "/",
+    path: "/feed",
   },
   {
     id: 1,
@@ -61,7 +61,7 @@ const Header = () => {
   const [showMenuMobile, setShowMenuMobile] = useState(false);
 
   const [activeTab, setActiveTab] = useState(
-    pathname === "/"
+    pathname === "/feed"
       ? tabs[0]
       : pathname.includes("village")
       ? tabs[1]

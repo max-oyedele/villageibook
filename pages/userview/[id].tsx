@@ -56,7 +56,7 @@ const UserView: NextPage = () => {
           {breakpointValue === "md" && (
             <VStack minW="max-content" pos="fixed" top="80px" spacing={6}>
               <Image
-                src={user?.img}
+                src={user?.avatarUrl}
                 boxSize="200px"
                 loading="eager"
                 fit="cover"
@@ -93,7 +93,7 @@ const UserView: NextPage = () => {
               {breakpointValue === "base" && (
                 <VStack mb={6}>
                   <Image
-                    src={user?.img}
+                    src={user?.avatarUrl}
                     w="full"
                     fit="cover"
                     borderRadius="full"

@@ -28,11 +28,11 @@ const RouterWrapper = ({children}) => {
     }
     if (jwt) {
       setCookie("jwt", JSON.stringify(jwt), {
-        path: "/",
+        path: "/home",
         maxAge: jwt.expires_in, // Expirey time in seconds
         sameSite: true,
       });
-      router.push("/");
+      router.push("/feed");
     }
   }, [jwt, register, error]);
   

@@ -31,7 +31,7 @@ const UserCard: React.FC<{ user: User }> = ({
         <HStack w="full" border="1px" borderColor="gray.300" borderRadius="5px">
           <Box pos="relative" minW="max-content">
             <Image
-              src={user.img}
+              src={user.avatarUrl}
               boxSize="135px"
               alt=""
               fit="cover"
@@ -95,7 +95,7 @@ const UserCard: React.FC<{ user: User }> = ({
         >
           <HStack w="full" pos="relative" spacing={2}>
             <Image
-              src={user.img}
+              src={user.avatarUrl}
               boxSize="44px"
               alt=""
               fit="cover"

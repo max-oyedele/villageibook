@@ -6,7 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 
 import axios from "axios";
-var FormData = require('form-data');
+var FormData = require("form-data");
 
 import { Status, Register, UserState } from "../types";
 
@@ -46,15 +46,18 @@ export const submitStepOne = createAsyncThunk(
       bodyFormData.append("degree", params.degree);
       bodyFormData.append("profession", params.profession);
 
-      const { access_token } = await fetchUserToken({username: params.email, password: params.password});
-      
+      const { access_token } = await fetchUserToken({
+        username: params.email,
+        password: params.password,
+      });
+
       const response = await axios.patch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/users/${params.uuid}`,
         bodyFormData,
         {
           headers: {
             authorization: "Bearer " + access_token,
-            "content-type": `multipart/form-data`
+            "content-type": `multipart/form-data`,
           },
         }
       );
@@ -87,15 +90,18 @@ export const submitStepTwo = createAsyncThunk(
       bodyFormData.append("aboutMe", params.aboutMe);
       bodyFormData.append("media", params.media);
 
-      const { access_token } = await fetchUserToken({username: params.email, password: params.password});
-      
+      const { access_token } = await fetchUserToken({
+        username: params.email,
+        password: params.password,
+      });
+
       const response = await axios.patch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/users/${params.uuid}`,
         bodyFormData,
         {
           headers: {
             authorization: "Bearer " + access_token,
-            "content-type": `multipart/form-data`
+            "content-type": `multipart/form-data`,
           },
         }
       );
@@ -109,40 +115,54 @@ export const submitStepTwo = createAsyncThunk(
   }
 );
 
-export const fetchUser = createAsyncThunk(
-  "user/fetchUser",
+export const fetchMe = createAsyncThunk(
+  "user/fetchMe",
   async (params: any, thunkAPI) => {
     try {
-      // const response = await axios.get(`/api/users/${params.uuid}`);
-      // return response.data;
-      return users.find(e=>e.id == params.uuid)
+      const response = await axios.get(`/api/users/${params.uuid}`, {
+        params: { username: params.username, password: params.password },
+      });
+      return response.data;
+      // return users.find(e=>e.id == params.uuid)
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
 );
 
+export const fetchUser = createAsyncThunk(
+  "user/fetchUser",
+  async (params: any, thunkAPI) => {
+    try {
+      // const response = await axios.get(`/api/users/${params.uuid}`);
+      // return response.data;
+      return users.find((e) => e.id == params.uuid);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
 
 /********************************** */
 const initialState: UserState = {
   status: Status.IDLE,
-  // user: null,
   step: Register.STEP1,
-  user: {
-    id: 584,
-    firstName: "James",
-    lastName: "Smith",
-    img: "/images/avatar.png",
-    email: "test6@gmail.com",
-    password: "123",
-    uuid: "879a1f43-d496-43eb-a658-648071820d31",
-    role: "premium",
-    village: "jammura",
-    graduatedAt: "uk",
-    university: "Oxford",
-    profession: "computer science",
-    degree: "bachelor",
-  },
+  user: null,
+  // user: {
+  //   id: 584,
+  //   firstName: "James",
+  //   lastName: "Smith",
+  //   img: "/images/avatar.png",
+  //   email: "test6@gmail.com",
+  //   password: "123",
+  //   uuid: "879a1f43-d496-43eb-a658-648071820d31",
+  //   role: "premium",
+  //   village: "jammura",
+  //   graduatedAt: "uk",
+  //   university: "Oxford",
+  //   profession: "computer science",
+  //   degree: "bachelor",
+  // },
   error: null,
 };
 
@@ -178,6 +198,18 @@ export const userSlice = createSlice({
       state.status = Status.IDLE;
     });
     builder.addCase(submitStepTwo.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(fetchMe.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(fetchMe.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.status = Status.IDLE;
+    });
+    builder.addCase(fetchMe.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

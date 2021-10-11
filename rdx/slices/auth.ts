@@ -31,7 +31,7 @@ export const login = createAsyncThunk(
   "auth/login",
   async (credentials: { email: string; password: string }, thunkAPI) => {
     try {
-      const response = await axios.post<{ jwt: any }>(
+      const response = await axios.post(
         "/api/auth/login",
         credentials
       );
@@ -74,7 +74,7 @@ export const signup = createAsyncThunk(
         id: 584,
         firstName: "sdf",
         lastName: "bbb",
-        img: "/images/avatar.png",
+        avatarUrl: "/images/avatar.png",
         email: "sdf@gmail.com",
         password: "123",
         uuid: "879a1f43-d496-43eb-a658-648071820d31",
@@ -107,7 +107,7 @@ const initialState: AuthState = {
     id: 584,
     firstName: "James",
     lastName: "Smith",
-    img: "/images/avatar.png",
+    avatarUrl: "/images/avatar.png",
     email: "jsmith@gmail.com",
     password: "123",
     uuid: "879a1f43-d496-43eb-a658-648071820d31",
@@ -136,9 +136,9 @@ export const authSlice = createSlice({
       state.error = null;
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      state.jwt = action.payload;
-      // state.me = action.payload.me
+      state.jwt = action.payload;      
       state.status = Status.IDLE;
+      console.log('wersdfsf', JSON.parse(atob(action.payload.access_token.split('.')[1])))
     });
     builder.addCase(login.rejected, (state, action) => {
       // state = { ...internalInitialState, error: action.error.message }
