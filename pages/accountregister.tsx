@@ -62,7 +62,7 @@ import InputBoxWithSelect from "components/widgets/InputBoxWithSelect";
 import AvatarUpload from "components/widgets/AvatarUpload";
 
 import { Register } from "rdx/types";
-import { submitStepOne } from "rdx/slices/profile";
+import { submitStepOne } from "rdx/slices/user";
 import { Country, Region, District, SubDistrict, Village } from "types/schema";
 
 import { degrees, professions } from "constants/account";

@@ -8,7 +8,7 @@ import {
 import axios from "axios";
 var FormData = require('form-data');
 
-import { Status, Register, ProfileState } from "../types";
+import { Status, Register, UserState } from "../types";
 
 import { fetchUserToken } from "helpers/fetch-user-token";
 
@@ -16,7 +16,7 @@ import { fetchUserToken } from "helpers/fetch-user-token";
 import { users } from "data/village";
 
 export const submitStepOne = createAsyncThunk(
-  "profile/submitStepOne",
+  "user/submitStepOne",
   async (
     params: {
       uuid: string;
@@ -69,7 +69,7 @@ export const submitStepOne = createAsyncThunk(
 );
 
 export const submitStepTwo = createAsyncThunk(
-  "profile/submitStepTwo",
+  "user/submitStepTwo",
   async (
     params: {
       uuid: string;
@@ -109,8 +109,8 @@ export const submitStepTwo = createAsyncThunk(
   }
 );
 
-export const fetchProfile = createAsyncThunk(
-  "profile/fetchProfile",
+export const fetchUser = createAsyncThunk(
+  "user/fetchUser",
   async (params: any, thunkAPI) => {
     try {
       // const response = await axios.get(`/api/users/${params.uuid}`);
@@ -124,7 +124,7 @@ export const fetchProfile = createAsyncThunk(
 
 
 /********************************** */
-const initialState: ProfileState = {
+const initialState: UserState = {
   status: Status.IDLE,
   // user: null,
   step: Register.STEP1,
@@ -146,8 +146,8 @@ const initialState: ProfileState = {
   error: null,
 };
 
-export const profileSlice = createSlice({
-  name: "profile",
+export const userSlice = createSlice({
+  name: "user",
   initialState: initialState,
   reducers: {
     reset: () => initialState,
@@ -181,19 +181,19 @@ export const profileSlice = createSlice({
       state.status = Status.IDLE;
       state.error = action.payload;
     });
-    builder.addCase(fetchProfile.pending, (state, action) => {
+    builder.addCase(fetchUser.pending, (state, action) => {
       state.status = Status.LOADING;
       state.error = null;
     });
-    builder.addCase(fetchProfile.fulfilled, (state, action) => {
+    builder.addCase(fetchUser.fulfilled, (state, action) => {
       state.user = action.payload;
       state.status = Status.IDLE;
     });
-    builder.addCase(fetchProfile.rejected, (state, action) => {
+    builder.addCase(fetchUser.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });
   },
 });
 
-export const { reset } = profileSlice.actions;
+export const { reset } = userSlice.actions;

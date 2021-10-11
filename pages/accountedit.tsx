@@ -69,7 +69,7 @@ import AccountQuestionBar from "components/AccountQuestionBar";
 import PremiumCard from "components/PremiumCard";
 import Stepper from "components/widgets/Stepper";
 
-import { submitStepOne, submitStepTwo } from "rdx/slices/profile";
+import { submitStepOne, submitStepTwo } from "rdx/slices/user";
 import {
   Country,
   Region,
@@ -85,7 +85,7 @@ const AccountToEdit: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const { step, user, error } = useSelector(
-    (state: OurStore) => state.profileReducer
+    (state: OurStore) => state.userReducer
   );
 
   const [activeStep, setActiveStep] = useState<number>(1);

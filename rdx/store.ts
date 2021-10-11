@@ -3,7 +3,7 @@ import { createWrapper, MakeStore, HYDRATE } from "next-redux-wrapper";
 import logger from "redux-logger";
 
 import { authSlice } from "./slices/auth";
-import { profileSlice } from "./slices/profile";
+import { userSlice } from "./slices/user";
 import { locationSlice } from "./slices/location";
 import { feedPageSlice } from "./slices/feedPage";
 import { villagePageSlice } from "./slices/villagePage";
@@ -11,7 +11,7 @@ import { graduatePageSlice } from "./slices/graduatePage";
 
 const combinedReducers = combineReducers({
   authReducer: authSlice.reducer,
-  profileReducer: profileSlice.reducer,
+  userReducer: userSlice.reducer,
   locationReducer: locationSlice.reducer,
   feedPageReducer: feedPageSlice.reducer,
   villagePageReducer: villagePageSlice.reducer,

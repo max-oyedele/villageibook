@@ -32,20 +32,6 @@ async function handler(req, res) {
       return res.status(400).json({ message: error });
     }
   }
-
-  function updateUser() {
-    try {
-    //   usersRepo.update(req.query.id, req.body);
-      return res.status(200).json({});
-    } catch (error) {
-      return res.status(400).json({ message: error });
-    }
-  }
-
-  function deleteUser() {
-    // usersRepo.delete(req.query.id);
-    return res.status(200).json({});
-  }
 }
 
 export default handler;
