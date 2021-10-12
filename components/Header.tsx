@@ -53,7 +53,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const {user, status } = useSelector((state: OurStore) => state.authReducer);
 
-  const village = id??user.village
+  const village = id??user.comesFrom
   
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);

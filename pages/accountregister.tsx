@@ -51,6 +51,7 @@ import {
   fetchDistricts,
   fetchSubDistricts,
   fetchVillages,
+  fetchUniversities
 } from "rdx/slices/location";
 
 import HeaderForGuide from "components/HeaderForGuide";
@@ -62,14 +63,13 @@ import AvatarUpload from "components/widgets/AvatarUpload";
 
 import { Register } from "rdx/types";
 import { submitStepOne } from "rdx/slices/user";
-import { Country, Region, District, SubDistrict, Village } from "types/schema";
+import { Country, Region, District, SubDistrict, Village, University, Degree } from "types/schema";
 
 import { degrees, professions } from "constants/account";
 import { platformCountries } from "constants/global";
 
 const accountSchema = yup.object({
-  graduatedAt: yup.object().nullable(),
-  university: yup.string().nullable(),
+  university: yup.object().nullable(),
   profession: yup.string().nullable(),
   degree: yup.object().nullable(),
   country: yup
@@ -89,10 +89,9 @@ const AccountToRegister: NextPage = () => {
 
   const [avatar, setAvatar] = useState(null);
 
-  const [selectedDegree, setSelectedDegree] = useState(null);
-  const [selectedGraduatedAt, setSelectedGraduatedAt] = useState(null);
-  const [university, setUniversity] = useState<string | null>(null);
+  const [selectedUniversity, setSelectedUniversity] = useState<University | null>(null);
   const [profession, setProfession] = useState<string | null>(null);
+  const [selectedDegree, setSelectedDegree] = useState<Degree | null>(null);
 
   const [selectedCountry, setSelectedCountry] =
     useState<Country>(platformCountries[0]);
@@ -113,7 +112,7 @@ const AccountToRegister: NextPage = () => {
     user,
     error: authError,
   } = useSelector((state: OurStore) => state.authReducer);
-  const { country, countries, regions, districts, subDistricts, villages } =
+  const { countries, regions, districts, subDistricts, villages, universities } =
     useSelector((state: OurStore) => state.locationReducer);
 
   const router = useRouter();
@@ -121,6 +120,8 @@ const AccountToRegister: NextPage = () => {
   
   useEffect(() => {
     dispatch(fetchCountries());
+    dispatch(fetchVillages({}));
+    dispatch(fetchUniversities());
   }, []);
   useEffect(() => {
     setSelectedRegion(null);
@@ -135,8 +136,8 @@ const AccountToRegister: NextPage = () => {
     dispatch(fetchSubDistricts({ district: selectedDistrict }));
   }, [selectedDistrict]);
   useEffect(() => {
-    setSelectedVillage(null);
-    dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
+    // setSelectedVillage(null);
+    // dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
   }, [selectedSubDistrict]);
 
   return (
@@ -147,8 +148,7 @@ const AccountToRegister: NextPage = () => {
 
         <Formik
           initialValues={{
-            graduatedAt: selectedGraduatedAt,
-            university: university,
+            university: selectedUniversity,
             profession: profession,
             degree: selectedDegree,
             country: selectedCountry,
@@ -164,16 +164,12 @@ const AccountToRegister: NextPage = () => {
           onSubmit={async (values, actions) => {
             // console.log({ values, actions });
             const params = {
-              uuid: user.uuid,
               firstName: user.firstName,
               lastName: user.lastName,
-              email: user.email,
-              password: user.password,
               avatar: avatar,
-              comesFrom: selectedVillage.name,
-              livesIn: selectedLivingCountry.name,
-              graduatedAt: selectedGraduatedAt.name,
-              university: university,
+              comesFrom: selectedVillage.uuid,
+              livesIn: selectedLivingCountry.uuid,
+              graduatedAt: selectedUniversity.uuid,
               degree: selectedDegree.name,
               profession: profession,
             };
@@ -319,21 +315,12 @@ const AccountToRegister: NextPage = () => {
                         <InputBoxWithSelect
                           id="graduatedAt"
                           label="Graduated at"
-                          options={countries}
+                          options={universities}
                           optionLabel={({ name }) => name}
-                          selectedOption={selectedGraduatedAt}
-                          setSelectedOption={setSelectedGraduatedAt}
+                          selectedOption={selectedUniversity}
+                          setSelectedOption={setSelectedUniversity}
                           isRequired={false}
-                          isInvalid={!selectedGraduatedAt}
-                          error={errors.graduatedAt}
-                        />
-
-                        <InputBox
-                          id="university"
-                          label="University"
-                          onChange={setUniversity}
-                          isRequired={false}
-                          isInvalid={!!errors.university}
+                          isInvalid={!selectedUniversity}
                           error={errors.university}
                         />
 

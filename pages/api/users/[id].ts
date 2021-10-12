@@ -6,7 +6,7 @@ import { usersRepo } from "helpers/user-repo";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 async function handler(req, res) {
-  const { access_token } = req.query || await fetchClientToken();
+  const { access_token } = req.query || (await fetchClientToken());
 
   switch (req.method) {
     case "GET":
@@ -18,7 +18,6 @@ async function handler(req, res) {
     default:
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
-
   async function getUserById() {
     try {
       let user = fetchWrapper.get(
@@ -36,7 +35,7 @@ async function handler(req, res) {
 
   function updateUser() {
     try {
-    //   usersRepo.update(req.query.id, req.body);
+      //   usersRepo.update(req.query.id, req.body);
       return res.status(200).json({});
     } catch (error) {
       return res.status(400).json({ message: error });

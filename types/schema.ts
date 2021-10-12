@@ -9,9 +9,9 @@ export type User = {
     photos: string[]
   };
   desc?: string;
-  village?: string;
+  comesFrom?: string;
+  livesIn?: string;
   graduatedAt?: string;
-  university?: string;
   profession?: string;
   degree?: string;
   recentAt?: number;
@@ -54,6 +54,13 @@ export type Village = {
   uuid?: string;
   img?: string;
   recentAt?: number;
+}
+
+export type University = {
+  id: number;
+  name: string;
+  href: string;
+  uuid: string;
 }
 
 export type Degree = {

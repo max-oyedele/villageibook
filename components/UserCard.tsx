@@ -57,7 +57,7 @@ const UserCard: React.FC<{ user: User }> = ({
               color="GrayText"
               textTransform="capitalize"
             >
-              {user.village}
+              {user.comesFrom}
             </Text>
             <Text fontSize="18px" color="primary" textTransform="capitalize">
               {user.firstName} {user.lastName}
@@ -121,7 +121,7 @@ const UserCard: React.FC<{ user: User }> = ({
             )}
             <Box>
               <Text fontSize="10px" color="GrayText">
-                {user.village}
+                {user.comesFrom}
               </Text>
               <Text fontSize="13px" fontWeight="600" color="primary">
                 {user.firstName} {user.lastName}

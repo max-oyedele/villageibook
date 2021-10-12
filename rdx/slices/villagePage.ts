@@ -20,8 +20,8 @@ export const fetchVillagePageData = createAsyncThunk(
       // return response.data.villagePageData; // data: {villagePageData: []}
 
       return {
-        users: users.filter((item) => item.village === params.villageName),
-        graduates: users.filter((item)=>item.village === params.villageName && item.university),
+        users: users.filter((item) => item.comesFrom === params.villageName),
+        graduates: users.filter((item)=>item.comesFrom === params.villageName && item.graduatedAt),
         articles: articles.filter((item) => item.village === params.villageName),
         personalities: personalities.filter((item) => item.village === params.villageName),
         institutions: institutions.filter((item) => item.village === params.villageName),

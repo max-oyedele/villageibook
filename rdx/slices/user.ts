@@ -6,6 +6,8 @@ import {
 } from "@reduxjs/toolkit";
 
 import axios from "axios";
+import cookieCutter from "cookie-cutter";
+
 var FormData = require("form-data");
 
 import { Status, Register, UserState } from "../types";
@@ -19,11 +21,8 @@ export const submitStepOne = createAsyncThunk(
   "user/submitStepOne",
   async (
     params: {
-      uuid: string;
       firstName?: string;
       lastName?: string;
-      email: string;
-      password: string;
       avatar?: any;
       livesIn?: string;
       comesFrom?: string;
@@ -42,21 +41,20 @@ export const submitStepOne = createAsyncThunk(
       bodyFormData.append("livesIn", params.livesIn);
       bodyFormData.append("comesFrom", params.comesFrom);
       bodyFormData.append("graduatedAt", params.graduatedAt);
-      bodyFormData.append("university", params.university);
       bodyFormData.append("degree", params.degree);
       bodyFormData.append("profession", params.profession);
 
-      const { access_token } = await fetchUserToken({
-        username: params.email,
-        password: params.password,
-      });
+      let jwtFromCookie = cookieCutter.get("jwt");
+      jwtFromCookie = JSON.parse(jwtFromCookie);
+
+      console.log('werwer', params)
 
       const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/users/${params.uuid}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`,
         bodyFormData,
         {
           headers: {
-            authorization: "Bearer " + access_token,
+            authorization: "Bearer " + jwtFromCookie.access_token,
             "content-type": `multipart/form-data`,
           },
         }
@@ -75,9 +73,6 @@ export const submitStepTwo = createAsyncThunk(
   "user/submitStepTwo",
   async (
     params: {
-      uuid: string;
-      email: string;
-      password: string;
       avatar?: any;
       aboutMe?: string;
       media?: any;
@@ -90,17 +85,15 @@ export const submitStepTwo = createAsyncThunk(
       bodyFormData.append("aboutMe", params.aboutMe);
       bodyFormData.append("media", params.media);
 
-      const { access_token } = await fetchUserToken({
-        username: params.email,
-        password: params.password,
-      });
+      let jwtFromCookie = cookieCutter.get("jwt");
+      jwtFromCookie = JSON.parse(jwtFromCookie);
 
       const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/users/${params.uuid}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`,
         bodyFormData,
         {
           headers: {
-            authorization: "Bearer " + access_token,
+            authorization: "Bearer " + jwtFromCookie.access_token,
             "content-type": `multipart/form-data`,
           },
         }
@@ -132,7 +125,7 @@ export const fetchUser = createAsyncThunk(
   "user/fetchUser",
   async (params: any, thunkAPI) => {
     try {
-      // const response = await axios.get(`/api/users/${params.uuid}`);
+      // const response = await axios.get(`/api/users/${params.uuid}`, { params });
       // return response.data;
       return users.find((e) => e.id == params.uuid);
     } catch (error) {

@@ -63,40 +63,20 @@ export const fetchVillages = createAsyncThunk(
   "location/villages",
   async (params: any, thunkAPI) => {
     try {
-      // const response = await axios.get('/api/location/villages', {params: params})
-      // return response.data.villages; // data: {pagination: {}, villages: []}
-      return [
-        {
-          id: 0,
-          name: "Jammura",
-          href: "jammura",
-          uuid: "000",
-        },
-        {
-          id: 1,
-          name: "Village1",
-          href: "village1",
-          uuid: "001",
-        },
-        {
-          id: 2,
-          name: "Village2",
-          href: "village2",
-          uuid: "002",
-        },
-        {
-          id: 3,
-          name: "Town1",
-          href: "town1",
-          uuid: "003",
-        },
-        {
-          id: 4,
-          name: "Town2",
-          href: "town2",
-          uuid: "004",
-        },
-      ];
+      const response = await axios.get('/api/location/villages', {params: params})
+      return response.data.villages; // data: {pagination: {}, villages: []}
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
+  }
+);
+
+export const fetchUniversities = createAsyncThunk(
+  "location/universities",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get('/api/location/universities')
+      return response.data.universities; // data: {pagination: {}, universities: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
@@ -106,17 +86,12 @@ export const fetchVillages = createAsyncThunk(
 /************************************* */
 const initialState: LocationState = {
   status: Status.IDLE,
-  country: {
-    id: 0,
-    name: "Bangladesh",
-    href: "bangladesh",
-    uuid: "000",
-  },
   countries: [],
   regions: [],
   districts: [],
   subDistricts: [],
   villages: [],
+  universities: [],
   error: null,
 };
 
@@ -196,6 +171,19 @@ export const locationSlice = createSlice({
       // state.error = (
       //   action.payload as { error: string; error_description: string }
       // ).error_description;
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(fetchUniversities.pending, (state) => {
+      state.status = Status.LOADING;
+      state.universities = [];
+      state.error = null;
+    });
+    builder.addCase(fetchUniversities.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.universities = action.payload;
+    });
+    builder.addCase(fetchUniversities.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

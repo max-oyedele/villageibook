@@ -120,8 +120,8 @@ const Graduates: NextPage = () => {
   };
 
   const calcGraduates = (locationItem) => {
-    const totalGraduatesCount = totalGraduates.filter(e=>e.village === locationItem.href).length;
-    const homeGraduatesCount = totalGraduates.filter(e=>e.village === locationItem.href && e.graduatedAt === homeCountry).length;
+    const totalGraduatesCount = totalGraduates.filter(e=>e.comesFrom === locationItem.href).length;
+    const homeGraduatesCount = totalGraduates.filter(e=>e.comesFrom === locationItem.href && e.graduatedAt === homeCountry).length;
     const overseaGraduateCount = totalGraduatesCount - homeGraduatesCount;
     
     //[total=12, inter=6, oversea=6]

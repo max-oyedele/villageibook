@@ -56,6 +56,7 @@ import {
   fetchDistricts,
   fetchSubDistricts,
   fetchVillages,
+  fetchUniversities,
 } from "rdx/slices/location";
 import { Register } from "rdx/types";
 
@@ -77,6 +78,7 @@ import {
   District,
   SubDistrict,
   Village,
+  University,
   Degree,
 } from "types/schema";
 import { degrees, professions } from "constants/account";
@@ -84,18 +86,11 @@ import { platformCountries } from "constants/global";
 
 const AccountToEdit: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-  
+
   const dispatch: MyThunkDispatch = useDispatch();
   const { step, user, error } = useSelector(
     (state: OurStore) => state.userReducer
   );
-  useEffect(() => {    
-    let jwtFromCookie = cookieCutter.get("jwt");
-    if(jwtFromCookie){
-      jwtFromCookie = JSON.parse(jwtFromCookie);
-      dispatch(fetchMe({ uuid: "879a1f43-d496-43eb-a658-648071820d31", access_token: jwtFromCookie.access_token }));
-    }
-  }, []);
 
   const [activeStep, setActiveStep] = useState<number>(1);
 
@@ -147,7 +142,6 @@ const AccountToEdit: NextPage = () => {
               <Divider mt={6} />
               {activeStep === 1 && (
                 <Step1Form
-                  user={user}
                   activeStep={activeStep}
                   setActiveStep={setActiveStep}
                   avatar={avatar}
@@ -155,7 +149,6 @@ const AccountToEdit: NextPage = () => {
               )}
               {activeStep === 2 && (
                 <Step2Form
-                  user={user}
                   activeStep={activeStep}
                   setActiveStep={setActiveStep}
                   avatar={avatar}
@@ -173,18 +166,25 @@ const AccountToEdit: NextPage = () => {
   );
 };
 
-const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
+const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { country, countries, regions, districts, subDistricts, villages } =
-    useSelector((state: OurStore) => state.locationReducer);
+  const { user } = useSelector((state: OurStore) => state.userReducer);
+  const {
+    countries,
+    regions,
+    districts,
+    subDistricts,
+    villages,
+    universities,
+  } = useSelector((state: OurStore) => state.locationReducer);
 
   const [firstName, setFirstName] = useState<string | null>(null);
   const [lastName, setLastName] = useState<string | null>(null);
 
-  const [selectedGraduatedAt, setSelectedGraduatedAt] = useState<Country>(null);
-  const [university, setUniversity] = useState<string | null>(null);
+  const [selectedUniversity, setSelectedUniversity] =
+    useState<University | null>(null);
   const [profession, setProfession] = useState<string | null>(null);
   const [selectedDegree, setSelectedDegree] = useState<Degree | null>(null);
 
@@ -203,23 +203,41 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
 
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isBySupport, setIsBySupport] = useState(false);
+  
+  useEffect(() => {
+    const fetch = async () => {
+      await dispatch(fetchCountries());
+      await dispatch(fetchVillages({}));
+      await dispatch(fetchUniversities());
+
+      let jwtFromCookie = cookieCutter.get("jwt");
+      if (jwtFromCookie) {
+        jwtFromCookie = JSON.parse(jwtFromCookie);
+        dispatch(
+          fetchMe({
+            uuid: "879a1f43-d496-43eb-a658-648071820d31",
+            access_token: jwtFromCookie.access_token,
+          })
+        );
+      }
+    };
+
+    fetch();
+  }, []);
 
   useEffect(() => {
     if (user) {
       setFirstName(user.firstName);
       setLastName(user.lastName);
-      setSelectedGraduatedAt(
-        countries.find((e) => e.href === user?.graduatedAt)
+      setSelectedVillage(villages.find((e) => e.name === user.comesFrom));
+      setSelectedUniversity(
+        universities.find((e) => e.name === user.graduatedAt)
       );
-      setUniversity(user.university);
       setProfession(user.profession);
       setSelectedDegree(degrees.find((e) => e.name === user.degree));
     }
   }, [user]);
 
-  useEffect(() => {
-    dispatch(fetchCountries());
-  }, []);
   useEffect(() => {
     setSelectedRegion(null);
     dispatch(fetchRegions({ country: selectedCountry }));
@@ -233,15 +251,14 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
     dispatch(fetchSubDistricts({ district: selectedDistrict }));
   }, [selectedDistrict]);
   useEffect(() => {
-    setSelectedVillage(null);
-    dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
+    // setSelectedVillage(null);
+    // dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
   }, [selectedSubDistrict]);
 
   const step1Schema = yup.object({
     firstName: yup.string().nullable().required("First Name is required."),
     lastName: yup.string().nullable().required("Last Name is required."),
-    graduatedAt: yup.object().nullable(),
-    university: yup.string().nullable(),
+    university: yup.object().nullable(),
     profession: yup.string().nullable(),
     degree: yup.object().nullable(),
     country: yup.object().nullable().required("Country must be selected."),
@@ -261,8 +278,7 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
       initialValues={{
         firstName: firstName,
         lastName: lastName,
-        graduatedAt: selectedGraduatedAt,
-        university: university,
+        university: selectedUniversity,
         profession: profession,
         degree: selectedDegree,
         country: selectedCountry,
@@ -277,16 +293,12 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
       validationSchema={step1Schema}
       onSubmit={async (values, actions) => {
         const params = {
-          uuid: user.uuid,
           firstName: firstName,
           lastName: lastName,
-          email: user.email,
-          password: user.password,
           avatar: avatar,
-          comesFrom: selectedVillage.name,
-          livesIn: selectedLivingCountry.name,
-          graduatedAt: selectedGraduatedAt?.name,
-          university: university,
+          comesFrom: selectedVillage.uuid,
+          livesIn: selectedLivingCountry.uuid,
+          graduatedAt: selectedUniversity?.uuid,
           profession: profession,
           degree: selectedDegree?.name,
         };
@@ -336,7 +348,7 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
               <InputBoxWithSelect
                 id="livingCountry"
                 label="Country"
-                options={countries}
+                options={villages} //temp
                 optionLabel={({ name }) => name}
                 selectedOption={selectedLivingCountry}
                 setSelectedOption={setSelectedLivingCountry}
@@ -426,22 +438,12 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
               <InputBoxWithSelect
                 id="graduatedAt"
                 label="Graduated at"
-                options={countries}
+                options={universities}
                 optionLabel={({ name }) => name}
-                selectedOption={selectedGraduatedAt}
-                setSelectedOption={setSelectedGraduatedAt}
+                selectedOption={selectedUniversity}
+                setSelectedOption={setSelectedUniversity}
                 isRequired={false}
-                isInvalid={!selectedGraduatedAt}
-                error={errors.graduatedAt}
-              />
-
-              <InputBox
-                id="university"
-                label="University"
-                value={university ?? ""}
-                onChange={setUniversity}
-                isRequired={false}
-                isInvalid={!!errors.university}
+                isInvalid={!selectedUniversity}
                 error={errors.university}
               />
 
@@ -527,9 +529,10 @@ const Step1Form = ({ user, activeStep, setActiveStep, avatar }) => {
   );
 };
 
-const Step2Form = ({ user, activeStep, setActiveStep, avatar }) => {
+const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
   const dispatch: MyThunkDispatch = useDispatch();
-
+  const { user } = useSelector((state: OurStore) => state.userReducer);
+  
   const [aboutMe, setAboutMe] = useState(null);
 
   const mediaRefs = useRef([]);
@@ -564,7 +567,6 @@ const Step2Form = ({ user, activeStep, setActiveStep, avatar }) => {
 
         const body = {
           type: "media",
-          uuid: user.uuid,
           media: mediaBody,
         };
 
@@ -590,9 +592,6 @@ const Step2Form = ({ user, activeStep, setActiveStep, avatar }) => {
       validationSchema={step2Schema}
       onSubmit={async (values, actions) => {
         const params = {
-          uuid: user.uuid,
-          email: user.email,
-          password: user.password,
           avatar: avatar,
           aboutMe: aboutMe,
         };

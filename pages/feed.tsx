@@ -57,7 +57,7 @@ const Feed: NextPage = () => {
   const dispatch: MyThunkDispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchFeedPageData());
-    dispatch(fetchVillagePageData({ villageName: user.village }));
+    dispatch(fetchVillagePageData({ villageName: user.comesFrom }));
   }, []);
 
   return (
@@ -92,11 +92,11 @@ const Feed: NextPage = () => {
                 <Box mt={8}>
                   <LeftVillageDivider
                     title="Go My Village"
-                    village={user.village}
+                    village={user.comesFrom}
                   />
                 </Box>
                 <Box my={6}>
-                  <LeftVillageItems village={user.village} />
+                  <LeftVillageItems village={user.comesFrom} />
                 </Box>
               </Box>
 
@@ -161,7 +161,7 @@ const Feed: NextPage = () => {
             )}
             {breakpointValue === "base" && activeTab === "Village" && (
               <Box>
-                <LeftVillageItems village={user.village} />
+                <LeftVillageItems village={user.comesFrom} />
                 <Text fontSize="20px" mt={12} mb={6}>
                   Recently developed
                 </Text>
@@ -174,7 +174,7 @@ const Feed: NextPage = () => {
             )}
             {breakpointValue === "base" && activeTab === "Graduates" && (
               <Box>
-                <VillageGraduatesCountryStatCard village={user.village} direction="column" />
+                <VillageGraduatesCountryStatCard village={user.comesFrom} direction="column" />
                 <Box mt={12}>
                   <VideoBox
                     video={{
@@ -204,7 +204,7 @@ const Feed: NextPage = () => {
               // pos={fixed ? "fixed" : "static"}
               // top={fixed ? "80px" : 0}
             >
-              <VillageGraduatesCountryStatCard village={user.village} direction="column" />
+              <VillageGraduatesCountryStatCard village={user.comesFrom} direction="column" />
 
               <Text fontSize="24px" mt={12} mb={6}>
                 Recently joined

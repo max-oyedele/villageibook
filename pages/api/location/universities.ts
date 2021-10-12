@@ -8,18 +8,18 @@ async function handler(req, res) {
   
   switch (req.method) {
     case "GET":
-      return getCountries();
+      return getUniversities();
     case "POST":
-      return createCountry();
+      return createUniversity();
     default:
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 
-  async function getCountries() {
+  async function getUniversities() {
     try {
-      let country = fetchWrapper.get(baseUrl + "/countries.json?page=1&size=210", access_token);
+      let university = fetchWrapper.get(baseUrl + "/universities.json?page=1&size=9220", access_token);
       
-      await country.then(response=>{
+      await university.then(response=>{
         res.status(200).json(response);
       })
     } catch (error) {
@@ -27,9 +27,9 @@ async function handler(req, res) {
     }
   }
 
-  async function createCountry() {
+  async function createUniversity() {
     try {
-      fetchWrapper.post(baseUrl + "/countries", req.body);
+      fetchWrapper.post(baseUrl + "/universities", req.body);
       return res.status(200).json({});
     } catch (error) {
       return res.status(400).json({ message: error });

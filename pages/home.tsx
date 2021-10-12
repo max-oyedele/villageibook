@@ -36,7 +36,7 @@ import VideoBox from "components/VideoBox";
 
 const Home: NextPage = () => {
   const dispatch: MyThunkDispatch = useDispatch();
-  const { country, countries } = useSelector(
+  const { countries } = useSelector(
     (state: OurStore) => state.locationReducer
   );
 
