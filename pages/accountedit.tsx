@@ -92,7 +92,7 @@ const AccountToEdit: NextPage = () => {
     (state: OurStore) => state.userReducer
   );
 
-  const [activeStep, setActiveStep] = useState<number>(1);
+  const [activeStep, setActiveStep] = useState<number>(2);
 
   useEffect(() => {
     if (!error && step === Register.STEP2) setActiveStep(2);
@@ -532,7 +532,7 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
 const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
   const dispatch: MyThunkDispatch = useDispatch();
   const { user } = useSelector((state: OurStore) => state.userReducer);
-  
+
   const [aboutMe, setAboutMe] = useState(null);
 
   const mediaRefs = useRef([]);

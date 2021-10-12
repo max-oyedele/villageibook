@@ -28,6 +28,7 @@ const InputBox: React.FC<{
           <Box w="full">
             <Input
               color="GrayText"
+              fontSize={13}
               value={value}
               onChange={(e) => onChange(e.target.value)}
               _focus={{ outline: "none" }}

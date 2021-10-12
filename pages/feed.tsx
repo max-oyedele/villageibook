@@ -88,7 +88,7 @@ const Feed: NextPage = () => {
                 borderColor="gray.200"
                 borderRadius="6px"
               >
-                <CaptionCard name="VillageiBook" />
+                <CaptionCard name="Skillhet" />
                 <Box mt={8}>
                   <LeftVillageDivider
                     title="Go My Village"
