@@ -65,7 +65,8 @@ const Login = () => {
   }, []);
   useEffect(() => {
     if (jwt) {
-      cookieCutter.set("jwt", JSON.stringify(jwt));
+      const expires = new Date(); expires.setSeconds(expires.getSeconds() + jwt.expires_in);
+      cookieCutter.set("jwt", JSON.stringify(jwt), {expires: expires});
       router.push("/feed");
     }
   }, [jwt]);
