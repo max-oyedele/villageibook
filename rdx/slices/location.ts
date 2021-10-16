@@ -83,6 +83,18 @@ export const fetchUniversities = createAsyncThunk(
   }
 );
 
+export const fetchProfessions = createAsyncThunk(
+  "location/professions",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get('/api/location/professions')
+      return response.data.professions; // data: {pagination: {}, professions: []}
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
+  }
+);
+
 /************************************* */
 const initialState: LocationState = {
   status: Status.IDLE,
@@ -92,6 +104,7 @@ const initialState: LocationState = {
   subDistricts: [],
   villages: [],
   universities: [],
+  professions: [],
   error: null,
 };
 
@@ -184,6 +197,19 @@ export const locationSlice = createSlice({
       state.universities = action.payload;
     });
     builder.addCase(fetchUniversities.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(fetchProfessions.pending, (state) => {
+      state.status = Status.LOADING;
+      state.professions = [];
+      state.error = null;
+    });
+    builder.addCase(fetchProfessions.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.professions = action.payload;
+    });
+    builder.addCase(fetchProfessions.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

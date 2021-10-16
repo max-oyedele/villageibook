@@ -2,7 +2,7 @@ import {
   SerializedError,
 } from "@reduxjs/toolkit";
 
-import {User, Country, Region, District, SubDistrict, Village, University} from "types/schema"
+import {User, Country, Region, District, SubDistrict, Village, University, Profession} from "types/schema"
 import {Post, Article, Institution, Video, Personality} from "types/data"
 
 export enum Status {
@@ -41,6 +41,7 @@ export interface LocationState {
   subDistricts: SubDistrict[];
   villages: Village[];
   universities: University[];
+  professions: Profession[];
   error?: SerializedError;
 }
 export interface FeedPageState {

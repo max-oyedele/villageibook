@@ -5,10 +5,10 @@ export type User = {
   avatar?: string;
   email: string;
   password: string;
-  details?: {
-    photos: string[]
-  };
-  desc?: string;
+  photo1?: string;
+  photo2?: string;
+  photo3?: string;
+  about?: string;
   comesFrom?: string;
   livesIn?: string;
   graduatedAt?: string;

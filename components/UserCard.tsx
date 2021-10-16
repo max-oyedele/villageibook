@@ -63,7 +63,7 @@ const UserCard: React.FC<{ user: User }> = ({
               {user.firstName} {user.lastName}
             </Text>
             <Text fontSize="12px" fontWeight="400" color="GrayText" mt={2}>
-              {user.desc}
+              {user.about}
             </Text>
           </Box>
           <Box px={4}>
@@ -129,7 +129,7 @@ const UserCard: React.FC<{ user: User }> = ({
             </Box>
           </HStack>
           <Text fontSize="11px" color="GrayText">
-            {user.desc}
+            {user.about}
           </Text>
 
           <Link href={`/userview/${user.id}`}>

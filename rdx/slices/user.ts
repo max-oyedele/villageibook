@@ -74,7 +74,10 @@ export const submitStepTwo = createAsyncThunk(
   async (
     params: {
       avatar?: any;
-      aboutMe?: string;
+      about: string;
+      photo1?: string;
+      photo2?: string;
+      photo3?: string;
       media?: any;
     },
     thunkAPI
@@ -82,8 +85,10 @@ export const submitStepTwo = createAsyncThunk(
     try {
       const bodyFormData = new FormData();
       bodyFormData.append("avatar", params.avatar);
-      bodyFormData.append("aboutMe", params.aboutMe);
-      bodyFormData.append("media", params.media);
+      bodyFormData.append("about", params.about);
+      bodyFormData.append("photo1", params.photo1);
+      bodyFormData.append("photo2", params.photo3);
+      bodyFormData.append("photo3", params.photo3);
 
       let jwtFromCookie = cookieCutter.get("jwt");
       jwtFromCookie = JSON.parse(jwtFromCookie);

@@ -222,9 +222,9 @@ const UserView: NextPage = () => {
                     My Photos
                   </Text>
                   <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} mt={8}>
-                    {user?.details?.photos.map((photo, index) => (
-                      <Image key={index} src={photo} w="full" alt="" />
-                    ))}
+                    <Image src={user?.photo1} w="full" alt="" />
+                    <Image src={user?.photo2} w="full" alt="" />
+                    <Image src={user?.photo3} w="full" alt="" />
                   </SimpleGrid>
                 </>
               )}

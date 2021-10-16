@@ -26,15 +26,3 @@ export const degrees: Degree[] = [
     name: "Transfer",
   },
 ];
-
-export const professions: Profession[] = [
-  {
-    id: 0,
-    name: "Computer Science",
-  },
-  {
-    id: 1,
-    name: "Medical Treat",
-  },
-];
-

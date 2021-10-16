@@ -93,7 +93,7 @@ const AccountToEdit: NextPage = () => {
     (state: OurStore) => state.userReducer
   );
 
-  const [activeStep, setActiveStep] = useState<number>(2);
+  const [activeStep, setActiveStep] = useState<number>(1);
 
   useEffect(() => {
     if (!error && step === Register.STEP2) setActiveStep(2);
@@ -116,10 +116,7 @@ const AccountToEdit: NextPage = () => {
           <Box w="full">
             {breakpointValue === "base" && (
               <Box mb={6}>
-                <AvatarUpload
-                  avatarUrl={user?.avatar}
-                  setAvatar={setAvatar}
-                />
+                <AvatarUpload avatarUrl={user?.avatar} setAvatar={setAvatar} />
               </Box>
             )}
             <Flex
@@ -134,11 +131,11 @@ const AccountToEdit: NextPage = () => {
                 <Text minW="max-content" fontSize="12px" fontWeight="600">
                   USER DETAILS
                 </Text>
-                {user?.role === "premium" && (
+                {/* {user?.role === "premium" && ( */}
                   <Flex w="full" justifyContent="center">
                     <Stepper activeStep={activeStep} />
                   </Flex>
-                )}
+                {/* )} */}
               </HStack>
               <Divider mt={6} />
               {activeStep === 1 && (
@@ -215,8 +212,7 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
       if (jwtFromCookie) {
         jwtFromCookie = JSON.parse(jwtFromCookie);
         dispatch(fetchMe({ access_token: jwtFromCookie.access_token }));
-      }
-      else {
+      } else {
         //logout()
       }
     };
@@ -468,12 +464,12 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
                 error={errors.degree}
               />
 
-              {user?.role !== "premium" && (
+              {/* {user?.role !== "premium" && (
                 <Box mt={12}>
                   <PremiumCard />
                 </Box>
-              )}
-              {user?.role === "premium" && (
+              )} */}
+              {/* {user?.role === "premium" && ( */}
                 <Box mt={8}>
                   <Text fontSize="11px" color="purpleTone">
                     For the Premium Page
@@ -489,12 +485,13 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
                     />
                   </Box>
                 </Box>
-              )}
+              {/* )} */}
             </Box>
           </Stack>
 
           <HStack spacing={4} w={{ base: "100%", md: "50%" }} mt={10}>
-            {user?.role === "premium" && activeStep >= 2 && (
+            {/* {user?.role === "premium" && activeStep >= 2 && ( */}
+            {activeStep >= 2 && (
               <Button
                 type="submit"
                 w="50%"
@@ -534,9 +531,14 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
 
   const [aboutMe, setAboutMe] = useState(null);
 
-  const mediaRefs = useRef([]);
-  const [medias, setMedias] = useState(Array(6).fill(null));
-  const [mediaURLs, setMediaURLs] = useState(Array(6).fill(null));
+  const photoRefs = useRef([]);
+  const [photo1, setPhoto1] = useState(null);
+  const [photo2, setPhoto2] = useState(null);
+  const [photo3, setPhoto3] = useState(null);
+  const [photoURL1, setPhotoURL1] = useState(user.photo1??null);
+  const [photoURL2, setPhotoURL2] = useState(user.photo2??null);
+  const [photoURL3, setPhotoURL3] = useState(user.photo3??null);
+
   const [refresh, setRefresh] = useState(false);
 
   const [isUploading, setIsUploading] = useState(false);
@@ -545,37 +547,19 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
     if (event.target.files && event.target.files[0]) {
       const i = event.target.files[0];
 
-      setMedias((medias) => {
-        medias[index] = i;
-        return medias;
-      });
-      setMediaURLs((mediaURLs) => {
-        mediaURLs[index] = URL.createObjectURL(i);
-        return mediaURLs;
-      });
+      if (index == 1) {
+        setPhoto1(i);
+        setPhotoURL1(URL.createObjectURL(i));
+      } else if (index == 2) {
+        setPhoto2(i);
+        setPhotoURL2(URL.createObjectURL(i));
+      } else if (index == 3) {
+        setPhoto3(i);
+        setPhotoURL3(URL.createObjectURL(i));
+      }
+
       setRefresh(!refresh);
     }
-  };
-
-  const uploadToServer = async () => {
-    setIsUploading(true);
-    Promise.all(
-      medias.map((media) => {
-        const mediaBody = new FormData();
-        mediaBody.append("file", media);
-
-        const body = {
-          type: "media",
-          media: mediaBody,
-        };
-
-        // Promise.resolve(dispatch(submitStepTwo(body)));
-        Promise.resolve();
-      })
-    ).then((values) => {
-      console.log(values); // [3, 1337, "foo"]
-      setIsUploading(false);
-    });
   };
 
   const step2Schema = yup.object({
@@ -593,6 +577,9 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
         const params = {
           avatar: avatar,
           aboutMe: aboutMe,
+          photo1: photo1,
+          photo2: photo2,
+          photo3: photo3,
         };
         actions.setSubmitting(true);
         await dispatch(submitStepTwo(params));
@@ -623,26 +610,29 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
               Upload Photos (up to 3)
             </Text>
             <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
-              {[1, 2, 3].map((e, index) => (
-                <Box w="full" key={e}>
-                  <AspectRatio ratio={4 / 3}>
-                    <Image
-                      src={mediaURLs[index] ?? "/images/default-media.jpg"}
-                      w="full"
-                      fit="cover"
-                      cursor="pointer"
-                      onClick={() => mediaRefs.current[index].click()}
+              {[1, 2, 3].map((e, index) => {
+                const photoURL = e == 1 ? photoURL1 : e == 2 ? photoURL2 : photoURL3;
+                return (
+                  <Box w="full" key={e}>
+                    <AspectRatio ratio={4 / 3}>
+                      <Image
+                        src={photoURL ?? "/images/default-photo.jpg"}
+                        w="full"
+                        fit="cover"
+                        cursor="pointer"
+                        onClick={() => photoRefs.current[index].click()}
+                      />
+                    </AspectRatio>
+                    <input
+                      ref={(el) => (photoRefs.current[index] = el)}
+                      type="file"
+                      hidden
+                      accept="image/*"
+                      onChange={(e) => uploadToClient(e, index)}
                     />
-                  </AspectRatio>
-                  <input
-                    ref={(el) => (mediaRefs.current[index] = el)}
-                    type="file"
-                    hidden
-                    accept="image/*"
-                    onChange={(e) => uploadToClient(e, index)}
-                  />
-                </Box>
-              ))}
+                  </Box>
+                );
+              })}
             </SimpleGrid>
           </Box>
 
