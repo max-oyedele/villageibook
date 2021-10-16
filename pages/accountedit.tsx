@@ -499,22 +499,6 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
           </Stack>
 
           <HStack spacing={4} w={{ base: "100%", md: "50%" }} mt={10}>
-            {/* {user?.role === "premium" && activeStep >= 2 && ( */}
-            {activeStep >= 2 && (
-              <Button
-                type="submit"
-                w="50%"
-                bgColor="purpleTone"
-                fontSize="12px"
-                fontWeight="400"
-                color="white"
-                _focus={{ boxShadow: "none" }}
-                onClick={() => setActiveStep(activeStep - 1)}
-              >
-                PREV
-              </Button>
-            )}
-
             <Button
               type="submit"
               w="50%"
