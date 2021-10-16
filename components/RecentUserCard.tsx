@@ -23,7 +23,7 @@ const RecentUserCard: React.FC<{ user: User }> = ({ user }) => {
         }}
         onClick={() => router.push(`/userview/${user.id}`)}
       >
-        <Image src={user.avatarUrl} alt="" borderRadius="4px" />
+        <Image src={user.avatar} alt="" borderRadius="4px" />
         <Box w="full" ml={4}>
           <Text fontSize="13px" textTransform="capitalize">
             {user.firstName} {user.lastName}

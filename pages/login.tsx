@@ -37,6 +37,7 @@ import { BiShow, BiHide } from "react-icons/bi";
 import { useSelector, useDispatch } from "react-redux";
 import { MyThunkDispatch, OurStore } from "rdx/store";
 import { reset, login } from "rdx/slices/auth";
+import { fetchMe } from "rdx/slices/user";
 
 import Logo from "components/Logo";
 
@@ -67,6 +68,7 @@ const Login = () => {
     if (jwt) {
       const expires = new Date(); expires.setSeconds(expires.getSeconds() + jwt.expires_in);
       cookieCutter.set("jwt", JSON.stringify(jwt), {expires: expires});
+      dispatch(fetchMe({access_token: jwt.access_token}));
       router.push("/feed");
     }
   }, [jwt]);

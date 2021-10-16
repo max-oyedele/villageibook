@@ -29,7 +29,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
           borderRadius="6px"
         >
           <Link href={`/userview/${post.user.id}`}>
-            <Avatar src={post.user.avatarUrl} size="sm" cursor="pointer" />
+            <Avatar src={post.user.avatar} size="sm" cursor="pointer" />
           </Link>
           <Box w="full" ml={4}>
             <Link href={`/userview/${post.user.id}`}>

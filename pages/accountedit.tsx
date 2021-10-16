@@ -83,6 +83,7 @@ import {
 } from "types/schema";
 import { degrees, professions } from "constants/account";
 import { platformCountries } from "constants/global";
+import { logout } from "rdx/slices/auth";
 
 const AccountToEdit: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -109,14 +110,14 @@ const AccountToEdit: NextPage = () => {
         <HStack spacing={6} align="start" mt={8}>
           {breakpointValue === "md" && (
             <Box w="40%">
-              <AvatarUpload avatarUrl={user?.avatarUrl} setAvatar={setAvatar} />
+              <AvatarUpload avatarUrl={user?.avatar} setAvatar={setAvatar} />
             </Box>
           )}
           <Box w="full">
             {breakpointValue === "base" && (
               <Box mb={6}>
                 <AvatarUpload
-                  avatarUrl={user?.avatarUrl}
+                  avatarUrl={user?.avatar}
                   setAvatar={setAvatar}
                 />
               </Box>
@@ -214,6 +215,9 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
       if (jwtFromCookie) {
         jwtFromCookie = JSON.parse(jwtFromCookie);
         dispatch(fetchMe({ access_token: jwtFromCookie.access_token }));
+      }
+      else {
+        //logout()
       }
     };
 
