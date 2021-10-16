@@ -57,6 +57,7 @@ import {
   fetchSubDistricts,
   fetchVillages,
   fetchUniversities,
+  fetchProfessions,
 } from "rdx/slices/location";
 import { Register } from "rdx/types";
 
@@ -79,9 +80,10 @@ import {
   SubDistrict,
   Village,
   University,
+  Profession,
   Degree,
 } from "types/schema";
-import { degrees, professions } from "constants/account";
+import { degrees } from "constants/account";
 import { platformCountries } from "constants/global";
 import { logout } from "rdx/slices/auth";
 
@@ -94,6 +96,16 @@ const AccountToEdit: NextPage = () => {
   );
 
   const [activeStep, setActiveStep] = useState<number>(1);
+
+  useEffect(() => {
+    let jwtFromCookie = cookieCutter.get("jwt");
+    if (jwtFromCookie) {
+      jwtFromCookie = JSON.parse(jwtFromCookie);
+      dispatch(fetchMe({ access_token: jwtFromCookie.access_token }));
+    } else {
+      //logout()
+    }
+  }, []);
 
   useEffect(() => {
     if (!error && step === Register.STEP2) setActiveStep(2);
@@ -132,9 +144,9 @@ const AccountToEdit: NextPage = () => {
                   USER DETAILS
                 </Text>
                 {/* {user?.role === "premium" && ( */}
-                  <Flex w="full" justifyContent="center">
-                    <Stepper activeStep={activeStep} />
-                  </Flex>
+                <Flex w="full" justifyContent="center">
+                  <Stepper activeStep={activeStep} />
+                </Flex>
                 {/* )} */}
               </HStack>
               <Divider mt={6} />
@@ -176,6 +188,7 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
     subDistricts,
     villages,
     universities,
+    professions,
   } = useSelector((state: OurStore) => state.locationReducer);
 
   const [firstName, setFirstName] = useState<string | null>(null);
@@ -183,7 +196,8 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
 
   const [selectedUniversity, setSelectedUniversity] =
     useState<University | null>(null);
-  const [profession, setProfession] = useState<string | null>(null);
+  const [selectedProfession, setSelectedProfession] =
+    useState<Profession | null>(null);
   const [selectedDegree, setSelectedDegree] = useState<Degree | null>(null);
 
   const [selectedCountry, setSelectedCountry] = useState<Country>(
@@ -207,14 +221,7 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
       await dispatch(fetchCountries());
       await dispatch(fetchVillages({}));
       await dispatch(fetchUniversities());
-
-      let jwtFromCookie = cookieCutter.get("jwt");
-      if (jwtFromCookie) {
-        jwtFromCookie = JSON.parse(jwtFromCookie);
-        dispatch(fetchMe({ access_token: jwtFromCookie.access_token }));
-      } else {
-        //logout()
-      }
+      await dispatch(fetchProfessions());
     };
 
     fetch();
@@ -228,7 +235,7 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
       setSelectedUniversity(
         universities.find((e) => e.name === user.graduatedAt)
       );
-      setProfession(user.profession);
+      setSelectedProfession(professions.find((e) => e.name === user.profession));
       setSelectedDegree(degrees.find((e) => e.name === user.degree));
     }
   }, [user]);
@@ -254,7 +261,7 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
     firstName: yup.string().nullable().required("First Name is required."),
     lastName: yup.string().nullable().required("Last Name is required."),
     university: yup.object().nullable(),
-    profession: yup.string().nullable(),
+    profession: yup.object().nullable(),
     degree: yup.object().nullable(),
     country: yup.object().nullable().required("Country must be selected."),
     // region: yup.object().nullable().required("Region must be selected."),
@@ -274,7 +281,7 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
         firstName: firstName,
         lastName: lastName,
         university: selectedUniversity,
-        profession: profession,
+        profession: selectedProfession,
         degree: selectedDegree,
         country: selectedCountry,
         // region: selectedRegion,
@@ -294,7 +301,7 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
           comesFrom: selectedVillage.uuid,
           livesIn: selectedLivingCountry.uuid,
           graduatedAt: selectedUniversity?.uuid,
-          profession: profession,
+          profession: selectedProfession.uuid,
           degree: selectedDegree?.name,
         };
 
@@ -442,13 +449,15 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
                 error={errors.university}
               />
 
-              <InputBox
+              <InputBoxWithSelect
                 id="profession"
                 label="Profession"
-                value={profession ?? ""}
-                onChange={setProfession}
+                options={professions}
+                optionLabel={({ name }) => name}
+                selectedOption={selectedProfession}
+                setSelectedOption={setSelectedProfession}
                 isRequired={false}
-                isInvalid={!!errors.profession}
+                isInvalid={!selectedProfession}
                 error={errors.profession}
               />
 
@@ -470,21 +479,21 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
                 </Box>
               )} */}
               {/* {user?.role === "premium" && ( */}
-                <Box mt={8}>
-                  <Text fontSize="11px" color="purpleTone">
-                    For the Premium Page
-                  </Text>
+              <Box mt={8}>
+                <Text fontSize="11px" color="purpleTone">
+                  For the Premium Page
+                </Text>
 
-                  <Box mt={4}>
-                    <AccountQuestionBar
-                      question="Do you want admin team write your additional profile?"
-                      isTrue={isBySupport}
-                      setIsTrue={setIsBySupport}
-                      yesTooltip="You will receive email and send back support team your additional data"
-                      noTooltip="You might have to complete filling additional data yourself"
-                    />
-                  </Box>
+                <Box mt={4}>
+                  <AccountQuestionBar
+                    question="Do you want admin team write your additional profile?"
+                    isTrue={isBySupport}
+                    setIsTrue={setIsBySupport}
+                    yesTooltip="You will receive email and send back support team your additional data"
+                    noTooltip="You might have to complete filling additional data yourself"
+                  />
                 </Box>
+              </Box>
               {/* )} */}
             </Box>
           </Stack>
@@ -529,15 +538,15 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
   const dispatch: MyThunkDispatch = useDispatch();
   const { user } = useSelector((state: OurStore) => state.userReducer);
 
-  const [aboutMe, setAboutMe] = useState(null);
+  const [about, setAbout] = useState(null);
 
   const photoRefs = useRef([]);
   const [photo1, setPhoto1] = useState(null);
   const [photo2, setPhoto2] = useState(null);
   const [photo3, setPhoto3] = useState(null);
-  const [photoURL1, setPhotoURL1] = useState(user.photo1??null);
-  const [photoURL2, setPhotoURL2] = useState(user.photo2??null);
-  const [photoURL3, setPhotoURL3] = useState(user.photo3??null);
+  const [photoURL1, setPhotoURL1] = useState(user.photo1 ?? null);
+  const [photoURL2, setPhotoURL2] = useState(user.photo2 ?? null);
+  const [photoURL3, setPhotoURL3] = useState(user.photo3 ?? null);
 
   const [refresh, setRefresh] = useState(false);
 
@@ -563,20 +572,20 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
   };
 
   const step2Schema = yup.object({
-    aboutMe: yup.string().nullable().required("About me is required."),
+    about: yup.string().nullable().required("About me is required."),
   });
 
   return (
     <Formik
       initialValues={{
-        aboutMe: aboutMe,
+        about: about,
       }}
       enableReinitialize={true}
       validationSchema={step2Schema}
       onSubmit={async (values, actions) => {
         const params = {
           avatar: avatar,
-          aboutMe: aboutMe,
+          about: about,
           photo1: photo1,
           photo2: photo2,
           photo3: photo3,
@@ -596,13 +605,13 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
       }) => (
         <Form noValidate>
           <InputTextArea
-            id="aboutme"
+            id="about"
             label="About Me"
             rows={10}
-            onChange={setAboutMe}
+            onChange={setAbout}
             isRequired={true}
-            isInvalid={!!errors.aboutMe}
-            error={errors.aboutMe}
+            isInvalid={!!errors.about}
+            error={errors.about}
           />
 
           <Box>
@@ -611,7 +620,8 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
             </Text>
             <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
               {[1, 2, 3].map((e, index) => {
-                const photoURL = e == 1 ? photoURL1 : e == 2 ? photoURL2 : photoURL3;
+                const photoURL =
+                  e == 1 ? photoURL1 : e == 2 ? photoURL2 : photoURL3;
                 return (
                   <Box w="full" key={e}>
                     <AspectRatio ratio={4 / 3}>

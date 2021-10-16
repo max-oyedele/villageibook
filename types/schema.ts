@@ -71,4 +71,6 @@ export type Degree = {
 export type Profession = {
   id: number;
   name: string;
+  href: string;
+  uuid: string;
 };
