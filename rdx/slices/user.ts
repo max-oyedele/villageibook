@@ -112,7 +112,7 @@ export const fetchMe = createAsyncThunk(
   "user/fetchMe",
   async (params: any, thunkAPI) => {
     try {
-      const response = await axios.get(`/api/users/${params.uuid}`, { params });
+      const response = await axios.get(`/api/users/me`, { params });
       return response.data;
       // return users.find(e=>e.id == params.uuid)
     } catch (error) {

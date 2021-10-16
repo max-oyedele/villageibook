@@ -203,7 +203,7 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
 
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isBySupport, setIsBySupport] = useState(false);
-  
+
   useEffect(() => {
     const fetch = async () => {
       await dispatch(fetchCountries());
@@ -213,12 +213,7 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
       let jwtFromCookie = cookieCutter.get("jwt");
       if (jwtFromCookie) {
         jwtFromCookie = JSON.parse(jwtFromCookie);
-        dispatch(
-          fetchMe({
-            uuid: "879a1f43-d496-43eb-a658-648071820d31",
-            access_token: jwtFromCookie.access_token,
-          })
-        );
+        dispatch(fetchMe({ access_token: jwtFromCookie.access_token }));
       }
     };
 
