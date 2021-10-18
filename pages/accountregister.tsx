@@ -16,16 +16,12 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import { useSelector, useDispatch } from "react-redux";
 import {
   Formik,
   Form,
 } from "formik";
 import * as yup from "yup";
 
-import { MyThunkDispatch, OurStore } from "rdx/store";
-
-import { submitStepOne } from "rdx/slices/user";
 import {
   Country,
   Region,
@@ -44,6 +40,7 @@ import InputBoxWithSelect from "components/widgets/InputBoxWithSelect";
 import AvatarUpload from "components/widgets/AvatarUpload";
 
 import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 
 import { degrees } from "constants/account";
 import { platformCountries } from "constants/global";
@@ -67,6 +64,8 @@ const AccountToRegister: NextPage = () => {
     fetchCommonData,
     fetchMeData,
   } = useFetchData();
+
+  const {submitStepOneData} = useActionDispatch();
 
   useEffect(() => {
     fetchMeData();
@@ -92,8 +91,6 @@ const AccountToRegister: NextPage = () => {
     useState<Country>(null);
   const [selectedLivingVillage, setSelectedLivingVillage] =
     useState<Village>(null);
-
-  const dispatch: MyThunkDispatch = useDispatch();
 
   const router = useRouter();
 
@@ -173,7 +170,7 @@ const AccountToRegister: NextPage = () => {
             };
 
             actions.setSubmitting(true);
-            await dispatch(submitStepOne(params));
+            await submitStepOneData(params);
             actions.setSubmitting(false);
           }}
         >
@@ -358,6 +355,7 @@ const AccountToRegister: NextPage = () => {
                       color="white"
                       _focus={{ boxShadow: "none" }}
                       isLoading={isSubmitting}
+                      disabled={isSubmitting}
                     >
                       SAVE
                     </Button>

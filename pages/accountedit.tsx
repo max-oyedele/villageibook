@@ -20,9 +20,6 @@ import {
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 
-import { useSelector, useDispatch } from "react-redux";
-import { MyThunkDispatch, OurStore } from "rdx/store";
-
 import { Step } from "rdx/types";
 
 import useFetchData from "hooks/use-fetch-data";
@@ -38,7 +35,6 @@ import AccountQuestionBar from "components/AccountQuestionBar";
 import PremiumCard from "components/PremiumCard";
 import Stepper from "components/widgets/Stepper";
 
-import { submitStepOne, submitStepTwo } from "rdx/slices/user";
 import {
   Country,
   Region,
@@ -51,6 +47,7 @@ import {
 } from "types/schema";
 import { degrees } from "constants/account";
 import { platformCountries } from "constants/global";
+import useActionDispatch from "hooks/use-action-dispatch";
 
 const AccountToEdit: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -129,7 +126,6 @@ const AccountToEdit: NextPage = () => {
 const Step1Form = ({ avatar }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const dispatch: MyThunkDispatch = useDispatch();
   const {
     me,
     districts,
@@ -142,8 +138,10 @@ const Step1Form = ({ avatar }) => {
     fetchDistrictsData,
     fetchSubDistrictsData,
     fetchVillagesData,
-    fetchMeData
+    fetchMeData,
   } = useFetchData();
+
+  const { submitStepOneData } = useActionDispatch();
 
   const [firstName, setFirstName] = useState<string | null>(null);
   const [lastName, setLastName] = useState<string | null>(null);
@@ -251,7 +249,7 @@ const Step1Form = ({ avatar }) => {
         };
 
         actions.setSubmitting(true);
-        await dispatch(submitStepOne(params));
+        await submitStepOneData(params);
         actions.setSubmitting(false);
       }}
     >
@@ -453,6 +451,7 @@ const Step1Form = ({ avatar }) => {
               color="white"
               _focus={{ boxShadow: "none" }}
               isLoading={isSubmitting}
+              disabled={isSubmitting}
             >
               SAVE
             </Button>
@@ -464,8 +463,8 @@ const Step1Form = ({ avatar }) => {
 };
 
 const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
-  const dispatch: MyThunkDispatch = useDispatch();
   const { me } = useFetchData();
+  const { submitStepTwoData } = useActionDispatch();
 
   const [about, setAbout] = useState(null);
 
@@ -520,7 +519,7 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
           photo3,
         };
         actions.setSubmitting(true);
-        await dispatch(submitStepTwo(params));
+        await submitStepTwoData(params);
         actions.setSubmitting(false);
       }}
     >
@@ -600,6 +599,7 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
               color="white"
               _focus={{ boxShadow: "none" }}
               isLoading={isSubmitting}
+              disabled={isSubmitting}
             >
               SAVE
             </Button>
