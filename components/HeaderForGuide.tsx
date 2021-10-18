@@ -1,7 +1,6 @@
-import { Fragment, useState, useEffect } from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
+import { Fragment, useState } from "react";
+
+import { useSelector } from "react-redux";
 
 import { BiMenu, BiX } from "react-icons/bi";
 import {
@@ -10,12 +9,6 @@ import {
   Text,
   useBreakpointValue,
   IconButton,
-  HStack,
-  VStack,
-  StackDivider,
-  Avatar,
-  Image,
-  Button,
   Progress,
 } from "@chakra-ui/react";
 
@@ -23,19 +16,11 @@ import Logo from "components/Logo";
 import SocialLinkBar from "components/SocialLinkBar";
 
 import { OurStore } from "rdx/store";
-import { reset } from "rdx/slices/auth";
-import { Status, Register } from "rdx/types";
+import { Status } from "rdx/types";
 
 const HeaderForGuide: React.FC<{ title: string }> = ({ title }) => {
-  const router = useRouter();
-  const { pathname } = router;
+  const { status } = useSelector((state: OurStore) => state.authReducer);
 
-  const { status, register, jwt, user, error } = useSelector(
-    (state: OurStore) => state.authReducer
-  );
-
-  const dispatch = useDispatch();
-  
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);
 
@@ -96,7 +81,6 @@ const HeaderForGuide: React.FC<{ title: string }> = ({ title }) => {
               bgColor="white"
               zIndex="10"
             >
-
               <Box mt={16}>
                 <SocialLinkBar />
               </Box>

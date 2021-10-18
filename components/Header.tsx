@@ -2,7 +2,6 @@ import { Fragment, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import cookieCutter from "cookie-cutter";
 
 import { BiMenu, BiX } from "react-icons/bi";
 import {
@@ -15,18 +14,17 @@ import {
   HStack,
   VStack,
   StackDivider,
-  Avatar,
-  Image,
-  Button,
   Progress,
 } from "@chakra-ui/react";
 
 import Logo from "components/Logo";
 import SocialLinkBar from "components/SocialLinkBar";
 
+import useToken from "hooks/use-token";
+
 import { OurStore } from "rdx/store";
 import { reset } from "rdx/slices/auth";
-import { Status, Register } from "rdx/types";
+import { Status } from "rdx/types";
 
 const tabs = [
   {
@@ -51,9 +49,9 @@ const Header = () => {
   const { pathname, query:{id} } = router;
 
   const dispatch = useDispatch();
-  const {user, status } = useSelector((state: OurStore) => state.authReducer);
+  const {status } = useSelector((state: OurStore) => state.authReducer);
 
-  const village = id??user.comesFrom
+  const village = id
   
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);
@@ -68,9 +66,11 @@ const Header = () => {
       : null
   );
 
+  const {removeToken} = useToken();
+
   const logout = () => {
     dispatch(reset());
-    cookieCutter.set("jwt", "", {expires: new Date(0)});
+    removeToken();
     router.push("/");
   };
 
