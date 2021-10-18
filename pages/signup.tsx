@@ -34,13 +34,12 @@ import {
 } from "@chakra-ui/react";
 import { BiShow, BiHide } from "react-icons/bi";
 
-import { useSelector, useDispatch } from "react-redux";
-import { MyThunkDispatch, OurStore } from "rdx/store";
-import { signup, reset } from "rdx/slices/auth";
-import { Status, Step } from "rdx/types";
+import { Status } from "rdx/types";
 
 import Logo from "components/Logo";
+
 import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 
 const Signup = () => {
   const router = useRouter();
@@ -52,11 +51,11 @@ const Signup = () => {
     md: "md",
   });
 
-  const dispatch: MyThunkDispatch = useDispatch();
   const { authMe, authStatus } = useFetchData();
+  const { authReset, doSignup } = useActionDispatch();
 
   useEffect(() => {
-    dispatch(reset());
+    authReset();
   }, []);
   
   useEffect(() => {
@@ -138,7 +137,7 @@ const Signup = () => {
               onSubmit={async (values, actions) => {
                 // console.log({ values, actions });
                 actions.setSubmitting(true);
-                await dispatch(signup(values));
+                await doSignup(values);
                 actions.setSubmitting(false);
               }}
             >
@@ -274,6 +273,7 @@ const Signup = () => {
                     w="full"
                     mt={8}
                     isLoading={isSubmitting}
+                    disabled={isSubmitting}
                   >
                     SIGNUP
                   </Button>

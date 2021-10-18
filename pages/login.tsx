@@ -25,12 +25,9 @@ import {
 } from "@chakra-ui/react";
 import { BiShow, BiHide } from "react-icons/bi";
 
-import { useSelector, useDispatch } from "react-redux";
-import { MyThunkDispatch, OurStore } from "rdx/store";
-import { reset, login } from "rdx/slices/auth";
-
 import useToken from "hooks/use-token";
 import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 
 import Logo from "components/Logo";
 import { Status } from "rdx/types";
@@ -44,8 +41,8 @@ const Login = () => {
     md: "md",
   });
 
-  const dispatch: MyThunkDispatch = useDispatch();
-  const { status, jwt } = useSelector((state: OurStore) => state.authReducer);
+  const { authStatus, jwt } = useFetchData();
+  const { authReset, doLogin } = useActionDispatch();
 
   const { setToken } = useToken();
   const { me, fetchCommonData, fetchMeData } = useFetchData();
@@ -53,7 +50,7 @@ const Login = () => {
   const [passwordShow, setPasswordShow] = useState(false);
 
   useEffect(() => {
-    dispatch(reset());
+    authReset();
   }, []);
 
   useEffect(() => {
@@ -123,7 +120,7 @@ const Login = () => {
               onSubmit={async (values, actions) => {
                 // console.log({ values, actions });
                 actions.setSubmitting(true);
-                await dispatch(login(values));
+                await doLogin(values);
                 actions.setSubmitting(false);
               }}
             >
@@ -193,7 +190,8 @@ const Login = () => {
                     _focus={{ boxShadow: "none" }}
                     w="full"
                     mt={8}
-                    isLoading={isSubmitting || status === Status.LOADING}
+                    isLoading={isSubmitting || authStatus === Status.LOADING}
+                    disabled={isSubmitting || authStatus === Status.LOADING}
                   >
                     LOGIN
                   </Button>
