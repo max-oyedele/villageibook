@@ -15,65 +15,64 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { MyThunkDispatch, OurStore } from "rdx/store";
 
-
 const villageItems = [
   {
     id: 0,
     name: "My Page",
     value: "users",
     img: "/icons/village-mypage.svg",
-    path: 'users',
-    activeBgColor: '#EFFBFA',
-    badgeColor: '#36CFD1'
+    path: "users",
+    activeBgColor: "#EFFBFA",
+    badgeColor: "#36CFD1",
   },
   {
     id: 1,
     name: "Graduates",
     value: "graduates",
     img: "/icons/village-graduate.svg",
-    path: 'graduates',
-    activeBgColor: '#AD5BFF22',
-    badgeColor: '#BF5AFF66'
+    path: "graduates",
+    activeBgColor: "#AD5BFF22",
+    badgeColor: "#BF5AFF66",
   },
   {
     id: 2,
     name: "Society",
     value: "articles",
     img: "/icons/village-society.svg",
-    path: 'society',
-    activeBgColor: '#F4F4FB',
-    badgeColor: '#BBBBD7'
+    path: "society",
+    activeBgColor: "#F4F4FB",
+    badgeColor: "#BBBBD7",
   },
   {
     id: 3,
     name: "Personalities",
     value: "personalities",
     img: "/icons/village-personality.svg",
-    path: 'personalities',
-    activeBgColor: '#FFF9E8',
-    badgeColor: '#FFB425'
+    path: "personalities",
+    activeBgColor: "#FFF9E8",
+    badgeColor: "#FFB425",
   },
   {
     id: 4,
     name: "Institutions",
     value: "institutions",
     img: "/icons/village-institution.svg",
-    path: 'institutions',
-    activeBgColor: '#5B8FFF22',
-    badgeColor: '#5A8FFF'
+    path: "institutions",
+    activeBgColor: "#5B8FFF22",
+    badgeColor: "#5A8FFF",
   },
   {
     id: 5,
     name: "Videos",
     value: "videos",
     img: "/icons/village-video.svg",
-    path: 'videos',
-    activeBgColor: '#FF5B5B22',
-    badgeColor: '#FF645A'
+    path: "videos",
+    activeBgColor: "#FF5B5B22",
+    badgeColor: "#FF645A",
   },
 ];
 
-const LeftVillageItems: React.FC<{village: string}> = ({village}) => {
+const LeftVillageItems: React.FC<{ village: string }> = ({ village }) => {
   const router = useRouter();
   const { pathname } = router;
 
@@ -95,7 +94,9 @@ const LeftVillageItems: React.FC<{village: string}> = ({village}) => {
             h={{ base: "60px", md: "40px" }}
             spacing={4}
             bgColor={
-              pathname === `/village/[id]/${item.path}` ? item.activeBgColor : "transparent"
+              pathname === `/village/[id]/${item.path}`
+                ? item.activeBgColor
+                : "transparent"
             }
             borderRadius="8px"
             px={2}
@@ -114,7 +115,11 @@ const LeftVillageItems: React.FC<{village: string}> = ({village}) => {
             </Text>
 
             <Badge
-              bgColor={pathname === `/village/[id]/${item.path}` ? item.badgeColor : "#FBFBFA"}
+              bgColor={
+                pathname === `/village/[id]/${item.path}`
+                  ? item.badgeColor
+                  : "#FBFBFA"
+              }
               color={pathname === `/village/[id]/${item.path}` ? "white" : ""}
               fontSize="11px"
               fontWeight="400"

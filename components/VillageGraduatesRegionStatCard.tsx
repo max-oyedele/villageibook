@@ -1,28 +1,16 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment } from "react";
 import {
   Flex,
-  HStack,
   VStack,
   StackDivider,
   Box,
   Text,
-  Image,
-  Progress,
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import { useSelector, useDispatch } from "react-redux";
-import { MyThunkDispatch, OurStore } from "rdx/store";
-import {
-  fetchCountries,
-  fetchRegions,
-  fetchDistricts,
-  fetchSubDistricts,
-  fetchVillages,
-} from "rdx/slices/location";
-
 import GraduateStatCapsule from "./GraduateStatCapsule";
 import GraduatePercent from "./GraduatePercent";
+import useFetchData from "hooks/use-fetch-data";
 
 const totalGraduatesCount = 1000;
 const bangladeshGraduates = {
@@ -65,14 +53,7 @@ const VillageGraduatesRegionStatCard: React.FC<{
 }> = ({ village }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const dispatch: MyThunkDispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchDistricts({country: "bangladesh"}));
-  }, []);
-
-  const { districts } = useSelector((state: OurStore) => state.locationReducer);
-  const { graduates, articles, personalities, institutions, videos } =
-    useSelector((state: OurStore) => state.villagePageReducer.pageData);
+  const { graduates } = useFetchData();
 
   return (
     <Fragment>

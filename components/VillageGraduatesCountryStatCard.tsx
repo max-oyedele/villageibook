@@ -1,5 +1,4 @@
 import { Fragment, useEffect } from "react";
-import Link from "next/link";
 import {
   Stack,
   StackDirection,
@@ -7,22 +6,10 @@ import {
   VStack,
   Divider,
   Flex,
-  Box,
   Text,
   Image,
-  Button,
   useBreakpointValue,
 } from "@chakra-ui/react";
-
-import { useSelector, useDispatch } from "react-redux";
-import { MyThunkDispatch, OurStore } from "rdx/store";
-import {
-  fetchCountries,
-  fetchRegions,
-  fetchDistricts,
-  fetchSubDistricts,
-  fetchVillages,
-} from "rdx/slices/location";
 
 import GraduatePercent from "./GraduatePercent";
 
@@ -35,14 +22,11 @@ const VillageGraduatesCountryStatCard: React.FC<{
 }> = ({ village, direction }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const dispatch: MyThunkDispatch = useDispatch();
+  const {countries, graduates, fetchCountriesData} = useFetchData();
+  
   useEffect(() => {
-    dispatch(fetchCountries());
+    fetchCountriesData();
   }, []);
-
-  const { countries } = useSelector((state: OurStore) => state.locationReducer);
-  const { graduates, articles, personalities, institutions, videos } =
-    useSelector((state: OurStore) => state.villagePageReducer.pageData);
 
   const maxRowsPerCol = Math.floor(
     countries.length / 2 + (countries.length % 2)
@@ -156,6 +140,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
 };
 
 import { Country } from "types/schema";
+import useFetchData from "hooks/use-fetch-data";
 
 const CountryBox: React.FC<{ country: Country; count: number }> = ({
   country,

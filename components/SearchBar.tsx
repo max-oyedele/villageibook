@@ -8,25 +8,16 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchDistricts,
-  fetchSubDistricts,
-  fetchVillages,
-} from "rdx/slices/location";
-import { OurStore } from "rdx/store";
-
 import SelectBox from "components/widgets/SelectBox";
 import { District, SubDistrict, Village } from "types/schema";
 import router from "next/router";
 
+import useFetchData from "hooks/use-fetch-data";
+
 const SearchBar = (props) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const dispatch = useDispatch();
-  const { status, districts, subDistricts, villages } = useSelector(
-    (state: OurStore) => state.locationReducer
-  );
+  const {districts, subDistricts, villages, fetchDistrictsData, fetchSubDistrictsData, fetchVillagesData} = useFetchData();
 
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
   const [selectedSubDistrict, setSelectedSubDistrict] =
@@ -34,15 +25,15 @@ const SearchBar = (props) => {
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
 
   useEffect(() => {
-    dispatch(fetchDistricts(null));
+    fetchDistrictsData(null);
   }, []);
   useEffect(() => {
     setSelectedSubDistrict(null);
-    dispatch(fetchSubDistricts({ district: selectedDistrict }));
+    fetchSubDistrictsData({ district: selectedDistrict });
   }, [selectedDistrict]);
   useEffect(() => {
     setSelectedVillage(null);
-    dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
+    fetchVillagesData({ subDistrict: selectedSubDistrict });
   }, [selectedSubDistrict]);
 
   return (
