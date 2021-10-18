@@ -31,6 +31,7 @@ export interface UserState {
   me: User;
   meStep: Step;
   meError: SerializedError;
+  postError: SerializedError;
   user?: User;
   userError: SerializedError;
 }
