@@ -1,23 +1,18 @@
 import { useEffect } from "react";
 import { useToast } from "@chakra-ui/react";
-import { useSelector, useDispatch } from "react-redux";
 
-import { MyThunkDispatch, OurStore } from "rdx/store";
-import { Step } from "rdx/types";
+import useFetchData from "hooks/use-fetch-data";
 
 const ToastWrapper = ({ children }) => {
   const {
     jwt,
-    me:authMe,
-    error: authError,
-  } = useSelector((state: OurStore) => state.authReducer);
-
-  const {
-    status: userStatus,
-    meStep: meStep,
-    meError: meError,
-    userError: userError
-  } = useSelector((state: OurStore) => state.userReducer);
+    authMe,
+    authError,
+    meStep,
+    meError,
+    postError,
+    userError
+  } = useFetchData();
 
   const toast = useToast();
   useEffect(() => {
@@ -43,6 +38,15 @@ const ToastWrapper = ({ children }) => {
       toast({
         title: "Failed. Please try again.",
         description: meError.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    if (postError) {
+      toast({
+        title: "Post Failed. Please try again.",
+        description: postError.message,
         status: "error",
         duration: 3000,
         isClosable: true,

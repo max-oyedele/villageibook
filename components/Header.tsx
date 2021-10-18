@@ -1,7 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
 
 import { BiMenu, BiX } from "react-icons/bi";
 import {
@@ -21,9 +20,9 @@ import Logo from "components/Logo";
 import SocialLinkBar from "components/SocialLinkBar";
 
 import useToken from "hooks/use-token";
+import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 
-import { OurStore } from "rdx/store";
-import { reset } from "rdx/slices/auth";
 import { Status } from "rdx/types";
 
 const tabs = [
@@ -46,13 +45,16 @@ const tabs = [
 
 const Header = () => {
   const router = useRouter();
-  const { pathname, query:{id} } = router;
+  const {
+    pathname,
+    query: { id },
+  } = router;
 
-  const dispatch = useDispatch();
-  const {status } = useSelector((state: OurStore) => state.authReducer);
+  const { authStatus } = useFetchData();
+  const { authReset } = useActionDispatch();
 
-  const village = id
-  
+  const village = id;
+
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);
 
@@ -66,10 +68,10 @@ const Header = () => {
       : null
   );
 
-  const {removeToken} = useToken();
+  const { removeToken } = useToken();
 
   const logout = () => {
-    dispatch(reset());
+    authReset();
     removeToken();
     router.push("/");
   };
@@ -83,7 +85,14 @@ const Header = () => {
               <HStack spacing={6} mr={1}>
                 <Logo />
                 {tabs.map((tab) => (
-                  <Link key={tab.name} href={tab.path === "/village" ? `${tab.path}/${village}` : tab.path}>
+                  <Link
+                    key={tab.name}
+                    href={
+                      tab.path === "/village"
+                        ? `${tab.path}/${village}`
+                        : tab.path
+                    }
+                  >
                     <Flex
                       h="55px"
                       alignItems="center"
@@ -136,7 +145,7 @@ const Header = () => {
             </Flex>
           </Container>
 
-          {status === Status.LOADING && (
+          {authStatus === Status.LOADING && (
             <Box w="full">
               <Progress h="2px" size="xs" isIndeterminate />
             </Box>
@@ -196,7 +205,15 @@ const Header = () => {
                       justifyContent="center"
                       alignItems="center"
                     >
-                      <Link href={tab.path === "/village" ? `${tab.path}/${village}` : tab.path}>{tab.name}</Link>
+                      <Link
+                        href={
+                          tab.path === "/village"
+                            ? `${tab.path}/${village}`
+                            : tab.path
+                        }
+                      >
+                        {tab.name}
+                      </Link>
                     </Flex>
                   ))}
               </VStack>
