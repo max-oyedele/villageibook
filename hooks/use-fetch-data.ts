@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-
 import { useSelector, useDispatch } from "react-redux";
 
 import { MyThunkDispatch, OurStore } from "rdx/store";
@@ -20,8 +18,8 @@ import { fetchGraduatePage } from "rdx/slices/graduatePage";
 const useFetchData = () => {
   const dispatch: MyThunkDispatch = useDispatch();
 
-  const { me: authMe, status: authStatus } = useSelector((state: OurStore) => state.authReducer);
-  const { me, meStep, meError, user } = useSelector(
+  const { jwt, me: authMe, status: authStatus, error:authError } = useSelector((state: OurStore) => state.authReducer);
+  const { me, meStep, status: meStatus, meError, postError, user, userError } = useSelector(
     (state: OurStore) => state.userReducer
   );
 
@@ -94,11 +92,15 @@ const useFetchData = () => {
   };
 
   return {
+    jwt,
     authMe,
     authStatus,
+    authError,
     me,
     meStep,
+    meStatus,
     meError,
+    postError,
     countries,
     regions,
     districts,
@@ -112,6 +114,7 @@ const useFetchData = () => {
     recentUsers,
     totalGraduates,
     user,
+    userError,
     users,
     articles,
     personalities,
