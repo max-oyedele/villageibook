@@ -16,11 +16,14 @@ import {
   recentUsers,
 } from "data/feed";
 
-export const fetchFeedPageData = createAsyncThunk(
-  "feedPage/fetchData",
+import { getUserToken } from "helpers/get-user-token";
+
+export const fetchFeedPage = createAsyncThunk(
+  "feedPage/fetch",
   async (_, thunkAPI) => {
     try {
-      // const response = await axios.get('/api/feed-page-data')
+      const access_token = getUserToken();
+      // const response = await axios.get('/api/feed-page-data', {access_token})
       // return response.data.villagePageData; // data: {feedPageData: []}
 
       return {
@@ -52,18 +55,15 @@ export const feedPageSlice = createSlice({
     reset: () => initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchFeedPageData.pending, (state) => {
+    builder.addCase(fetchFeedPage.pending, (state) => {
       state.status = Status.LOADING;
       state.error = null;
     });
-    builder.addCase(fetchFeedPageData.fulfilled, (state, action) => {
+    builder.addCase(fetchFeedPage.fulfilled, (state, action) => {
       state.status = Status.IDLE;
       state.pageData = action.payload;
     });
-    builder.addCase(fetchFeedPageData.rejected, (state, action) => {
-      // state.error = (
-      //   action.payload as { error: string; error_description: string }
-      // ).error_description;
+    builder.addCase(fetchFeedPage.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

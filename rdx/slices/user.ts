@@ -6,16 +6,16 @@ import {
 } from "@reduxjs/toolkit";
 
 import axios from "axios";
-import cookieCutter from "cookie-cutter";
 
 var FormData = require("form-data");
 
-import { Status, Register, UserState } from "../types";
-
-import { fetchUserToken } from "helpers/fetch-user-token";
+import { Status, Step, UserState } from "../types";
 
 //mock data
 import { users } from "data/village";
+
+import { getUserToken } from "helpers/get-user-token";
+
 
 export const submitStepOne = createAsyncThunk(
   "user/submitStepOne",
@@ -34,6 +34,8 @@ export const submitStepOne = createAsyncThunk(
     thunkAPI
   ) => {
     try {
+      const access_token = getUserToken();
+
       const bodyFormData = new FormData();
       bodyFormData.append("firstName", params.firstName);
       bodyFormData.append("lastName", params.lastName);
@@ -44,17 +46,12 @@ export const submitStepOne = createAsyncThunk(
       bodyFormData.append("degree", params.degree);
       bodyFormData.append("profession", params.profession);
 
-      let jwtFromCookie = cookieCutter.get("jwt");
-      jwtFromCookie = JSON.parse(jwtFromCookie);
-
-      console.log('werwer', params)
-
       const response = await axios.patch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`,
         bodyFormData,
         {
           headers: {
-            authorization: "Bearer " + jwtFromCookie.access_token,
+            authorization: "Bearer " + access_token,
             "content-type": `multipart/form-data`,
           },
         }
@@ -83,6 +80,8 @@ export const submitStepTwo = createAsyncThunk(
     thunkAPI
   ) => {
     try {
+      const access_token = getUserToken();
+
       const bodyFormData = new FormData();
       bodyFormData.append("avatar", params.avatar);
       bodyFormData.append("about", params.about);
@@ -90,15 +89,12 @@ export const submitStepTwo = createAsyncThunk(
       bodyFormData.append("photo2", params.photo3);
       bodyFormData.append("photo3", params.photo3);
 
-      let jwtFromCookie = cookieCutter.get("jwt");
-      jwtFromCookie = JSON.parse(jwtFromCookie);
-
       const response = await axios.patch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`,
         bodyFormData,
         {
           headers: {
-            authorization: "Bearer " + jwtFromCookie.access_token,
+            authorization: "Bearer " + access_token,
             "content-type": `multipart/form-data`,
           },
         }
@@ -113,24 +109,25 @@ export const submitStepTwo = createAsyncThunk(
   }
 );
 
-export const fetchMe = createAsyncThunk(
-  "user/fetchMe",
-  async (params: any, thunkAPI) => {
-    try {
-      const response = await axios.get(`/api/users/me`, { params });
-      return response.data;
-      // return users.find(e=>e.id == params.uuid)
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
+export const fetchMe = createAsyncThunk("user/fetchMe", async (_, thunkAPI) => {
+  try {
+    const access_token = getUserToken();
+    const response = await axios.get(`/api/users/me`, {
+      params: { access_token },
+    });
+    return response.data;
+    // return users.find(e=>e.id == params.uuid)
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
   }
-);
+});
 
 export const fetchUser = createAsyncThunk(
   "user/fetchUser",
   async (params: any, thunkAPI) => {
     try {
-      // const response = await axios.get(`/api/users/${params.uuid}`, { params });
+      const access_token = getUserToken();
+      // const response = await axios.get(`/api/users/${params.uuid}`, { ...params, access_token });
       // return response.data;
       return users.find((e) => e.id == params.uuid);
     } catch (error) {
@@ -142,24 +139,11 @@ export const fetchUser = createAsyncThunk(
 /********************************** */
 const initialState: UserState = {
   status: Status.IDLE,
-  step: Register.STEP1,
+  me: null,
+  meStep: Step.STEP1,
+  meError: null,
   user: null,
-  // user: {
-  //   id: 584,
-  //   firstName: "James",
-  //   lastName: "Smith",
-  //   img: "/images/avatar.png",
-  //   email: "test6@gmail.com",
-  //   password: "123",
-  //   uuid: "879a1f43-d496-43eb-a658-648071820d31",
-  //   role: "premium",
-  //   village: "jammura",
-  //   graduatedAt: "uk",
-  //   university: "Oxford",
-  //   profession: "computer science",
-  //   degree: "bachelor",
-  // },
-  error: null,
+  userError: null,
 };
 
 export const userSlice = createSlice({
@@ -170,48 +154,48 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(submitStepOne.pending, (state, action) => {
-      state.step = Register.STEP1;
+      state.meStep = Step.STEP1;
       state.status = Status.LOADING;
-      state.error = null;
+      state.meError = null;
     });
     builder.addCase(submitStepOne.fulfilled, (state, action) => {
-      state.step = Register.STEP2;
-      state.user = action.payload;
+      state.me = action.payload;
+      state.meStep = Step.STEP2;
       state.status = Status.IDLE;
     });
     builder.addCase(submitStepOne.rejected, (state, action) => {
       state.status = Status.IDLE;
-      state.error = action.payload;
+      state.meError = action.payload;
     });
     builder.addCase(submitStepTwo.pending, (state, action) => {
-      state.step = Register.STEP2;
       state.status = Status.LOADING;
-      state.error = null;
+      state.meStep = Step.STEP2;
+      state.meError = null;
     });
     builder.addCase(submitStepTwo.fulfilled, (state, action) => {
-      state.step = Register.COMPLETED;
-      state.user = action.payload;
+      state.me = action.payload;
+      state.meStep = Step.COMPLETED;
       state.status = Status.IDLE;
     });
     builder.addCase(submitStepTwo.rejected, (state, action) => {
       state.status = Status.IDLE;
-      state.error = action.payload;
+      state.meError = action.payload;
     });
     builder.addCase(fetchMe.pending, (state, action) => {
       state.status = Status.LOADING;
-      state.error = null;
+      state.meError = null;
     });
     builder.addCase(fetchMe.fulfilled, (state, action) => {
-      state.user = action.payload;
+      state.me = action.payload;
       state.status = Status.IDLE;
     });
     builder.addCase(fetchMe.rejected, (state, action) => {
       state.status = Status.IDLE;
-      state.error = action.payload;
+      state.meError = action.payload;
     });
     builder.addCase(fetchUser.pending, (state, action) => {
       state.status = Status.LOADING;
-      state.error = null;
+      state.userError = null;
     });
     builder.addCase(fetchUser.fulfilled, (state, action) => {
       state.user = action.payload;
@@ -219,7 +203,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(fetchUser.rejected, (state, action) => {
       state.status = Status.IDLE;
-      state.error = action.payload;
+      state.userError = action.payload;
     });
   },
 });

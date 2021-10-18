@@ -13,7 +13,7 @@ export enum Status {
   ERROR = 'error',
 }
 
-export enum Register {
+export enum Step {
   STEP1 = 'signup',
   STEP2 = 'fill form',
   COMPLETED = 'complete 2 steps'
@@ -22,16 +22,17 @@ export enum Register {
 export interface AuthState {
   jwt: any;
   status: Status;
-  register: Register;
-  user?: User;
+  me?: User;
   error?: SerializedError;
 }
 
 export interface UserState {
   status: Status;
-  step: Register;
+  me: User;
+  meStep: Step;
+  meError: SerializedError;
   user?: User;
-  error: SerializedError;
+  userError: SerializedError;
 }
 export interface LocationState {
   status: Status;

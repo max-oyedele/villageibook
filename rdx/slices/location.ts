@@ -10,6 +10,7 @@ import axios from "axios";
 import { Status, LocationState } from "../types";
 import { Country } from "types/schema";
 
+
 /*********************** */
 export const fetchCountries = createAsyncThunk(
   "location/countries",
@@ -63,7 +64,7 @@ export const fetchVillages = createAsyncThunk(
   "location/villages",
   async (params: any, thunkAPI) => {
     try {
-      const response = await axios.get('/api/location/villages', {params: params})
+      const response = await axios.get('/api/location/villages', { params })
       return response.data.villages; // data: {pagination: {}, villages: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });

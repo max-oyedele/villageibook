@@ -6,35 +6,14 @@ import {
 } from "@reduxjs/toolkit";
 
 import axios from "axios";
-var FormData = require('form-data');
-import querystring from "querystring";
 
-import { Status, Register, AuthState } from "../types";
-import {
-  User,
-  Degree,
-  Country,
-  Region,
-  District,
-  SubDistrict,
-  Village,
-} from "types/schema";
-
-import { users } from "data/village";
-
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+import { Status, Step, AuthState } from "../types";
 
 export const login = createAsyncThunk(
   "auth/login",
   async (credentials: { email: string; password: string }, thunkAPI) => {
     try {
-      const response = await axios.post(
-        "/api/auth/login",
-        credentials
-      );
+      const response = await axios.post("/api/auth/login", credentials);
 
       return response.data;
     } catch (error) {
@@ -55,30 +34,9 @@ export const signup = createAsyncThunk(
     thunkAPI
   ) => {
     try {
-      // const response = await axios.post<{ user: any }>(
-      //   "/api/auth/signup",
-      //   credentials
-      // );
+      const response = await axios.post("/api/auth/signup", credentials);
 
-      // const refetch = await axios.get<{ name: string }>("api/me", {
-      //   headers: { Authorization: `Bearer ${response.data.accessToken}` },
-      // });
-      // return {
-      //   accessToken: response.data.accessToken,
-      //   me: { name: refetch.data.name },
-      // };
-
-      // return response.data;
-      await sleep(4000);
-      return {
-        id: 584,
-        firstName: "sdf",
-        lastName: "bbb",
-        avatar: "/images/avatar.png",
-        email: "sdf@gmail.com",
-        password: "123",
-        uuid: "879a1f43-d496-43eb-a658-648071820d31",
-      };
+      return response.data;
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });
       return thunkAPI.rejectWithValue(error.response.data);
@@ -101,22 +59,7 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
 const initialState: AuthState = {
   jwt: null,
   status: Status.IDLE,
-  register: Register.STEP1,
-  // user: null,
-  user: {
-    id: 584,
-    firstName: "James",
-    lastName: "Smith",
-    avatar: "/images/avatar.png",
-    email: "jsmith@gmail.com",
-    password: "123",
-    uuid: "879a1f43-d496-43eb-a658-648071820d31",
-    role: "premium",
-    comesFrom: "jammura",    
-    graduatedAt: "Oxford",
-    profession: "computer science",
-    degree: "bachelor",
-  },
+  me: null,
   error: null,
 };
 
@@ -135,26 +78,20 @@ export const authSlice = createSlice({
       state.error = null;
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      state.jwt = action.payload;      
-      state.status = Status.IDLE;      
+      state.jwt = action.payload;
+      state.status = Status.IDLE;
     });
     builder.addCase(login.rejected, (state, action) => {
-      // state = { ...internalInitialState, error: action.error.message }
-      // state.error = (
-      //   action.payload as { error: string; error_description: string }
-      // ).error_description;
       state.status = Status.IDLE;
       state.jwt = null;
       state.error = action.payload;
-      // throw new Error(action.error.message)
     });
     builder.addCase(signup.pending, (state, action) => {
       state.status = Status.LOADING;
       state.error = null;
     });
     builder.addCase(signup.fulfilled, (state, action) => {
-      state.user = action.payload;
-      state.register = Register.STEP2;
+      state.me = action.payload;
       state.status = Status.IDLE;
     });
     builder.addCase(signup.rejected, (state, action) => {
@@ -165,14 +102,6 @@ export const authSlice = createSlice({
       state.status = Status.LOADING;
     });
     builder.addCase(logout.fulfilled, (_state) => initialState);
-
-    // builder.addCase(fetchUser.rejected, (state, action) => {
-    //   state = { ...internalInitialState, error: action.error }
-    //   // throw new Error(action.error.message)
-    // })
-    // builder.addCase(fetchUser.fulfilled, (state, action) => {
-    //   state.me = action.payload
-    // })
   },
 });
 
