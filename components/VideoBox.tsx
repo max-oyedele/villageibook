@@ -30,7 +30,9 @@ import ReactPlayer from "react-player/lazy";
 
 import type { Video } from "types/data";
 
-const VideoBox: React.FC<{ video: Video }> = ({ video }) => {
+const VideoBox: React.FC<{ video: Video }> = ({
+  video
+}) => {
   const router = useRouter();
   const { pathname } = router;
 
@@ -42,31 +44,33 @@ const VideoBox: React.FC<{ video: Video }> = ({ video }) => {
     <Fragment>
       <Box w="full" pos="relative">
         <Image
-          src={video.img}
+          src={video?.img}
           alt=""
           objectFit="cover"
           borderRadius="6px"
           w="full"
           fit="cover"
         />
-        <Flex
-          pos="absolute"
-          top={0}
-          w="full"
-          h="full"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Circle
-            w={9}
-            h={9}
-            bgColor="gray.600"
-            _hover={{ bgColor: "red.500", cursor: "pointer" }}
-            onClick={onOpen}
+        {(video?.img) && (
+          <Flex
+            pos="absolute"
+            top={0}
+            w="full"
+            h="full"
+            justifyContent="center"
+            alignItems="center"
           >
-            <BiCaretRight fontSize="24px" color="white" />
-          </Circle>
-        </Flex>
+            <Circle
+              w={9}
+              h={9}
+              bgColor="gray.600"
+              _hover={{ bgColor: "red.500", cursor: "pointer" }}
+              onClick={onOpen}
+            >
+              <BiCaretRight fontSize="24px" color="white" />
+            </Circle>
+          </Flex>
+        )}
       </Box>
 
       <Modal
@@ -81,7 +85,7 @@ const VideoBox: React.FC<{ video: Video }> = ({ video }) => {
           {/* <ModalCloseButton color="white" zIndex={10} /> */}
           <ReactPlayer
             className="react-player"
-            url="https://video.vidyard.com/watch/YBvcF2BEfvKdowmfrRwk57"
+            url={"https://video.vidyard.com/watch/YBvcF2BEfvKdowmfrRwk57"}
             width="100%"
             height="100%"
             playing={true}
