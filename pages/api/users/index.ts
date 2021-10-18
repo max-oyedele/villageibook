@@ -1,7 +1,3 @@
-import { usersRepo } from "helpers/user-repo";
-
-export default handler;
-
 function handler(req, res) {
   switch (req.method) {
     case "GET":
@@ -26,3 +22,5 @@ function handler(req, res) {
     }
   }
 }
+
+export default handler;

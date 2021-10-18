@@ -1,7 +1,5 @@
 import { fetchWrapper } from "helpers/fetch-wrapper";
 
-import { usersRepo } from "helpers/user-repo";
-
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 async function handler(req, res) {
@@ -18,7 +16,7 @@ async function handler(req, res) {
   }
   async function getMe() {
     try {
-      fetchWrapper
+      await fetchWrapper
         .get(baseUrl + `/users/me.json`, access_token)
         .then((response) => {
           res.status(200).json(response);
