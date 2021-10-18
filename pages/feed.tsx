@@ -23,6 +23,7 @@ import LeftVillageDivider from "components/LeftVillageDivider";
 import LeftVillageItems from "components/LeftVillageItems";
 
 import RecentVillageCard from "components/RecentVillageCard";
+import PostForm from "components/PostForm";
 import PostCard from "components/PostCard";
 import CaptionCard from "components/CaptionCard";
 import VillageGraduatesCountryStatCard from "components/VillageGraduatesCountryStatCard";
@@ -112,30 +113,7 @@ const Feed: NextPage = () => {
             mr={breakpointValue === "md" ? "24px" : 0}
           >
             <Box bg="white" borderRadius="4px" mb={4} p={4}>
-              <Textarea fontSize="13px" placeholder="Write something here..." />
-              <Divider mt={4} mb={2} />
-              <Flex justifyContent="space-between">
-                <HStack spacing={4} fontSize="13px" color="GrayText">
-                  <HStack spacing={1}>
-                    <Image src="/icons/post-photo.svg" />
-                    <Text>Picture</Text>
-                  </HStack>
-                  <HStack spacing={1}>
-                    <Image src="/icons/post-video.svg" />
-                    <Text>Video</Text>
-                  </HStack>
-                </HStack>
-                <Button
-                  h="27px"
-                  fontSize="13px"
-                  fontWeight="400"
-                  bgColor="greenTone"
-                  color="white"
-                  _focus={{ boxShadow: "none" }}
-                >
-                  Post
-                </Button>
-              </Flex>
+              <PostForm />
             </Box>
 
             {(breakpointValue === "md" ||
