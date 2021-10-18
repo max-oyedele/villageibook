@@ -1,8 +1,5 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
 import type { NextPage } from "next";
-import { useRouter } from "next/router";
-
-import cookieCutter from "cookie-cutter";
 
 import {
   Container,
@@ -10,56 +7,25 @@ import {
   HStack,
   VStack,
   Divider,
-  StackDivider,
-  Center,
   Flex,
   Box,
   Text,
   Image,
-  Avatar,
-  Grid,
-  GridItem,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Badge,
   SimpleGrid,
   AspectRatio,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-  Input,
   Button,
   useBreakpointValue,
-  useToast,
 } from "@chakra-ui/react";
 
-import {
-  Formik,
-  FormikHelpers,
-  FormikProps,
-  Form,
-  Field,
-  FieldProps,
-} from "formik";
+import { Formik, Form } from "formik";
 import * as yup from "yup";
 
 import { useSelector, useDispatch } from "react-redux";
 import { MyThunkDispatch, OurStore } from "rdx/store";
-import { fetchMe } from "rdx/slices/user";
-import {
-  fetchCountries,
-  fetchRegions,
-  fetchDistricts,
-  fetchSubDistricts,
-  fetchVillages,
-  fetchUniversities,
-  fetchProfessions,
-} from "rdx/slices/location";
-import { Register } from "rdx/types";
+
+import { Step } from "rdx/types";
+
+import useFetchData from "hooks/use-fetch-data";
 
 import Header from "components/Header";
 import Footer from "components/Footer";
@@ -85,31 +51,21 @@ import {
 } from "types/schema";
 import { degrees } from "constants/account";
 import { platformCountries } from "constants/global";
-import { logout } from "rdx/slices/auth";
 
 const AccountToEdit: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const dispatch: MyThunkDispatch = useDispatch();
-  const { step, user, error } = useSelector(
-    (state: OurStore) => state.userReducer
-  );
-
   const [activeStep, setActiveStep] = useState<number>(1);
 
+  const { me, meStep, meError, fetchMeData } = useFetchData();
+
   useEffect(() => {
-    let jwtFromCookie = cookieCutter.get("jwt");
-    if (jwtFromCookie) {
-      jwtFromCookie = JSON.parse(jwtFromCookie);
-      dispatch(fetchMe({ access_token: jwtFromCookie.access_token }));
-    } else {
-      //logout()
-    }
+    fetchMeData();
   }, []);
 
   useEffect(() => {
-    if (!error && step === Register.STEP2) setActiveStep(2);
-  }, [error]);
+    if (!meError && meStep === Step.STEP2) setActiveStep(2);
+  }, [meError, meStep]);
 
   const [avatar, setAvatar] = useState(null);
 
@@ -122,13 +78,13 @@ const AccountToEdit: NextPage = () => {
         <HStack spacing={6} align="start" mt={8}>
           {breakpointValue === "md" && (
             <Box w="40%">
-              <AvatarUpload avatarUrl={user?.avatar} setAvatar={setAvatar} />
+              <AvatarUpload avatarUrl={me?.avatar} setAvatar={setAvatar} />
             </Box>
           )}
           <Box w="full">
             {breakpointValue === "base" && (
               <Box mb={6}>
-                <AvatarUpload avatarUrl={user?.avatar} setAvatar={setAvatar} />
+                <AvatarUpload avatarUrl={me?.avatar} setAvatar={setAvatar} />
               </Box>
             )}
             <Flex
@@ -150,13 +106,7 @@ const AccountToEdit: NextPage = () => {
                 {/* )} */}
               </HStack>
               <Divider mt={6} />
-              {activeStep === 1 && (
-                <Step1Form
-                  activeStep={activeStep}
-                  setActiveStep={setActiveStep}
-                  avatar={avatar}
-                />
-              )}
+              {activeStep === 1 && <Step1Form avatar={avatar} />}
               {activeStep === 2 && (
                 <Step2Form
                   activeStep={activeStep}
@@ -176,20 +126,24 @@ const AccountToEdit: NextPage = () => {
   );
 };
 
-const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
+const Step1Form = ({ avatar }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { user } = useSelector((state: OurStore) => state.userReducer);
   const {
-    countries,
-    regions,
+    me,
     districts,
     subDistricts,
     villages,
     universities,
     professions,
-  } = useSelector((state: OurStore) => state.locationReducer);
+    fetchCountriesData,
+    fetchRegionsData,
+    fetchDistrictsData,
+    fetchSubDistrictsData,
+    fetchVillagesData,
+    fetchMeData
+  } = useFetchData();
 
   const [firstName, setFirstName] = useState<string | null>(null);
   const [lastName, setLastName] = useState<string | null>(null);
@@ -217,44 +171,35 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
   const [isBySupport, setIsBySupport] = useState(false);
 
   useEffect(() => {
-    const fetch = async () => {
-      await dispatch(fetchCountries());
-      await dispatch(fetchVillages({}));
-      await dispatch(fetchUniversities());
-      await dispatch(fetchProfessions());
-    };
+    fetchCountriesData();
 
-    fetch();
-  }, []);
-
-  useEffect(() => {
-    if (user) {
-      setFirstName(user.firstName);
-      setLastName(user.lastName);
-      setSelectedVillage(villages.find((e) => e.name === user.comesFrom));
+    if (me) {
+      setFirstName(me.firstName);
+      setLastName(me.lastName);
+      setSelectedVillage(villages.find((e) => e.name === me.comesFrom));
       setSelectedUniversity(
-        universities.find((e) => e.name === user.graduatedAt)
+        universities.find((e) => e.name === me.graduatedAt)
       );
-      setSelectedProfession(professions.find((e) => e.name === user.profession));
-      setSelectedDegree(degrees.find((e) => e.name === user.degree));
+      setSelectedProfession(professions.find((e) => e.name === me.profession));
+      setSelectedDegree(degrees.find((e) => e.name === me.degree));
     }
-  }, [user]);
+  }, [me]);
 
   useEffect(() => {
     setSelectedRegion(null);
-    dispatch(fetchRegions({ country: selectedCountry }));
+    fetchRegionsData({ country: selectedCountry });
   }, [selectedCountry]);
   useEffect(() => {
     setSelectedDistrict(null);
-    dispatch(fetchDistricts({ region: selectedRegion }));
+    fetchDistrictsData({ region: selectedRegion });
   }, [selectedRegion]);
   useEffect(() => {
     setSelectedSubDistrict(null);
-    dispatch(fetchSubDistricts({ district: selectedDistrict }));
+    fetchSubDistrictsData({ district: selectedDistrict });
   }, [selectedDistrict]);
   useEffect(() => {
     // setSelectedVillage(null);
-    // dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
+    // fetchVillagesData({ subDistrict: selectedSubDistrict });
   }, [selectedSubDistrict]);
 
   const step1Schema = yup.object({
@@ -295,9 +240,9 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
       validationSchema={step1Schema}
       onSubmit={async (values, actions) => {
         const params = {
-          firstName: firstName,
-          lastName: lastName,
-          avatar: avatar,
+          firstName,
+          lastName,
+          avatar,
           comesFrom: selectedVillage.uuid,
           livesIn: selectedLivingCountry.uuid,
           graduatedAt: selectedUniversity?.uuid,
@@ -520,7 +465,7 @@ const Step1Form = ({ activeStep, setActiveStep, avatar }) => {
 
 const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
   const dispatch: MyThunkDispatch = useDispatch();
-  const { user } = useSelector((state: OurStore) => state.userReducer);
+  const { me } = useFetchData();
 
   const [about, setAbout] = useState(null);
 
@@ -528,9 +473,9 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
   const [photo1, setPhoto1] = useState(null);
   const [photo2, setPhoto2] = useState(null);
   const [photo3, setPhoto3] = useState(null);
-  const [photoURL1, setPhotoURL1] = useState(user.photo1 ?? null);
-  const [photoURL2, setPhotoURL2] = useState(user.photo2 ?? null);
-  const [photoURL3, setPhotoURL3] = useState(user.photo3 ?? null);
+  const [photoURL1, setPhotoURL1] = useState(me.photo1 ?? null);
+  const [photoURL2, setPhotoURL2] = useState(me.photo2 ?? null);
+  const [photoURL3, setPhotoURL3] = useState(me.photo3 ?? null);
 
   const [refresh, setRefresh] = useState(false);
 
@@ -568,11 +513,11 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
       validationSchema={step2Schema}
       onSubmit={async (values, actions) => {
         const params = {
-          avatar: avatar,
-          about: about,
-          photo1: photo1,
-          photo2: photo2,
-          photo3: photo3,
+          avatar,
+          about,
+          photo1,
+          photo2,
+          photo3,
         };
         actions.setSubmitting(true);
         await dispatch(submitStepTwo(params));
@@ -631,20 +576,20 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
           </Box>
 
           <HStack spacing={4} w={{ base: "100%", md: "50%" }} mt={10}>
-            {user?.role === "premium" && activeStep == 2 && (
-              <Button
-                type="submit"
-                w="50%"
-                bgColor="purpleTone"
-                fontSize="12px"
-                fontWeight="400"
-                color="white"
-                _focus={{ boxShadow: "none" }}
-                onClick={() => setActiveStep(activeStep - 1)}
-              >
-                PREV
-              </Button>
-            )}
+            {/* {user?.role === "premium" && activeStep == 2 && ( */}
+            <Button
+              type="submit"
+              w="50%"
+              bgColor="purpleTone"
+              fontSize="12px"
+              fontWeight="400"
+              color="white"
+              _focus={{ boxShadow: "none" }}
+              onClick={() => setActiveStep(activeStep - 1)}
+            >
+              PREV
+            </Button>
+            {/* )} */}
 
             <Button
               type="submit"

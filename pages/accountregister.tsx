@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useRef } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
 
 import { useRouter } from "next/router";
@@ -12,89 +12,77 @@ import {
   Flex,
   Box,
   Text,
-  Image,
-  Avatar,
-  Grid,
-  GridItem,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Badge,
-  SimpleGrid,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-  Input,
   Button,
   useBreakpointValue,
-  useToast,
 } from "@chakra-ui/react";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
   Formik,
-  FormikHelpers,
-  FormikProps,
   Form,
-  Field,
-  FieldProps,
 } from "formik";
 import * as yup from "yup";
 
 import { MyThunkDispatch, OurStore } from "rdx/store";
+
+import { submitStepOne } from "rdx/slices/user";
 import {
-  fetchCountries,
-  fetchRegions,
-  fetchDistricts,
-  fetchSubDistricts,
-  fetchVillages,
-  fetchUniversities
-} from "rdx/slices/location";
+  Country,
+  Region,
+  District,
+  SubDistrict,
+  Village,
+  University,
+  Profession,
+  Degree,
+} from "types/schema";
 
 import HeaderForGuide from "components/HeaderForGuide";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
-import InputBox from "components/widgets/InputBox";
 import InputBoxWithSelect from "components/widgets/InputBoxWithSelect";
 import AvatarUpload from "components/widgets/AvatarUpload";
 
-import { Register } from "rdx/types";
-import { submitStepOne } from "rdx/slices/user";
-import { Country, Region, District, SubDistrict, Village, University, Degree } from "types/schema";
+import useFetchData from "hooks/use-fetch-data";
 
-import { degrees, professions } from "constants/account";
+import { degrees } from "constants/account";
 import { platformCountries } from "constants/global";
-
-const accountSchema = yup.object({
-  university: yup.object().nullable(),
-  profession: yup.string().nullable(),
-  degree: yup.object().nullable(),
-  country: yup
-    .object()
-    .nullable()
-    .required("Country must be selected."),
-  // region: yup.object().nullable().required("Region must be selected."),
-  district: yup.object().nullable().required("District must be selected."),
-  subDistrict: yup.object().nullable().required("Upazila must be selected."),
-  village: yup.object().nullable().required("Village must be selected."),
-  livingCountry: yup.object().nullable().required("Country must be selected."),
-  // livingVillage: yup.object().nullable().required("Village must be selected."),
-});
 
 const AccountToRegister: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
+  const {
+    me,
+    countries,
+    districts,
+    subDistricts,
+    villages,
+    universities,
+    professions,
+    fetchCountriesData,
+    fetchRegionsData,
+    fetchDistrictsData,
+    fetchSubDistrictsData,
+    fetchVillagesData,
+    fetchCommonData,
+    fetchMeData,
+  } = useFetchData();
+
+  useEffect(() => {
+    fetchMeData();
+  }, []);
+
   const [avatar, setAvatar] = useState(null);
 
-  const [selectedUniversity, setSelectedUniversity] = useState<University | null>(null);
-  const [profession, setProfession] = useState<string | null>(null);
+  const [selectedUniversity, setSelectedUniversity] =
+    useState<University | null>(null);
+  const [selectedProfession, setSelectedProfession] =
+    useState<Profession | null>(null);
   const [selectedDegree, setSelectedDegree] = useState<Degree | null>(null);
 
-  const [selectedCountry, setSelectedCountry] =
-    useState<Country>(platformCountries[0]);
+  const [selectedCountry, setSelectedCountry] = useState<Country>(
+    platformCountries[0]
+  );
   const [selectedRegion, setSelectedRegion] = useState<Region>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
   const [selectedSubDistrict, setSelectedSubDistrict] =
@@ -106,39 +94,49 @@ const AccountToRegister: NextPage = () => {
     useState<Village>(null);
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const {
-    jwt,
-    register,
-    user,
-    error: authError,
-  } = useSelector((state: OurStore) => state.authReducer);
-  const { countries, regions, districts, subDistricts, villages, universities } =
-    useSelector((state: OurStore) => state.locationReducer);
 
   const router = useRouter();
-  const toast = useToast();
-  
+
   useEffect(() => {
-    dispatch(fetchCountries());
-    dispatch(fetchVillages({}));
-    dispatch(fetchUniversities());
-  }, []);
+    if(!me){
+      router.push("/");
+      return;
+    }
+    fetchCommonData();
+  }, [me]);
+
   useEffect(() => {
     setSelectedRegion(null);
-    dispatch(fetchRegions({ country: selectedCountry }));
+    fetchRegionsData({ country: selectedCountry });
   }, [selectedCountry]);
   useEffect(() => {
     setSelectedDistrict(null);
-    dispatch(fetchDistricts({ region: selectedRegion }));
+    fetchDistrictsData({ region: selectedRegion });
   }, [selectedRegion]);
   useEffect(() => {
     setSelectedSubDistrict(null);
-    dispatch(fetchSubDistricts({ district: selectedDistrict }));
+    fetchSubDistrictsData({ district: selectedDistrict });
   }, [selectedDistrict]);
   useEffect(() => {
     // setSelectedVillage(null);
-    // dispatch(fetchVillages({ subDistrict: selectedSubDistrict }));
+    // fetchVillagesData({ subDistrict: selectedSubDistrict });
   }, [selectedSubDistrict]);
+
+  const accountSchema = yup.object({
+    university: yup.object().nullable(),
+    profession: yup.object().nullable(),
+    degree: yup.object().nullable(),
+    country: yup.object().nullable().required("Country must be selected."),
+    // region: yup.object().nullable().required("Region must be selected."),
+    district: yup.object().nullable().required("District must be selected."),
+    subDistrict: yup.object().nullable().required("Upazila must be selected."),
+    village: yup.object().nullable().required("Village must be selected."),
+    livingCountry: yup
+      .object()
+      .nullable()
+      .required("Country must be selected."),
+    // livingVillage: yup.object().nullable().required("Village must be selected."),
+  });
 
   return (
     <Fragment>
@@ -149,7 +147,7 @@ const AccountToRegister: NextPage = () => {
         <Formik
           initialValues={{
             university: selectedUniversity,
-            profession: profession,
+            profession: selectedProfession,
             degree: selectedDegree,
             country: selectedCountry,
             // region: selectedRegion,
@@ -164,14 +162,14 @@ const AccountToRegister: NextPage = () => {
           onSubmit={async (values, actions) => {
             // console.log({ values, actions });
             const params = {
-              firstName: user.firstName,
-              lastName: user.lastName,
-              avatar: avatar,
+              firstName: me.firstName,
+              lastName: me.lastName,
+              avatar,
               comesFrom: selectedVillage.uuid,
               livesIn: selectedLivingCountry.uuid,
               graduatedAt: selectedUniversity.uuid,
+              profession: selectedProfession.uuid,
               degree: selectedDegree.name,
-              profession: profession,
             };
 
             actions.setSubmitting(true);
@@ -218,7 +216,7 @@ const AccountToRegister: NextPage = () => {
                       spacing={8}
                     >
                       <Box w="full">
-                      <Text fontSize="11px" color="purpleTone">
+                        <Text fontSize="11px" color="purpleTone">
                           Where do you live?
                         </Text>
 
@@ -304,7 +302,7 @@ const AccountToRegister: NextPage = () => {
                           isRequired={true}
                           isInvalid={!selectedVillage}
                           error={errors.village}
-                        />                        
+                        />
                       </Box>
 
                       <Box w="full">
@@ -324,12 +322,15 @@ const AccountToRegister: NextPage = () => {
                           error={errors.university}
                         />
 
-                        <InputBox
+                        <InputBoxWithSelect
                           id="profession"
                           label="Profession"
-                          onChange={setProfession}
+                          options={professions}
+                          optionLabel={({ name }) => name}
+                          selectedOption={selectedProfession}
+                          setSelectedOption={setSelectedProfession}
                           isRequired={false}
-                          isInvalid={!!errors.profession}
+                          isInvalid={!selectedProfession}
                           error={errors.profession}
                         />
 
