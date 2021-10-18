@@ -6,26 +6,10 @@ import {
   Container,
   HStack,
   VStack,
-  Divider,
   Flex,
   Box,
-  Text,
-  Image,
-  Avatar,
-  Grid,
-  GridItem,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Badge,
   useBreakpointValue,
 } from "@chakra-ui/react";
-
-import { useSelector, useDispatch } from "react-redux";
-import { MyThunkDispatch, OurStore } from "rdx/store";
-import { fetchVillagePageData } from "rdx/slices/villagePage";
 
 import Header from "components/Header";
 import Footer from "components/Footer";
@@ -35,6 +19,7 @@ import VillageGraduatesCountryStatCard from "components/VillageGraduatesCountryS
 import PersonalityCard from "components/PersonalityCard";
 
 import useLeftFixed from "hooks/use-left-fixed";
+import useFetchData from "hooks/use-fetch-data";
 
 
 const Graduates: NextPage = () => {
@@ -46,12 +31,10 @@ const Graduates: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
 
-  const dispatch: MyThunkDispatch = useDispatch();
-  const { users, graduates, articles, personalities, institutions, videos } =
-    useSelector((state: OurStore) => state.villagePageReducer.pageData);
+  const { graduates, fetchVillagePageData } = useFetchData();
 
   useEffect(() => {
-    dispatch(fetchVillagePageData({ villageName: vid }));
+    fetchVillagePageData({ villageName: vid });
   }, [vid]);
 
 

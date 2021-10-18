@@ -12,16 +12,8 @@ import {
   Flex,
   Box,
   Text,
-  Image,
-  Avatar,
-  Grid,
-  GridItem,
   useBreakpointValue,
 } from "@chakra-ui/react";
-
-import { useSelector, useDispatch } from "react-redux";
-import { MyThunkDispatch, OurStore } from "rdx/store";
-import { fetchVillagePageData } from "rdx/slices/villagePage";
 
 import Header from "components/Header";
 import Footer from "components/Footer";
@@ -37,6 +29,7 @@ import VideoCard from "components/VideoCard";
 import FilterCard from "components/FilterCard";
 
 import useLeftFixed from "hooks/use-left-fixed";
+import useFetchData from "hooks/use-fetch-data";
 
 const Posts: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -44,15 +37,12 @@ const Posts: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
 
-  const dispatch: MyThunkDispatch = useDispatch();
-  const { users, articles, personalities, institutions, videos } = useSelector(
-    (state: OurStore) => state.villagePageReducer.pageData
-  );
+  const { users, articles, personalities, institutions, videos, fetchVillagePageData } = useFetchData();
 
   const { fixed } = useLeftFixed();
 
   useEffect(() => {
-    dispatch(fetchVillagePageData({ villageName: vid }));
+    fetchVillagePageData({ villageName: vid });
   }, [vid]);
 
   return (

@@ -1,6 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
-import { InferGetServerSidePropsType } from "next";
 
 import {
   Container,
@@ -13,16 +12,9 @@ import {
   Button,
   Image,
   Textarea,
-  AspectRatio,
-  Circle,
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import { useSelector, useDispatch } from "react-redux";
-import { MyThunkDispatch, OurStore } from "rdx/store";
-import { updateJWT } from "rdx/slices/auth";
-import { fetchFeedPageData } from "rdx/slices/feedPage";
-import { fetchVillagePageData } from "rdx/slices/villagePage";
 
 import Header from "components/Header";
 import Footer from "components/Footer";
@@ -38,6 +30,7 @@ import RecentUserCard from "components/RecentUserCard";
 import VideoBox from "components/VideoBox";
 
 import useLeftFixed from "hooks/use-left-fixed";
+import useFetchData from "hooks/use-fetch-data";
 
 const Feed: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -46,18 +39,12 @@ const Feed: NextPage = () => {
   const tabsMobile = ["Feed", "Village", "Graduates"];
   const [activeTab, setActiveTab] = useState(tabsMobile[0]);
 
-  const { user, error } = useSelector((state: OurStore) => state.authReducer);
-  const { posts, recentVillages, recentUsers } = useSelector(
-    (state: OurStore) => state.feedPageReducer.pageData
-  );
-  const { graduates } = useSelector(
-    (state: OurStore) => state.villagePageReducer.pageData
-  );
-
-  const dispatch: MyThunkDispatch = useDispatch();
+  const { me, posts, recentUsers, recentVillages, fetchMeData, fetchFeedPageData, fetchVillagePageData } = useFetchData();
+  
   useEffect(() => {
-    dispatch(fetchFeedPageData());
-    dispatch(fetchVillagePageData({ villageName: user.comesFrom }));
+    fetchMeData();
+    fetchFeedPageData();
+    fetchVillagePageData({ villageName: me?.comesFrom });
   }, []);
 
   return (
@@ -92,11 +79,11 @@ const Feed: NextPage = () => {
                 <Box mt={8}>
                   <LeftVillageDivider
                     title="Go My Village"
-                    village={user.comesFrom}
+                    village={me?.comesFrom}
                   />
                 </Box>
                 <Box my={6}>
-                  <LeftVillageItems village={user.comesFrom} />
+                  <LeftVillageItems village={me?.comesFrom} />
                 </Box>
               </Box>
 
@@ -161,7 +148,7 @@ const Feed: NextPage = () => {
             )}
             {breakpointValue === "base" && activeTab === "Village" && (
               <Box>
-                <LeftVillageItems village={user.comesFrom} />
+                <LeftVillageItems village={me?.comesFrom} />
                 <Text fontSize="20px" mt={12} mb={6}>
                   Recently developed
                 </Text>
@@ -174,7 +161,7 @@ const Feed: NextPage = () => {
             )}
             {breakpointValue === "base" && activeTab === "Graduates" && (
               <Box>
-                <VillageGraduatesCountryStatCard village={user.comesFrom} direction="column" />
+                <VillageGraduatesCountryStatCard village={me?.comesFrom} direction="column" />
                 <Box mt={12}>
                   <VideoBox
                     video={{
@@ -204,7 +191,7 @@ const Feed: NextPage = () => {
               // pos={fixed ? "fixed" : "static"}
               // top={fixed ? "80px" : 0}
             >
-              <VillageGraduatesCountryStatCard village={user.comesFrom} direction="column" />
+              <VillageGraduatesCountryStatCard village={me?.comesFrom} direction="column" />
 
               <Text fontSize="24px" mt={12} mb={6}>
                 Recently joined

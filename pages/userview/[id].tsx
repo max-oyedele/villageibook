@@ -11,17 +11,10 @@ import {
   Box,
   Text,
   Image,
-  Avatar,
-  Grid,
-  GridItem,
   SimpleGrid,
   Badge,
   useBreakpointValue,
 } from "@chakra-ui/react";
-
-import { useSelector, useDispatch } from "react-redux";
-import { MyThunkDispatch, OurStore } from "rdx/store";
-import { fetchUser } from "rdx/slices/user";
 
 import Header from "components/Header";
 import Footer from "components/Footer";
@@ -29,20 +22,19 @@ import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
 import PersonalityCard from "components/PersonalityCard";
 
+import useFetchData from "hooks/use-fetch-data";
+
 const UserView: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const dispatch: MyThunkDispatch = useDispatch();
-  const { user, status, error } = useSelector(
-    (state: OurStore) => state.userReducer
-  );
+  const { user, fetchUserData } = useFetchData();
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchUser({ uuid: id }));
+      fetchUserData({ uuid: id });
     }
   }, [id]);
 

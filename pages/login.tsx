@@ -1,16 +1,8 @@
 import React, { Fragment, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import cookieCutter from "cookie-cutter";
 
-import {
-  Formik,
-  FormikHelpers,
-  FormikProps,
-  Form,
-  Field,
-  FieldProps,
-} from "formik";
+import { Formik, Form } from "formik";
 import * as yup from "yup";
 
 import {
@@ -30,24 +22,19 @@ import {
   Divider,
   Image,
   useBreakpointValue,
-  useToast,
 } from "@chakra-ui/react";
 import { BiShow, BiHide } from "react-icons/bi";
 
 import { useSelector, useDispatch } from "react-redux";
 import { MyThunkDispatch, OurStore } from "rdx/store";
 import { reset, login } from "rdx/slices/auth";
-import { fetchMe } from "rdx/slices/user";
+
+import useToken from "hooks/use-token";
+import useFetchData from "hooks/use-fetch-data";
 
 import Logo from "components/Logo";
+import { Status } from "rdx/types";
 
-const loginSchema = yup.object({
-  email: yup
-    .string()
-    .email("Provide correct Email address.")
-    .required("Email address is required."),
-  password: yup.string().required("Password is required."),
-});
 
 const Login = () => {
   const router = useRouter();
@@ -57,22 +44,45 @@ const Login = () => {
     md: "md",
   });
 
-  const [passwordShow, setPasswordShow] = useState(false);
-
   const dispatch: MyThunkDispatch = useDispatch();
   const { status, jwt } = useSelector((state: OurStore) => state.authReducer);
+
+  const { setToken } = useToken();
+  const { me, fetchCommonData, fetchMeData } = useFetchData();
+
+  const [passwordShow, setPasswordShow] = useState(false);
+
   useEffect(() => {
     dispatch(reset());
   }, []);
+
   useEffect(() => {
     if (jwt) {
-      const expires = new Date(); expires.setSeconds(expires.getSeconds() + jwt.expires_in);
-      cookieCutter.set("jwt", JSON.stringify(jwt), {expires: expires});
-      dispatch(fetchMe({access_token: jwt.access_token}));
-      router.push("/feed");
+      setToken(jwt);
+      fetchMeData();
+      fetchCommonData();      
     }
   }, [jwt]);
 
+  useEffect(()=>{
+    const isCompletedUser = (user) => {
+      return user.livesIn && user.comesFrom
+    }
+
+    if(me){
+      if(isCompletedUser(me)) router.push("/feed");
+      else router.push("/accountregister");
+    }
+  }, [me])
+
+  const loginSchema = yup.object({
+    email: yup
+      .string()
+      .email("Provide correct Email address.")
+      .required("Email address is required."),
+    password: yup.string().required("Password is required."),
+  });
+  
   return (
     <Fragment>
       <Box
@@ -183,7 +193,7 @@ const Login = () => {
                     _focus={{ boxShadow: "none" }}
                     w="full"
                     mt={8}
-                    isLoading={isSubmitting}
+                    isLoading={isSubmitting || status === Status.LOADING}
                   >
                     LOGIN
                   </Button>

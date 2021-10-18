@@ -1,7 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Link from "next/link";
-import cookieCutter from "cookie-cutter"
 
 import {
   Container,
@@ -10,40 +9,19 @@ import {
   Text,
   Stack,
   HStack,
-  VStack,
-  Divider,
-  Button,
   Image,
-  Textarea,
-  AspectRatio,
-  Center,
-  Circle,
-  Progress,
-  useBreakpointValue,
 } from "@chakra-ui/react";
 import Slider from "react-slick";
 
-import { useSelector, useDispatch } from "react-redux";
-import { MyThunkDispatch, OurStore } from "rdx/store";
-
 import Logo from "components/Logo";
 import Footer from "components/Footer";
-import SelectBox from "components/widgets/SelectBox";
+
 import HomeSlick from "components/HomeSlick";
 import HomeSlickControl from "components/HomeSlickControl";
 import HomeCategoryBar from "components/HomeCategoryBar";
 import VideoBox from "components/VideoBox";
 
 const Home: NextPage = () => {
-  const dispatch: MyThunkDispatch = useDispatch();
-  const { countries } = useSelector(
-    (state: OurStore) => state.locationReducer
-  );
-
-  useEffect(()=>{
-    cookieCutter.set("jwt", "", {expires: new Date(0)})
-  }, [])
-
   const heroImgSlideConf = {
     dots: false,
     arrows: false,

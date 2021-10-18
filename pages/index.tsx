@@ -1,25 +1,22 @@
 import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
-import cookieCutter from "cookie-cutter";
+import { getUserToken } from "helpers/get-user-token";
 
-const Index:NextPage = () => {
+const Index: NextPage = () => {
   const router = useRouter();
-
-  useEffect(()=>{
-    let jwtFromCookie = cookieCutter.get("jwt");
-    if(jwtFromCookie){
-      router.push("/feed")
-    }
-    else{
-      router.push("/home")
+  
+  useEffect(() => {
+    const access_token = getUserToken();
+    if (access_token) {
+      router.push("/feed");
+    } else {
+      router.push("/home");
     }
   }, []);
 
-  return (
-    <></>
-  )
-}
+  return <Fragment></Fragment>;
+};
 
 export default Index;

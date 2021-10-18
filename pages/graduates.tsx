@@ -23,23 +23,13 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-import { useSelector, useDispatch } from "react-redux";
-import { MyThunkDispatch, OurStore } from "rdx/store";
-import {
-  fetchCountries,
-  fetchRegions,
-  fetchDistricts,
-  fetchSubDistricts,
-  fetchVillages,
-} from "rdx/slices/location";
-import { fetchGraduatePageData } from "rdx/slices/graduatePage";
-
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import GraduateSearchBox from "components/GraduateSearchBox";
 import GraduateStatCapsule from "components/GraduateStatCapsule";
 import AlphaBetaBar from "components/widgets/AlphaBetaBar";
+import useFetchData from "hooks/use-fetch-data";
 
 const menuItems = [
   {
@@ -66,26 +56,12 @@ const Graduates: NextPage = () => {
 
   const [activeMenuItem, setActiveMenuItem] = useState(menuItems[2]);
 
-  const dispatch: MyThunkDispatch = useDispatch();
-  const { user, error } = useSelector((state: OurStore) => state.authReducer);
-  const { status: graduateStatus, pageData: {totalGraduates} } = useSelector(
-    (state: OurStore) => state.graduatePageReducer
-  );
-  const { status, countries, regions, districts, subDistricts, villages } =
-    useSelector((state: OurStore) => state.locationReducer);
-
+  const { me, totalGraduates, districts, subDistricts, villages, fetchCommonData, fetchGraduatePageData } = useFetchData();
+  
   useEffect(() => {
-    dispatch(fetchCountries());
-    dispatch(fetchDistricts(null));
-    dispatch(fetchSubDistricts(null));
-    dispatch(fetchVillages(null));
-    dispatch(fetchGraduatePageData(null));
+    fetchCommonData();
+    fetchGraduatePageData(null);
   }, []);
-
-  const [refresh, setRefresh] = useState(false);
-  useEffect(()=>{
-    setRefresh(!refresh)
-  }, [graduateStatus])
 
   const [expandedItem, setExpandedItem] = useState(null);
   const [items, setItems] = useState([]);

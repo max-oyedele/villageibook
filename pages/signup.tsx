@@ -37,23 +37,10 @@ import { BiShow, BiHide } from "react-icons/bi";
 import { useSelector, useDispatch } from "react-redux";
 import { MyThunkDispatch, OurStore } from "rdx/store";
 import { signup, reset } from "rdx/slices/auth";
-import { Status, Register } from "rdx/types";
+import { Status, Step } from "rdx/types";
 
 import Logo from "components/Logo";
-
-const signupSchema = yup.object({
-  firstname: yup.string().required("First Name is required."),
-  lastname: yup.string().required("Last Name is required."),
-  email: yup
-    .string()
-    .email("Provide correct Email address.")
-    .required("Email address is required."),
-  password: yup.string().required("Password is required."),
-  cpassword: yup
-    .string()
-    .oneOf([yup.ref("password"), null], "Password must match.")
-    .required("Confirm password is required."),
-});
+import useFetchData from "hooks/use-fetch-data";
 
 const Signup = () => {
   const router = useRouter();
@@ -66,25 +53,35 @@ const Signup = () => {
   });
 
   const dispatch: MyThunkDispatch = useDispatch();
-  const { status, register } = useSelector(
-    (state: OurStore) => state.authReducer
-  );
+  const { authMe, authStatus } = useFetchData();
+
   useEffect(() => {
     dispatch(reset());
   }, []);
   
   useEffect(() => {
-    if (register === Register.STEP2) {
-      router.push("/accountregister");
-    }
-    else if (register === Register.COMPLETED) {
+    if(authMe){
       router.push("/login");
     }
-  }, [register]);
+  }, [authMe]);
+
+  const signupSchema = yup.object({
+    firstname: yup.string().required("First Name is required."),
+    lastname: yup.string().required("Last Name is required."),
+    email: yup
+      .string()
+      .email("Provide correct Email address.")
+      .required("Email address is required."),
+    password: yup.string().required("Password is required."),
+    cpassword: yup
+      .string()
+      .oneOf([yup.ref("password"), null], "Password must match.")
+      .required("Confirm password is required."),
+  });
 
   return (
     <Fragment>
-      {status === Status.LOADING && (
+      {authStatus === Status.LOADING && (
         <Box w="full" pos="fixed" top={0}>
           <Progress h="2px" size="xs" isIndeterminate />
         </Box>
@@ -141,9 +138,7 @@ const Signup = () => {
               onSubmit={async (values, actions) => {
                 // console.log({ values, actions });
                 actions.setSubmitting(true);
-
                 await dispatch(signup(values));
-
                 actions.setSubmitting(false);
               }}
             >
