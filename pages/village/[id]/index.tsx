@@ -244,9 +244,9 @@ const Posts: NextPage = () => {
         </Flex>
       </Container>
 
-      <Box mt={20}>
+      {/* <Box mt={20}>
         <Footer />
-      </Box>
+      </Box> */}
     </Fragment>
   );
 };

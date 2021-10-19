@@ -24,7 +24,7 @@ import {
   fetchVillageInstitutions,
   fetchVillageVideos,
 } from "rdx/slices/villagePage";
-import { fetchGraduatePage } from "rdx/slices/graduatePage";
+import { fetchGraduates } from "rdx/slices/graduatePage";
 
 const useFetchData = () => {
   const dispatch: MyThunkDispatch = useDispatch();
@@ -69,7 +69,7 @@ const useFetchData = () => {
   } = useSelector((state: OurStore) => state.villagePageReducer);
 
   const { totalGraduates } = useSelector(
-    (state: OurStore) => state.graduatePageReducer.pageData
+    (state: OurStore) => state.graduatePageReducer
   );
 
   const fetchCountriesData = async () => {
@@ -144,7 +144,7 @@ const useFetchData = () => {
   };
 
   const fetchGraduatePageData = async (params) => {
-    await dispatch(fetchGraduatePage(params));
+    await dispatch(fetchGraduates(params));
   };
 
   return {
@@ -192,7 +192,6 @@ const useFetchData = () => {
     fetchVillageInstitutionsData,
     fetchVillageVideosData,
     fetchVillagePageData,
-
     fetchGraduatePageData,
   };
 };

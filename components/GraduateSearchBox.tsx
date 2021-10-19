@@ -13,7 +13,11 @@ import {
 } from "@chakra-ui/react";
 import { BiSearch } from "react-icons/bi";
 
+import useFetchData from "hooks/use-fetch-data";
+
 const GraduateSearchBox:React.FC<{location: string, setLocation, onFind}> = ({location, setLocation, onFind}) => {
+  const {totalGraduates} = useFetchData();
+
   return (
     <Fragment>
       <Flex
@@ -27,7 +31,7 @@ const GraduateSearchBox:React.FC<{location: string, setLocation, onFind}> = ({lo
           <Box textAlign="center">
             <Text fontSize="14px">TOTAL GRADUATES</Text>
             <Text fontSize="36px" fontWeight="700" color="purpleTone" mt={4}>
-              10000
+              {totalGraduates.length}
             </Text>
           </Box>
           <HStack

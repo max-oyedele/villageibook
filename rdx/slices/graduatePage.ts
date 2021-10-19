@@ -9,23 +9,16 @@ import axios from "axios";
 
 import { Status, GraduatePageState } from "../types";
 
-//mock data
-import { users, articles, personalities, institutions, videos } from "data/village";
-
 import { getUserToken } from "helpers/get-user-token";
 
 
-export const fetchGraduatePage = createAsyncThunk(
-  "graduatePage/fetch",
+export const fetchGraduates = createAsyncThunk(
+  "graduatePage/fetchGraduates",
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      // const response = await axios.get('/api/graduate-page-data', {...params, access_token})
-      // return response.data.graduatePageData; // data: {graduatePageData: []}
-
-      return {
-        totalGraduates: users.filter((item)=>item.graduatedAt),
-      };
+      const response = await axios.get('/api/graduates', {...params, access_token})
+      return response.data.graduates; // data: {graduates: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
@@ -35,9 +28,7 @@ export const fetchGraduatePage = createAsyncThunk(
 /************************************* */
 const initialState: GraduatePageState = {
   status: Status.IDLE,
-  pageData: {
-    totalGraduates: [],
-  },
+  totalGraduates: [],
   error: null,
 };
 
@@ -48,15 +39,15 @@ export const graduatePageSlice = createSlice({
     reset: () => initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchGraduatePage.pending, (state) => {
+    builder.addCase(fetchGraduates.pending, (state) => {
       state.status = Status.LOADING;
       state.error = null;
     });
-    builder.addCase(fetchGraduatePage.fulfilled, (state, action) => {
+    builder.addCase(fetchGraduates.fulfilled, (state, action) => {
       state.status = Status.IDLE;
-      state.pageData = action.payload;
+      state.totalGraduates = action.payload;
     });
-    builder.addCase(fetchGraduatePage.rejected, (state, action) => {
+    builder.addCase(fetchGraduates.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

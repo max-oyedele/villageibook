@@ -54,18 +54,23 @@ const homeCountry = "bangladesh";
 const Graduates: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const [activeMenuItem, setActiveMenuItem] = useState(menuItems[2]);
-
+  
   const { me, totalGraduates, districts, subDistricts, villages, fetchCommonData, fetchGraduatePageData } = useFetchData();
   
+  const [activeMenuItem, setActiveMenuItem] = useState(menuItems[2]);
+
+  const [expandedItem, setExpandedItem] = useState(null);
+  const [items, setItems] = useState([]);
+  const [location, setLocation] = useState("");
+
   useEffect(() => {
     fetchCommonData();
     fetchGraduatePageData(null);
   }, []);
 
-  const [expandedItem, setExpandedItem] = useState(null);
-  const [items, setItems] = useState([]);
-  const [location, setLocation] = useState("");
+  useEffect(()=>{
+    setItems(villages);
+  }, [villages])
 
   useEffect(() => {
     if (activeMenuItem.value === "district") setItems(districts);
