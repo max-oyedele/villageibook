@@ -53,7 +53,7 @@ const VillageGraduatesRegionStatCard: React.FC<{
 }> = ({ village }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { graduates } = useFetchData();
+  const { villageGraduates } = useFetchData();
 
   return (
     <Fragment>
@@ -67,7 +67,7 @@ const VillageGraduatesRegionStatCard: React.FC<{
         <GraduatePercent
           village={village}
           totalCount={totalGraduatesCount}
-          graduatesCount={graduates.length}
+          graduatesCount={villageGraduates.length}
         />
 
         <VStack divider={<StackDivider />} mt={8}>
