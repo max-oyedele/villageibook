@@ -30,7 +30,7 @@ import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import ContactCard from "components/ContactCard";
 
-import { faqs } from "data/faq";
+import { faqs } from "constants/faq";
 
 const Faq: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });

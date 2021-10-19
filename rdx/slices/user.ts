@@ -11,9 +11,6 @@ var FormData = require("form-data");
 
 import { Status, Step, UserState } from "../types";
 
-//mock data
-import { users } from "data/village";
-
 import { getUserToken } from "helpers/get-user-token";
 
 
@@ -24,7 +21,6 @@ export const fetchMe = createAsyncThunk("user/fetchMe", async (_, thunkAPI) => {
       params: { access_token },
     });
     return response.data;
-    // return users.find(e=>e.id == params.uuid)
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data);
   }
@@ -35,9 +31,8 @@ export const fetchUser = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      // const response = await axios.get(`/api/users/${params.uuid}`, { ...params, access_token });
-      // return response.data;
-      return users.find((e) => e.id == params.uuid);
+      const response = await axios.get(`/api/users/${params.uuid}`, { ...params, access_token });
+      return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }

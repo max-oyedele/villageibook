@@ -9,16 +9,8 @@ import axios from "axios";
 
 import { Status, VillagePageState } from "../types";
 
-//mock data
-import {
-  users,
-  articles,
-  personalities,
-  institutions,
-  videos,
-} from "data/village";
-
 import { getUserToken } from "helpers/get-user-token";
+
 
 export const fetchVillageUsers = createAsyncThunk(
   "villagePage/fetchVillageUsers",
@@ -27,23 +19,6 @@ export const fetchVillageUsers = createAsyncThunk(
       const access_token = getUserToken();
       const response = await axios.get('/api/village/users', {...params, access_token})
       return response.data.users; // data: {users: []}
-
-      return {
-        users: users.filter((item) => item.comesFrom === params.villageName),
-        graduates: users.filter(
-          (item) => item.comesFrom === params.villageName && item.graduatedAt
-        ),
-        articles: articles.filter(
-          (item) => item.village === params.villageName
-        ),
-        personalities: personalities.filter(
-          (item) => item.comesFrom === params.villageName
-        ),
-        institutions: institutions.filter(
-          (item) => item.village === params.villageName
-        ),
-        videos: videos.filter((item) => item.village === params.villageName),
-      };
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }

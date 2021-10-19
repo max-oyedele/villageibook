@@ -8,8 +8,6 @@ import {
 import axios from "axios";
 
 import { Status, LocationState } from "../types";
-import { Country } from "types/schema";
-
 
 /*********************** */
 export const fetchCountries = createAsyncThunk(

@@ -9,9 +9,6 @@ import axios from "axios";
 
 import { Status, FeedPageState } from "../types";
 
-//mock data
-import { posts, recentVillages, recentUsers } from "data/feed";
-
 import { getUserToken } from "helpers/get-user-token";
 
 export const fetchPosts = createAsyncThunk(
@@ -23,12 +20,6 @@ export const fetchPosts = createAsyncThunk(
         params: { access_token },
       });
       return response.data.posts;
-
-      return {
-        posts,
-        recentVillages,
-        recentUsers,
-      };
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
@@ -44,12 +35,6 @@ export const fetchRecentVillages = createAsyncThunk(
         params: { access_token },
       });
       return response.data.villages;
-
-      return {
-        posts,
-        recentVillages,
-        recentUsers,
-      };
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
@@ -65,12 +50,6 @@ export const fetchRecentUsers = createAsyncThunk(
         params: { access_token },
       });
       return response.data.users;
-
-      return {
-        posts,
-        recentVillages,
-        recentUsers,
-      };
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
