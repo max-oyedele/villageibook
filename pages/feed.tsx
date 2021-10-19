@@ -35,7 +35,7 @@ import useFetchData from "hooks/use-fetch-data";
 
 const Feed: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-  const { fixed } = useWindowProp();
+  const { fixed, feedRootWidth, leftPartOffsetX } = useWindowProp();
 
   const tabsMobile = ["Feed", "Village", "Graduates"];
   const [activeTab, setActiveTab] = useState(tabsMobile[0]);
@@ -65,6 +65,7 @@ const Feed: NextPage = () => {
         <Flex mt={8}>
           {breakpointValue === "md" && (
             <Box
+              id="left-part"
               minW="270px"
               pos={fixed ? "fixed" : "static"}
               top={fixed ? "80px" : 0}
@@ -102,6 +103,7 @@ const Feed: NextPage = () => {
           )}
 
           <Box
+            id="feed-root"
             w={{ base: "100%", md: "full" }}
             mx={
               fixed && breakpointValue === "md"
@@ -167,7 +169,7 @@ const Feed: NextPage = () => {
               minW="270px"
               pos={fixed ? "fixed" : "static"}
               top={fixed ? "80px" : 0}
-              right="0"
+              left={fixed ? leftPartOffsetX + 270 + 2*24 + feedRootWidth : 0}
             >
               <VillageGraduatesCountryStatCard village={me?.comesFrom} direction="column" />
 
