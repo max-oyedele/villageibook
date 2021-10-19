@@ -42,7 +42,9 @@ const Posts: NextPage = () => {
   const { fixed } = useLeftFixed();
 
   useEffect(() => {
-    fetchVillagePageData({ villageName: vid });
+    if(vid){
+      fetchVillagePageData({ villageName: vid });
+    }
   }, [vid]);
 
   return (

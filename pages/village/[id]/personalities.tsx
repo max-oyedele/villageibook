@@ -1,13 +1,13 @@
 import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
-import { useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 import {
   Container,
   HStack,
   VStack,
   Flex,
-  Box,
+  Box,  
   useBreakpointValue,
 } from "@chakra-ui/react";
 
@@ -16,6 +16,7 @@ import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
 import PersonalityCard from "components/PersonalityCard";
+import Alert from "components/widgets/Alert";
 
 import useLeftFixed from "hooks/use-left-fixed";
 import useFetchData from "hooks/use-fetch-data";
@@ -24,16 +25,19 @@ const Personalities: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const router = useRouter();
-  const {query} = router;
+  const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
 
-  const {fixed} = useLeftFixed();
+  const { fixed } = useLeftFixed();
 
-  const { users, fetchVillagePageData } = useFetchData();
-  
-  useEffect(()=>{
-    fetchVillagePageData({villageName: vid})
-  }, [vid])
+  const { villagePersonalities, fetchVillagePersonalitiesData } =
+    useFetchData();
+
+  useEffect(() => {
+    if (vid) {
+      fetchVillagePersonalitiesData({ villageName: vid });
+    }
+  }, [vid]);
 
   return (
     <Fragment>
@@ -47,14 +51,24 @@ const Personalities: NextPage = () => {
             </Box>
           )}
 
-          <Box w="full" ml={fixed && breakpointValue === "md" ? "264px" : breakpointValue === "md" ? "24px" : "0px"}>
+          <Box
+            w="full"
+            ml={
+              fixed && breakpointValue === "md"
+                ? "264px"
+                : breakpointValue === "md"
+                ? "24px"
+                : "0px"
+            }
+          >
             <VStack spacing={2}>
-              {users.map((user) => (
-                <PersonalityCard
-                  key={user.id}
-                  user={user}
-                />
-              ))}
+              {villagePersonalities.length > 0 &&
+                villagePersonalities.map((user) => (
+                  <PersonalityCard key={user.id} user={user} />
+                ))}
+              {villagePersonalities.length == 0 && (
+                <Alert message="There is no personality to be displayed." />
+              )}
             </VStack>
           </Box>
         </Flex>

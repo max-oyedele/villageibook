@@ -16,6 +16,7 @@ import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
 import UserCard from "components/UserCard";
+import Alert from "components/widgets/Alert";
 
 import useLeftFixed from "hooks/use-left-fixed";
 import useFetchData from "hooks/use-fetch-data";
@@ -29,11 +30,13 @@ const Users: NextPage = () => {
 
   const { fixed } = useLeftFixed();
 
-  const { users, articles, personalities, institutions, videos, fetchVillagePageData } = useFetchData();
-  useEffect(()=>{
-    fetchVillagePageData({villageName: vid});
-  }, [vid])
-  
+  const { villageUsers, fetchVillageUsersData } = useFetchData();
+  useEffect(() => {
+    if (vid) {
+      fetchVillageUsersData({ villageName: vid });
+    }
+  }, [vid]);
+
   return (
     <Fragment>
       <Header />
@@ -57,9 +60,13 @@ const Users: NextPage = () => {
             }
           >
             <VStack spacing={2}>
-              {users.map((user) => (
-                <UserCard key={user.id} user={user} />
-              ))}
+              {villageUsers.length > 0 &&
+                villageUsers.map((user) => (
+                  <UserCard key={user.id} user={user} />
+                ))}
+              {villageUsers.length == 0 && (
+                <Alert message="There is no user to be displayed." />
+              )}
             </VStack>
           </Box>
         </Flex>

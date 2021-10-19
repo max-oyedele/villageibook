@@ -12,8 +12,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import { useSelector, useDispatch } from "react-redux";
-import { MyThunkDispatch, OurStore } from "rdx/store";
+import useFetchData from "hooks/use-fetch-data";
 
 const villageItems = [
   {
@@ -78,9 +77,26 @@ const LeftVillageItems: React.FC<{ village: string }> = ({ village }) => {
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { pageData } = useSelector(
-    (state: OurStore) => state.villagePageReducer
-  );
+  const { villageUsers, villageGraduates, villageArticles, villagePersonalities, villageInstitutions, villageVideos } = useFetchData();
+
+  const getItemDataLength = (item) => {
+    switch (item) {
+      case "users":
+        return villageUsers.length;
+      case "graduates":
+        return villageGraduates.length;
+      case "articles":
+        return villageArticles.length;
+      case "personalities":
+        return villagePersonalities.length;
+      case "institutions":
+        return villageInstitutions.length;
+      case "videos":
+        return villageVideos.length;
+      default:
+        return 0
+    }
+  }
 
   return (
     <VStack
@@ -129,7 +145,7 @@ const LeftVillageItems: React.FC<{ village: string }> = ({ village }) => {
               h={5}
               borderRadius="xl"
             >
-              <Center>{pageData[item.value].length}</Center>
+              <Center>{getItemDataLength(item.value)}</Center>
             </Badge>
           </HStack>
         </Link>

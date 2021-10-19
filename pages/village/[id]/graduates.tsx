@@ -31,10 +31,12 @@ const Graduates: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
 
-  const { villageGraduates, fetchVillagePageData } = useFetchData();
+  const { villageGraduates, fetchVillageGraduatesData } = useFetchData();
 
   useEffect(() => {
-    fetchVillagePageData({ villageName: vid });
+    if(vid){
+      fetchVillageGraduatesData({ villageName: vid });
+    }
   }, [vid]);
 
 

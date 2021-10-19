@@ -15,6 +15,7 @@ import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
 import InstitutionCard from "components/InstitutionCard";
+import Alert from "components/widgets/Alert";
 
 import useLeftFixed from "hooks/use-left-fixed";
 import useFetchData from "hooks/use-fetch-data";
@@ -28,11 +29,13 @@ const Institutions: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
 
-  const { institutions, fetchVillagePageData } = useFetchData();
+  const { villageInstitutions, fetchVillageInstitutionsData } = useFetchData();
 
-  useEffect(()=>{
-    fetchVillagePageData({villageName: vid});
-  }, [vid])
+  useEffect(() => {
+    if (vid) {
+      fetchVillageInstitutionsData({ villageName: vid });
+    }
+  }, [vid]);
 
   return (
     <Fragment>
@@ -57,12 +60,16 @@ const Institutions: NextPage = () => {
             }
           >
             <VStack spacing={2}>
-              {institutions.map((institution) => (
-                <InstitutionCard
-                  key={institution.id}
-                  institution={institution}
-                />
-              ))}
+              {villageInstitutions.length > 0 &&
+                villageInstitutions.map((institution) => (
+                  <InstitutionCard
+                    key={institution.id}
+                    institution={institution}
+                  />
+                ))}
+              {villageInstitutions.length == 0 && (
+                <Alert message="There is no institution to be displayed." />
+              )}
             </VStack>
           </Box>
         </Flex>

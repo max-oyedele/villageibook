@@ -17,6 +17,7 @@ import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
 import ArticleCard from "components/ArticleCard";
+import Alert from "components/widgets/Alert";
 
 import useLeftFixed from "hooks/use-left-fixed";
 import useFetchData from "hooks/use-fetch-data";
@@ -30,10 +31,12 @@ const Society: NextPage = () => {
 
   const { fixed } = useLeftFixed();
 
-  const { articles, fetchVillagePageData } = useFetchData();
+  const { villageArticles, fetchVillageArticlesData } = useFetchData();
 
   useEffect(()=>{
-    fetchVillagePageData({villageName: vid})
+    if(vid){
+      fetchVillageArticlesData({villageName: vid})
+    }
   }, [vid])
 
   return (
@@ -58,7 +61,7 @@ const Society: NextPage = () => {
                 : "0px"
             }
           >
-            {articles.length > 0 && (
+            {villageArticles.length > 0 && (
               <Box bgColor="white" p={6}>
                 <Grid
                   templateColumns={
@@ -69,11 +72,14 @@ const Society: NextPage = () => {
                   columnGap={6}
                   rowGap={12}
                 >
-                  {articles.map((article) => (
+                  {villageArticles.map((article) => (
                     <ArticleCard key={article.id} article={article} />
                   ))}
                 </Grid>
               </Box>
+            )}
+            {villageArticles.length == 0 && (
+              <Alert message="There is no articles to be displayed." />
             )}
           </Box>
         </Flex>

@@ -59,8 +59,14 @@ const useFetchData = () => {
     (state: OurStore) => state.feedPageReducer
   );
 
-  const { villageUsers, villageGraduates, villageArticles, villagePersonalities, villageInstitutions, villageVideos } =
-    useSelector((state: OurStore) => state.villagePageReducer);
+  const {
+    villageUsers,
+    villageGraduates,
+    villageArticles,
+    villagePersonalities,
+    villageInstitutions,
+    villageVideos,
+  } = useSelector((state: OurStore) => state.villagePageReducer);
 
   const { totalGraduates } = useSelector(
     (state: OurStore) => state.graduatePageReducer.pageData
@@ -88,23 +94,6 @@ const useFetchData = () => {
     await dispatch(fetchProfessions());
   };
 
-  const fetchFeedPageData = async () => {
-    await dispatch(fetchPosts());
-    await dispatch(fetchRecentVillages());
-    await dispatch(fetchRecentUsers());
-  };
-  const fetchVillagePageData = async (params) => {
-    await dispatch(fetchVillageUsers(params));
-    await dispatch(fetchVillageGraduates(params));
-    await dispatch(fetchVillageArticles(params));
-    await dispatch(fetchVillagePersonalities(params));
-    await dispatch(fetchVillageInstitutions(params));
-    await dispatch(fetchVillageVideos(params));
-  };
-  const fetchGraduatePageData = async (params) => {
-    await dispatch(fetchGraduatePage(params));
-  };
-
   const fetchCommonData = () => {
     fetchCountriesData();
     fetchVillagesData(null);
@@ -118,6 +107,44 @@ const useFetchData = () => {
 
   const fetchUserData = async (params) => {
     await dispatch(fetchUser(params));
+  };
+
+  const fetchFeedPageData = async () => {
+    await dispatch(fetchPosts());
+    await dispatch(fetchRecentVillages());
+    await dispatch(fetchRecentUsers());
+  };
+
+  const fetchVillageUsersData = async (params) => {
+    await dispatch(fetchVillageUsers(params));
+  };
+  const fetchVillageGraduatesData = async (params) => {
+    await dispatch(fetchVillageGraduates(params));
+  };
+  const fetchVillageArticlesData = async (params) => {
+    await dispatch(fetchVillageArticles(params));
+  };
+  const fetchVillagePersonalitiesData = async (params) => {
+    await dispatch(fetchVillagePersonalities(params));
+  };
+  const fetchVillageInstitutionsData = async (params) => {
+    await dispatch(fetchVillageInstitutions(params));
+  };
+  const fetchVillageVideosData = async (params) => {
+    await dispatch(fetchVillageVideos(params));
+  };
+
+  const fetchVillagePageData = (params) => {
+    fetchVillageUsersData(params);
+    fetchVillageGraduatesData(params);
+    fetchVillageArticlesData(params);
+    fetchVillagePersonalitiesData(params);
+    fetchVillageInstitutionsData(params);
+    fetchVillageVideosData(params);
+  };
+
+  const fetchGraduatePageData = async (params) => {
+    await dispatch(fetchGraduatePage(params));
   };
 
   return {
@@ -136,7 +163,7 @@ const useFetchData = () => {
     subDistricts,
     villages,
     universities,
-    professions,    
+    professions,
     posts,
     recentVillages,
     recentUsers,
@@ -156,10 +183,17 @@ const useFetchData = () => {
     fetchVillagesData,
     fetchCommonData,
     fetchMeData,
-    fetchFeedPageData,
-    fetchVillagePageData,
-    fetchGraduatePageData,
     fetchUserData,
+    fetchFeedPageData,
+    fetchVillageUsersData,
+    fetchVillageGraduatesData,
+    fetchVillageArticlesData,
+    fetchVillagePersonalitiesData,
+    fetchVillageInstitutionsData,
+    fetchVillageVideosData,
+    fetchVillagePageData,
+
+    fetchGraduatePageData,
   };
 };
 

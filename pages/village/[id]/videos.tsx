@@ -8,7 +8,7 @@ import {
   Flex,
   Box,
   Text,
-  SimpleGrid,
+  SimpleGrid,  
   useBreakpointValue,
 } from "@chakra-ui/react";
 
@@ -17,6 +17,7 @@ import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
 import VideoCard from "components/VideoCard";
+import Alert from "components/widgets/Alert";
 
 import useLeftFixed from "hooks/use-left-fixed";
 import useFetchData from "hooks/use-fetch-data";
@@ -30,9 +31,11 @@ const Videos: NextPage = () => {
 
   const { fixed } = useLeftFixed();
 
-  const { users, articles, personalities, institutions, videos, fetchVillagePageData } = useFetchData();
+  const { villageVideos, fetchVillageVideosData } = useFetchData();
   useEffect(() => {
-    fetchVillagePageData({ villageName: vid });
+    if (vid) {
+      fetchVillageVideosData({ villageName: vid });
+    }
   }, [vid]);
 
   return (
@@ -57,20 +60,25 @@ const Videos: NextPage = () => {
                 : "0px"
             }
           >
-            <SimpleGrid
-              columns={{ base: 2, md: 3 }}
-              columnGap={4}
-              rowGap={10}
-              bgColor="white"
-              border="1px"
-              borderRadius="8px"
-              borderColor="gray.200"
-              p={4}
-            >
-              {videos.map((video) => (
-                <VideoCard key={video.id} video={video} />
-              ))}
-            </SimpleGrid>
+            {villageVideos.length > 0 && (
+              <SimpleGrid
+                columns={{ base: 2, md: 3 }}
+                columnGap={4}
+                rowGap={10}
+                bgColor="white"
+                border="1px"
+                borderRadius="8px"
+                borderColor="gray.200"
+                p={4}
+              >
+                {villageVideos.map((video) => (
+                  <VideoCard key={video.id} video={video} />
+                ))}
+              </SimpleGrid>
+            )}
+            {villageVideos.length == 0 && (
+              <Alert message="There is no video to be displayed." />
+            )}
           </Box>
         </Flex>
       </Container>

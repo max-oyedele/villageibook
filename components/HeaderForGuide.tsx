@@ -1,7 +1,5 @@
 import { Fragment, useState } from "react";
 
-import { useSelector } from "react-redux";
-
 import { BiMenu, BiX } from "react-icons/bi";
 import {
   Flex,
@@ -15,11 +13,12 @@ import {
 import Logo from "components/Logo";
 import SocialLinkBar from "components/SocialLinkBar";
 
-import { OurStore } from "rdx/store";
 import { Status } from "rdx/types";
 
+import useFetchData from "hooks/use-fetch-data";
+
 const HeaderForGuide: React.FC<{ title: string }> = ({ title }) => {
-  const { status } = useSelector((state: OurStore) => state.authReducer);
+  const { meStatus } = useFetchData()
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);
@@ -42,7 +41,7 @@ const HeaderForGuide: React.FC<{ title: string }> = ({ title }) => {
             <Box></Box>
           </Flex>
 
-          {status === Status.LOADING && (
+          {meStatus === Status.LOADING && (
             <Box w="full">
               <Progress h="2px" size="xs" isIndeterminate />
             </Box>
