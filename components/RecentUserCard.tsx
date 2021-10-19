@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { useRouter } from "next/router";
-import { Flex, HStack, Box, Text, Image } from "@chakra-ui/react";
+import { Flex, HStack, Box, Text, Image, Avatar } from "@chakra-ui/react";
 
 import { User } from "types/schema";
 
@@ -23,7 +23,7 @@ const RecentUserCard: React.FC<{ user: User }> = ({ user }) => {
         }}
         onClick={() => router.push(`/userview/${user.id}`)}
       >
-        <Image src={user.avatar} alt="" borderRadius="4px" />
+        <Avatar src={user.avatar??"/images/default-user.png"} size="sm" cursor="pointer" />
         <Box w="full" ml={4}>
           <Text fontSize="13px" textTransform="capitalize">
             {user.firstName} {user.lastName}

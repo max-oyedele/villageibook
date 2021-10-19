@@ -1,3 +1,5 @@
+import { Country } from "types/schema";
+
 export const platformCountries = [
   {
     id: 0,
@@ -7,7 +9,9 @@ export const platformCountries = [
   },
 ];
 
-export const watchCountries = [
+export const homeCountry = platformCountries[0];
+
+export const watchCountries:Country[] = [
   {
     id: 0,
     name: "Bangladesh",

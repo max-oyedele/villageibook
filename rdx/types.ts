@@ -1,22 +1,29 @@
-import {
-  SerializedError,
-} from "@reduxjs/toolkit";
+import { SerializedError } from "@reduxjs/toolkit";
 
-import {User, Country, Region, District, SubDistrict, Village, University, Profession} from "types/schema"
-import {Post, Article, Institution, Video, Personality} from "types/data"
+import {
+  User,
+  Country,
+  Region,
+  District,
+  SubDistrict,
+  Village,
+  University,
+  Profession,
+} from "types/schema";
+import { Post, Article, Institution, Video, Personality } from "types/data";
 
 export enum Status {
-  IDLE = 'idle',
-  LOADING = 'loading',
-  SUCCESS = 'success',
-  PENDING = 'pending',
-  ERROR = 'error',
+  IDLE = "idle",
+  LOADING = "loading",
+  SUCCESS = "success",
+  PENDING = "pending",
+  ERROR = "error",
 }
 
 export enum Step {
-  STEP1 = 'signup',
-  STEP2 = 'fill form',
-  COMPLETED = 'complete 2 steps'
+  STEP1 = "signup",
+  STEP2 = "fill form",
+  COMPLETED = "complete 2 steps",
 }
 
 export interface AuthState {
@@ -48,11 +55,9 @@ export interface LocationState {
 }
 export interface FeedPageState {
   status: Status;
-  pageData: {
-    posts: Post[];
-    recentVillages: Village[];
-    recentUsers: User[];
-  };
+  posts: Post[];
+  recentVillages: Village[];
+  recentUsers: User[];
   error?: SerializedError;
 }
 export interface VillagePageState {

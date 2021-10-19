@@ -2,14 +2,12 @@ import { User } from "types/schema";
 
 export type Post = {
   id: number;
-  user: User;
-  lastAt: string;
-  contents: {
-    text: string;
-    img: string;
-    video: Video;
-  };
-  village?: string;
+  user?: User;
+  lastUpdated: string;
+  content: string;
+  picture: string;
+  video: Video;
+  uuid: string;
 };
 
 export type Article = {

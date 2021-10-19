@@ -10,21 +10,61 @@ import axios from "axios";
 import { Status, FeedPageState } from "../types";
 
 //mock data
-import {
-  posts,
-  recentVillages,
-  recentUsers,
-} from "data/feed";
+import { posts, recentVillages, recentUsers } from "data/feed";
 
 import { getUserToken } from "helpers/get-user-token";
 
-export const fetchFeedPage = createAsyncThunk(
-  "feedPage/fetch",
+export const fetchPosts = createAsyncThunk(
+  "feedPage/fetchPosts",
   async (_, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      // const response = await axios.get('/api/feed-page-data', {access_token})
-      // return response.data.villagePageData; // data: {feedPageData: []}
+      const response = await axios.get("/api/feed/posts", {
+        params: { access_token },
+      });
+      return response.data.posts;
+
+      return {
+        posts,
+        recentVillages,
+        recentUsers,
+      };
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
+  }
+);
+
+export const fetchRecentVillages = createAsyncThunk(
+  "feedPage/fetchRecentVillages",
+  async (_, thunkAPI) => {
+    try {
+      const access_token = getUserToken();
+      const response = await axios.get("/api/feed/recentVillages", {
+        params: { access_token },
+      });
+      return response.data.villages;
+
+      return {
+        posts,
+        recentVillages,
+        recentUsers,
+      };
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
+  }
+);
+
+export const fetchRecentUsers = createAsyncThunk(
+  "feedPage/fetchRecentUsers",
+  async (_, thunkAPI) => {
+    try {
+      const access_token = getUserToken();
+      const response = await axios.get("/api/feed/recentUsers", {
+        params: { access_token },
+      });
+      return response.data.users;
 
       return {
         posts,
@@ -40,11 +80,9 @@ export const fetchFeedPage = createAsyncThunk(
 /************************************* */
 const initialState: FeedPageState = {
   status: Status.IDLE,
-  pageData: {
-    posts: [],
-    recentVillages: [],
-    recentUsers: [],
-  },
+  posts: [],
+  recentVillages: [],
+  recentUsers: [],
   error: null,
 };
 
@@ -55,15 +93,39 @@ export const feedPageSlice = createSlice({
     reset: () => initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchFeedPage.pending, (state) => {
+    builder.addCase(fetchPosts.pending, (state) => {
       state.status = Status.LOADING;
       state.error = null;
     });
-    builder.addCase(fetchFeedPage.fulfilled, (state, action) => {
+    builder.addCase(fetchPosts.fulfilled, (state, action) => {
       state.status = Status.IDLE;
-      state.pageData = action.payload;
+      state.posts = action.payload;
     });
-    builder.addCase(fetchFeedPage.rejected, (state, action) => {
+    builder.addCase(fetchPosts.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(fetchRecentVillages.pending, (state) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(fetchRecentVillages.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.recentVillages = action.payload;
+    });
+    builder.addCase(fetchRecentVillages.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(fetchRecentUsers.pending, (state) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(fetchRecentUsers.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.recentUsers = action.payload;
+    });
+    builder.addCase(fetchRecentUsers.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

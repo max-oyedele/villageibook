@@ -11,17 +11,32 @@ import {
   fetchProfessions,
 } from "rdx/slices/location";
 import { fetchMe, fetchUser } from "rdx/slices/user";
-import { fetchFeedPage } from "rdx/slices/feedPage";
+import {
+  fetchPosts,
+  fetchRecentVillages,
+  fetchRecentUsers,
+} from "rdx/slices/feedPage";
 import { fetchVillagePage } from "rdx/slices/villagePage";
 import { fetchGraduatePage } from "rdx/slices/graduatePage";
 
 const useFetchData = () => {
   const dispatch: MyThunkDispatch = useDispatch();
 
-  const { jwt, me: authMe, status: authStatus, error:authError } = useSelector((state: OurStore) => state.authReducer);
-  const { me, meStep, status: meStatus, meError, postError, user, userError } = useSelector(
-    (state: OurStore) => state.userReducer
-  );
+  const {
+    jwt,
+    me: authMe,
+    status: authStatus,
+    error: authError,
+  } = useSelector((state: OurStore) => state.authReducer);
+  const {
+    me,
+    meStep,
+    status: meStatus,
+    meError,
+    postError,
+    user,
+    userError,
+  } = useSelector((state: OurStore) => state.userReducer);
 
   const {
     countries,
@@ -34,7 +49,7 @@ const useFetchData = () => {
   } = useSelector((state: OurStore) => state.locationReducer);
 
   const { posts, recentVillages, recentUsers } = useSelector(
-    (state: OurStore) => state.feedPageReducer.pageData
+    (state: OurStore) => state.feedPageReducer
   );
 
   const { users, graduates, articles, personalities, institutions, videos } =
@@ -67,7 +82,9 @@ const useFetchData = () => {
   };
 
   const fetchFeedPageData = async () => {
-    await dispatch(fetchFeedPage());
+    await dispatch(fetchPosts());
+    await dispatch(fetchRecentVillages());
+    await dispatch(fetchRecentUsers());
   };
   const fetchVillagePageData = async (params) => {
     await dispatch(fetchVillagePage(params));

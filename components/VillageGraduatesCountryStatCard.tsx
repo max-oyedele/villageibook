@@ -12,9 +12,8 @@ import {
 } from "@chakra-ui/react";
 
 import GraduatePercent from "./GraduatePercent";
-
+import { platformCountries, homeCountry, watchCountries } from "constants/global";
 const totalGraduatesCount = 1000;
-const homeCountry = "bangladesh";
 
 const VillageGraduatesCountryStatCard: React.FC<{
   village: string;
@@ -22,14 +21,14 @@ const VillageGraduatesCountryStatCard: React.FC<{
 }> = ({ village, direction }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const {countries, graduates, fetchCountriesData} = useFetchData();
+  const {graduates, fetchCountriesData} = useFetchData();
   
   useEffect(() => {
     fetchCountriesData();
   }, []);
 
   const maxRowsPerCol = Math.floor(
-    countries.length / 2 + (countries.length % 2)
+    watchCountries.length / 2 + (watchCountries.length % 2)
   );
 
   return (
@@ -53,7 +52,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
 
           {direction === "column" && (
             <VStack w="full" divider={<Divider />}>
-              {countries.map((country, index) => (
+              {watchCountries.map((country, index) => (
                 <CountryBox
                   key={country.id}
                   country={country}
@@ -70,7 +69,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
           {direction === "row" && (
             <>
               <VStack w="full" divider={<Divider />}>
-                {countries.map((country, index) => {
+                {watchCountries.map((country, index) => {
                   if (index >= maxRowsPerCol) return null;
                   return (
                     <CountryBox
@@ -86,7 +85,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
                 })}
               </VStack>
               <VStack w="full" divider={<Divider />}>
-                {countries.map((country, index) => {
+                {watchCountries.map((country, index) => {
                   if (index < maxRowsPerCol) return null;
                   return (
                     <CountryBox
@@ -121,7 +120,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
             graduatesCount={graduates.length}
           />
           <VStack w="full" divider={<Divider />}>
-            {countries.map((country, index) => (
+            {watchCountries.map((country, index) => (
               <CountryBox
                 key={country.id}
                 country={country}
@@ -151,7 +150,7 @@ const CountryBox: React.FC<{ country: Country; count: number }> = ({
       <Text fontSize="12px" textTransform="capitalize">
         {country.name}
       </Text>
-      <Capsule count={count} flag={country.href === homeCountry ? "home" : "oversea"} />
+      <Capsule count={count} flag={country.name === homeCountry.name ? "home" : "oversea"} />
     </Flex>
   );
 };

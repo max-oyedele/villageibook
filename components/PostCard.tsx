@@ -28,22 +28,22 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
           bgColor="white"
           borderRadius="6px"
         >
-          <Link href={`/userview/${post.user.id}`}>
-            <Avatar src={post.user.avatar} size="sm" cursor="pointer" />
-          </Link>
+          {/* <Link href={`/userview/${post.user.id}`}> */}
+            <Avatar src={post.user?.avatar??"/images/default-user.png"} size="sm" cursor="pointer" />
+          {/* </Link> */}
           <Box w="full" ml={4}>
-            <Link href={`/userview/${post.user.id}`}>
+            {/* <Link href={`/userview/${post.user.id}`}> */}
               <Text
                 display="inline"
                 fontSize="13px"
                 textTransform="capitalize"
                 _hover={{ textDecoration: "underline", cursor: "pointer" }}
               >
-                {post.user.firstName} {post.user.lastName}
+                {post.user?.firstName??""} {post.user?.lastName??""}
               </Text>
-            </Link>
+            {/* </Link> */}
             <Text fontSize="11px" color="GrayText">
-              {post.lastAt}
+              {post.lastUpdated}
             </Text>
           </Box>
         </Flex>
@@ -56,15 +56,15 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
             readMoreStyle={{ color: "#553CFB", cursor: "pointer" }}
             readLessStyle={{ color: "#553CFB", cursor: "pointer" }}
           >
-            {post.contents.text}
+            {post.content}
           </ReactReadMoreReadLess>
         </Text>
 
         <Stack direction={{ base: "column", lg: "row" }} spacing={4}>
-          {post.contents.img && (
+          {post.picture && (
             <Box w="full">
               <Image
-                src={post.contents.img}
+                src={post.picture}
                 alt=""
                 borderRadius="4px"
                 w="full"
@@ -73,10 +73,10 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
               />
             </Box>
           )}
-          {post.contents.video && (
+          {post.video && (
             <Box w="full">
               <VideoBox
-                video={post.contents.video}
+                video={post.video}
               />
             </Box>
           )}
