@@ -17,13 +17,13 @@ import LeftVillageCard from "components/LeftVillageCard";
 import InstitutionCard from "components/InstitutionCard";
 import Alert from "components/widgets/Alert";
 
-import useLeftFixed from "hooks/use-left-fixed";
+import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 
 const Institutions: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { fixed } = useLeftFixed();
+  const { fixed } = useWindowProp();
 
   const router = useRouter();
   const { query } = router;

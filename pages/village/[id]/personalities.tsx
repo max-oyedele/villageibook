@@ -18,7 +18,7 @@ import LeftVillageCard from "components/LeftVillageCard";
 import PersonalityCard from "components/PersonalityCard";
 import Alert from "components/widgets/Alert";
 
-import useLeftFixed from "hooks/use-left-fixed";
+import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 
 const Personalities: NextPage = () => {
@@ -28,7 +28,7 @@ const Personalities: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
 
-  const { fixed } = useLeftFixed();
+  const { fixed } = useWindowProp();
 
   const { villagePersonalities, fetchVillagePersonalitiesData } =
     useFetchData();

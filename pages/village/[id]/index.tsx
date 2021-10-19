@@ -28,7 +28,7 @@ import InstitutionCard from "components/InstitutionCard";
 import VideoCard from "components/VideoCard";
 import FilterCard from "components/FilterCard";
 
-import useLeftFixed from "hooks/use-left-fixed";
+import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 
 const Posts: NextPage = () => {
@@ -39,7 +39,7 @@ const Posts: NextPage = () => {
 
   const { villageUsers, villageArticles, villagePersonalities, villageInstitutions, villageVideos, fetchVillagePageData } = useFetchData();
 
-  const { fixed } = useLeftFixed();
+  const { fixed } = useWindowProp();
 
   useEffect(() => {
     if(vid){

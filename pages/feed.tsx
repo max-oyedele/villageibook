@@ -30,12 +30,12 @@ import VillageGraduatesCountryStatCard from "components/VillageGraduatesCountryS
 import RecentUserCard from "components/RecentUserCard";
 import VideoBox from "components/VideoBox";
 
-import useLeftFixed from "hooks/use-left-fixed";
+import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 
 const Feed: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-  const { fixed } = useLeftFixed();
+  const { fixed } = useWindowProp();
 
   const tabsMobile = ["Feed", "Village", "Graduates"];
   const [activeTab, setActiveTab] = useState(tabsMobile[0]);
@@ -103,14 +103,13 @@ const Feed: NextPage = () => {
 
           <Box
             w={{ base: "100%", md: "full" }}
-            ml={
+            mx={
               fixed && breakpointValue === "md"
                 ? "294px"
                 : breakpointValue === "md"
                 ? "24px"
                 : "0px"
             }
-            mr={breakpointValue === "md" ? "24px" : 0}
           >
             <Box bg="white" borderRadius="4px" mb={4} p={4}>
               <PostForm />
@@ -166,8 +165,9 @@ const Feed: NextPage = () => {
           {breakpointValue === "md" && (
             <Box
               minW="270px"
-              // pos={fixed ? "fixed" : "static"}
-              // top={fixed ? "80px" : 0}
+              pos={fixed ? "fixed" : "static"}
+              top={fixed ? "80px" : 0}
+              right="0"
             >
               <VillageGraduatesCountryStatCard village={me?.comesFrom} direction="column" />
 

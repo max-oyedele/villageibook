@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const useLeftFixed = () => {
+const useWindowProp = () => {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });
 
@@ -19,4 +19,4 @@ const useLeftFixed = () => {
   return { fixed: fixed };
 };
 
-export default useLeftFixed;
+export default useWindowProp;

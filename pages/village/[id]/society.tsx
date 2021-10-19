@@ -19,7 +19,7 @@ import LeftVillageCard from "components/LeftVillageCard";
 import ArticleCard from "components/ArticleCard";
 import Alert from "components/widgets/Alert";
 
-import useLeftFixed from "hooks/use-left-fixed";
+import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 
 const Society: NextPage = () => {
@@ -29,7 +29,7 @@ const Society: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
 
-  const { fixed } = useLeftFixed();
+  const { fixed } = useWindowProp();
 
   const { villageArticles, fetchVillageArticlesData } = useFetchData();
 
