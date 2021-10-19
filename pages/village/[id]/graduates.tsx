@@ -31,7 +31,7 @@ const Graduates: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
 
-  const { graduates, fetchVillagePageData } = useFetchData();
+  const { villageGraduates, fetchVillagePageData } = useFetchData();
 
   useEffect(() => {
     fetchVillagePageData({ villageName: vid });
@@ -67,7 +67,7 @@ const Graduates: NextPage = () => {
             />
 
             <VStack spacing={2} mt={6}>
-              {graduates.map((user) => (
+              {villageGraduates.map((user) => (
                 <PersonalityCard key={user.id} user={user} />
               ))}
             </VStack>

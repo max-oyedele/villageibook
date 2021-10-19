@@ -21,7 +21,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
 }> = ({ village, direction }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const {graduates, fetchCountriesData} = useFetchData();
+  const {villageGraduates, fetchCountriesData} = useFetchData();
   
   useEffect(() => {
     fetchCountriesData();
@@ -47,7 +47,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
           <GraduatePercent
             village={village}
             totalCount={totalGraduatesCount}
-            graduatesCount={graduates.length}
+            graduatesCount={villageGraduates.length}
           />
 
           {direction === "column" && (
@@ -57,7 +57,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
                   key={country.id}
                   country={country}
                   count={
-                    graduates.filter(
+                    villageGraduates.filter(
                       (user) => user.graduatedAt === country.href
                     ).length
                   }
@@ -76,7 +76,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
                       key={country.id}
                       country={country}
                       count={
-                        graduates.filter(
+                        villageGraduates.filter(
                           (user) => user.graduatedAt === country.href
                         ).length
                       }
@@ -92,7 +92,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
                       key={country.id}
                       country={country}
                       count={
-                        graduates.filter(
+                        villageGraduates.filter(
                           (user) => user.graduatedAt === country.href
                         ).length
                       }
@@ -117,7 +117,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
           <GraduatePercent
             village={village}
             totalCount={totalGraduatesCount}
-            graduatesCount={graduates.length}
+            graduatesCount={villageGraduates.length}
           />
           <VStack w="full" divider={<Divider />}>
             {watchCountries.map((country, index) => (
@@ -125,7 +125,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
                 key={country.id}
                 country={country}
                 count={
-                  graduates.filter(
+                  villageGraduates.filter(
                     (user) => user.graduatedAt === country.href
                   ).length
                 }

@@ -16,7 +16,14 @@ import {
   fetchRecentVillages,
   fetchRecentUsers,
 } from "rdx/slices/feedPage";
-import { fetchVillagePage } from "rdx/slices/villagePage";
+import {
+  fetchVillageUsers,
+  fetchVillageGraduates,
+  fetchVillageArticles,
+  fetchVillagePersonalities,
+  fetchVillageInstitutions,
+  fetchVillageVideos,
+} from "rdx/slices/villagePage";
 import { fetchGraduatePage } from "rdx/slices/graduatePage";
 
 const useFetchData = () => {
@@ -52,8 +59,8 @@ const useFetchData = () => {
     (state: OurStore) => state.feedPageReducer
   );
 
-  const { users, graduates, articles, personalities, institutions, videos } =
-    useSelector((state: OurStore) => state.villagePageReducer.pageData);
+  const { villageUsers, villageGraduates, villageArticles, villagePersonalities, villageInstitutions, villageVideos } =
+    useSelector((state: OurStore) => state.villagePageReducer);
 
   const { totalGraduates } = useSelector(
     (state: OurStore) => state.graduatePageReducer.pageData
@@ -87,7 +94,12 @@ const useFetchData = () => {
     await dispatch(fetchRecentUsers());
   };
   const fetchVillagePageData = async (params) => {
-    await dispatch(fetchVillagePage(params));
+    await dispatch(fetchVillageUsers(params));
+    await dispatch(fetchVillageGraduates(params));
+    await dispatch(fetchVillageArticles(params));
+    await dispatch(fetchVillagePersonalities(params));
+    await dispatch(fetchVillageInstitutions(params));
+    await dispatch(fetchVillageVideos(params));
   };
   const fetchGraduatePageData = async (params) => {
     await dispatch(fetchGraduatePage(params));
@@ -124,19 +136,19 @@ const useFetchData = () => {
     subDistricts,
     villages,
     universities,
-    professions,
-    graduates,
+    professions,    
     posts,
     recentVillages,
     recentUsers,
     totalGraduates,
     user,
     userError,
-    users,
-    articles,
-    personalities,
-    institutions,
-    videos,
+    villageUsers,
+    villageGraduates,
+    villageArticles,
+    villagePersonalities,
+    villageInstitutions,
+    villageVideos,
     fetchCountriesData,
     fetchRegionsData,
     fetchDistrictsData,

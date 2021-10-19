@@ -18,17 +18,7 @@ export type Article = {
   village?: string;
 };
 
-export type Personality = {
-  id: number;
-  name: string;
-  img: string;
-  role?: string;
-  details?: {
-    photos: string[];
-  };
-  desc?: string;
-  village?: string;
-};
+export type Personality = User
 
 export type Institution = {
   id: number;

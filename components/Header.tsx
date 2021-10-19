@@ -50,10 +50,10 @@ const Header = () => {
     query: { id },
   } = router;
 
-  const { authStatus } = useFetchData();
+  const { authStatus, me } = useFetchData();
   const { authReset } = useActionDispatch();
 
-  const village = id;
+  const village = id??me?.comesFrom;
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);

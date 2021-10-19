@@ -37,7 +37,7 @@ const Posts: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
 
-  const { users, articles, personalities, institutions, videos, fetchVillagePageData } = useFetchData();
+  const { villageUsers, villageArticles, villagePersonalities, villageInstitutions, villageVideos, fetchVillagePageData } = useFetchData();
 
   const { fixed } = useLeftFixed();
 
@@ -76,20 +76,20 @@ const Posts: NextPage = () => {
                 : "0px"
             }
           >
-            {users.length > 0 && (
+            {villageUsers.length > 0 && (
               <Box bgColor="white" p={6} mb={6}>
                 <Text fontSize="14px">MY PAGES</Text>
 
                 {breakpointValue === "md" && (
                   <VStack spacing={2} mt={6}>
-                    {users.slice(0, 5).map((user) => (
+                    {villageUsers.slice(0, 5).map((user) => (
                       <UserCard key={user.id} user={user} />
                     ))}
                   </VStack>
                 )}
                 {breakpointValue === "base" && (
                   <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4} mt={6}>
-                    {users.map((user) => (
+                    {villageUsers.map((user) => (
                       <UserCard key={user.id} user={user} />
                     ))}
                   </SimpleGrid>
@@ -103,7 +103,7 @@ const Posts: NextPage = () => {
                       cursor="pointer"
                       mt={8}
                     >
-                      SEE ALL MY PAGES ({users.length})
+                      SEE ALL MY PAGES ({villageUsers.length})
                     </Text>
                   </Link>
                 </Box>
@@ -121,7 +121,7 @@ const Posts: NextPage = () => {
               </Box>
             </Box>
 
-            {articles.length > 0 && (
+            {villageArticles.length > 0 && (
               <Box bgColor="white" p={6} mb={6}>
                 <Text fontSize="14px">SOCIETY</Text>
                 <SimpleGrid
@@ -130,7 +130,7 @@ const Posts: NextPage = () => {
                   rowGap={10}
                   mt={6}
                 >
-                  {articles.slice(0, 2).map((article) => (
+                  {villageArticles.slice(0, 2).map((article) => (
                     <ArticleCard key={article.id} article={article} />
                   ))}
                 </SimpleGrid>
@@ -143,26 +143,26 @@ const Posts: NextPage = () => {
                       textAlign="center"
                       cursor="pointer"
                     >
-                      SEE ALL ARTICLES ({articles.length})
+                      SEE ALL ARTICLES ({villageArticles.length})
                     </Text>
                   </Link>
                 </Box>
               </Box>
             )}
 
-            {users.length > 0 && (
+            {villagePersonalities.length > 0 && (
               <Box bgColor="white" p={6} mb={6}>
                 <Text fontSize="14px">PERSONALITIES</Text>
                 {breakpointValue === "md" && (
                   <VStack spacing={2} mt={6}>
-                    {users.slice(0, 5).map((user) => (
+                    {villagePersonalities.slice(0, 5).map((user) => (
                       <PersonalityCard key={user.id} user={user} />
                     ))}
                   </VStack>
                 )}
                 {breakpointValue === "base" && (
                   <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4} mt={6}>
-                    {users.map((user) => (
+                    {villagePersonalities.map((user) => (
                       <PersonalityCard key={user.id} user={user} />
                     ))}
                   </SimpleGrid>
@@ -176,18 +176,18 @@ const Posts: NextPage = () => {
                       cursor="pointer"
                       mt={8}
                     >
-                      SEE ALL PERSONALITIES ({personalities.length})
+                      SEE ALL PERSONALITIES ({villagePersonalities.length})
                     </Text>
                   </Link>
                 </Box>
               </Box>
             )}
 
-            {institutions.length > 0 && (
+            {villageInstitutions.length > 0 && (
               <Box bgColor="white" p={6} mb={6}>
                 <Text fontSize="14px">INSTITUTIONS</Text>
                 <VStack spacing={2} mt={6}>
-                  {institutions.slice(0, 3).map((institution) => (
+                  {villageInstitutions.slice(0, 3).map((institution) => (
                     <InstitutionCard
                       key={institution.id}
                       institution={institution}
@@ -203,14 +203,14 @@ const Posts: NextPage = () => {
                       mt={8}
                       cursor="pointer"
                     >
-                      SEE ALL INSTITUTIONS ({institutions.length})
+                      SEE ALL INSTITUTIONS ({villageInstitutions.length})
                     </Text>
                   </Link>
                 </Box>
               </Box>
             )}
 
-            {videos.length > 0 && (
+            {villageVideos.length > 0 && (
               <Box bgColor="white" p={6} mb={6}>
                 <Text fontSize="14px">VIDEOS</Text>
                 <SimpleGrid
@@ -219,7 +219,7 @@ const Posts: NextPage = () => {
                   rowGap={10}
                   mt={6}
                 >
-                  {videos.slice(0, 6).map((video) => (
+                  {villageVideos.slice(0, 6).map((video) => (
                     <VideoCard key={video.id} video={video} />
                   ))}
                 </SimpleGrid>
@@ -232,7 +232,7 @@ const Posts: NextPage = () => {
                       textAlign="center"
                       cursor="pointer"
                     >
-                      SEE ALL VIDEOS ({videos.length})
+                      SEE ALL VIDEOS ({villageVideos.length})
                     </Text>
                   </Link>
                 </Box>

@@ -62,14 +62,12 @@ export interface FeedPageState {
 }
 export interface VillagePageState {
   status: Status;
-  pageData: {
-    users: User[];
-    graduates: User[];
-    articles: Article[];
-    personalities: Personality[];
-    institutions: Institution[];
-    videos: Video[];
-  };
+  villageUsers: User[];
+  villageGraduates: User[];
+  villageArticles: Article[];
+  villagePersonalities: Personality[];
+  villageInstitutions: Institution[];
+  villageVideos: Video[];
   error?: SerializedError;
 }
 
