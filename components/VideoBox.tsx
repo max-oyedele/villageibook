@@ -28,11 +28,7 @@ import {
 
 import ReactPlayer from "react-player/lazy";
 
-import type { Video } from "types/data";
-
-const VideoBox: React.FC<{ video: Video }> = ({
-  video
-}) => {
+const VideoBox: React.FC<{ videoUrl: string }> = ({ videoUrl }) => {
   const router = useRouter();
   const { pathname } = router;
 
@@ -43,34 +39,32 @@ const VideoBox: React.FC<{ video: Video }> = ({
   return (
     <Fragment>
       <Box w="full" pos="relative">
-        <Image
-          src={video?.img}
-          alt=""
-          objectFit="cover"
-          borderRadius="6px"
-          w="full"
-          fit="cover"
+        <ReactPlayer
+          className="react-player"
+          url={videoUrl}
+          width="100%"
+          height="100%"
+          playing={false}
         />
-        {(video?.img) && (
-          <Flex
-            pos="absolute"
-            top={0}
-            w="full"
-            h="full"
-            justifyContent="center"
-            alignItems="center"
+
+        <Flex
+          pos="absolute"
+          top={0}
+          w="full"
+          h="full"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Circle
+            w={9}
+            h={9}
+            bgColor="gray.600"
+            _hover={{ bgColor: "red.500", cursor: "pointer" }}
+            onClick={onOpen}
           >
-            <Circle
-              w={9}
-              h={9}
-              bgColor="gray.600"
-              _hover={{ bgColor: "red.500", cursor: "pointer" }}
-              onClick={onOpen}
-            >
-              <BiCaretRight fontSize="24px" color="white" />
-            </Circle>
-          </Flex>
-        )}
+            <BiCaretRight fontSize="24px" color="white" />
+          </Circle>
+        </Flex>
       </Box>
 
       <Modal
@@ -85,10 +79,11 @@ const VideoBox: React.FC<{ video: Video }> = ({
           {/* <ModalCloseButton color="white" zIndex={10} /> */}
           <ReactPlayer
             className="react-player"
-            url={"https://video.vidyard.com/watch/YBvcF2BEfvKdowmfrRwk57"}
+            url={videoUrl}
             width="100%"
             height="100%"
             playing={true}
+            controls={true}
           />
         </ModalContent>
       </Modal>

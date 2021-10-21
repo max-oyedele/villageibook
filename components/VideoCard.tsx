@@ -15,9 +15,7 @@ import {
 
 import VideoBox from "components/VideoBox";
 
-import type { Video } from "types/data";
-
-const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
+const VideoCard: React.FC<{ video: string }> = ({ video }) => {
   const router = useRouter();
   const { pathname } = router;
 
@@ -26,13 +24,13 @@ const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
   return (
     <Fragment>
       <Flex w="full" flexDirection="column">
-        <VideoBox video={video} />
+        <VideoBox videoUrl={video} />
         <Box mt={4}>
           <Text fontSize="15px" color="primary" textTransform="capitalize">
-            {video.title}
+            {"video.title"}
           </Text>
           <Text fontSize="12px" color="GrayText" textTransform="capitalize">
-            {video.author}
+            {"video.author"}
           </Text>
         </Box>
       </Flex>

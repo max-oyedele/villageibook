@@ -16,10 +16,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import {
-  Formik,
-  Form,
-} from "formik";
+import { Formik, Form } from "formik";
 import * as yup from "yup";
 
 import {
@@ -42,14 +39,18 @@ import AvatarUpload from "components/widgets/AvatarUpload";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
 
+import { getUserToken } from "helpers/get-user-token";
+
 import { degrees } from "constants/account";
 import { platformCountries } from "constants/global";
+import { Step } from "rdx/types";
 
 const AccountToRegister: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const {
     me,
+    meStep,
     countries,
     districts,
     subDistricts,
@@ -65,7 +66,7 @@ const AccountToRegister: NextPage = () => {
     fetchMeData,
   } = useFetchData();
 
-  const {submitStepOneData} = useActionDispatch();
+  const { submitStepOneData } = useActionDispatch();
 
   useEffect(() => {
     fetchMeData();
@@ -95,12 +96,21 @@ const AccountToRegister: NextPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if(!me){
-      router.push("/");
+    const access_token = getUserToken();
+    if (access_token) {
+      fetchMeData();
+      fetchCommonData();
+    } else {
+      router.push("/home");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (meStep === Step.STEP2) {
+      router.push("/feed");
       return;
     }
-    fetchCommonData();
-  }, [me]);
+  }, [meStep]);
 
   useEffect(() => {
     setSelectedRegion(null);
@@ -164,11 +174,11 @@ const AccountToRegister: NextPage = () => {
               avatar,
               comesFrom: selectedVillage.uuid,
               livesIn: selectedLivingCountry.uuid,
-              graduatedAt: selectedUniversity.uuid,
-              profession: selectedProfession.uuid,
-              degree: selectedDegree.name,
+              graduatedAt: selectedUniversity?.uuid,
+              degree: selectedDegree?.name,
+              profession: selectedProfession?.uuid
             };
-
+            
             actions.setSubmitting(true);
             await submitStepOneData(params);
             actions.setSubmitting(false);
@@ -220,7 +230,7 @@ const AccountToRegister: NextPage = () => {
                         <InputBoxWithSelect
                           id="livingCountry"
                           label="Country"
-                          options={countries}
+                          options={villages} //temmp
                           optionLabel={({ name }) => name}
                           selectedOption={selectedLivingCountry}
                           setSelectedOption={setSelectedLivingCountry}

@@ -35,7 +35,7 @@ import useFetchData from "hooks/use-fetch-data";
 
 const Feed: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-  const { fixed, feedRootWidth, leftPartOffsetX } = useWindowProp();
+  const { fixed, rightPartOffsetX } = useWindowProp();
 
   const tabsMobile = ["Feed", "Village", "Graduates"];
   const [activeTab, setActiveTab] = useState(tabsMobile[0]);
@@ -47,6 +47,10 @@ const Feed: NextPage = () => {
     fetchFeedPageData();
     fetchVillagePageData({ villageName: me?.comesFrom });
   }, []);
+  
+  useEffect(()=>{
+    console.log('rightpart', rightPartOffsetX)
+  }, [rightPartOffsetX])
 
   return (
     <Fragment>
@@ -143,12 +147,7 @@ const Feed: NextPage = () => {
                 <VillageGraduatesCountryStatCard village={me?.comesFrom} direction="column" />
                 <Box mt={12}>
                   <VideoBox
-                    video={{
-                      id: 0,
-                      title: "video title",
-                      author: "author",
-                      img: "https://bit.ly/naruto-sage",
-                    }}
+                    videoUrl={""}
                   />
                 </Box>
 
@@ -169,7 +168,7 @@ const Feed: NextPage = () => {
               minW="270px"
               pos={fixed ? "fixed" : "static"}
               top={fixed ? "80px" : 0}
-              left={fixed ? leftPartOffsetX + 270 + 2*24 + feedRootWidth : 0}
+              left={fixed ? rightPartOffsetX : 0}
             >
               <VillageGraduatesCountryStatCard village={me?.comesFrom} direction="column" />
 

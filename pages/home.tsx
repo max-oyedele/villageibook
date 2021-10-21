@@ -185,12 +185,7 @@ const Home: NextPage = () => {
 
         <Container maxW="container.md" mt={24}>
           <VideoBox
-            video={{
-              id: 0,
-              title: "video title",
-              author: "author",
-              img: "https://bit.ly/naruto-sage",
-            }}
+            videoUrl="https://dms.licdn.com/playlist/C4E05AQHku83iVu0opQ/mp4-720p-30fp-crf28/0/1634735737014?e=1634907600&v=beta&t=kaOqes8UxaDsNDFbWAgC3_3yl9fHsNOqVMdSxwwwHsQ"
           />
         </Container>
 

@@ -90,12 +90,7 @@ const PostForm: React.FC = () => {
         {videoURL && (
           <Center w="full">
             <VideoBox
-              video={{
-                id: 0,
-                title: "video title",
-                author: "author",
-                img: "/images/default-video.png",
-              }}
+              videoUrl={videoURL}
             />
           </Center>
         )}

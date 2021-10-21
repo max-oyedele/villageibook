@@ -244,8 +244,8 @@ const Step1Form = ({ avatar }) => {
           comesFrom: selectedVillage.uuid,
           livesIn: selectedLivingCountry.uuid,
           graduatedAt: selectedUniversity?.uuid,
-          profession: selectedProfession.uuid,
           degree: selectedDegree?.name,
+          profession: selectedProfession?.uuid
         };
 
         actions.setSubmitting(true);

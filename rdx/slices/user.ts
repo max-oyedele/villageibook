@@ -49,7 +49,6 @@ export const submitStepOne = createAsyncThunk(
       livesIn?: string;
       comesFrom?: string;
       graduatedAt?: string;
-      university?: string;
       degree?: string;
       profession?: string;
     },
@@ -64,9 +63,9 @@ export const submitStepOne = createAsyncThunk(
       bodyFormData.append("avatar", params.avatar);
       bodyFormData.append("livesIn", params.livesIn);
       bodyFormData.append("comesFrom", params.comesFrom);
-      bodyFormData.append("graduatedAt", params.graduatedAt);
-      bodyFormData.append("degree", params.degree);
-      bodyFormData.append("profession", params.profession);
+      if(params.graduatedAt) bodyFormData.append("graduatedAt", params.graduatedAt);
+      if(params.degree) bodyFormData.append("degree", params.degree);
+      if(params.profession) bodyFormData.append("profession", params.profession);
 
       const response = await axios.patch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`,

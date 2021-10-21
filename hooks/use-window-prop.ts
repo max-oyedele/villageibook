@@ -24,20 +24,23 @@ const useWindowProp = () => {
     return dom?.getBoundingClientRect();
   };
 
-  const [leftPartOffsetX, setLeftPartOffsetX] = useState(0);
-  const [feedRootWidth, setFeedRootWidth] = useState(0);
+  const [rightPartOffsetX, setRightPartOffsetX] = useState(0);
 
   const handleLoad = () => {
-    setLeftPartOffsetX(getClientRect("#left-part")?.x);
-    setFeedRootWidth(getClientRect("#feed-root")?.width);
+    setRightPartOffset();
   };
 
   const handleResize = () => {
-    setLeftPartOffsetX(getClientRect("#left-part")?.x);
-    setFeedRootWidth(getClientRect("#feed-root")?.width);
+    setRightPartOffset();
   };
 
-  return { fixed, feedRootWidth, leftPartOffsetX };
+  const setRightPartOffset = () => {
+    const leftPartOffsetX = getClientRect("#left-part")?.x;
+    const feedRootWidth = getClientRect("#feed-root")?.width;
+    setRightPartOffsetX(leftPartOffsetX + 270 + 2*24 + feedRootWidth);
+  }
+
+  return { fixed, rightPartOffsetX };
 };
 
 export default useWindowProp;

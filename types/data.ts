@@ -6,7 +6,7 @@ export type Post = {
   lastUpdated: string;
   content: string;
   picture: string;
-  video: Video;
+  video: string;
   uuid: string;
 };
 
@@ -27,13 +27,5 @@ export type Institution = {
   img: string;
   address: string;
   phone: string;
-  village?: string;
-};
-
-export type Video = {
-  id: number;
-  title: string;
-  author: string;
-  img: string;
   village?: string;
 };

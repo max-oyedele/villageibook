@@ -6,6 +6,7 @@ import {
   Flex,
   Stack,
   Box,
+  Center,
   Text,
   Avatar,
   Image,
@@ -62,7 +63,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
 
         <Stack direction={{ base: "column", lg: "row" }} spacing={4}>
           {post.picture && (
-            <Box w="full">
+            <Center w="full">
               <Image
                 src={post.picture}
                 alt=""
@@ -71,14 +72,14 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
                 h="full"
                 fit="cover"
               />
-            </Box>
+            </Center>
           )}
           {post.video && (
-            <Box w="full">
+            <Center w="full">
               <VideoBox
-                video={post.video}
+                videoUrl={post.video}
               />
-            </Box>
+            </Center>
           )}
         </Stack>
       </Box>
