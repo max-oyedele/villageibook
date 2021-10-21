@@ -29,3 +29,11 @@ export type Institution = {
   phone: string;
   village?: string;
 };
+
+export type Video = {
+  id: number;
+  title: string;
+  author: string;
+  video: string;
+  village?: string;
+};

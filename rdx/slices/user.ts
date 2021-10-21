@@ -174,6 +174,7 @@ const initialState: UserState = {
   me: null,
   meStep: Step.STEP1,
   meError: null,
+  postStatus: Status.IDLE,
   postError: null,
   user: null,
   userError: null,
@@ -239,14 +240,15 @@ export const userSlice = createSlice({
       state.meError = action.payload;
     });
     builder.addCase(submitPost.pending, (state, action) => {
-      state.status = Status.LOADING;
+      state.postStatus = Status.LOADING;
       state.postError = null;
     });
     builder.addCase(submitPost.fulfilled, (state, action) => {
+      state.postStatus = Status.SUCCESS;
       state.status = Status.IDLE;
     });
     builder.addCase(submitPost.rejected, (state, action) => {
-      state.status = Status.IDLE;
+      state.postStatus = Status.IDLE;
       state.postError = action.payload;
     });
   },

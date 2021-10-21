@@ -14,8 +14,9 @@ import {
 } from "@chakra-ui/react";
 
 import VideoBox from "components/VideoBox";
+import { Video } from "types/data";
 
-const VideoCard: React.FC<{ video: string }> = ({ video }) => {
+const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
   const router = useRouter();
   const { pathname } = router;
 
@@ -24,13 +25,13 @@ const VideoCard: React.FC<{ video: string }> = ({ video }) => {
   return (
     <Fragment>
       <Flex w="full" flexDirection="column">
-        <VideoBox videoUrl={video} />
+        <VideoBox videoUrl={video.video} />
         <Box mt={4}>
           <Text fontSize="15px" color="primary" textTransform="capitalize">
-            {"video.title"}
+            {video.title}
           </Text>
           <Text fontSize="12px" color="GrayText" textTransform="capitalize">
-            {"video.author"}
+            {video.author}
           </Text>
         </Box>
       </Flex>

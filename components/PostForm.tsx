@@ -24,7 +24,7 @@ import useActionDispatch from "hooks/use-action-dispatch";
 const PostForm: React.FC = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { meStatus } = useFetchData();
+  const { postStatus } = useFetchData();
   const { submitPostData } = useActionDispatch();
 
   const [content, setContent] = useState("");
@@ -137,8 +137,8 @@ const PostForm: React.FC = () => {
           bgColor="greenTone"
           color="white"
           _focus={{ boxShadow: "none" }}
-          isLoading={meStatus === Status.LOADING}
-          disabled={meStatus === Status.LOADING}
+          isLoading={postStatus === Status.LOADING}
+          disabled={postStatus === Status.LOADING}
           onClick={handlePost}
         >
           Post
