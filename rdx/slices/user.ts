@@ -11,7 +11,7 @@ var FormData = require("form-data");
 
 import { Status, Step, UserState } from "../types";
 
-import { getUserToken } from "helpers/get-user-token";
+import { getUserToken } from "helpers/user-token";
 
 
 export const fetchMe = createAsyncThunk("user/fetchMe", async (_, thunkAPI) => {
@@ -78,7 +78,6 @@ export const submitStepOne = createAsyncThunk(
         }
       );
 
-      console.log("responsedata", response.data);
       return response.data;
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });
@@ -121,7 +120,6 @@ export const submitStepTwo = createAsyncThunk(
         }
       );
 
-      console.log("responsedata", response.data);
       return response.data;
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });
@@ -159,7 +157,6 @@ export const submitPost = createAsyncThunk(
         }
       );
 
-      console.log("responsedata", response.data);
       return response.data;
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });

@@ -51,9 +51,9 @@ const Header = () => {
   } = router;
 
   const { authStatus, me } = useFetchData();
-  const { authReset } = useActionDispatch();
+  const { authReset, userReset } = useActionDispatch();
 
-  const village = id??me?.comesFrom;
+  const village = id ?? me?.comesFrom;
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);
@@ -72,6 +72,8 @@ const Header = () => {
 
   const logout = () => {
     authReset();
+    userReset();
+    
     removeToken();
     router.push("/");
   };

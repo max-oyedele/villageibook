@@ -2,7 +2,7 @@ import axios from "axios";
 import { fetchClientToken } from "helpers/fetch-client-token";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { headers, body } = req;
   // console.log("body", body);
 
@@ -33,3 +33,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(401).json(error.response?.data);
   }
 };
+
+export default handler;

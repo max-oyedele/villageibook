@@ -9,7 +9,7 @@ import axios from "axios";
 
 import { Status, VillagePageState } from "../types";
 
-import { getUserToken } from "helpers/get-user-token";
+import { getUserToken } from "helpers/user-token";
 
 
 export const fetchVillageUsers = createAsyncThunk(

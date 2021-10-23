@@ -9,7 +9,7 @@ import axios from "axios";
 
 import { Status, GraduatePageState } from "../types";
 
-import { getUserToken } from "helpers/get-user-token";
+import { getUserToken } from "helpers/user-token";
 
 
 export const fetchGraduates = createAsyncThunk(

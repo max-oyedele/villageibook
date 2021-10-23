@@ -39,7 +39,7 @@ import AvatarUpload from "components/widgets/AvatarUpload";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
 
-import { getUserToken } from "helpers/get-user-token";
+import { getUserToken } from "helpers/user-token";
 
 import { degrees } from "constants/account";
 import { platformCountries } from "constants/global";

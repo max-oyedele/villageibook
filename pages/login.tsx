@@ -41,23 +41,26 @@ const Login = () => {
     md: "md",
   });
 
-  const { authStatus, jwt } = useFetchData();
-  const { authReset, doLogin } = useActionDispatch();
+  const { authStatus, jwt, me, fetchMeData } = useFetchData();
+  const { authReset, userReset, doLogin } = useActionDispatch();
 
   const { setToken } = useToken();
-  const { me, fetchCommonData, fetchMeData } = useFetchData();
 
   const [passwordShow, setPasswordShow] = useState(false);
 
   useEffect(() => {
     authReset();
+    userReset();
   }, []);
 
   useEffect(() => {
+    const preFunc = async (jwt) => {
+      await setToken(jwt);
+      await fetchMeData();
+    }
+    
     if (jwt) {
-      setToken(jwt);
-      fetchMeData();
-      fetchCommonData();      
+      preFunc(jwt)
     }
   }, [jwt]);
 

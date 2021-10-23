@@ -7,72 +7,85 @@ import { Status } from "rdx/types";
 const ToastWrapper = ({ children }) => {
   const {
     jwt,
-    authMe,
+    signupMe,
     authError,
     meStep,
     meError,
     postStatus,
     postError,
-    userError
+    userError,
   } = useFetchData();
 
   const toast = useToast();
+
   useEffect(() => {
     if (authError) {
-      toast({
-        title: "Authentication Failed!",
-        description: authError.message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      !toast.isActive("authError") &&
+        toast({
+          id: "authError",
+          title: "Authentication Failed!",
+          description: authError.message,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
     }
-    if (authMe) {
-      toast({
-        title: "Account created successfully!",
-        description: "",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+    if (signupMe) {
+      !toast.isActive("signupMe") &&
+        toast({
+          id: "signupMe",
+          title: "Account created successfully!",
+          description: "",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
     }
     if (meError) {
-      toast({
-        title: "Failed. Please try again.",
-        description: meError.message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      !toast.isActive("meError") &&
+        toast({
+          id: "meError",
+          title: "Failed. Please try again.",
+          description: meError.message,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
     }
     if (postStatus === Status.SUCCESS) {
-      toast({
-        title: "Successfully Posted.",
-        description: "",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      !toast.isActive("postSuccess") &&
+        toast({
+          id: "postSuccess",
+          title: "Successfully Posted.",
+          description: "",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
     }
     if (postError) {
-      toast({
-        title: "Post Failed. Please try again.",
-        description: postError.message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      !toast.isActive("postError") &&
+        toast({
+          id: "postError",
+          title: "Post Failed. Please try again.",
+          description: postError.message,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
     }
     if (userError) {
-      toast({
-        title: "User Information Failed!",
-        description: userError.message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      !toast.isActive("userError") &&
+        toast({
+          id: "userError",
+          title: "User Information Failed!",
+          description: userError.message,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
     }
-  }, [jwt, authMe, authError, meError, userError, postStatus, postError]);
+  }, [jwt, signupMe, authError, meError, userError, postStatus, postError]);
 
   return children;
 };

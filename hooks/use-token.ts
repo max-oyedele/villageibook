@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import {useRouter} from "next/router";
-import cookieCutter from "cookie-cutter";
-import { getUserToken } from "helpers/get-user-token";
+import { getUserToken, setUserToken, removeUserToken } from "helpers/user-token";
 
 const useToken = () => {
   const router = useRouter();
@@ -17,17 +16,19 @@ const useToken = () => {
     }
   }, [])
 
+  const getToken = () => {
+    return getUserToken();
+  }
+
   const setToken = (jwt) => {
-    const expires = new Date();
-    expires.setSeconds(expires.getSeconds() + jwt.expires_in);
-    cookieCutter.set("jwt", JSON.stringify(jwt), { expires: expires });
+    setUserToken(jwt);
   };
 
   const removeToken = () => {
-    cookieCutter.set("jwt", "", {expires: new Date(0)});
+    removeUserToken();
   }
 
-  return { setToken, removeToken };
+  return { getToken, setToken, removeToken };
 };
 
 export default useToken;

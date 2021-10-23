@@ -10,6 +10,8 @@ import {
   Stack,
   HStack,
   Image,
+  Button,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import Slider from "react-slick";
 
@@ -20,8 +22,14 @@ import HomeSlick from "components/HomeSlick";
 import HomeSlickControl from "components/HomeSlickControl";
 import HomeCategoryBar from "components/HomeCategoryBar";
 import VideoBox from "components/VideoBox";
+import router from "next/router";
 
 const Home: NextPage = () => {
+  const breakpointValue = useBreakpointValue({
+    base: "base",
+    md: "md",
+  });
+
   const heroImgSlideConf = {
     dots: false,
     arrows: false,
@@ -103,6 +111,16 @@ const Home: NextPage = () => {
                 mauris, non elementum purus luctus sit amet. Nullam sed elit
                 lectus.
               </Text>
+              {breakpointValue === "md" && (
+                <HStack spacing={4} mt={24}>
+                  <Button onClick={() => router.push("/login")}>
+                    Get Started
+                  </Button>
+                  <Button onClick={() => router.push("/signup")}>
+                    Join Community
+                  </Button>
+                </HStack>
+              )}
             </Box>
             <Box w={{ base: "100%", md: "50%" }}>
               <Slider {...heroImgSlideConf}>
@@ -184,9 +202,7 @@ const Home: NextPage = () => {
         </Box>
 
         <Container maxW="container.md" mt={24}>
-          <VideoBox
-            videoUrl="https://dms.licdn.com/playlist/C4E05AQHku83iVu0opQ/mp4-720p-30fp-crf28/0/1634735737014?e=1634907600&v=beta&t=kaOqes8UxaDsNDFbWAgC3_3yl9fHsNOqVMdSxwwwHsQ"
-          />
+          <VideoBox videoUrl="https://dms.licdn.com/playlist/C4E05AQHku83iVu0opQ/mp4-720p-30fp-crf28/0/1634735737014?e=1634907600&v=beta&t=kaOqes8UxaDsNDFbWAgC3_3yl9fHsNOqVMdSxwwwHsQ" />
         </Container>
 
         <Box mt={-96}>

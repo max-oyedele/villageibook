@@ -51,7 +51,7 @@ const Signup = () => {
     md: "md",
   });
 
-  const { authMe, authStatus } = useFetchData();
+  const { signupMe, authStatus } = useFetchData();
   const { authReset, doSignup } = useActionDispatch();
 
   useEffect(() => {
@@ -59,10 +59,10 @@ const Signup = () => {
   }, []);
   
   useEffect(() => {
-    if(authMe){
+    if(signupMe){
       router.push("/login");
     }
-  }, [authMe]);
+  }, [signupMe]);
 
   const signupSchema = yup.object({
     firstname: yup.string().required("First Name is required."),

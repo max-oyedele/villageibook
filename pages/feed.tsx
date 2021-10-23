@@ -40,10 +40,11 @@ const Feed: NextPage = () => {
   const tabsMobile = ["Feed", "Village", "Graduates"];
   const [activeTab, setActiveTab] = useState(tabsMobile[0]);
 
-  const { me, posts, recentUsers, recentVillages, fetchMeData, fetchFeedPageData, fetchVillagePageData } = useFetchData();
+  const { me, posts, recentUsers, recentVillages, fetchMeData, fetchCommonData, fetchFeedPageData, fetchVillagePageData } = useFetchData();
   
   useEffect(() => {
     fetchMeData();
+    fetchCommonData();
     fetchFeedPageData();
     fetchVillagePageData({ villageName: me?.comesFrom });
   }, []);

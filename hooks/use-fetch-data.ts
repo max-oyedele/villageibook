@@ -31,7 +31,7 @@ const useFetchData = () => {
 
   const {
     jwt,
-    me: authMe,
+    me: signupMe,
     status: authStatus,
     error: authError,
   } = useSelector((state: OurStore) => state.authReducer);
@@ -150,7 +150,7 @@ const useFetchData = () => {
 
   return {
     jwt,
-    authMe,
+    signupMe,
     authStatus,
     authError,
     me,

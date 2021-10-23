@@ -70,7 +70,7 @@ export const authSlice = createSlice({
     updateJWT: (state: AuthState, action: PayloadAction<{ jwt: any }>) => {
       state.jwt = action.payload;
     },
-    reset: () => initialState,
+    reset: (state) => initialState,
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => {

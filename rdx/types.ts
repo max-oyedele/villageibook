@@ -21,9 +21,9 @@ export enum Status {
 }
 
 export enum Step {
-  STEP1 = "signup",
-  STEP2 = "fill form",
-  COMPLETED = "complete 2 steps",
+  STEP1 = "step1",
+  STEP2 = "step2",
+  COMPLETED = "completed",
 }
 
 export interface AuthState {
