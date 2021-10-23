@@ -4651,6 +4651,11 @@ react-player@^2.9.0:
     prop-types "^15.7.2"
     react-fast-compare "^3.0.1"
 
+react-rating-stars-component@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-rating-stars-component/-/react-rating-stars-component-2.2.0.tgz#e947c6a1f59278e6fea1098453f43cb15d077c14"
+  integrity sha512-A3lgLxumfFQQicKQmxacZ91fq/zRaVWlCPnVodJmJV6obvod4/yCotetN9WuyBiUfnKsEFDBo/8B85ocwmL7ng==
+
 react-read-more-read-less@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/react-read-more-read-less/-/react-read-more-read-less-1.0.7.tgz#85d9964eea7ee4e4af781ec77d97eee64227dd3e"
