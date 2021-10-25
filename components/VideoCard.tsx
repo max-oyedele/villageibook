@@ -13,7 +13,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import VideoBox from "components/VideoBox";
+import VideoBox from "components/widgets/VideoBox";
 import { Video } from "types/data";
 
 const VideoCard: React.FC<{ video: Video }> = ({ video }) => {

@@ -128,6 +128,7 @@ const Step1Form = ({ avatar }) => {
 
   const {
     me,
+    countries,
     districts,
     subDistricts,
     villages,
@@ -174,6 +175,7 @@ const Step1Form = ({ avatar }) => {
     if (me) {
       setFirstName(me.firstName);
       setLastName(me.lastName);
+      setSelectedLivingCountry(countries.find(e=>e.name === me.livesIn));
       setSelectedVillage(villages.find((e) => e.name === me.comesFrom));
       setSelectedUniversity(
         universities.find((e) => e.name === me.graduatedAt)
@@ -293,7 +295,7 @@ const Step1Form = ({ avatar }) => {
               <InputBoxWithSelect
                 id="livingCountry"
                 label="Country"
-                options={villages} //temp
+                options={countries}
                 optionLabel={({ name }) => name}
                 selectedOption={selectedLivingCountry}
                 setSelectedOption={setSelectedLivingCountry}

@@ -18,9 +18,10 @@ import {
 import { BiChevronUp, BiChevronDown, BiCommentDots } from "react-icons/bi";
 import ReactStars from "react-rating-stars-component";
 
-import VideoBox from "components/VideoBox";
+import ImageBox from "components/widgets/ImageBox";
+import VideoBox from "components/widgets/VideoBox";
 import { Post } from "types/data";
-import { getArchtype } from "immer/dist/internal";
+
 
 const PostCard: React.FC<{ post: Post }> = ({ post }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -132,14 +133,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
         <Stack direction={{ base: "column", lg: "row" }} spacing={4}>
           {post.picture && (
             <Center w="full">
-              <Image
-                src={post.picture}
-                alt=""
-                borderRadius="4px"
-                w="full"
-                h="full"
-                fit="cover"
-              />
+              <ImageBox imageUrl={post.picture} />
             </Center>
           )}
           {post.video && (
@@ -152,7 +146,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
           {extendView && (
             <BiChevronUp
               fontSize={24}
-              color="gray.400"
+              color="darkgray"
               cursor="pointer"
               onClick={() => setExtendView(!extendView)}
             />
@@ -160,7 +154,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
           {!extendView && (
             <BiChevronDown
               fontSize={24}
-              color="gray.400"
+              color="darkgray"
               cursor="pointer"
               onClick={() => setExtendView(!extendView)}
             />

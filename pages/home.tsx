@@ -21,7 +21,7 @@ import Footer from "components/Footer";
 import HomeSlick from "components/HomeSlick";
 import HomeSlickControl from "components/HomeSlickControl";
 import HomeCategoryBar from "components/HomeCategoryBar";
-import VideoBox from "components/VideoBox";
+import VideoBox from "components/widgets/VideoBox";
 import router from "next/router";
 
 const Home: NextPage = () => {

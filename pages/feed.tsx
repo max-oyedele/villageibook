@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState, useEffect, useRef } from "react";
 import type { NextPage } from "next";
 
 import {
@@ -15,7 +15,6 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
@@ -28,30 +27,36 @@ import PostCard from "components/PostCard";
 import CaptionCard from "components/CaptionCard";
 import VillageGraduatesCountryStatCard from "components/VillageGraduatesCountryStatCard";
 import RecentUserCard from "components/RecentUserCard";
-import VideoBox from "components/VideoBox";
+import VideoBox from "components/widgets/VideoBox";
 
 import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 
 const Feed: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-  const { fixed, rightPartOffsetX } = useWindowProp();
+  const { fixed } = useWindowProp();
+  const rightPartRef = useRef(null);
 
   const tabsMobile = ["Feed", "Village", "Graduates"];
   const [activeTab, setActiveTab] = useState(tabsMobile[0]);
 
-  const { me, posts, recentUsers, recentVillages, fetchMeData, fetchCommonData, fetchFeedPageData, fetchVillagePageData } = useFetchData();
-  
+  const {
+    me,
+    posts,
+    recentUsers,
+    recentVillages,
+    fetchMeData,
+    fetchCommonData,
+    fetchFeedPageData,
+    fetchVillagePageData,
+  } = useFetchData();
+
   useEffect(() => {
     fetchMeData();
     fetchCommonData();
     fetchFeedPageData();
     fetchVillagePageData({ villageName: me?.comesFrom });
   }, []);
-  
-  useEffect(()=>{
-    console.log('rightpart', rightPartOffsetX)
-  }, [rightPartOffsetX])
 
   return (
     <Fragment>
@@ -109,7 +114,7 @@ const Feed: NextPage = () => {
 
           <Box
             id="feed-root"
-            w={{ base: "100%", md: "full" }}
+            w="full"
             mx={
               fixed && breakpointValue === "md"
                 ? "294px"
@@ -145,11 +150,12 @@ const Feed: NextPage = () => {
             )}
             {breakpointValue === "base" && activeTab === "Graduates" && (
               <Box>
-                <VillageGraduatesCountryStatCard village={me?.comesFrom} direction="column" />
+                <VillageGraduatesCountryStatCard
+                  village={me?.comesFrom}
+                  direction="column"
+                />
                 <Box mt={12}>
-                  <VideoBox
-                    videoUrl={""}
-                  />
+                  <VideoBox videoUrl={""} />
                 </Box>
 
                 <Text fontSize="20px" mt={12} mb={6}>
@@ -166,12 +172,16 @@ const Feed: NextPage = () => {
 
           {breakpointValue === "md" && (
             <Box
+              ref={(ref) => (rightPartRef.current = ref)}
               minW="270px"
               pos={fixed ? "fixed" : "static"}
               top={fixed ? "80px" : 0}
-              left={fixed ? rightPartOffsetX : 0}
+              left={fixed ? rightPartRef.current.offsetLeft : 0}              
             >
-              <VillageGraduatesCountryStatCard village={me?.comesFrom} direction="column" />
+              <VillageGraduatesCountryStatCard
+                village={me?.comesFrom}
+                direction="column"
+              />
 
               <Text fontSize="24px" mt={12} mb={6}>
                 Recently joined

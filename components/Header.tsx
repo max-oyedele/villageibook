@@ -73,7 +73,7 @@ const Header = () => {
   const logout = () => {
     authReset();
     userReset();
-    
+
     removeToken();
     router.push("/");
   };

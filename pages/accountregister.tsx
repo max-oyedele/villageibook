@@ -230,7 +230,7 @@ const AccountToRegister: NextPage = () => {
                         <InputBoxWithSelect
                           id="livingCountry"
                           label="Country"
-                          options={villages} //temmp
+                          options={countries}
                           optionLabel={({ name }) => name}
                           selectedOption={selectedLivingCountry}
                           setSelectedOption={setSelectedLivingCountry}

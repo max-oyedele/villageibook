@@ -14,7 +14,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import VideoBox from "components/VideoBox";
+import VideoBox from "components/widgets/VideoBox";
 
 import { Status } from "rdx/types";
 
