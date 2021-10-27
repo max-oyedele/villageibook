@@ -1,4 +1,4 @@
-import { User } from "types/schema";
+import { User, Comment } from "types/schema";
 
 export type Post = {
   id: number;
@@ -7,6 +7,7 @@ export type Post = {
   content: string;
   picture: string;
   video: string;
+  comments: Comment[];
   uuid: string;
 };
 

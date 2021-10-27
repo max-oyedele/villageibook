@@ -74,3 +74,8 @@ export type Profession = {
   href: string;
   uuid: string;
 };
+
+export type Comment = {
+  commentUser: User,
+  text: string
+}

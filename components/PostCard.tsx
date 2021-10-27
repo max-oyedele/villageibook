@@ -22,7 +22,6 @@ import ImageBox from "components/widgets/ImageBox";
 import VideoBox from "components/widgets/VideoBox";
 import { Post } from "types/data";
 
-
 const PostCard: React.FC<{ post: Post }> = ({ post }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [extendView, setExtendView] = useState(false);
@@ -34,37 +33,6 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
     const limit = 120;
     e.target.style.height = `${Math.min(e.target.scrollHeight, limit)}px`;
   };
-
-  const comments = [
-    {
-      id: 0,
-      user: {
-        firstName: "sundar",
-        lastName: "pichai",
-        avatar: "/images/default-user.png",
-      },
-      comment:
-        "Lorem ipsum dolor Lorem ipsum dolorLorem ipsum dolorLorem ipsum dolorLorem ipsum dolorLorem ipsum dolorLorem ipsum dolorLorem ipsum dolorLorem ipsum dolorLorem ipsum dolorLorem ipsum dolorLorem ipsum dolorLorem ipsum dolorLorem ipsum dolorLorem ipsum dolorLorem ipsum dolorLorem ipsum dolor....",
-    },
-    {
-      id: 1,
-      user: {
-        firstName: "mark",
-        lastName: "jackerberg",
-        avatar: "/images/default-user.png",
-      },
-      comment: "Lorem ipsum dolor ....",
-    },
-    {
-      id: 2,
-      user: {
-        firstName: "bolt",
-        lastName: "nigan",
-        avatar: "/images/default-user.png",
-      },
-      comment: "Lorem ipsum dolor ....",
-    },
-  ];
 
   return (
     <Fragment>
@@ -84,23 +52,24 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
           borderRadius="6px"
         >
           <HStack>
-            {/* <Link href={`/userview/${post.user.id}`}> */}
-            <Avatar
-              src={post.user?.avatar ?? "/images/default-user.png"}
-              size="sm"
-              cursor="pointer"
-            />
-            {/* </Link> */}
+            <Link href={`/userview/${post.user?.uuid}`}>
+              <Avatar
+                src={post.user?.avatar ?? "/images/default-user.png"}
+                size="sm"
+                cursor="pointer"
+              />
+            </Link>
             <Box>
-              {/* <Link href={`/userview/${post.user.id}`}> */}
-              <Text
-                fontSize="13px"
-                textTransform="capitalize"
-                _hover={{ textDecoration: "underline", cursor: "pointer" }}
-              >
-                {post.user?.firstName ?? ""} {post.user?.lastName ?? "username"}
-              </Text>
-              {/* </Link> */}
+              <Link href={`/userview/${post.user?.uuid}`}>
+                <Text
+                  fontSize="13px"
+                  textTransform="capitalize"
+                  _hover={{ textDecoration: "underline", cursor: "pointer" }}
+                >
+                  {post.user?.firstName ?? ""}{" "}
+                  {post.user?.lastName ?? "username"}
+                </Text>
+              </Link>
               <Text fontSize="11px" color="GrayText">
                 {post.lastUpdated}
               </Text>
@@ -171,18 +140,20 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
               onChange={(e) => setComment(e.target.value)}
               onKeyDown={handleKeyDown}
             />
-            {
-              comment && <Button h="32px" _focus={{outline: 'none'}} my={2}>Post</Button>
-            }
-            {comments.map((item) => (
-              <HStack key={item.id} align="start" spacing={2} mt={4}>
-                <Avatar src={item.user.avatar} size="xs" />
+            {comment && (
+              <Button h="32px" _focus={{ outline: "none" }} my={2}>
+                Post
+              </Button>
+            )}
+            {post.comments?.map((item, index) => (
+              <HStack key={index} align="start" spacing={2} mt={4}>
+                <Avatar src={item.commentUser.avatar} size="xs" />
                 <Box>
                   <Text fontSize={13} textTransform="capitalize">
-                    {item.user.firstName} {item.user.lastName}
+                    {item.commentUser.firstName} {item.commentUser.lastName}
                   </Text>
                   <Text fontSize={12} color="GrayText" mt={2}>
-                    {item.comment}
+                    {item.text}
                   </Text>
                 </Box>
               </HStack>
