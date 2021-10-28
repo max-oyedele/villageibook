@@ -8,16 +8,15 @@ async function handler(req, res) {
 
   switch (req.method) {
     case "GET":
-      return getVillageGraduates();
+      return getVillage();
     default:
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
-
-  async function getVillageGraduates() {
+  async function getVillage() {
     try {
-      let villageGraduate = fetchWrapper.get(baseUrl + `/villages/${uuid}/graduates.json`, access_token);
+      let village = fetchWrapper.get(baseUrl + `/villages/${uuid}.json`, access_token);
       
-      await villageGraduate.then(response=>{
+      await village.then(response=>{
         res.status(200).json(response);
       })
     } catch (error) {

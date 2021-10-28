@@ -14,6 +14,8 @@ import {
 
 import useFetchData from "hooks/use-fetch-data";
 
+import {Village} from "types/schema";
+
 const villageItems = [
   {
     id: 0,
@@ -71,7 +73,7 @@ const villageItems = [
   },
 ];
 
-const LeftVillageItems: React.FC<{ village: string }> = ({ village }) => {
+const LeftVillageItems: React.FC<{ village: Village }> = ({ village }) => {
   const router = useRouter();
   const { pathname } = router;
 
@@ -104,7 +106,7 @@ const LeftVillageItems: React.FC<{ village: string }> = ({ village }) => {
       divider={breakpointValue === "base" ? <Divider /> : null}
     >
       {villageItems.map((item) => (
-        <Link key={item.name} href={`/village/${village}/${item.path}`}>
+        <Link key={item.name} href={`/village/${village?.uuid}/${item.path}`}>
           <HStack
             w="full"
             h={{ base: "60px", md: "40px" }}

@@ -30,7 +30,7 @@ const Users: NextPage = () => {
 
   const { fixed } = useWindowProp();
 
-  const { villageUsers, fetchVillageUsersData } = useFetchData();
+  const { village, villageUsers, fetchVillageUsersData } = useFetchData();
   useEffect(() => {
     if (vid) {
       fetchVillageUsersData({ villageName: vid });
@@ -45,7 +45,7 @@ const Users: NextPage = () => {
         <Flex>
           {breakpointValue === "md" && (
             <Box>
-              <LeftVillageCard village={vid as string} fixed={fixed} />
+              <LeftVillageCard village={village} fixed={fixed} />
             </Box>
           )}
 

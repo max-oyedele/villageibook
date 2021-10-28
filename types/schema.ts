@@ -9,9 +9,9 @@ export type User = {
   photo2?: string;
   photo3?: string;
   about?: string;
-  comesFrom?: string;
-  livesIn?: string;
-  graduatedAt?: string;
+  comesFrom?: Village;
+  livesIn?: Country;
+  graduatedAt?: University;
   profession?: string;
   degree?: string;
   recentAt?: number;

@@ -31,7 +31,7 @@ const Videos: NextPage = () => {
 
   const { fixed } = useWindowProp();
 
-  const { villageVideos, fetchVillageVideosData } = useFetchData();
+  const { village, villageVideos, fetchVillageVideosData } = useFetchData();
   useEffect(() => {
     if (vid) {
       fetchVillageVideosData({ villageName: vid });
@@ -46,7 +46,7 @@ const Videos: NextPage = () => {
         <Flex>
           {breakpointValue === "md" && (
             <Box>
-              <LeftVillageCard village={vid as string} fixed={fixed} />
+              <LeftVillageCard village={village} fixed={fixed} />
             </Box>
           )}
 

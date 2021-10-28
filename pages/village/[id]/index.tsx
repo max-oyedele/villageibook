@@ -37,13 +37,13 @@ const Posts: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
 
-  const { villageUsers, villageArticles, villagePersonalities, villageInstitutions, villageVideos, fetchVillagePageData } = useFetchData();
+  const { village, villageUsers, villageArticles, villagePersonalities, villageInstitutions, villageVideos, fetchVillagePageData } = useFetchData();
 
   const { fixed } = useWindowProp();
 
   useEffect(() => {
     if(vid){
-      fetchVillagePageData({ villageName: vid });
+      fetchVillagePageData({ uuid: vid });
     }
   }, [vid]);
 
@@ -58,7 +58,7 @@ const Posts: NextPage = () => {
         <Flex>
           {breakpointValue === "md" && (
             <Box>
-              <LeftVillageCard village={vid as string} fixed={fixed} />
+              <LeftVillageCard village={village} fixed={fixed} />
               {/* <Text fontSize="24px" my={10}>
                 Filters
               </Text>
@@ -117,7 +117,7 @@ const Posts: NextPage = () => {
               {/* <Divider mt={6} mb={8} /> */}
               <Box mt={4}>
                 <VillageGraduatesCountryStatCard
-                  village={vid as string}
+                  village={village}
                   direction="row"
                 />
               </Box>

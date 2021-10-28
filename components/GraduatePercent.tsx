@@ -10,8 +10,10 @@ import {
   Progress,
 } from "@chakra-ui/react";
 
+import {Village } from "types/schema";
+
 const GraduatePercent: React.FC<{
-  village: string;
+  village: Village;
   totalCount: number;
   graduatesCount: number;
 }> = ({ village, totalCount, graduatesCount }) => {
@@ -19,7 +21,7 @@ const GraduatePercent: React.FC<{
     <Fragment>
       <Box w="full">
         <Text fontSize="13px" textTransform="capitalize">
-          {village} Graduates
+          {village?.name} Graduates
         </Text>
         <Progress
           max={totalCount}

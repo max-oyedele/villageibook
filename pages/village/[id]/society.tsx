@@ -31,7 +31,7 @@ const Society: NextPage = () => {
 
   const { fixed } = useWindowProp();
 
-  const { villageArticles, fetchVillageArticlesData } = useFetchData();
+  const { village, villageArticles, fetchVillageArticlesData } = useFetchData();
 
   useEffect(()=>{
     if(vid){
@@ -47,7 +47,7 @@ const Society: NextPage = () => {
         <Flex>
           {breakpointValue === "md" && (
             <Box>
-              <LeftVillageCard village={vid as string} fixed={fixed} />
+              <LeftVillageCard village={village} fixed={fixed} />
             </Box>
           )}
 

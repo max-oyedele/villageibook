@@ -17,7 +17,7 @@ export const fetchGraduates = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get('/api/graduates', {...params, access_token})
+      const response = await axios.get('/api/graduates', {params: {...params, access_token}})
       return response.data.graduates; // data: {graduates: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });

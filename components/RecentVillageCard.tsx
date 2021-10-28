@@ -20,7 +20,7 @@ const RecentVillageCard: React.FC<{ village: Village }> = ({ village }) => {
           transition: "transform 0.2s ease",
           cursor: "pointer",
         }}
-        onClick={() => router.push(`/village/${village.href}`)}
+        onClick={() => router.push(`/village/${village?.uuid}`)}
       >
         <Image src={village.img} alt="" borderRadius="4px" />
         <Box w="full" ml={4}>

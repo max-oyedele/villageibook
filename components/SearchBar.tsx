@@ -85,7 +85,7 @@ const SearchBar = (props) => {
               ml={6}
               disabled={!selectedVillage}
               onClick={() => {
-                router.push(`/village/${selectedVillage.href}`);
+                router.push(`/village/${selectedVillage.uuid}`);
               }}
             >
               Find Village
@@ -106,7 +106,7 @@ const SearchBar = (props) => {
           mt={6}
           disabled={!selectedVillage}
           onClick={() => {
-            router.push(`/village/${selectedVillage.href}`);
+            router.push(`/village/${selectedVillage.uuid}`);
           }}
         >
           Find Village

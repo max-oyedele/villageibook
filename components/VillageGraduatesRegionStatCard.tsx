@@ -8,6 +8,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
+import {Village} from "types/schema";
 import GraduateStatCapsule from "./GraduateStatCapsule";
 import GraduatePercent from "./GraduatePercent";
 import useFetchData from "hooks/use-fetch-data";
@@ -49,7 +50,7 @@ const bangladeshGraduates = {
 };
 
 const VillageGraduatesRegionStatCard: React.FC<{
-  village: string;
+  village: Village;
 }> = ({ village }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 

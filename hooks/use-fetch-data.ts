@@ -17,6 +17,7 @@ import {
   fetchRecentUsers,
 } from "rdx/slices/feedPage";
 import {
+  fetchVillage,
   fetchVillageUsers,
   fetchVillageGraduates,
   fetchVillageArticles,
@@ -61,6 +62,7 @@ const useFetchData = () => {
   );
 
   const {
+    village,
     villageUsers,
     villageGraduates,
     villageArticles,
@@ -116,26 +118,35 @@ const useFetchData = () => {
     await dispatch(fetchRecentUsers());
   };
 
+  const fetchVillageData = async (params) => {
+    await dispatch(fetchVillage(params));
+  }
   const fetchVillageUsersData = async (params) => {
+    fetchVillageData(params);
     await dispatch(fetchVillageUsers(params));
   };
   const fetchVillageGraduatesData = async (params) => {
+    fetchVillageData(params);
     await dispatch(fetchVillageGraduates(params));
   };
   const fetchVillageArticlesData = async (params) => {
+    fetchVillageData(params);
     await dispatch(fetchVillageArticles(params));
   };
   const fetchVillagePersonalitiesData = async (params) => {
+    fetchVillageData(params);
     await dispatch(fetchVillagePersonalities(params));
   };
   const fetchVillageInstitutionsData = async (params) => {
+    fetchVillageData(params);
     await dispatch(fetchVillageInstitutions(params));
   };
   const fetchVillageVideosData = async (params) => {
+    fetchVillageData(params);
     await dispatch(fetchVillageVideos(params));
   };
 
-  const fetchVillagePageData = (params) => {
+  const fetchVillagePageData = (params) => {    
     fetchVillageUsersData(params);
     fetchVillageGraduatesData(params);
     fetchVillageArticlesData(params);
@@ -172,6 +183,7 @@ const useFetchData = () => {
     totalGraduates,
     user,
     userError,
+    village,
     villageUsers,
     villageGraduates,
     villageArticles,
@@ -187,6 +199,7 @@ const useFetchData = () => {
     fetchMeData,
     fetchUserData,
     fetchFeedPageData,
+    fetchVillageData,
     fetchVillageUsersData,
     fetchVillageGraduatesData,
     fetchVillageArticlesData,

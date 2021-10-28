@@ -31,7 +31,7 @@ const Graduates: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
 
-  const { villageGraduates, fetchVillageGraduatesData } = useFetchData();
+  const { village, villageGraduates, fetchVillageGraduatesData } = useFetchData();
 
   useEffect(() => {
     if(vid){
@@ -49,7 +49,7 @@ const Graduates: NextPage = () => {
         <Flex>
           {breakpointValue === "md" && (
             <Box>
-              <LeftVillageCard village={vid as string} fixed={fixed} />
+              <LeftVillageCard village={village} fixed={fixed} />
             </Box>
           )}
 
@@ -64,7 +64,7 @@ const Graduates: NextPage = () => {
             }
           >
             <VillageGraduatesCountryStatCard
-              village={vid as string}
+              village={village}
               direction="row"
             />
 

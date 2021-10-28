@@ -11,12 +11,13 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
+import {Village} from "types/schema";
 import GraduatePercent from "./GraduatePercent";
 import { platformCountries, homeCountry, watchCountries } from "constants/global";
 const totalGraduatesCount = 1000;
 
 const VillageGraduatesCountryStatCard: React.FC<{
-  village: string;
+  village: Village;
   direction: string;
 }> = ({ village, direction }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -56,10 +57,10 @@ const VillageGraduatesCountryStatCard: React.FC<{
                 <CountryBox
                   key={country.id}
                   country={country}
-                  count={
-                    villageGraduates.filter(
-                      (user) => user.graduatedAt === country.href
-                    ).length
+                  count={0
+                    // villageGraduates.filter(
+                    //   (user) => user.graduatedAt.uuid === country.href
+                    // ).length
                   }
                 />
               ))}
@@ -75,10 +76,10 @@ const VillageGraduatesCountryStatCard: React.FC<{
                     <CountryBox
                       key={country.id}
                       country={country}
-                      count={
-                        villageGraduates.filter(
-                          (user) => user.graduatedAt === country.href
-                        ).length
+                      count={0
+                        // villageGraduates.filter(
+                        //   (user) => user.graduatedAt === country.href
+                        // ).length
                       }
                     />
                   );
@@ -91,10 +92,10 @@ const VillageGraduatesCountryStatCard: React.FC<{
                     <CountryBox
                       key={country.id}
                       country={country}
-                      count={
-                        villageGraduates.filter(
-                          (user) => user.graduatedAt === country.href
-                        ).length
+                      count={0
+                        // villageGraduates.filter(
+                        //   (user) => user.graduatedAt === country.href
+                        // ).length
                       }
                     />
                   );
@@ -124,10 +125,10 @@ const VillageGraduatesCountryStatCard: React.FC<{
               <CountryBox
                 key={country.id}
                 country={country}
-                count={
-                  villageGraduates.filter(
-                    (user) => user.graduatedAt === country.href
-                  ).length
+                count={0
+                  // villageGraduates.filter(
+                  //   (user) => user.graduatedAt === country.href
+                  // ).length
                 }
               />
             ))}

@@ -54,9 +54,14 @@ const Feed: NextPage = () => {
   useEffect(() => {
     fetchMeData();
     fetchCommonData();
-    fetchFeedPageData();
-    fetchVillagePageData({ villageName: me?.comesFrom });
   }, []);
+  
+  useEffect(()=>{
+    if(me){
+      fetchFeedPageData();    
+      fetchVillagePageData({ uuid: me.comesFrom.uuid });
+    }
+  }, [me])
 
   return (
     <Fragment>
@@ -131,7 +136,7 @@ const Feed: NextPage = () => {
               (breakpointValue === "base" && activeTab === "Feed")) && (
               <VStack spacing={4}>
                 {posts.map((post) => (
-                  <PostCard key={post.id} post={post} />
+                  <PostCard key={post.uuid} post={post} />
                 ))}
               </VStack>
             )}

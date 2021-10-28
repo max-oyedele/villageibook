@@ -46,9 +46,9 @@ const UserView: NextPage = () => {
 
         <Flex>
           {breakpointValue === "md" && (
-            <VStack minW="max-content" pos="fixed" top="80px" spacing={6}>
+            <Flex minW="max-content" flexDirection="column" alignItems="center" pos="fixed" top="80px" spacing={6}>
               <Image
-                src={user?.avatar}
+                src={user?.avatar??"/images/default-user.png"}
                 boxSize="200px"
                 loading="eager"
                 fit="cover"
@@ -56,8 +56,11 @@ const UserView: NextPage = () => {
                 borderRadius="full"
               />
 
-              <Text fontSize="18px" textTransform="capitalize">
+              <Text fontSize="18px" textTransform="capitalize" mt={8}>
                 {user?.firstName} {user?.lastName}
+              </Text>
+              <Text fontSize="13px" mt={4}>
+                {user?.email}
               </Text>
 
               {user?.role === "premium" && (
@@ -66,11 +69,12 @@ const UserView: NextPage = () => {
                   borderRadius="4px"
                   color="white"
                   fontWeight="400"
+                  mt={4}
                 >
                   Premium
                 </Badge>
               )}
-            </VStack>
+            </Flex>
           )}
 
           <Box
@@ -83,7 +87,7 @@ const UserView: NextPage = () => {
           >
             <Flex flexDirection="column" p={6}>
               {breakpointValue === "base" && (
-                <VStack mb={6}>
+                <Flex flexDirection="column" alignItems="center" mb={6}>
                   <Image
                     src={user?.avatar}
                     w="full"
@@ -93,11 +97,15 @@ const UserView: NextPage = () => {
                     mb={6}
                   />
 
-                  <Text fontSize="18px" textTransform="capitalize">
+                  <Text fontSize="18px" textTransform="capitalize" mt={8}>
                     {user.firstName} {user.lastName}
                   </Text>
-                </VStack>
+                  <Text fontSize="13px" mt={4}>
+                    {user.email}
+                  </Text>
+                </Flex>
               )}
+
               <Text fontSize="18px">Personal Info</Text>
               <VStack
                 w={{ base: "full", md: "400px" }}
@@ -115,7 +123,20 @@ const UserView: NextPage = () => {
                     color="GrayText"
                     textTransform="capitalize"
                   >
-                    {user?.comesFrom}
+                    {user?.livesIn.name}
+                  </Box>
+                </HStack>
+                <HStack w="full">
+                  <Box w="full" fontSize="13px" color="purpleTone">
+                    Comes from
+                  </Box>
+                  <Box
+                    w="full"
+                    fontSize="13px"
+                    color="GrayText"
+                    textTransform="capitalize"
+                  >
+                    {user?.comesFrom.name}
                   </Box>
                 </HStack>
                 {user?.graduatedAt && (
@@ -129,22 +150,7 @@ const UserView: NextPage = () => {
                       color="GrayText"
                       textTransform="capitalize"
                     >
-                      {user?.graduatedAt}
-                    </Box>
-                  </HStack>
-                )}
-                {user?.graduatedAt && (
-                  <HStack w="full">
-                    <Box w="full" fontSize="13px" color="purpleTone">
-                      University
-                    </Box>
-                    <Box
-                      w="full"
-                      fontSize="13px"
-                      color="GrayText"
-                      textTransform="capitalize"
-                    >
-                      {user?.graduatedAt}
+                      {user?.graduatedAt.name}
                     </Box>
                   </HStack>
                 )}
@@ -178,14 +184,7 @@ const UserView: NextPage = () => {
                     </Box>
                   </HStack>
                 )}
-                <HStack w="full">
-                  <Box w="full" fontSize="13px" color="purpleTone">
-                    Email
-                  </Box>
-                  <Box w="full" fontSize="13px" color="GrayText">
-                    {user?.email}
-                  </Box>
-                </HStack>
+                
               </VStack>
               {user?.role === "premium" && (
                 <>

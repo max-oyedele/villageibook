@@ -53,7 +53,7 @@ const Header = () => {
   const { authStatus, me } = useFetchData();
   const { authReset, userReset } = useActionDispatch();
 
-  const village = id ?? me?.comesFrom;
+  const village = id ?? me?.comesFrom.uuid;
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);

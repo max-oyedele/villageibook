@@ -63,6 +63,7 @@ export interface FeedPageState {
 }
 export interface VillagePageState {
   status: Status;
+  village: Village;
   villageUsers: User[];
   villageGraduates: User[];
   villageArticles: Article[];

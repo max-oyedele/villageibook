@@ -29,7 +29,7 @@ const Institutions: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
 
-  const { villageInstitutions, fetchVillageInstitutionsData } = useFetchData();
+  const { village, villageInstitutions, fetchVillageInstitutionsData } = useFetchData();
 
   useEffect(() => {
     if (vid) {
@@ -45,7 +45,7 @@ const Institutions: NextPage = () => {
         <Flex>
           {breakpointValue === "md" && (
             <Box>
-              <LeftVillageCard village={vid as string} fixed={fixed} />
+              <LeftVillageCard village={village} fixed={fixed} />
             </Box>
           )}
 

@@ -4,7 +4,7 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 async function handler(req, res) {
   const { access_token } = req.query;
-  const { comesFrom } = req.query;
+  const { uuid } = req.query; //village uuid
 
   switch (req.method) {
     case "GET":
@@ -15,7 +15,7 @@ async function handler(req, res) {
 
   async function getVillageInstitutions() {
     try {
-      let villageInstitution = fetchWrapper.get(baseUrl + `/villages/[name=${comesFrom}]/institutions.json`, access_token);
+      let villageInstitution = fetchWrapper.get(baseUrl + `/villages/${uuid}/institutions.json`, access_token);
       
       await villageInstitution.then(response=>{
         res.status(200).json(response);

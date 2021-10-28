@@ -12,12 +12,25 @@ import { Status, VillagePageState } from "../types";
 import { getUserToken } from "helpers/user-token";
 
 
+export const fetchVillage = createAsyncThunk(
+  "villagePage/fetchVillage",
+  async (params: any, thunkAPI) => {
+    try {
+      const access_token = getUserToken();      
+      const response = await axios.get('/api/village', {params: {...params, access_token}})
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
+  }
+);
+
 export const fetchVillageUsers = createAsyncThunk(
   "villagePage/fetchVillageUsers",
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get('/api/village/users', {...params, access_token})
+      const response = await axios.get('/api/village/users', {params: {...params, access_token}})
       return response.data.users; // data: {users: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -30,7 +43,7 @@ export const fetchVillageGraduates = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get('/api/village/graduates', {...params, access_token})
+      const response = await axios.get('/api/village/graduates', {params: {...params, access_token}})
       return response.data.graduates; // data: {graduates: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -43,7 +56,7 @@ export const fetchVillageArticles = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get('/api/village/articles', {...params, access_token})
+      const response = await axios.get('/api/village/articles', {params: {...params, access_token}})
       return response.data.articles; // data: {articles: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -56,7 +69,7 @@ export const fetchVillagePersonalities = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get('/api/village/personalities', {...params, access_token})
+      const response = await axios.get('/api/village/personalities', {params: {...params, access_token}})
       return response.data.personalities; // data: {personalities: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -69,7 +82,7 @@ export const fetchVillageInstitutions = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get('/api/village/institutions', {...params, access_token})
+      const response = await axios.get('/api/village/institutions', {params: {...params, access_token}})
       return response.data.institutions; // data: {institutions: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -82,7 +95,7 @@ export const fetchVillageVideos = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get('/api/village/videos', {...params, access_token})
+      const response = await axios.get('/api/village/videos', {params: {...params, access_token}})
       return response.data.videos; // data: {videos: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -93,6 +106,7 @@ export const fetchVillageVideos = createAsyncThunk(
 /************************************* */
 const initialState: VillagePageState = {
   status: Status.IDLE,
+  village: null,
   villageUsers: [],
   villageGraduates: [],
   villageArticles: [],
@@ -109,6 +123,18 @@ export const villagePageSlice = createSlice({
     reset: () => initialState,
   },
   extraReducers: (builder) => {
+    builder.addCase(fetchVillage.pending, (state) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(fetchVillage.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.village = action.payload;
+    });
+    builder.addCase(fetchVillage.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
     builder.addCase(fetchVillageUsers.pending, (state) => {
       state.status = Status.LOADING;
       state.error = null;

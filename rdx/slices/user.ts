@@ -31,7 +31,7 @@ export const fetchUser = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get(`/api/users/${params.uuid}`, { ...params, access_token });
+      const response = await axios.get(`/api/users/${params.uuid}`, {params: {...params, access_token}});
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);

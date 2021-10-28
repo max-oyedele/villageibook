@@ -31,7 +31,7 @@ const UserCard: React.FC<{ user: User }> = ({
         <HStack w="full" border="1px" borderColor="gray.300" borderRadius="5px">
           <Box pos="relative" minW="max-content">
             <Image
-              src={user.avatar}
+              src={user.avatar??"/images/default-user.png"}
               boxSize="135px"
               alt=""
               fit="cover"
@@ -57,7 +57,7 @@ const UserCard: React.FC<{ user: User }> = ({
               color="GrayText"
               textTransform="capitalize"
             >
-              {user.comesFrom}
+              {user.comesFrom?.name}
             </Text>
             <Text fontSize="18px" color="primary" textTransform="capitalize">
               {user.firstName} {user.lastName}
@@ -121,7 +121,7 @@ const UserCard: React.FC<{ user: User }> = ({
             )}
             <Box>
               <Text fontSize="10px" color="GrayText">
-                {user.comesFrom}
+                {user.comesFrom?.name}
               </Text>
               <Text fontSize="13px" fontWeight="600" color="primary">
                 {user.firstName} {user.lastName}

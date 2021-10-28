@@ -30,8 +30,7 @@ const Personalities: NextPage = () => {
 
   const { fixed } = useWindowProp();
 
-  const { villagePersonalities, fetchVillagePersonalitiesData } =
-    useFetchData();
+  const { village, villagePersonalities, fetchVillagePersonalitiesData } = useFetchData();
 
   useEffect(() => {
     if (vid) {
@@ -47,7 +46,7 @@ const Personalities: NextPage = () => {
         <Flex>
           {breakpointValue === "md" && (
             <Box>
-              <LeftVillageCard village={vid as string} fixed={fixed} />
+              <LeftVillageCard village={village} fixed={fixed} />
             </Box>
           )}
 
