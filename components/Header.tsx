@@ -53,7 +53,7 @@ const Header = () => {
   const { authStatus, me } = useFetchData();
   const { authReset, userReset } = useActionDispatch();
 
-  const village = id ?? me?.comesFrom.uuid;
+  const vid = id ?? me?.comesFrom?.uuid;
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);
@@ -90,9 +90,7 @@ const Header = () => {
                   <Link
                     key={tab.name}
                     href={
-                      tab.path === "/village"
-                        ? `${tab.path}/${village}`
-                        : tab.path
+                      tab.path === "/village" ? `${tab.path}/${vid}` : tab.path
                     }
                   >
                     <Flex
@@ -114,21 +112,24 @@ const Header = () => {
                 ))}
               </HStack>
               <HStack spacing={6} ml={1}>
-                <Flex
+                <HStack
                   h="full"
-                  alignItems="center"
+                  spacing={4}
                   fontSize="12px"
                   borderBottom={pathname.includes("accountedit") ? "2px" : ""}
                   borderColor={
                     pathname.includes("accountedit") ? "purpleTone" : ""
                   }
                 >
+                  {/* {me?.role === "admin" && ( */}
+                    <Link href="/admin">
+                      <Text cursor="pointer">ADMIN</Text>
+                    </Link>
+                  {/* )} */}
                   <Link href="/accountedit">
-                    <Text mt={1} cursor="pointer">
-                      ACCOUNT
-                    </Text>
+                    <Text cursor="pointer">ACCOUNT</Text>
                   </Link>
-                </Flex>
+                </HStack>
                 <Box
                   px={4}
                   h="24px"
@@ -210,7 +211,7 @@ const Header = () => {
                       <Link
                         href={
                           tab.path === "/village"
-                            ? `${tab.path}/${village}`
+                            ? `${tab.path}/${vid}`
                             : tab.path
                         }
                       >

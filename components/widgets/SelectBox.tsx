@@ -41,7 +41,7 @@ const SelectBox = (props: any) => {
 
     return (
       <List
-        height={maxHeight}
+        height={!isNaN(maxHeight) ? maxHeight : 0}
         itemCount={children.length}
         itemSize={optionHeight}
         initialScrollOffset={initialOffset}
