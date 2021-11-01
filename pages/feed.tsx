@@ -1,5 +1,6 @@
 import { Fragment, useState, useEffect, useRef } from "react";
 import type { NextPage } from "next";
+import Link from "next/link";
 
 import {
   Container,
@@ -56,12 +57,12 @@ const Feed: NextPage = () => {
     fetchMeData();
     fetchCommonData();
   }, []);
-  
-  useEffect(()=>{
-    if(me){
-      fetchFeedPageData();    
+
+  useEffect(() => {
+    if (me) {
+      fetchFeedPageData();
       fetchVillagePageData({ uuid: me.comesFrom.uuid });
-    }    
+    }
   }, [me])
 
   return (
@@ -105,8 +106,23 @@ const Feed: NextPage = () => {
                 </Box>
               </Box>
 
+              <Link href={`https://www.fundsurfer.com/crowdfund/villageibook?token=975ab55f35fefbd176774045369a62ba`} passHref={true}>
+                <Button
+                  w="full"
+                  mt={4}
+                  px={4}
+                  fontSize="14px"
+                  fontWeight="400"
+                  bgColor="#FFB425"
+                  color="white"
+                  _focus={{ boxShadow: "none" }}
+                >
+                  Sponsor VillageIbook
+                </Button>
+              </Link>
+
               <Box>
-                <Text fontSize="24px" mt={12} mb={6}>
+                <Text fontSize="24px" mt={10} mb={6}>
                   Recently developed
                 </Text>
                 <VStack spacing={4}>
@@ -125,8 +141,8 @@ const Feed: NextPage = () => {
               fixed && breakpointValue === "md"
                 ? "294px"
                 : breakpointValue === "md"
-                ? "24px"
-                : "0px"
+                  ? "24px"
+                  : "0px"
             }
           >
             <Box bg="white" borderRadius="4px" mb={4} p={4}>
@@ -135,12 +151,12 @@ const Feed: NextPage = () => {
 
             {(breakpointValue === "md" ||
               (breakpointValue === "base" && activeTab === "Feed")) && (
-              <VStack spacing={4}>
-                {posts.map((post) => (
-                  <PostCard key={post.uuid} post={post} />
-                ))}
-              </VStack>
-            )}
+                <VStack spacing={4}>
+                  {posts.map((post) => (
+                    <PostCard key={post.uuid} post={post} />
+                  ))}
+                </VStack>
+              )}
             {breakpointValue === "base" && activeTab === "Village" && (
               <Box>
                 <LeftVillageItems village={me?.comesFrom} />
@@ -152,6 +168,20 @@ const Feed: NextPage = () => {
                     <RecentVillageCard key={village.name} village={village} />
                   ))}
                 </VStack>
+
+                <Link href={`https://www.fundsurfer.com/crowdfund/villageibook?token=975ab55f35fefbd176774045369a62ba`} passHref={true}>
+                  <Button
+                    px={4}
+                    h="26px"
+                    fontSize="12px"
+                    fontWeight="400"
+                    bgColor="#FFB425"
+                    color="white"
+                    _focus={{ boxShadow: "none" }}
+                  >
+                    Sponsor VillageIbook
+                  </Button>
+                </Link>
               </Box>
             )}
             {breakpointValue === "base" && activeTab === "Graduates" && (
@@ -182,7 +212,7 @@ const Feed: NextPage = () => {
               minW="270px"
               pos={fixed ? "fixed" : "static"}
               top={fixed ? "80px" : 0}
-              left={fixed ? rightPartRef.current.offsetLeft : 0}              
+              left={fixed ? rightPartRef.current.offsetLeft : 0}
             >
               <VillageGraduatesCountryStatCard
                 village={me?.comesFrom}
@@ -197,6 +227,7 @@ const Feed: NextPage = () => {
                   <RecentUserCard key={user.uuid} user={user} />
                 ))}
               </VStack>
+
             </Box>
           )}
         </Flex>
@@ -222,9 +253,8 @@ const TabsMobile: React.FC<{
             key={tab}
             w="full"
             py={4}
-            borderBottom={`${
-              tab === props.activeTab ? "2px solid #553CFB" : ""
-            }`}
+            borderBottom={`${tab === props.activeTab ? "2px solid #553CFB" : ""
+              }`}
             onClick={() => props.setActiveTab(tab)}
           >
             <Text
