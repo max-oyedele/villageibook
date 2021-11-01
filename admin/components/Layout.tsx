@@ -52,17 +52,7 @@ var menus = [
     path: "/admin/videos",
     name: "Video",
     icon: FaRegMoneyBillAlt,
-  },
-  {
-    path: "/admin/users",
-    name: "User",
-    icon: FaRegMoneyBillAlt,
-  },
-  {
-    path: "/admin/villages",
-    name: "Village",
-    icon: FaRegMoneyBillAlt,
-  },
+  },  
 ];
 
 export default function Layout(props) {

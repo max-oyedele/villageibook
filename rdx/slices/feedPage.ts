@@ -11,7 +11,7 @@ import { Status, FeedPageState } from "../types";
 
 import { getUserToken } from "helpers/user-token";
 
-export const fetchPosts = createAsyncThunk(
+export const fetchFeedPosts = createAsyncThunk(
   "feedPage/fetchPosts",
   async (_, thunkAPI) => {
     try {
@@ -72,15 +72,15 @@ export const feedPageSlice = createSlice({
     reset: () => initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchPosts.pending, (state) => {
+    builder.addCase(fetchFeedPosts.pending, (state) => {
       state.status = Status.LOADING;
       state.error = null;
     });
-    builder.addCase(fetchPosts.fulfilled, (state, action) => {
+    builder.addCase(fetchFeedPosts.fulfilled, (state, action) => {
       state.status = Status.IDLE;
       state.posts = action.payload;
     });
-    builder.addCase(fetchPosts.rejected, (state, action) => {
+    builder.addCase(fetchFeedPosts.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

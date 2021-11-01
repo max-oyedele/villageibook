@@ -78,3 +78,14 @@ export interface GraduatePageState {
   totalGraduates: User[];
   error?: SerializedError;
 }
+
+export interface AdminState {
+  status: Status;
+  posts: Post[];
+  articles: Article[];
+  personalities: Personality[];
+  institutions: Institution[];
+  videos: Video[];
+  users: User[];
+  error?: SerializedError;
+}

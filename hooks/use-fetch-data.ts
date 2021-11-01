@@ -12,7 +12,7 @@ import {
 } from "rdx/slices/location";
 import { fetchMe, fetchUser } from "rdx/slices/user";
 import {
-  fetchPosts,
+  fetchFeedPosts,
   fetchRecentVillages,
   fetchRecentUsers,
 } from "rdx/slices/feedPage";
@@ -113,7 +113,7 @@ const useFetchData = () => {
   };
 
   const fetchFeedPageData = async () => {
-    await dispatch(fetchPosts());
+    await dispatch(fetchFeedPosts());
     await dispatch(fetchRecentVillages());
     await dispatch(fetchRecentUsers());
   };
