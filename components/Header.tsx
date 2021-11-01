@@ -122,7 +122,7 @@ const Header = () => {
                   }
                 >
                   {/* {me?.role === "admin" && ( */}
-                    <Link href="/admin">
+                    <Link href="/admin/dashboard">
                       <Text cursor="pointer">ADMIN</Text>
                     </Link>
                   {/* )} */}

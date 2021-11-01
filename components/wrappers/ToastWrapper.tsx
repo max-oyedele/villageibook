@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useToast } from "@chakra-ui/react";
-
+import router, { useRouter } from "next/router";
 import useFetchData from "hooks/use-fetch-data";
 import { Status } from "rdx/types";
 
@@ -51,6 +51,7 @@ const ToastWrapper = ({ children }) => {
           duration: 3000,
           isClosable: true,
         });
+        setTimeout(()=>{router.push("/")}, 2000)
     }
     if (postStatus === Status.SUCCESS) {
       !toast.isActive("postSuccess") &&

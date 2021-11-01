@@ -35,6 +35,7 @@ import useFetchData from "hooks/use-fetch-data";
 const Feed: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const { fixed } = useWindowProp();
+
   const rightPartRef = useRef(null);
 
   const tabsMobile = ["Feed", "Village", "Graduates"];
@@ -60,7 +61,7 @@ const Feed: NextPage = () => {
     if(me){
       fetchFeedPageData();    
       fetchVillagePageData({ uuid: me.comesFrom.uuid });
-    }
+    }    
   }, [me])
 
   return (
