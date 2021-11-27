@@ -8,6 +8,7 @@ import * as yup from "yup";
 import {
   Flex,
   SimpleGrid,
+  Center,
   Box,
   Text,
   FormControl,
@@ -58,19 +59,19 @@ const Login = () => {
       await setToken(jwt);
       await fetchMeData();
     }
-    
+
     if (jwt) {
       preFunc(jwt)
     }
   }, [jwt]);
 
-  useEffect(()=>{
+  useEffect(() => {
     const isCompletedUser = (user) => {
       return user.livesIn && user.comesFrom
     }
 
-    if(me){
-      if(isCompletedUser(me)) router.push("/feed");
+    if (me) {
+      if (isCompletedUser(me)) router.push("/feed");
       else router.push("/accountregister");
     }
   }, [me])
@@ -82,18 +83,18 @@ const Login = () => {
       .required("Email address is required."),
     password: yup.string().required("Password is required."),
   });
-  
+
   return (
     <Fragment>
-      <Box
+      <Center
+        w="full"
         pos="absolute"
         top="20px"
         left="20px"
-        visibility={{ base: "hidden", md: "visible" }}
       >
         <Logo />
-      </Box>
-      <SimpleGrid columns={{ base: 1, md: 2 }}>
+      </Center>
+      <SimpleGrid h="100vh" columns={{ base: 1, md: 2 }}>
         <Box
           w="full"
           h="full"
@@ -211,20 +212,17 @@ const Login = () => {
         </Box>
 
         <Box
-          w="full"
-          h={{ base: "250px", md: "100vh" }}
+          bgColor="grayBg"
           order={{ base: 0, md: 1 }}
         >
-          <Image
-            src={
-              breakpointValue === "base"
-                ? "/images/login-back-mobile.png"
-                : "/images/login-back-pc.png"
-            }
-            boxSize="full"
-            fit="cover"
-            alt="login"
-          />
+          <Center h="full" px={6}>
+            <Image
+              src="/images/logo-img.svg"
+              fit="cover"
+              alt="login"
+              w="full"
+            />
+          </Center>
         </Box>
       </SimpleGrid>
     </Fragment>

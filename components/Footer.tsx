@@ -59,12 +59,11 @@ const Footer = () => {
           bottom={0}
           w="full"
           h="150px"
-          bgColor="white"
+          bgColor="grayBg"
           justifyContent="space-between"
           px={6}
         >
           <HStack spacing={6}>
-            <Logo />
             <Box>
               <Text fontSize="11px" fontWeight="400" color="GrayText">
                 Copyright @ 2021, All rights reserved.
