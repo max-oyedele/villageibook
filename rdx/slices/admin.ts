@@ -101,6 +101,54 @@ export const fetchUsers = createAsyncThunk(
   }
 );
 
+export const submitPersonality = createAsyncThunk(
+  "admin/submitPersonality",
+  async (
+    params: {
+      name: string;
+      avatar?: string;
+      about?: string;
+      dateOfBirth?: string;
+      dateOfDeath?: string;
+      educationLife?: string;
+      achievements?: string;
+      career?: string;
+      villageUuid: string;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const access_token = getUserToken();
+
+      const bodyFormData = new FormData();
+      bodyFormData.append("name", params.name);
+      bodyFormData.append("avatar", params.avatar);
+      bodyFormData.append("about", params.about);
+      bodyFormData.append("dateOfBirth", params.dateOfBirth);
+      bodyFormData.append("dateOfDeath", params.dateOfDeath);
+      bodyFormData.append("educationLife", params.educationLife);
+      bodyFormData.append("achievements", params.achievements);
+      bodyFormData.append("career", params.career);
+      
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/villages/${params.villageUuid}/HAS_PERSONALITY/personalities`,
+        bodyFormData,
+        {
+          headers: {
+            authorization: "Bearer " + access_token,
+            "content-type": `multipart/form-data`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      // return thunkAPI.rejectWithValue({ error: error.message });
+      return thunkAPI.rejectWithValue(error.response.statusText);
+    }
+  }
+);
+
 
 /************************************* */
 const initialState: AdminState = {
@@ -190,6 +238,18 @@ export const adminSlice = createSlice({
       state.users = action.payload;
     });
     builder.addCase(fetchUsers.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(submitPersonality.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(submitPersonality.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      // state.me = action.payload;
+    });
+    builder.addCase(submitPersonality.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

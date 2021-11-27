@@ -13,7 +13,7 @@ import { faqs } from "constants/faq";
 
 const FaqAccordion = () => {
   const [expandedFaq, setExpandedFaq] = useState(faqs[0]);
-  
+
   return (
     <Accordion
       allowToggle
@@ -33,7 +33,7 @@ const FaqAccordion = () => {
           bgColor="white"
           mb={4}
         >
-          <AccordionButton h={14} _focus={{ boxShadow: "none" }} _hover={{color: "purpleTone"}} p={0}>
+          <AccordionButton h={14} _focus={{ boxShadow: "none" }} _hover={{ color: "purpleTone" }} p={0}>
             <Box
               flex="1"
               textAlign="left"
@@ -50,7 +50,7 @@ const FaqAccordion = () => {
           </AccordionButton>
           <AccordionPanel px={0} pb={4}>
             <Box w="full" py={2}>
-              asdfasdf
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam auctor euismod lobortis. Mauris ornare ante non justo mattis, vitae fermentum ligula consequat. Donec ac quam sit amet libero. Sed ullamcorper dui ac laoreet auctor. Mauris malesuada ante mauris, non elementum purus luctus sit amet. Nullam sed elit lectus.
             </Box>
           </AccordionPanel>
         </AccordionItem>
