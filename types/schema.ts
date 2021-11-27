@@ -79,3 +79,29 @@ export type Comment = {
   commentUser: User,
   text: string
 }
+
+export type Personality = {
+  id: number;
+  name: string;
+  photo: string;
+  about?: string;
+  dateOfBirth?: string;
+  dateOfDeath?: string;
+  educationLife?: string;
+  career?: string;
+  achievements?: string;
+  uuid: string;
+}
+
+export type Institution = {
+  id: number;
+  name: string;
+  photo: string;
+  href: string;
+  address: string;
+  email?: string;
+  phone?: string;
+  yearEstablished?: string;
+  history?: string;
+  uuid: string;
+}

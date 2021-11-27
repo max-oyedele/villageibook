@@ -29,8 +29,17 @@ import {
   Th,
   Td,
   TableCaption,
+  Modal,
+  ModalOverlay,
+  ModalHeader,
+  ModalCloseButton,
+  ModalContent,
+  ModalBody,
+  ModalFooter,
   useColorMode,
   useColorModeValue,
+  useBreakpointValue,
+  useDisclosure
 } from "@chakra-ui/react";
 
 import { FaWallet, FaGlobe, FaFile, FaShoppingCart, FaRegArrowAltCircleRight, FaRocket, FaThList } from "react-icons/fa";
@@ -39,10 +48,13 @@ import { useTable, useSortBy } from 'react-table';
 import Layout from "admin/components/Layout";
 import ImageBox from "components/widgets/ImageBox";
 import VideoBox from "components/widgets/VideoBox";
+import VillageSearchBox from "admin/components/VillageSearchBox";
+import PersonalityForm from "admin/components/PersonalityForm";
 
 import { getUserToken } from "helpers/user-token";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
-import useActionDispatch from "hooks/use-action-dispatch";
+
+import { Village } from "types/schema";
 
 const Personalities: NextPage = () => {
   const router = useRouter();
@@ -61,11 +73,16 @@ const Personalities: NextPage = () => {
     // if(me.role !== "admin"){
     //   router.push("/feed");
     // }
+
     fetchPersonalitiesData();
   }, [me]);
 
+  const { villages, fetchVillagesData } = useAdminFetchData();
+  const [village, setVillage] = useState<Village>(null);
+
+
   const columns = useMemo(
-    () => [      
+    () => [
       {
         Header: 'Name',
         accessor: 'name',
@@ -106,9 +123,18 @@ const Personalities: NextPage = () => {
     prepareRow,
   } = tableInstance
 
+  const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  
   return (
     <Fragment>
       <Layout>
+
+        <VillageSearchBox setVillage={setVillage} />
+        <Flex justifyContent={"flex-end"}>
+          <Button onClick={() => onOpen()}>Add Personality</Button>
+        </Flex>
+
         <Table {...getTableProps()}>
           <Thead>
             {// Loop over the header rows
@@ -151,6 +177,20 @@ const Personalities: NextPage = () => {
           </Tbody>
         </Table>
       </Layout>
+
+      <Modal
+        closeOnOverlayClick={true}
+        isCentered
+        size={breakpointValue === "base" ? "full" : "2xl"}
+        isOpen={isOpen}
+        onClose={onClose}        
+      >
+        <ModalOverlay />
+        <ModalContent m={0} p={6} bgColor="white">
+          <PersonalityForm type="add" />
+        </ModalContent>
+      </Modal>
+
     </Fragment>
   );
 };

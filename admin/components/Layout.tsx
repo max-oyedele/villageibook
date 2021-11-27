@@ -52,7 +52,7 @@ var menus = [
     path: "/admin/videos",
     name: "Video",
     icon: FaRegMoneyBillAlt,
-  },  
+  },
 ];
 
 export default function Layout(props) {
@@ -89,8 +89,8 @@ export default function Layout(props) {
             >
               <Logo />
               <Text fontSize="sm" mt="3px" mx={4}>
-                SKILLHET ADMIN
-                </Text>
+                ADMIN
+              </Text>
             </Center>
           </Link>
           <Separator></Separator>
