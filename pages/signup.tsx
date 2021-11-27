@@ -15,6 +15,7 @@ import * as yup from "yup";
 import {
   Flex,
   SimpleGrid,
+  Center,
   Box,
   Text,
   FormControl,
@@ -57,9 +58,9 @@ const Signup = () => {
   useEffect(() => {
     authReset();
   }, []);
-  
+
   useEffect(() => {
-    if(signupMe){
+    if (signupMe) {
       router.push("/login");
     }
   }, [signupMe]);
@@ -85,15 +86,26 @@ const Signup = () => {
           <Progress h="2px" size="xs" isIndeterminate />
         </Box>
       )}
-      <Box
+      <Center
+        w="full"
         pos="absolute"
         top="20px"
         left="20px"
-        visibility={{ base: "hidden", md: "visible" }}
       >
         <Logo />
-      </Box>
-      <SimpleGrid columns={{ base: 1, md: 2 }}>
+      </Center>
+      <SimpleGrid h="100vh" columns={{ base: 1, md: 2 }}>
+        <Box bgColor="grayBg">
+          <Center h="full" px={6}>
+            <Image
+              src="/images/logo-img.svg"
+              fit="cover"
+              alt="login"
+              w="full"
+            />
+          </Center>
+        </Box>
+
         <Box
           w="full"
           h="full"
@@ -101,8 +113,7 @@ const Signup = () => {
           display="flex"
           flexDirection="column"
           justifyContent="center"
-          alignItems="center"
-          order={{ base: 1, md: 0 }}
+          alignItems="center"          
         >
           <Flex
             w={{ base: "80%", md: "100%", lg: "70%" }}
@@ -292,22 +303,6 @@ const Signup = () => {
           </Flex>
         </Box>
 
-        <Box
-          w="full"
-          h={{ base: "250px", md: "100vh" }}
-          order={{ base: 0, md: 1 }}
-        >
-          <Image
-            src={
-              breakpointValue === "base"
-                ? "/images/signup-back-mobile.png"
-                : "/images/signup-back-pc.png"
-            }
-            boxSize="full"
-            fit="cover"
-            alt="login"
-          />
-        </Box>
       </SimpleGrid>
     </Fragment>
   );
