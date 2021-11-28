@@ -27,13 +27,15 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-import {FaWallet, FaGlobe, FaFile, FaShoppingCart, FaRegArrowAltCircleRight, FaRocket, FaThList} from "react-icons/fa";
+import { FaWallet, FaGlobe, FaFile, FaShoppingCart, FaRegArrowAltCircleRight, FaRocket, FaThList } from "react-icons/fa";
 
 import Layout from "admin/components/Layout";
+import VillageSearchBox from "admin/components/VillageSearchBox";
 
 import { getUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
+import { Village } from "types/schema";
 
 const Societies: NextPage = () => {
   const router = useRouter();
@@ -54,10 +56,12 @@ const Societies: NextPage = () => {
     // }
   }, [me]);
 
+  const [village, setVillage] = useState<Village>(null);
+
   return (
     <Fragment>
       <Layout>
-        society management
+        <VillageSearchBox setVillage={setVillage} />
       </Layout>
     </Fragment>
   );

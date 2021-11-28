@@ -54,7 +54,6 @@ const homeCountry = "bangladesh";
 const Graduates: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  
   const { me, totalGraduates, districts, subDistricts, villages, fetchCommonData, fetchGraduatePageData } = useFetchData();
   
   const [activeMenuItem, setActiveMenuItem] = useState(menuItems[2]);

@@ -5,15 +5,18 @@ import Link from "next/link";
 import {
   Container,
   Flex,
+  Center,
   Box,
   Text,
   Stack,
   HStack,
+  SimpleGrid,
   Image,
   Button,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import Slider from "react-slick";
+import ReactPlayer from "react-player/lazy";
 
 import Logo from "components/Logo";
 import Footer from "components/Footer";
@@ -21,7 +24,7 @@ import Footer from "components/Footer";
 import HomeSlick from "components/HomeSlick";
 import HomeSlickControl from "components/HomeSlickControl";
 import HomeCategoryBar from "components/HomeCategoryBar";
-import VideoBox from "components/widgets/VideoBox";
+import FaqAccordion from "components/FaqAccordion";
 import router from "next/router";
 import { isObject } from "lodash";
 
@@ -92,70 +95,32 @@ const Home: NextPage = () => {
 
   return (
     <Fragment>
-      <Box bgColor="white">
-        <Flex
-          w="full"
-          h="55px"
-          bgColor="white"
-          justifyContent="space-between"
-          alignItems="center"
-          px={6}
-        >
+      <Box bgColor="white" py={4}>
+        <Center w="full">
           <Logo />
-          <HStack spacing={8}>
-            <Box fontSize="14px">
-              <Link href="/login">Login</Link>
-            </Box>
-            <Box
-              px={4}
-              h="24px"
-              textAlign="center"
-              color="purpleTone"
-              fontSize="14px"
-              border="1px"
-              borderColor="purpleTone"
-              borderRadius="6px"
-              cursor="pointer"
-            >
-              <Link href="/signup">Create Account</Link>
-            </Box>
-          </HStack>
-        </Flex>
+        </Center>
 
         <Box px={{ base: 6, md: 32 }} mt={12}>
           <Stack spacing={12} direction={{ base: "column", md: "row" }}>
-            <Box w="full">
+            <Flex w="full" flexDirection={"column"} justifyContent={"center"}>
               <Text
                 textAlign={{ base: "center", md: "left" }}
-                fontSize="3xl"
+                fontSize="4xl"
                 fontWeight="600"
-                color="purpleTone"
+                color="GrayText"
                 lineHeight={1.2}
               >
-                Welcome to Bangladesh Community
+                Welcome to Skillhet
               </Text>
               <Text
                 textAlign={{ base: "center", md: "left" }}
-                fontSize="md"
+                fontSize="4xl"
                 color="GrayText"
-                mt={8}
+                mt={2}
               >
-                Connecting village community, Know your people, culture and
-                history
+                your loved community
               </Text>
-              <Text
-                textAlign={{ base: "center", md: "left" }}
-                fontSize="xs"
-                color="GrayText"
-                mt={12}
-              >
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-                auctor euismod lobortis. Mauris ornare ante non justo mattis,
-                vitae fermentum ligula consequat. Donec ac quam sit amet libero.
-                Sed ullamcorper dui ac laoreet auctor. Mauris malesuada ante
-                mauris, non elementum purus luctus sit amet. Nullam sed elit
-                lectus.
-              </Text>
+
               {breakpointValue === "md" && (
                 <HStack spacing={4} mt={24}>
                   <Button onClick={() => router.push("/login")}>
@@ -166,9 +131,9 @@ const Home: NextPage = () => {
                   </Button>
                 </HStack>
               )}
-            </Box>
-            <Box w={{ base: "100%", md: "50%" }}>
-              <Slider {...heroImgSlideConf}>
+            </Flex>
+            <Box w="full">
+              {/* <Slider {...heroImgSlideConf}>
                 {[1, 2, 3, 4].map((number) => (
                   <Box key={number} index={number}>
                     <Image
@@ -179,83 +144,50 @@ const Home: NextPage = () => {
                     />
                   </Box>
                 ))}
-              </Slider>
+              </Slider> */}
+              <Image
+                src={`/images/logo-img.svg`}
+                alt=""
+                w="full"
+                objectFit="cover"
+              />
             </Box>
           </Stack>
         </Box>
 
-        <Box
-          bgColor="#FAFAFA"
-          px={{ base: 6, md: 32 }}
-          py={12}
-          mt={{ base: 12, md: 8, lg: -20 }}
-        >
-          <HomeSlick
-            sliderIndex={sliderIndex1}
-            styles={{ titleColor: "primary", descColor: "#8E8E8A" }}
-          />
-          <HomeSlickControl
-            sliderIndex={sliderIndex1}
-            setSliderIndex={setSliderIndex1}
-            styles={{
-              btnColor: "gray.400",
-              btnActiveColor: "primary",
-              dotColor: "gray.400",
-              dotActiveColor: "purpleTone",
-            }}
-          />
-        </Box>
-
-        <Flex pos="relative" alignItems="center" overflow="hidden">
-          <Image src="/images/home/middle-bar-back.png" w="full" fit="cover" alt="" />
-          <HStack
-            spacing={6}
-            w="full"
-            h="80%"
-            pos="absolute"
-            px={{ base: 6, md: 32 }}
-          >
-            <Box w="30%" h="full">
-              <Image
-                src="/images/home/bar-avatar1.png"
-                borderRadius="full"
-                h="full"
-                fit="cover"
-                alt=""
-              />
-            </Box>
-            <Box w="70%">
-              <HomeSlick
-                sliderIndex={sliderIndex2}
-                styles={{ titleColor: "white", descColor: "gray.300" }}
-              />
-              <HomeSlickControl
-                sliderIndex={sliderIndex2}
-                setSliderIndex={setSliderIndex2}
-                styles={{
-                  btnColor: "gray.400",
-                  btnActiveColor: "white",
-                  dotColor: "gray.400",
-                  dotActiveColor: "white",
-                }}
-              />
-            </Box>
-          </HStack>
-        </Flex>
-
-        <Box px={{ base: 6, md: 36 }} pt={12}>
+        <Box px={{ base: 6, md: 36 }} mt={24}>
           <HomeCategoryBar />
         </Box>
 
-        <Container maxW="container.md" mt={24}>
-          <VideoBox videoUrl="https://dms.licdn.com/playlist/C4E05AQHku83iVu0opQ/mp4-720p-30fp-crf28/0/1634735737014?e=1634907600&v=beta&t=kaOqes8UxaDsNDFbWAgC3_3yl9fHsNOqVMdSxwwwHsQ" />
-        </Container>
+        <SimpleGrid
+          columns={{ base: 1, md: 2 }}
+          bgColor="grayBg"
+          px={{ base: 6, md: 32 }}
+          mt={24}
+        >
+          <Box mt={-4}>
+            <ReactPlayer
+              className="react-player"
+              url="https://www.rmp-streaming.com/media/big-buck-bunny-360p.mp4"
+              width="100%"
+              height="100%"
+              playing={true}
+            />
+          </Box>
+          <Center>
+            <Box p={12}>
+              <Text fontSize="xl" fontWeight="semibold">Let{"'"}s explore</Text>
+              <Text fontSize="md" color="GrayText" mt={4}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam auctor euismod lobortis. Mauris ornare ante non justo mattis, vitae fermentum ligula consequat. Donec ac quam sit amet libero. Sed ullamcorper dui ac laoreet auctor. Mauris malesuada ante mauris, non elementum purus luctus sit amet. Nullam sed elit lectus.</Text>
+            </Box>
+          </Center>
+        </SimpleGrid>
 
-        <Box mt={-96}>
-          <Image src="/images/home/bottom-back.png" w="full" fit="cover" alt=""/>
+        <Box w={{base: "100%", md: "70%"}} px={{ base: 6, md: 36 }} mt={24}>
+          <Text fontSize="2xl" fontWeight="semibold" mb={6}>FAQ</Text>
+          <FaqAccordion />
         </Box>
 
-        <Box>
+        <Box mt={24}>
           <Footer />
         </Box>
       </Box>

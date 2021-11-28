@@ -1,13 +1,13 @@
 import { Fragment } from "react";
 import Link from "next/link";
-import { Image } from "@chakra-ui/react";
+import { Text, Image } from "@chakra-ui/react";
 
 const Logo = () => {
   return (
     <Fragment>
-        <Link href="/" passHref={true}>
-          <Image src="/logo.svg" alt="prop" h={6} cursor="pointer" />
-        </Link>
+      <Link href="/" passHref={true}>
+        <Image src="/logo.svg" h={6} alt="" cursor="pointer" />
+      </Link>
     </Fragment>
   );
 };

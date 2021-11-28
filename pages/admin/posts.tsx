@@ -99,14 +99,26 @@ const Posts: NextPage = () => {
         accessor: 'user',
         Cell: function UserItem({row}){
           return(
-            <HStack>
+            <VStack>
               <Avatar src={row.original.user.avatar} size="sm" />
               <Text>{row.original.user.firstName} {row.original.user.lastName}</Text>
-            </HStack>
+            </VStack>
           )
         }
       },
-    ],
+      // {
+      //   Header: 'Action',
+      //   accessor: 'action',
+      //   Cell: function ActionItem({ row }){
+      //     return (
+      //       <HStack>
+      //         <Button onClick={()=>console.log(row)}>Edit</Button>
+      //         <Button onClick={()=>console.log(row)}>Delete</Button>
+      //       </HStack>
+      //     )
+      //   }
+      // }
+    ], 
     []
   )
 
@@ -115,6 +127,7 @@ const Posts: NextPage = () => {
   useEffect(() => {
     setData(posts.map(post => (
       {
+        uuid: post.uuid,
         content: post.content,
         picture: post.picture,
         video: post.video,
