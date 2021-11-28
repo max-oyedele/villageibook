@@ -23,6 +23,7 @@ import HomeSlickControl from "components/HomeSlickControl";
 import HomeCategoryBar from "components/HomeCategoryBar";
 import VideoBox from "components/widgets/VideoBox";
 import router from "next/router";
+import { isObject } from "lodash";
 
 const Home: NextPage = () => {
   const breakpointValue = useBreakpointValue({
@@ -44,6 +45,50 @@ const Home: NextPage = () => {
 
   const [sliderIndex1, setSliderIndex1] = useState(0);
   const [sliderIndex2, setSliderIndex2] = useState(0);
+
+  useEffect(()=>{
+    const setting = {
+      boarding: {
+        maxPeople: 10,
+        status: "open"
+      },
+      pricing: {
+        serviceFee: 100,
+        cleaningFee: 10,
+        pricePerNight: 200
+      },
+      booking: {
+        policy: {
+          cancellation: "free",
+          instantBooking: true
+        },
+        availability: {
+          advanceNotice: "3hours",
+          availableMonthFrom: 3,
+          availableMonthTo: 6,
+          availableTimeFrom: 9,
+          availableTimeTo: 14
+        },
+        rules: {
+          children: true,
+          infants: false,
+          pets: false
+        }
+      }
+    }
+
+    console.log("settings", generateSettings('', setting))
+  }, [])
+
+  const generateSettings = (path: string, setting: Record<string, unknown>) => {
+    return Object.entries(setting).reduce((acc, [key, value])=>{
+      const newPath = path + "." + key;
+      if(isObject(value)){
+        return {...acc, [newPath]: generateSettings(newPath, value as Record<string, unknown>)}
+      }
+      return {...acc, [newPath]: value}
+    }, {})
+  }
 
   return (
     <Fragment>
@@ -127,7 +172,7 @@ const Home: NextPage = () => {
                 {[1, 2, 3, 4].map((number) => (
                   <Box key={number} index={number}>
                     <Image
-                      src={`/images/home/hero-img${number}.png`}
+                      src={`/images/logo-img.svg`}
                       alt=""
                       w="full"
                       objectFit="cover"
@@ -162,7 +207,7 @@ const Home: NextPage = () => {
         </Box>
 
         <Flex pos="relative" alignItems="center" overflow="hidden">
-          <Image src="/images/home/middle-bar-back.png" w="full" fit="cover" />
+          <Image src="/images/home/middle-bar-back.png" w="full" fit="cover" alt="" />
           <HStack
             spacing={6}
             w="full"
@@ -176,6 +221,7 @@ const Home: NextPage = () => {
                 borderRadius="full"
                 h="full"
                 fit="cover"
+                alt=""
               />
             </Box>
             <Box w="70%">
@@ -206,7 +252,7 @@ const Home: NextPage = () => {
         </Container>
 
         <Box mt={-96}>
-          <Image src="/images/home/bottom-back.png" w="full" fit="cover" />
+          <Image src="/images/home/bottom-back.png" w="full" fit="cover" alt=""/>
         </Box>
 
         <Box>
