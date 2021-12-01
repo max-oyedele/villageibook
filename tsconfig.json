@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "baseUrl": "."
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "admin/theme/theme.js", "admin/theme/styles.js", "admin/theme/foundations/breakpoints.js", "admin/theme/foundations/fonts.js", "admin/theme/foundations/text.js"],
   "exclude": ["node_modules"]
 }

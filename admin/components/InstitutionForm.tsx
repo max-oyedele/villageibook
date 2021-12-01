@@ -19,55 +19,52 @@ import AvatarUpload from 'admin/components/AvatarUpload';
 import InputBox from 'components/widgets/InputBox';
 
 import useAdminActionDispatch from 'hooks/use-admin-action-dispatch';
-import { Personality, Village } from 'types/schema';
+import { Institution, Village } from 'types/schema';
 
-const PersonalityForm: React.FC<{
+const InstitutionForm: React.FC<{
     type: string,
     village: Village,
-    personality?: Personality
+    institution?: Institution
 }> = ({
     type,
     village,
-    personality
+    institution
 }) => {
         const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-        const [name, setName] = useState(personality?.name);
+        const [name, setName] = useState(institution?.name);
         const [avatar, setAvatar] = useState(null);
-        const [photo, setPhoto] = useState(personality?.photo);
-        const [about, setAbout] = useState(personality?.about);
-        const [dateOfBirth, setDateOfBirth] = useState(personality?.dateOfBirth);
-        const [dateOfDeath, setDateOfDeath] = useState(personality?.dateOfDeath);
-        const [educationLife, setEducationLife] = useState(personality?.educationLife);
-        const [achievements, setAchievements] = useState(personality?.achievements);
-        const [career, setCareer] = useState(personality?.career);
+        const [photo, setPhoto] = useState(institution?.photo);
+        const [yearEstablished, setYearEstablished] = useState(institution?.yearEstablished);
+        const [address, setAddress] = useState(institution?.address);
+        const [email, setEmail] = useState(institution?.email);
+        const [phone, setPhone] = useState(institution?.phone);
+        const [history, setHistory] = useState(institution?.history);
 
-        const { submitPersonalityData } = useAdminActionDispatch();
+        const { submitInstitutionData } = useAdminActionDispatch();
 
         const validationSchema = yup.object({
             name: yup.string().nullable().required("Name is required."),
-            about: yup.string().nullable(),
             photoName: yup.string().nullable(),
             photoDescription: yup.string().nullable(),
-            dateOfBirth: yup.date().nullable(),
-            dateOfDeath: yup.date().nullable(),
-            educationLife: yup.string().nullable(),
-            achievements: yup.string().nullable(),
-            career: yup.string().nullable(),
+            yearEstablished: yup.string().nullable(),
+            address: yup.string().nullable(),
+            email: yup.string().email("Provide correct Email address.").nullable(),
+            phone: yup.string().nullable(),
+            history: yup.string().nullable(),
         });
 
         return (
             <Formik
                 initialValues={{
                     name: name,
-                    about: about,
                     photoName: photo?.name,
                     photoDescription: photo?.description,
-                    dateOfBirth: dateOfBirth,
-                    dateOfDeath: dateOfDeath,
-                    educationLife: educationLife,
-                    achievements: achievements,
-                    career: career
+                    yearEstablished: yearEstablished,
+                    address: address,
+                    email: email,
+                    phone: phone,
+                    history: history
                 }}
                 enableReinitialize={true}
                 validationSchema={validationSchema}
@@ -75,18 +72,17 @@ const PersonalityForm: React.FC<{
                     // console.log({ values, actions });
                     const params = {
                         villageUuid: village.uuid,
-                        name,
-                        about,
-                        photo: { avatar, name: photo.name, description: photo.description },
-                        dateOfBirth,
-                        dateOfDeath,
-                        educationLife,
-                        achievements,
-                        career,
+                        name,                        
+                        photo: {avatar, name: photo.name, description: photo.description},
+                        yearEstablished,
+                        address,
+                        email,
+                        phone,
+                        history
                     };
 
                     actions.setSubmitting(true);
-                    await submitPersonalityData(params);
+                    await submitInstitutionData(params);
                     actions.setSubmitting(false);
                 }}
             >
@@ -109,15 +105,6 @@ const PersonalityForm: React.FC<{
                                 isInvalid={!!errors.name}
                                 error={errors.name}
                             />
-                            <InputBox
-                                id="about"
-                                label="About"
-                                value={about ?? ""}
-                                onChange={(e) => setAbout(e.target.value)}
-                                isRequired={false}
-                                isInvalid={!!errors.about}
-                                error={errors.about}
-                            />
                             <Box w="full" border="1px" borderColor="gray.200" borderRadius="4px" p={4}>
                                 <Center>
                                     <AvatarUpload setAvatar={setAvatar} />
@@ -132,7 +119,7 @@ const PersonalityForm: React.FC<{
                                     error={errors.photoName}
                                 />
                                 <InputBox
-                                    id="hasPhotoDescription"
+                                    id="photoDescription"
                                     label="Photo Description"
                                     value={photo?.description ?? ""}
                                     onChange={(e) => setPhoto({ ...photo, description: e.target.value })}
@@ -142,51 +129,49 @@ const PersonalityForm: React.FC<{
                                 />
                             </Box>
                             <InputBox
-                                id="dateOfBirth"
-                                label="Date Of Birth"
-                                placeholder="1990-04-20"
-                                value={dateOfBirth ?? ""}
-                                onChange={(e) => setDateOfBirth(e.target.value)}
+                                id="yearEstablished"
+                                label="Year of Established"
+                                value={yearEstablished ?? ""}
+                                onChange={(e) => setYearEstablished(e.target.value)}
                                 isRequired={false}
-                                isInvalid={!!errors.dateOfBirth}
-                                error={errors.dateOfBirth}
+                                isInvalid={!!errors.yearEstablished}
+                                error={errors.yearEstablished}
                             />
                             <InputBox
-                                id="dateOfDeath"
-                                label="Date Of Death"
-                                placeholder="1990-04-20"
-                                value={dateOfDeath ?? ""}
-                                onChange={(e) => setDateOfDeath(e.target.value)}
+                                id="address"
+                                label="Address"
+                                value={address ?? ""}
+                                onChange={(e) => setAddress(e.target.value)}
                                 isRequired={false}
-                                isInvalid={!!errors.dateOfDeath}
-                                error={errors.dateOfDeath}
+                                isInvalid={!!errors.address}
+                                error={errors.address}
                             />
                             <InputBox
-                                id="educationLife"
-                                label="Education Life"
-                                value={educationLife ?? ""}
-                                onChange={(e) => setEducationLife(e.target.value)}
+                                id="email"
+                                label="Email"
+                                value={email ?? ""}
+                                onChange={(e) => setEmail(e.target.value)}
                                 isRequired={false}
-                                isInvalid={!!errors.educationLife}
-                                error={errors.educationLife}
+                                isInvalid={!!errors.email}
+                                error={errors.email}
                             />
                             <InputBox
-                                id="achievements"
-                                label="achievements"
-                                value={achievements ?? ""}
-                                onChange={(e) => setAchievements(e.target.value)}
+                                id="phone"
+                                label="Phone number"
+                                value={phone ?? ""}
+                                onChange={(e) => setPhone(e.target.value)}
                                 isRequired={false}
-                                isInvalid={!!errors.achievements}
-                                error={errors.achievements}
+                                isInvalid={!!errors.phone}
+                                error={errors.phone}
                             />
                             <InputBox
-                                id="career"
-                                label="Career"
-                                value={career ?? ""}
-                                onChange={(e) => setCareer(e.target.value)}
+                                id="history"
+                                label="History"
+                                value={history ?? ""}
+                                onChange={(e) => setHistory(e.target.value)}
                                 isRequired={false}
-                                isInvalid={!!errors.career}
-                                error={errors.career}
+                                isInvalid={!!errors.history}
+                                error={errors.history}
                             />
 
                         </VStack>
@@ -211,4 +196,4 @@ const PersonalityForm: React.FC<{
         )
     }
 
-export default PersonalityForm;
+export default InstitutionForm;

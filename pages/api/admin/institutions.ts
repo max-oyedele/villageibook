@@ -16,7 +16,7 @@ async function handler(req, res) {
 
   async function getInstitutions() {
     try {
-      let institution = fetchWrapper.get(baseUrl + "/institutions.json", access_token);
+      let institution = fetchWrapper.get(baseUrl + "/institutions.json?fields=name,photo.url,photo.name,photo.description,yearEstablished,address,email,phone,history,uuid", access_token);
       
       await institution.then(response=>{
         res.status(200).json(response);

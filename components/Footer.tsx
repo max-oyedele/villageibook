@@ -60,10 +60,12 @@ const Footer = () => {
           w="full"
           h="150px"
           bgColor="grayBg"
-          justifyContent="space-between"
+          justifyContent="end"
+          borderTop="1px"
+          borderColor="gray.100"
           px={6}
         >
-          <HStack spacing={6}>
+          {/* <HStack spacing={6}>
             <Box>
               <Text fontSize="11px" fontWeight="400" color="GrayText">
                 Copyright @ 2021, All rights reserved.
@@ -72,10 +74,10 @@ const Footer = () => {
                 <SocialLinkBar />
               </Box>
             </Box>
-          </HStack>
+          </HStack> */}
           <HStack spacing={6}>
             {tabs.map((tab) => (
-              <Link key={tab.name} href={tab.path}>
+              <Link key={tab.name} href={tab.path} passHref>
                 <Text fontSize="13px" color="GrayText" cursor="pointer" _hover={{color: "purpleTone"}}>
                   {tab.name}
                 </Text>

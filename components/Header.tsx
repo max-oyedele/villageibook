@@ -7,6 +7,7 @@ import {
   Container,
   Flex,
   Box,
+  Center,
   Text,
   useBreakpointValue,
   IconButton,
@@ -62,10 +63,10 @@ const Header = () => {
     pathname === "/feed"
       ? tabs[0]
       : pathname.includes("village")
-      ? tabs[1]
-      : pathname.includes("graduates")
-      ? tabs[2]
-      : null
+        ? tabs[1]
+        : pathname.includes("graduates")
+          ? tabs[2]
+          : null
   );
 
   const { removeToken } = useToken();
@@ -85,13 +86,14 @@ const Header = () => {
           <Container maxW="container.xl" px={6}>
             <Flex justifyContent="space-between">
               <HStack spacing={6} mr={1}>
-                <Logo />
+                <Logo type="i" />
                 {tabs.map((tab) => (
                   <Link
                     key={tab.name}
                     href={
                       tab.path === "/village" ? `${tab.path}/${vid}` : tab.path
                     }
+                    passHref={true}
                   >
                     <Flex
                       h="55px"
@@ -116,19 +118,23 @@ const Header = () => {
                   h="full"
                   spacing={4}
                   fontSize="12px"
-                  borderBottom={pathname.includes("accountedit") ? "2px" : ""}
-                  borderColor={
-                    pathname.includes("accountedit") ? "purpleTone" : ""
-                  }
                 >
                   {/* {me?.role === "admin" && ( */}
-                    <Link href="/admin/dashboard">
-                      <Text cursor="pointer">ADMIN</Text>
-                    </Link>
-                  {/* )} */}
-                  <Link href="/accountedit">
-                    <Text cursor="pointer">ACCOUNT</Text>
+                  <Link href="/admin/dashboard" passHref={true}>
+                    <Text cursor="pointer">ADMIN</Text>
                   </Link>
+                  {/* )} */}
+                  <Center  
+                    h="full"                   
+                    borderBottom={pathname.includes("accountedit") ? "2px" : ""}
+                    borderColor={
+                      pathname.includes("accountedit") ? "purpleTone" : ""
+                    }
+                  >
+                    <Link href="/accountedit" passHref={true}>
+                      <Text cursor="pointer">ACCOUNT</Text>
+                    </Link>
+                  </Center>
                 </HStack>
                 <Box
                   px={4}
@@ -168,7 +174,7 @@ const Header = () => {
             alignItems="center"
             px={6}
           >
-            {/* <Logo /> */}
+            {/* <Logo type="i" /> */}
             <IconButton
               aria-label=""
               icon={showMenuMobile ? <BiX /> : <BiMenu />}

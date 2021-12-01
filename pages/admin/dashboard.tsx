@@ -59,7 +59,7 @@ const Dashboard: NextPage = () => {
 
   const [users, setUsers] = useState(10200);
   const [posts, setPosts] = useState(9100);
-  const [articles, setArticles] = useState(1220);
+  const [societies, setSocieties] = useState(1220);
   const [personalities, setPersonalities] = useState(2300);
   const [institutions, setInstitutions] = useState(5020);
   const [videos, setVideos] = useState(1120);
@@ -78,8 +78,8 @@ const Dashboard: NextPage = () => {
         path: "/admin/posts"
       },
       {
-        label: "Articles",
-        count: articles,
+        label: "Societies",
+        count: societies,
         path: "/admin/societies"
       },
       {
@@ -98,7 +98,7 @@ const Dashboard: NextPage = () => {
         path: "/admin/videos"
       },
     ])
-  }, [users, posts, articles, personalities, institutions, videos])
+  }, [users, posts, societies, personalities, institutions, videos])
 
   return (
     <Fragment>

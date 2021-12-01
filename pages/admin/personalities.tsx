@@ -80,7 +80,6 @@ const Personalities: NextPage = () => {
   const { villages, fetchVillagesData } = useAdminFetchData();
   const [village, setVillage] = useState<Village>(null);
 
-
   const columns = useMemo(
     () => [
       {
@@ -88,17 +87,39 @@ const Personalities: NextPage = () => {
         accessor: 'name',
       },
       {
-        Header: 'Picture',
-        accessor: 'picture',
+        Header: 'Photo',
+        accessor: 'photo.url',
         Cell: function PictureItem({ row }) {
           return (
             <Box w={40}>
-              <ImageBox
-                imageUrl={row.original.picture}
-              />
+              <Avatar src={row.original.photo?.url} size="md" />
             </Box>
           );
         },
+      },
+      {
+        Header: 'About',
+        accessor: 'about',
+      },
+      {
+        Header: 'Date of Birth',
+        accessor: 'dateOfBirth',
+      },
+      {
+        Header: 'Date of Death',
+        accessor: 'dateOfDeath',
+      },
+      {
+        Header: 'Education Life',
+        accessor: 'educationLife',
+      },
+      {
+        Header: 'Achievements',
+        accessor: 'achievements',
+      },
+      {
+        Header: 'Career',
+        accessor: 'career',
       },
     ],
     []
@@ -107,12 +128,7 @@ const Personalities: NextPage = () => {
   const [data, setData] = useState([])
   const tableInstance = useTable({ columns, data })
   useEffect(() => {
-    setData(personalities.map(personality => (
-      {
-        // name: personality.name,
-        // picture: institution.picture,
-      }
-    )))
+    setData(personalities);
   }, [personalities])
 
   const {
@@ -125,14 +141,14 @@ const Personalities: NextPage = () => {
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const { isOpen, onOpen, onClose } = useDisclosure();
-  
+
   return (
     <Fragment>
       <Layout>
 
         <VillageSearchBox setVillage={setVillage} />
         <Flex justifyContent={"flex-end"}>
-          <Button onClick={() => onOpen()}>Add Personality</Button>
+          <Button onClick={() => onOpen()} isDisabled={!village}>Add Personality</Button>
         </Flex>
 
         <Table {...getTableProps()}>
@@ -183,11 +199,11 @@ const Personalities: NextPage = () => {
         isCentered
         size={breakpointValue === "base" ? "full" : "2xl"}
         isOpen={isOpen}
-        onClose={onClose}        
+        onClose={onClose}
       >
         <ModalOverlay />
         <ModalContent m={0} p={6} bgColor="white">
-          <PersonalityForm type="add" />
+          <PersonalityForm type="add" village={village} />
         </ModalContent>
       </Modal>
 

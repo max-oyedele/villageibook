@@ -16,7 +16,7 @@ async function handler(req, res) {
 
   async function getPersonalities() {
     try {
-      let personality = fetchWrapper.get(baseUrl + "/personalities.json", access_token);
+      let personality = fetchWrapper.get(baseUrl + "/personalities.json?fields=name,about,photo.url,photo.name,photo.description,dateOfBirth,dateOfDeath,educationLife,achievements,career,uuid", access_token);
       
       await personality.then(response=>{
         res.status(200).json(response);

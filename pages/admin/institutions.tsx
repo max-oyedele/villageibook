@@ -29,8 +29,17 @@ import {
   Th,
   Td,
   TableCaption,
+  Modal,
+  ModalOverlay,
+  ModalHeader,
+  ModalCloseButton,
+  ModalContent,
+  ModalBody,
+  ModalFooter,
   useColorMode,
   useColorModeValue,
+  useBreakpointValue,
+  useDisclosure
 } from "@chakra-ui/react";
 
 import { FaWallet, FaGlobe, FaFile, FaShoppingCart, FaRegArrowAltCircleRight, FaRocket, FaThList } from "react-icons/fa";
@@ -39,10 +48,13 @@ import { useTable, useSortBy } from 'react-table';
 import Layout from "admin/components/Layout";
 import ImageBox from "components/widgets/ImageBox";
 import VideoBox from "components/widgets/VideoBox";
+import VillageSearchBox from "admin/components/VillageSearchBox";
+import InstitutionForm from "admin/components/InstitutionForm";
 
 import { getUserToken } from "helpers/user-token";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
-import useActionDispatch from "hooks/use-action-dispatch";
+
+import { Village } from "types/schema";
 
 const Institutions: NextPage = () => {
   const router = useRouter();
@@ -64,28 +76,47 @@ const Institutions: NextPage = () => {
     fetchInstitutionsData();
   }, [me]);
 
+  const { villages, fetchVillagesData } = useAdminFetchData();
+  const [village, setVillage] = useState<Village>(null);
+
   const columns = useMemo(
     () => [
-      {
-        Header: 'Category',
-        accessor: 'category',
-      },
       {
         Header: 'Name',
         accessor: 'name',
       },
       {
-        Header: 'Picture',
-        accessor: 'picture',
+        Header: 'Photo',
+        accessor: 'photo',
         Cell: function PictureItem({ row }) {
           return (
             <Box w={40}>
               <ImageBox
-                imageUrl={row.original.picture}
+                imageUrl={row.original.photo?.url}
               />
             </Box>
           );
         },
+      },
+      {
+        Header: 'Year of Established',
+        accessor: 'yearEstablished'
+      },
+      {
+        Header: 'Address',
+        accessor: 'address'
+      },
+      {
+        Header: 'Email',
+        accessor: 'email'
+      },
+      {
+        Header: 'Phone',
+        accessor: 'phone'
+      },
+      {
+        Header: 'History',
+        accessor: 'history'
       },
     ],
     []
@@ -94,13 +125,7 @@ const Institutions: NextPage = () => {
   const [data, setData] = useState([])
   const tableInstance = useTable({ columns, data })
   useEffect(() => {
-    setData(institutions.map(institution => (
-      {
-        category: institution.category,
-        name: institution.name,
-        // picture: institution.picture,
-      }
-    )))
+    setData(institutions);
   }, [institutions])
 
   const {
@@ -111,9 +136,17 @@ const Institutions: NextPage = () => {
     prepareRow,
   } = tableInstance
 
+  const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Fragment>
       <Layout>
+        <VillageSearchBox setVillage={setVillage} />
+        <Flex justifyContent={"flex-end"}>
+          <Button onClick={() => onOpen()} isDisabled={!village}>Add Institution</Button>
+        </Flex>
+
         <Table {...getTableProps()}>
           <Thead>
             {// Loop over the header rows
@@ -156,6 +189,19 @@ const Institutions: NextPage = () => {
           </Tbody>
         </Table>
       </Layout>
+
+      <Modal
+        closeOnOverlayClick={true}
+        isCentered
+        size={breakpointValue === "base" ? "full" : "2xl"}
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <ModalOverlay />
+        <ModalContent m={0} p={6} bgColor="white">
+          <InstitutionForm type="add" village={village} />
+        </ModalContent>
+      </Modal>
     </Fragment>
   );
 };
