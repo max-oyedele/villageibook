@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useToast } from "@chakra-ui/react";
 import router, { useRouter } from "next/router";
 import useFetchData from "hooks/use-fetch-data";
+import useAdminFetchData from "hooks/use-admin-fetch-data";
 import { Status } from "rdx/types";
 
 const ToastWrapper = ({ children }) => {
@@ -15,6 +16,10 @@ const ToastWrapper = ({ children }) => {
     postError,
     userError,
   } = useFetchData();
+
+  const {
+    error: adminError
+  } = useAdminFetchData()
 
   const toast = useToast();
 
@@ -86,7 +91,19 @@ const ToastWrapper = ({ children }) => {
           isClosable: true,
         });
     }
-  }, [jwt, signupMe, authError, meError, userError, postStatus, postError]);
+    if (adminError) {
+      !toast.isActive("adminError") &&
+        toast({
+          id: "adminError",
+          title: "Failed! Try again.",
+          description: adminError.message,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+    }
+
+  }, [jwt, signupMe, authError, meError, userError, postStatus, postError, adminError]);
 
   return children;
 };

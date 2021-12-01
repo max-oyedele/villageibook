@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, ChangeEventHandler } from "react";
 import {
   Box,
   HStack,
@@ -11,12 +11,13 @@ import {
 const InputBox: React.FC<{
   id: string;
   label: string;
+  placeholder?: string;
   value?: string;
-  onChange: React.Dispatch<React.SetStateAction<string | null>>;
+  onChange: ChangeEventHandler<HTMLInputElement>;
   isRequired: boolean;
   isInvalid: boolean;
   error: any;
-}> = ({ id, label, value, onChange, isRequired, isInvalid, error }) => {
+}> = ({ id, label, placeholder, value, onChange, isRequired, isInvalid, error }) => {
   
   return (
     <Fragment>
@@ -29,8 +30,9 @@ const InputBox: React.FC<{
             <Input
               color="GrayText"
               fontSize={13}
+              placeholder={placeholder}
               value={value}
-              onChange={(e) => onChange(e.target.value)}
+              onChange={onChange}
               _focus={{ outline: "none" }}
             />
           </Box>
