@@ -17,35 +17,35 @@ export type User = {
   recentAt?: number;
   uuid: string;
   role?: string;
-}
+};
 
 export type Country = {
   id: number;
   name: string;
   href: string;
   uuid: string;
-}
+};
 
 export type Region = {
   id: number;
   name: string;
   href: string;
   uuid: string;
-}
+};
 
 export type District = {
   id: number;
   name: string;
   href: string;
   uuid: string;
-}
+};
 
 export type SubDistrict = {
   id: number;
   name: string;
   href: string;
   uuid: string;
-}
+};
 
 export type Village = {
   id: number;
@@ -54,14 +54,14 @@ export type Village = {
   uuid?: string;
   img?: string;
   recentAt?: number;
-}
+};
 
 export type University = {
   id: number;
   name: string;
   href: string;
   uuid: string;
-}
+};
 
 export type Degree = {
   id: number;
@@ -76,32 +76,50 @@ export type Profession = {
 };
 
 export type Comment = {
-  commentUser: User,
-  text: string
-}
+  commentUser: User;
+  text: string;
+};
 
 export type Personality = {
   id: number;
   name: string;
-  photo: string;
   about?: string;
+  photo?: {
+    url?: string;
+    name?: string;
+    description?: string;
+  };
+  video?: {
+    url?: string;
+    name?: string;
+    description?: string;
+  };
   dateOfBirth?: string;
   dateOfDeath?: string;
   educationLife?: string;
-  career?: string;
   achievements?: string;
+  career?: string;
   uuid: string;
-}
+};
 
 export type Institution = {
   id: number;
   name: string;
-  photo: string;
-  href: string;
+  photo?: {
+    url?: string;
+    name?: string;
+    description?: string;
+  };
+  video?: {
+    url?: string;
+    name?: string;
+    description?: string;
+  };
+  yearEstablished?: string;
   address: string;
   email?: string;
   phone?: string;
-  yearEstablished?: string;
   history?: string;
+  href?: string;
   uuid: string;
-}
+};
