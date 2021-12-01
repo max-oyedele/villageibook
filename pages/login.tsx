@@ -88,20 +88,23 @@ const Login = () => {
     <Fragment>
       <Center
         w="full"
-        pos="absolute"
+        bgColor={{ base: "white", md: "transparent" }}
+        pos={{ base: "static", md: "absolute" }}
         top="20px"
         left="20px"
+        py={{ base: 6, md: 0 }}
       >
-        <Logo />
+        <Logo type="i-t" />
       </Center>
       <SimpleGrid h="100vh" columns={{ base: 1, md: 2 }}>
         <Box
           w="full"
           h="full"
+          bgColor="white"
           padding={4}
           display="flex"
           flexDirection="column"
-          justifyContent="center"
+          justifyContent={{ base: "start", md: "center" }}
           alignItems="center"
           order={{ base: 1, md: 0 }}
         >
@@ -212,7 +215,7 @@ const Login = () => {
         </Box>
 
         <Box
-          bgColor="grayBg"
+          bgColor={{ base: "white", md: "grayBg" }}
           order={{ base: 0, md: 1 }}
         >
           <Center h="full" px={6}>

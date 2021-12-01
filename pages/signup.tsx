@@ -88,14 +88,16 @@ const Signup = () => {
       )}
       <Center
         w="full"
-        pos="absolute"
+        bgColor={{base: "white", md: "transparent"}}
+        pos={{base: "static", md: "absolute"}}
         top="20px"
         left="20px"
+        py={{base: 6, md: 0}}
       >
-        <Logo />
+        <Logo type="i-t" />
       </Center>
       <SimpleGrid h="100vh" columns={{ base: 1, md: 2 }}>
-        <Box bgColor="grayBg">
+        <Box bgColor={{ base: "white", md: "grayBg" }}>
           <Center h="full" px={6}>
             <Image
               src="/images/logo-img.svg"
@@ -109,6 +111,7 @@ const Signup = () => {
         <Box
           w="full"
           h="full"
+          bgColor="white"
           padding={4}
           display="flex"
           flexDirection="column"
