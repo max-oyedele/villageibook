@@ -38,7 +38,7 @@ const useAdminFetchData = () => {
     professions,
   } = useSelector((state: OurStore) => state.locationReducer);
 
-  const { posts, articles, personalities, institutions, videos, users } = useSelector(
+  const { posts, articles, personalities, institutions, videos, users, error } = useSelector(
     (state: OurStore) => state.adminReducer
   );
 
@@ -114,6 +114,7 @@ const useAdminFetchData = () => {
     institutions,
     videos,
     users,    
+    error,
     fetchCountriesData,
     fetchRegionsData,
     fetchDistrictsData,
