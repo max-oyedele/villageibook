@@ -273,7 +273,7 @@ const Step1Form = ({ avatar }) => {
                 id="firstName"
                 label="First Name"
                 value={firstName ?? ""}
-                onChange={setFirstName}
+                onChange={(e)=>setFirstName(e.target.value)}
                 isRequired={true}
                 isInvalid={!!errors.firstName}
                 error={errors.firstName}
@@ -282,7 +282,7 @@ const Step1Form = ({ avatar }) => {
                 id="lastName"
                 label="Last Name"
                 value={lastName ?? ""}
-                onChange={setLastName}
+                onChange={(e)=>setLastName(e.target.value)}
                 isRequired={true}
                 isInvalid={!!errors.lastName}
                 error={errors.lastName}
