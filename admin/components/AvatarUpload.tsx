@@ -23,8 +23,7 @@ const AvatarUpload: React.FC<{ avatarUrl?, setAvatar }> = ({ avatarUrl, setAvata
         boxSize="80px"
         borderRadius="full"
         fit="cover"
-        alt=""
-        mt={8}
+        alt=""        
         cursor="pointer"
         onClick={() => avatarRef.current?.click()}
       />

@@ -36,7 +36,7 @@ const HeaderForGuide: React.FC<{ title: string }> = ({ title }) => {
             px={6}
             shadow="md"
           >
-            <Logo />
+            <Logo type="i" />
             <Text>{title}</Text>
             <Box></Box>
           </Flex>
@@ -61,7 +61,7 @@ const HeaderForGuide: React.FC<{ title: string }> = ({ title }) => {
             alignItems="center"
             px={6}
           >
-            {/* <Logo /> */}
+            {/* <Logo type="i"/> */}
             <IconButton
               aria-label=""
               icon={showMenuMobile ? <BiX /> : <BiMenu />}

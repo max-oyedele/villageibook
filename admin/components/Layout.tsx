@@ -87,7 +87,7 @@ export default function Layout(props) {
               fontWeight="bold"
               fontSize="11px"
             >
-              <Logo />
+              <Logo type="i" />
               <Text fontSize="sm" mt="3px" mx={4}>
                 ADMIN
               </Text>
