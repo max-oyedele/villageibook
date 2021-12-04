@@ -53,146 +53,34 @@ const Home: NextPage = () => {
   const [sliderIndex1, setSliderIndex1] = useState(0);
   const [sliderIndex2, setSliderIndex2] = useState(0);
 
-  useEffect(() => {
-    const setting = {
-      boarding: {
-        maxPeople: 10,
-        status: "open"
-      },
-      pricing: {
-        serviceFee: 100,
-        cleaningFee: 10,
-        pricePerNight: 200
-      },
-      booking: {
-        policy: {
-          cancellation: "free",
-          instantBooking: true
-        },
-        availability: {
-          advanceNotice: "3hours",
-          availableMonthFrom: 3,
-          availableMonthTo: 6,
-          availableTimeFrom: 9,
-          availableTimeTo: 14
-        },
-        rules: {
-          children: true,
-          infants: false,
-          pets: false
-        }
-      }
-    }
-
-    console.log("settings", generateSettings('', [], setting))
-    console.log("menus", generateMenuTree(setting))
-
-    const settings = [
-      {
-        description: ['image'],
-        deprecationMessage: null,
-        enum: null,
-        key: 'property.amenities.entertainment.speakers.image'
-      },
-      {
-        description: ['text'],
-        deprecationMessage: null,
-        enum: null,
-        key: 'property.amenities.entertainment.speakers.name'
-      },
-      {
-        description: ['image'],
-        deprecationMessage: null,
-        enum: null,
-        key: 'property.amenities.convinence.towel.image'
-      },
-      {
-        description: ['image'],
-        deprecationMessage: null,
-        enum: null,
-        key: 'property.amenities.hall.image'
-      },
-      {
-        description: ['image'],
-        deprecationMessage: null,
-        enum: null,
-        key: 'property.booking.availability.advanceNotice'
-      }
-    ]
-    console.log('menus by key', generateMenuTreeFromSetting(settings));
-  }, [])
-
-  const generateSettings = (parentKey: string, acc: any[], setting) => {
-    return Object.entries(setting).reduce((acc, [key, value]) => {
-      const newKey = parentKey ? `${parentKey}.${key}` : key;
-      if (isObject(value)) {
-        return generateSettings(newKey, acc, value)
-      }
-      return [...acc, { [newKey]: value }]
-    }, acc)
-  }
-
-  const generateMenuTree = (setting) => {
-    return Object.entries(setting).map(([key, value]) => {
-      if (isObject(value) && !value['body']) {
-        return {
-          name: key,
-          children: generateMenuTree(value)
-        }
-      }
-      return {
-        name: key,
-        value: { ...value['body'] }
-      }
-    })
-  }
-
-  const generateMenuTreeFromSetting = (settings) => {
-    const allSetting = settings.reduce((acc, setting) => {
-      const keyArr = setting.key.split(".");
-      const oneSetting = makeNestedSetting(keyArr, 0, setting);
-      return _.merge(acc, oneSetting);
-    }, {})
-
-    return generateMenuTree(allSetting);
-  }
-  const makeNestedSetting = (arr, index, setting) => {
-    const key = arr.slice(0, index).join(".");
-    if (index < arr.length - 1) {
-      return { [key]: makeNestedSetting(arr, index + 1, setting) }
-    }
-    return { [key]: { body: setting } }
-  }
-
   return (
     <Fragment>
       <Box bgColor="white" pt={6}>
         <Center w="full">
-          <Logo type="i" />
+          <Logo />
         </Center>
 
-        <Box px={{ base: 6, md: 32 }} mt={12}>
+        <Box px={{ base: 6, md: 16, lg: 32 }} mt={12}>
           <Stack spacing={12} direction={{ base: "column", md: "row" }}>
-            <Center w="full" flexDirection={"column"} justifyContent={"center"}>
-              <Text
-                textAlign={{ base: "center", md: "left" }}
-                fontSize={["2xl", "3xl", "4xl", "6xl"]}
-                fontWeight="600"
-                color="GrayText"
-                letterSpacing={4.5}
-                lineHeight={1.2}
-              >
-                Welcome to Skillhet
-              </Text>
-              <Text
-                textAlign={{ base: "center", md: "left" }}
-                fontSize={["2xl", "3xl", "4xl", "6xl"]}
-                color="GrayText"
-                lineHeight={1.2}
-                mt={[0, 6]}
-              >
-                your loved community
-              </Text>
+            <Center w="full">
+              <Box>
+                <Text
+                  fontSize={["xl", "2xl", "3xl", "4xl", "5xl"]}
+                  fontWeight="600"
+                  color="GrayText"
+                  lineHeight={1.2}
+                >
+                  Welcome to Skillhet
+                </Text>
+                <Text
+                  fontSize={["xl", "2xl", "3xl", "4xl", "5xl"]}
+                  color="GrayText"
+                  lineHeight={1.2}
+                  mt={[0, 6]}
+                >
+                  your loved community
+                </Text>
+              </Box>
             </Center>
             {
               breakpointValue === "base" &&
@@ -294,7 +182,7 @@ const Home: NextPage = () => {
           mt={24}
         >
           <Box mt={-4} pos="relative" zIndex={0}>
-            <Flex  justifyContent={{ base: "center", xl: "end" }} alignItems="start">
+            <Flex justifyContent={{ base: "center", xl: "end" }} alignItems="start">
               <ReactPlayer
                 className="react-player"
                 url="https://www.rmp-streaming.com/media/big-buck-bunny-360p.mp4"

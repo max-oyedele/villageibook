@@ -86,7 +86,7 @@ const Header = () => {
           <Container maxW="container.xl" px={6}>
             <Flex justifyContent="space-between">
               <HStack spacing={6} mr={1}>
-                <Logo type="i" />
+                <Logo />
                 {tabs.map((tab) => (
                   <Link
                     key={tab.name}
@@ -174,7 +174,7 @@ const Header = () => {
             alignItems="center"
             px={6}
           >
-            {/* <Logo type="i" /> */}
+            {/* <Logo /> */}
             <IconButton
               aria-label=""
               icon={showMenuMobile ? <BiX /> : <BiMenu />}
