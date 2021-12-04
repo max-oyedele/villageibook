@@ -94,7 +94,7 @@ const Login = () => {
         left="20px"
         py={{ base: 6, md: 0 }}
       >
-        <Logo type="i-t" />
+        <Logo />
       </Center>
       <SimpleGrid h="100vh" columns={{ base: 1, md: 2 }}>
         <Box

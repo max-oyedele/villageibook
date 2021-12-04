@@ -59,7 +59,7 @@ const Footer = () => {
           bottom={0}
           w="full"
           h="150px"
-          bgColor="grayBg"
+          // bgColor="grayBg"
           justifyContent="end"
           borderTop="1px"
           borderColor="gray.100"

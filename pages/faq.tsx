@@ -32,7 +32,7 @@ const Faq: NextPage = () => {
   return (
     <Fragment>
       <Box p={6}>
-        <Logo type="i" />
+        <Logo />
       </Box>
       <Container maxW="container.xl" px={6}>
         <PageTitle title="FAQ" />

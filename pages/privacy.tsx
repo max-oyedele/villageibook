@@ -30,7 +30,7 @@ const Privacy: NextPage = () => {
   return (
     <Fragment>
       <Box p={6}>
-        <Logo type="i" />
+        <Logo />
       </Box>
       <Container px={{ base: 6, md: 32 }} minW="full">
         <PageTitle title="Privacy Policy" />
