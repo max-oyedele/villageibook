@@ -28,7 +28,10 @@ import {
 
 import ReactPlayer from "react-player/lazy";
 
-const VideoBox: React.FC<{ videoUrl: string }> = ({ videoUrl }) => {
+const VideoBox: React.FC<{
+  videoUrl: string,
+  videoBackImg?: string
+}> = ({ videoUrl, videoBackImg }) => {
   const router = useRouter();
   const { pathname } = router;
 
@@ -39,32 +42,42 @@ const VideoBox: React.FC<{ videoUrl: string }> = ({ videoUrl }) => {
   return (
     <Fragment>
       <Box w="full" pos="relative">
-        <ReactPlayer
-          className="react-player"
-          url={videoUrl}
-          width="100%"
-          height="100%"
-          playing={false}
-        />
-
-        <Flex
-          pos="absolute"
-          top={0}
-          w="full"
-          h="full"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Circle
-            w={9}
-            h={9}
-            bgColor="gray.600"
-            _hover={{ bgColor: "red.500", cursor: "pointer" }}
-            onClick={onOpen}
+        {
+          videoBackImg &&
+          <Image src={videoBackImg} alt="" />
+        }
+        {
+          !videoBackImg &&
+          <ReactPlayer
+            className="react-player"
+            url={videoUrl}
+            width="100%"
+            height="100%"
+            playing={false}
+          // light={videoBackImg ?? false}
+          />
+        }
+        {
+          videoUrl &&
+          <Flex
+            pos="absolute"
+            top={0}
+            w="full"
+            h="full"
+            justifyContent="center"
+            alignItems="center"
           >
-            <BiCaretRight fontSize="24px" color="white" />
-          </Circle>
-        </Flex>
+            <Circle
+              w={9}
+              h={9}
+              bgColor="gray.600"
+              _hover={{ bgColor: "red.500", cursor: "pointer" }}
+              onClick={onOpen}
+            >
+              <BiCaretRight fontSize="24px" color="white" />
+            </Circle>
+          </Flex>
+        }
       </Box>
 
       <Modal

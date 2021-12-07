@@ -8,6 +8,7 @@ import { locationSlice } from "./slices/location";
 import { feedPageSlice } from "./slices/feedPage";
 import { villagePageSlice } from "./slices/villagePage";
 import { graduatePageSlice } from "./slices/graduatePage";
+import { statsSlice } from "./slices/stats";
 import { adminSlice } from "./slices/admin"
 
 const combinedReducers = combineReducers({
@@ -17,6 +18,7 @@ const combinedReducers = combineReducers({
   feedPageReducer: feedPageSlice.reducer,
   villagePageReducer: villagePageSlice.reducer,
   graduatePageReducer: graduatePageSlice.reducer,
+  statsReducer: statsSlice.reducer,
   adminReducer: adminSlice.reducer
 });
 export type OurStore = ReturnType<typeof combinedReducers>;

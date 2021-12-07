@@ -26,6 +26,7 @@ import {
   fetchVillageVideos,
 } from "rdx/slices/villagePage";
 import { fetchGraduates } from "rdx/slices/graduatePage";
+import { getGraduatesByLocation } from "rdx/slices/stats";
 
 const useFetchData = () => {
   const dispatch: MyThunkDispatch = useDispatch();
@@ -74,6 +75,7 @@ const useFetchData = () => {
   const { totalGraduates } = useSelector(
     (state: OurStore) => state.graduatePageReducer
   );
+  const { graduatesByLocation } = useSelector((state: OurStore) => state.statsReducer)
 
   const fetchCountriesData = async () => {
     await dispatch(fetchCountries());
@@ -146,7 +148,7 @@ const useFetchData = () => {
     await dispatch(fetchVillageVideos(params));
   };
 
-  const fetchVillagePageData = (params) => {    
+  const fetchVillagePageData = (params) => {
     fetchVillageUsersData(params);
     fetchVillageGraduatesData(params);
     fetchVillageArticlesData(params);
@@ -158,6 +160,10 @@ const useFetchData = () => {
   const fetchGraduatePageData = async (params) => {
     await dispatch(fetchGraduates(params));
   };
+
+  const getGraduatesByLocationData = async (params) => {
+    await dispatch(getGraduatesByLocation(params));
+  }
 
   return {
     jwt,
@@ -181,6 +187,7 @@ const useFetchData = () => {
     recentVillages,
     recentUsers,
     totalGraduates,
+    graduatesByLocation,
     user,
     userError,
     village,
@@ -208,6 +215,7 @@ const useFetchData = () => {
     fetchVillageVideosData,
     fetchVillagePageData,
     fetchGraduatePageData,
+    getGraduatesByLocationData
   };
 };
 

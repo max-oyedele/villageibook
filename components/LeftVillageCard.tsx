@@ -14,6 +14,7 @@ import {Village} from "types/schema";
 import LeftVillageDivider from "./LeftVillageDivider";
 import LeftVillageItems from "./LeftVillageItems";
 import CaptionCard from "./CaptionCard";
+import VideoBox from "./widgets/VideoBox";
 
 const LeftVillageCard:React.FC<{village: Village, fixed?:boolean}> = ({village, fixed}) => {
   return (
@@ -24,7 +25,7 @@ const LeftVillageCard:React.FC<{village: Village, fixed?:boolean}> = ({village, 
         </Box>
         <LeftVillageDivider village={village} />
         <Box p={4}>
-          <LeftVillageItems village={village} />
+          <LeftVillageItems village={village} badgeShow={true} />
         </Box>
       </Box>
     </Fragment>

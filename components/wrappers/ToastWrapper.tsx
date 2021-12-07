@@ -23,7 +23,7 @@ const ToastWrapper = ({ children }) => {
 
   const toast = useToast();
 
-  useEffect(() => {
+  useEffect(() => {    
     if (authError) {
       !toast.isActive("authError") &&
         toast({
@@ -103,7 +103,7 @@ const ToastWrapper = ({ children }) => {
         });
     }
 
-  }, [jwt, signupMe, authError, meError, userError, postStatus, postError, adminError]);
+  }, [jwt, signupMe, authError, meError, userError, postStatus, postError, adminError, toast]);
 
   return children;
 };

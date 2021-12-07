@@ -94,19 +94,22 @@ const Feed: NextPage = () => {
                 borderColor="gray.200"
                 borderRadius="6px"
               >
-                <CaptionCard name="Skillhet" />
+                <VideoBox
+                  videoUrl="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"
+                  videoBackImg="/images/video-caption-back.png"
+                />
                 <Box mt={8}>
                   <LeftVillageDivider
-                    title="Go My Village"
+                    title="My Village"
                     village={me?.comesFrom}
                   />
                 </Box>
                 <Box my={6}>
-                  <LeftVillageItems village={me?.comesFrom} />
+                  <LeftVillageItems village={me?.comesFrom} badgeShow={false} />
                 </Box>
               </Box>
 
-              <Link href={`https://www.fundsurfer.com/crowdfund/villageibook?token=975ab55f35fefbd176774045369a62ba`} passHref={true}>
+              {/* <Link href={`https://www.fundsurfer.com/crowdfund/villageibook?token=975ab55f35fefbd176774045369a62ba`} passHref={true}>
                 <Button
                   w="full"
                   mt={4}
@@ -119,7 +122,7 @@ const Feed: NextPage = () => {
                 >
                   Sponsor VillageIbook
                 </Button>
-              </Link>
+              </Link> */}
 
               <Box>
                 <Text fontSize="24px" mt={10} mb={6}>
@@ -159,7 +162,7 @@ const Feed: NextPage = () => {
               )}
             {breakpointValue === "base" && activeTab === "Village" && (
               <Box>
-                <LeftVillageItems village={me?.comesFrom} />
+                <LeftVillageItems village={me?.comesFrom} badgeShow={false} />
                 <Text fontSize="20px" mt={12} mb={6}>
                   Recently developed
                 </Text>
@@ -214,10 +217,17 @@ const Feed: NextPage = () => {
               top={fixed ? "80px" : 0}
               left={fixed ? rightPartRef.current.offsetLeft : 0}
             >
-              <VillageGraduatesCountryStatCard
-                village={me?.comesFrom}
-                direction="column"
-              />
+              <CaptionCard name="Skillhet" />
+
+              <Box mt={4}>
+                <Text fontSize="24px" mt={8} mb={4}>
+                  Graduates
+                </Text>
+                <VillageGraduatesCountryStatCard
+                  village={me?.comesFrom}
+                  direction="column"
+                />
+              </Box>
 
               <Text fontSize="24px" mt={12} mb={6}>
                 Recently joined

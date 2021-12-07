@@ -25,7 +25,6 @@ import { Post } from "types/data";
 const PostCard: React.FC<{ post: Post }> = ({ post }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [extendView, setExtendView] = useState(false);
-
   const [comment, setComment] = useState("");
 
   const handleKeyDown = (e) => {
@@ -52,7 +51,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
           borderRadius="6px"
         >
           <HStack>
-            <Link href={`/userview/${post.user?.uuid}`}>
+            <Link href={`/userview/${post.user?.uuid}`} passHref>
               <Avatar
                 src={post.user?.avatar ?? "/images/default-user.png"}
                 size="sm"
@@ -60,7 +59,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
               />
             </Link>
             <Box>
-              <Link href={`/userview/${post.user?.uuid}`}>
+              <Link href={`/userview/${post.user?.uuid}`} passHref>
                 <Text
                   fontSize="13px"
                   textTransform="capitalize"
@@ -75,7 +74,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
               </Text>
             </Box>
           </HStack>
-          <Box>
+          {/* <Box>
             <ReactStars
               count={5}
               size={12}
@@ -84,7 +83,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
               edit={false}
               activeColor="#ffd700"
             />
-          </Box>
+          </Box> */}
         </Flex>
 
         <Text fontSize="13px" my={4}>
@@ -111,7 +110,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
             </Center>
           )}
         </Stack>
-        <Center mt={4}>
+        {/* <Center mt={4}>
           {extendView && (
             <BiChevronUp
               fontSize={24}
@@ -128,7 +127,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
               onClick={() => setExtendView(!extendView)}
             />
           )}
-        </Center>
+        </Center> */}
         {extendView && (
           <Box w="full">
             <Textarea
