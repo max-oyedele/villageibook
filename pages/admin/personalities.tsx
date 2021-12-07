@@ -52,13 +52,15 @@ import VillageSearchBox from "admin/components/VillageSearchBox";
 import PersonalityForm from "admin/components/PersonalityForm";
 
 import { getUserToken } from "helpers/user-token";
+import useFetchData from "hooks/use-fetch-data";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
 
 import { Village } from "types/schema";
 
 const Personalities: NextPage = () => {
   const router = useRouter();
-  const { me, personalities, fetchCommonData, fetchMeData, fetchPersonalitiesData } = useAdminFetchData();
+  const { me, fetchMeData } = useFetchData();
+  const { personalities, fetchPersonalitiesData } = useAdminFetchData();
 
   useEffect(() => {
     const access_token = getUserToken();
@@ -77,8 +79,7 @@ const Personalities: NextPage = () => {
     fetchPersonalitiesData();
   }, [me]);
 
-  const { villages, fetchVillagesData } = useAdminFetchData();
-  const [village, setVillage] = useState<Village>(null);
+    const [village, setVillage] = useState<Village>(null);
 
   const columns = useMemo(
     () => [

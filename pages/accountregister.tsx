@@ -90,8 +90,6 @@ const AccountToRegister: NextPage = () => {
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
   const [selectedLivingCountry, setSelectedLivingCountry] =
     useState<Country>(null);
-  const [selectedLivingVillage, setSelectedLivingVillage] =
-    useState<Village>(null);
 
   const router = useRouter();
 
@@ -175,7 +173,7 @@ const AccountToRegister: NextPage = () => {
               comesFrom: selectedVillage.uuid,
               livesIn: selectedLivingCountry.uuid,
               graduatedAt: selectedUniversity?.uuid,
-              degree: selectedDegree?.name,
+              degree: selectedDegree?.href,
               profession: selectedProfession?.uuid
             };
             

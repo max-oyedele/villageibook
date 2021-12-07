@@ -61,7 +61,7 @@ const Feed: NextPage = () => {
   useEffect(() => {
     if (me) {
       fetchFeedPageData();
-      fetchVillagePageData({ uuid: me.comesFrom.uuid });
+      fetchVillagePageData({ villageUuid: me.comesFrom?.uuid });
     }
   }, [me])
 

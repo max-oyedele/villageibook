@@ -52,13 +52,15 @@ import VillageSearchBox from "admin/components/VillageSearchBox";
 import InstitutionForm from "admin/components/InstitutionForm";
 
 import { getUserToken } from "helpers/user-token";
+import useFetchData from "hooks/use-fetch-data";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
 
 import { Village } from "types/schema";
 
 const Institutions: NextPage = () => {
   const router = useRouter();
-  const { me, institutions, fetchCommonData, fetchMeData, fetchInstitutionsData } = useAdminFetchData();
+  const { me, fetchMeData } = useFetchData();
+  const { institutions, fetchInstitutionsData } = useAdminFetchData();
 
   useEffect(() => {
     const access_token = getUserToken();
@@ -76,7 +78,6 @@ const Institutions: NextPage = () => {
     fetchInstitutionsData();
   }, [me]);
 
-  const { villages, fetchVillagesData } = useAdminFetchData();
   const [village, setVillage] = useState<Village>(null);
 
   const columns = useMemo(

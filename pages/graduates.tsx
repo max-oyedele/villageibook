@@ -54,7 +54,7 @@ const homeCountry = "bangladesh";
 const Graduates: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { me, totalGraduates, districts, subDistricts, villages, fetchCommonData, fetchGraduatePageData } = useFetchData();
+  const { me, totalGraduates, districts, subDistricts, villages, fetchCommonData, fetchVillagesData, fetchGraduatePageData } = useFetchData();
   
   const [activeMenuItem, setActiveMenuItem] = useState(menuItems[2]);
 
@@ -64,6 +64,7 @@ const Graduates: NextPage = () => {
 
   useEffect(() => {
     fetchCommonData();
+    fetchVillagesData(null);
     fetchGraduatePageData(null);
   }, []);
 
@@ -162,7 +163,7 @@ const Graduates: NextPage = () => {
             return (
               <AccordionItem
                 key={item.id}
-                id={item.id.toString()}
+                id={item.id?.toString()}
                 border="none"
                 bgColor="white"
                 mt={4}

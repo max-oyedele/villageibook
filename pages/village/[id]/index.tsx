@@ -35,7 +35,7 @@ const Posts: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const router = useRouter();
   const { query } = router;
-  const vid = query.id; //village name currently, but replace to uuid
+  const vid = query.id; //village uuid
 
   const { village, villageUsers, villageArticles, villagePersonalities, villageInstitutions, villageVideos, fetchVillagePageData } = useFetchData();
 
@@ -43,7 +43,7 @@ const Posts: NextPage = () => {
 
   useEffect(() => {
     if(vid){
-      fetchVillagePageData({ uuid: vid });
+      fetchVillagePageData({ villageUuid: vid });
     }
   }, [vid]);
 
@@ -97,7 +97,7 @@ const Posts: NextPage = () => {
                   </SimpleGrid>
                 )}
                 <Box>
-                  <Link href="/village/users">
+                  <Link href="/village/users" passHref>
                     <Text
                       fontSize="12px"
                       color="purpleTone"

@@ -37,7 +37,7 @@ import useActionDispatch from "hooks/use-action-dispatch";
 
 const Videos: NextPage = () => {
   const router = useRouter();
-  const { me, fetchCommonData, fetchMeData } = useFetchData();
+  const { me, fetchMeData } = useFetchData();
 
   useEffect(() => {
     const access_token = getUserToken();

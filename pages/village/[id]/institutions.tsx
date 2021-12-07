@@ -33,7 +33,7 @@ const Institutions: NextPage = () => {
 
   useEffect(() => {
     if (vid) {
-      fetchVillageInstitutionsData({ villageName: vid });
+      fetchVillageInstitutionsData({ villageUuid: vid });
     }
   }, [vid]);
 

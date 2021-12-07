@@ -12,9 +12,9 @@ export type User = {
   comesFrom?: Village;
   livesIn?: Country;
   graduatedAt?: University;
-  profession?: string;
-  degree?: string;
-  lastUpdated?: number;
+  profession?: string; //Profession;
+  degree?: string; //Degree;
+  lastUpdated?: string;
   uuid: string;
   role?: string;
 };
@@ -68,7 +68,7 @@ export type Village = {
   photo?: Photo;
   video?: Video;
   href?: string;
-  uuid?: string;
+  uuid: string;
   lastUpdated?: number;
 };
 
@@ -79,11 +79,6 @@ export type University = {
   uuid: string;
 };
 
-export type Degree = {
-  id: number;
-  name: string;
-};
-
 export type Profession = {
   id: number;
   name: string;
@@ -91,6 +86,12 @@ export type Profession = {
   uuid: string;
 };
 
+export type Degree = {
+  id: number;
+  name: string;
+  href: string;
+  uuid: string;
+};
 export type Comment = {
   commentUser: User;
   text: string;
