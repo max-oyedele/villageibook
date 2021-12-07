@@ -14,12 +14,12 @@ import {
 
 import useFetchData from "hooks/use-fetch-data";
 
-import {Village} from "types/schema";
+import { Village } from "types/schema";
 
 const villageItems = [
   {
     id: 0,
-    name: "My Page",
+    name: "My Pages",
     value: "users",
     img: "/icons/village-mypage.svg",
     path: "users",
@@ -73,7 +73,7 @@ const villageItems = [
   },
 ];
 
-const LeftVillageItems: React.FC<{ village: Village }> = ({ village }) => {
+const LeftVillageItems: React.FC<{ village: Village, badgeShow?: boolean }> = ({ village, badgeShow }) => {
   const router = useRouter();
   const { pathname } = router;
 
@@ -106,7 +106,7 @@ const LeftVillageItems: React.FC<{ village: Village }> = ({ village }) => {
       divider={breakpointValue === "base" ? <Divider /> : null}
     >
       {villageItems.map((item) => (
-        <Link key={item.name} href={`/village/${village?.uuid}/${item.path}`}>
+        <Link key={item.name} href={`/village/${village?.uuid}/${item.path}`} passHref>
           <HStack
             w="full"
             h={{ base: "60px", md: "40px" }}
@@ -132,23 +132,26 @@ const LeftVillageItems: React.FC<{ village: Village }> = ({ village }) => {
               {item.name}
             </Text>
 
-            <Badge
-              bgColor={
-                pathname === `/village/[id]/${item.path}`
-                  ? item.badgeColor
-                  : "#FBFBFA"
-              }
-              color={pathname === `/village/[id]/${item.path}` ? "white" : ""}
-              fontSize="11px"
-              fontWeight="400"
-              lineHeight={2}
-              px={2}
-              minW={8}
-              h={5}
-              borderRadius="xl"
-            >
-              <Center>{getItemDataLength(item.value)}</Center>
-            </Badge>
+            {
+              badgeShow &&
+              <Badge
+                bgColor={
+                  pathname === `/village/[id]/${item.path}`
+                    ? item.badgeColor
+                    : "#FBFBFA"
+                }
+                color={pathname === `/village/[id]/${item.path}` ? "white" : ""}
+                fontSize="11px"
+                fontWeight="400"
+                lineHeight={2}
+                px={2}
+                minW={8}
+                h={5}
+                borderRadius="xl"
+              >
+                <Center>{getItemDataLength(item.value)}</Center>
+              </Badge>
+            }
           </HStack>
         </Link>
       ))}

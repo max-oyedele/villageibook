@@ -79,6 +79,15 @@ export interface GraduatePageState {
   error?: SerializedError;
 }
 
+export interface StatsState {
+  status: Status;
+  graduatesByLocation: {
+    graduates: number;
+    location: string;
+  }[];
+  error?: SerializedError;
+}
+
 export interface AdminState {
   status: Status;
   posts: Post[];

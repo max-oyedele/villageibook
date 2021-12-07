@@ -14,7 +14,7 @@ export type User = {
   graduatedAt?: University;
   profession?: string;
   degree?: string;
-  recentAt?: number;
+  lastUpdated?: number;
   uuid: string;
   role?: string;
 };
@@ -47,13 +47,29 @@ export type SubDistrict = {
   uuid: string;
 };
 
+export type Photo = {
+  url: string;
+  name?: string;
+  description?: string;
+};
+
+export type Video = {
+  url: string;
+  name?: string;
+  description?: string;
+};
+
 export type Village = {
   id: number;
   name: string;
+  heading?: string;
+  description?: string;
+  history?: string;
+  photo?: Photo;
+  video?: Video;
   href?: string;
   uuid?: string;
-  img?: string;
-  recentAt?: number;
+  lastUpdated?: number;
 };
 
 export type University = {
@@ -84,16 +100,8 @@ export type Personality = {
   id: number;
   name: string;
   about?: string;
-  photo?: {
-    url?: string;
-    name?: string;
-    description?: string;
-  };
-  video?: {
-    url?: string;
-    name?: string;
-    description?: string;
-  };
+  photo?: Photo;
+  video?: Video;
   dateOfBirth?: string;
   dateOfDeath?: string;
   educationLife?: string;
@@ -105,16 +113,8 @@ export type Personality = {
 export type Institution = {
   id: number;
   name: string;
-  photo?: {
-    url?: string;
-    name?: string;
-    description?: string;
-  };
-  video?: {
-    url?: string;
-    name?: string;
-    description?: string;
-  };
+  photo?: Photo;
+  video?: Video;
   yearEstablished?: string;
   address: string;
   email?: string;

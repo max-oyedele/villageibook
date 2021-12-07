@@ -16,36 +16,42 @@ export const watchCountries:Country[] = [
     id: 0,
     name: "Bangladesh",
     href: "bangladesh",
-    uuid: "000"
+    uuid: '',
   },
   {
     id: 1,
     name: "United Kingdom",
-    href: "uk",
-    uuid: "001"
+    href: "united-kingdom",
+    uuid: '',
   },
   {
     id: 2,
     name: "United States",
-    href: "usa",
-    uuid: "002"
+    href: "united-states",
+    uuid: '',
   },
   {
     id: 3,
     name: "Australia",
     href: "australia",
-    uuid: "003"
+    uuid: '',
   },
   {
     id: 4,
     name: "Canada",
     href: "canada",
-    uuid: "004"
+    uuid: '',
   },
   {
     id: 5,
+    name: "European Union",
+    href: "eu",
+    uuid: '',
+  },
+  {
+    id: 6,
     name: "Other",
     href: "other",
-    uuid: "005"
+    uuid: '',
   },
 ]

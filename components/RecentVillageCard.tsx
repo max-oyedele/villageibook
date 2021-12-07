@@ -1,11 +1,13 @@
 import React, { Fragment } from "react";
 import { Flex, HStack, Box, Text, Image } from "@chakra-ui/react";
-import { Village } from "types/schema";
 import { useRouter } from "next/router";
+import moment from "moment";
+
+import { Village } from "types/schema";
 
 const RecentVillageCard: React.FC<{ village: Village }> = ({ village }) => {
   const router = useRouter();
-  
+  const ago = moment(village.lastUpdated).fromNow();
   return (
     <Fragment>
       <Flex
@@ -22,15 +24,11 @@ const RecentVillageCard: React.FC<{ village: Village }> = ({ village }) => {
         }}
         onClick={() => router.push(`/village/${village?.uuid}`)}
       >
-        <Image src={village.img} alt="" borderRadius="4px" />
+        <Image src={village.photo?.url??"/images/default-village.png"} alt="" borderRadius="4px" />
         <Box w="full" ml={4}>
           <Text fontSize="13px">{village.name}</Text>
           <Text fontSize="12px" color="GrayText">
-            {village.recentAt === 0
-              ? "Today"
-              : village.recentAt === 1
-              ? "Yesterday"
-              : `${village.recentAt} days ago`}
+            {ago}
           </Text>
         </Box>
       </Flex>

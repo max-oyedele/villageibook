@@ -175,8 +175,8 @@ const Step1Form = ({ avatar }) => {
     if (me) {
       setFirstName(me.firstName);
       setLastName(me.lastName);
-      setSelectedLivingCountry(countries.find(e=>e.uuid === me.livesIn.uuid));
-      setSelectedVillage(villages.find((e) => e.uuid === me.comesFrom.uuid));
+      setSelectedLivingCountry(countries.find(e=>e.uuid === me.livesIn?.uuid));
+      setSelectedVillage(villages.find((e) => e.uuid === me.comesFrom?.uuid));
       setSelectedUniversity(
         universities.find((e) => e.uuid === me.graduatedAt.uuid)
       );

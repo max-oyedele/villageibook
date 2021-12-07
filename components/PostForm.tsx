@@ -74,7 +74,7 @@ const PostForm: React.FC = () => {
         onChange={(e) => setContent(e.target.value)}
       />
 
-      <Stack direction={{ base: "column", lg: "row" }} spacing={4} mt={4}>
+      <Stack direction={{ base: "column", lg: "row" }} spacing={4} my={4}>
         {pictureURL && (
           <Center w="full">
             <Image
@@ -96,7 +96,6 @@ const PostForm: React.FC = () => {
         )}
       </Stack>
 
-      <Divider mt={4} mb={2} />
       <Flex justifyContent="space-between">
         <HStack spacing={4} fontSize="13px" color="GrayText">
           <input
@@ -111,7 +110,7 @@ const PostForm: React.FC = () => {
             cursor="pointer"
             onClick={() => pictureRef.current?.click()}
           >
-            <Image src="/icons/post-photo.svg" />
+            <Image src="/icons/post-photo.svg" alt="" />
             <Text>Picture</Text>
           </HStack>
           <input
@@ -126,7 +125,7 @@ const PostForm: React.FC = () => {
             cursor="pointer"
             onClick={() => videoRef.current?.click()}
           >
-            <Image src="/icons/post-video.svg" />
+            <Image src="/icons/post-video.svg" alt="" />
             <Text>Video</Text>
           </HStack>
         </HStack>
@@ -134,11 +133,11 @@ const PostForm: React.FC = () => {
           h="27px"
           fontSize="13px"
           fontWeight="400"
-          bgColor="greenTone"
+          bgColor="purpleTone"
           color="white"
           _focus={{ boxShadow: "none" }}
           isLoading={postStatus === Status.LOADING}
-          disabled={postStatus === Status.LOADING}
+          disabled={postStatus === Status.LOADING || !content}
           onClick={handlePost}
         >
           Post

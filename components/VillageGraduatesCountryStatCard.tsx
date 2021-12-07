@@ -11,8 +11,10 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import {Village} from "types/schema";
+import { Village } from "types/schema";
 import GraduatePercent from "./GraduatePercent";
+import useFetchData from "hooks/use-fetch-data";
+
 import { platformCountries, homeCountry, watchCountries } from "constants/global";
 const totalGraduatesCount = 1000;
 
@@ -22,15 +24,27 @@ const VillageGraduatesCountryStatCard: React.FC<{
 }> = ({ village, direction }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const {villageGraduates, fetchCountriesData} = useFetchData();
-  
+  const { villageGraduates, graduatesByLocation, getGraduatesByLocationData } = useFetchData();
+
   useEffect(() => {
-    fetchCountriesData();
-  }, []);
+    if (village) {
+      const locations = watchCountries.filter(e => e.href != "other").map(e => e.href).join(",");
+      getGraduatesByLocationData({ locations: locations, villageUuid: village?.href });
+    }
+  }, [village]);
+
+  useEffect(() => {
+
+  }, [graduatesByLocation])
 
   const maxRowsPerCol = Math.floor(
     watchCountries.length / 2 + (watchCountries.length % 2)
   );
+
+  const getGraduatesCountByLocation = (location) => {
+    const existedItem = graduatesByLocation.find(e => e.location === location.name);
+    return existedItem?.graduates ?? 0;
+  }
 
   return (
     <Fragment>
@@ -48,7 +62,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
           <GraduatePercent
             village={village}
             totalCount={totalGraduatesCount}
-            graduatesCount={villageGraduates.length}
+            graduatesCount={graduatesByLocation.reduce((acc, val) => { return acc + val.graduates }, 0)}
           />
 
           {direction === "column" && (
@@ -57,11 +71,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
                 <CountryBox
                   key={country.id}
                   country={country}
-                  count={0
-                    // villageGraduates.filter(
-                    //   (user) => user.graduatedAt.uuid === country.href
-                    // ).length
-                  }
+                  count={getGraduatesCountByLocation(country)}
                 />
               ))}
             </VStack>
@@ -76,11 +86,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
                     <CountryBox
                       key={country.id}
                       country={country}
-                      count={0
-                        // villageGraduates.filter(
-                        //   (user) => user.graduatedAt === country.href
-                        // ).length
-                      }
+                      count={getGraduatesCountByLocation(country)}
                     />
                   );
                 })}
@@ -92,11 +98,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
                     <CountryBox
                       key={country.id}
                       country={country}
-                      count={0
-                        // villageGraduates.filter(
-                        //   (user) => user.graduatedAt === country.href
-                        // ).length
-                      }
+                      count={getGraduatesCountByLocation(country)}
                     />
                   );
                 })}
@@ -125,11 +127,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
               <CountryBox
                 key={country.id}
                 country={country}
-                count={0
-                  // villageGraduates.filter(
-                  //   (user) => user.graduatedAt === country.href
-                  // ).length
-                }
+                count={getGraduatesCountByLocation(country)}
               />
             ))}
           </VStack>
@@ -140,7 +138,6 @@ const VillageGraduatesCountryStatCard: React.FC<{
 };
 
 import { Country } from "types/schema";
-import useFetchData from "hooks/use-fetch-data";
 
 const CountryBox: React.FC<{ country: Country; count: number }> = ({
   country,
