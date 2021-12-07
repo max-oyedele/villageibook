@@ -35,7 +35,7 @@ const Graduates: NextPage = () => {
 
   useEffect(() => {
     if(vid){
-      fetchVillageGraduatesData({ villageName: vid });
+      fetchVillageGraduatesData({ villageUuid: vid });
     }
   }, [vid]);
 

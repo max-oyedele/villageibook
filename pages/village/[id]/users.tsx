@@ -33,7 +33,7 @@ const Users: NextPage = () => {
   const { village, villageUsers, fetchVillageUsersData } = useFetchData();
   useEffect(() => {
     if (vid) {
-      fetchVillageUsersData({ villageName: vid });
+      fetchVillageUsersData({ villageUuid: vid });
     }
   }, [vid]);
 

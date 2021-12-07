@@ -35,7 +35,7 @@ const Society: NextPage = () => {
 
   useEffect(()=>{
     if(vid){
-      fetchVillageArticlesData({villageName: vid})
+      fetchVillageArticlesData({villageUuid: vid})
     }
   }, [vid])
 

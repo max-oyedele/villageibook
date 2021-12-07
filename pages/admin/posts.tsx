@@ -41,12 +41,14 @@ import ImageBox from "components/widgets/ImageBox";
 import VideoBox from "components/widgets/VideoBox";
 
 import { getUserToken } from "helpers/user-token";
+import useFetchData from "hooks/use-fetch-data";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
 
 const Posts: NextPage = () => {
   const router = useRouter();
-  const { me, posts, fetchCommonData, fetchMeData, fetchPostsData } = useAdminFetchData();
+  const { me, fetchMeData } = useFetchData();
+  const { posts, fetchPostsData } = useAdminFetchData();
 
   useEffect(() => {
     const access_token = getUserToken();
@@ -97,8 +99,8 @@ const Posts: NextPage = () => {
       {
         Header: 'User',
         accessor: 'user',
-        Cell: function UserItem({row}){
-          return(
+        Cell: function UserItem({ row }) {
+          return (
             <VStack>
               <Avatar src={row.original.user.avatar} size="sm" />
               <Text>{row.original.user.firstName} {row.original.user.lastName}</Text>
@@ -118,7 +120,7 @@ const Posts: NextPage = () => {
       //     )
       //   }
       // }
-    ], 
+    ],
     []
   )
 

@@ -101,7 +101,7 @@ const useFetchData = () => {
 
   const fetchCommonData = () => {
     fetchCountriesData();
-    fetchVillagesData(null);
+    //expect other locations    
     fetchUniversitiesData();
     fetchProfessionsData();
   };
@@ -124,31 +124,26 @@ const useFetchData = () => {
     await dispatch(fetchVillage(params));
   }
   const fetchVillageUsersData = async (params) => {
-    fetchVillageData(params);
     await dispatch(fetchVillageUsers(params));
   };
   const fetchVillageGraduatesData = async (params) => {
-    fetchVillageData(params);
     await dispatch(fetchVillageGraduates(params));
   };
   const fetchVillageArticlesData = async (params) => {
-    fetchVillageData(params);
     await dispatch(fetchVillageArticles(params));
   };
   const fetchVillagePersonalitiesData = async (params) => {
-    fetchVillageData(params);
     await dispatch(fetchVillagePersonalities(params));
   };
   const fetchVillageInstitutionsData = async (params) => {
-    fetchVillageData(params);
     await dispatch(fetchVillageInstitutions(params));
   };
   const fetchVillageVideosData = async (params) => {
-    fetchVillageData(params);
     await dispatch(fetchVillageVideos(params));
   };
-
+  
   const fetchVillagePageData = (params) => {
+    fetchVillageData(params);
     fetchVillageUsersData(params);
     fetchVillageGraduatesData(params);
     fetchVillageArticlesData(params);
@@ -201,7 +196,7 @@ const useFetchData = () => {
     fetchRegionsData,
     fetchDistrictsData,
     fetchSubDistrictsData,
-    fetchVillagesData,
+    fetchVillagesData,    
     fetchCommonData,
     fetchMeData,
     fetchUserData,

@@ -61,10 +61,13 @@ const AccountToEdit: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    if (!meError && meStep === Step.STEP2) setActiveStep(2);
+    if (!meError && meStep === Step.STEP2 && isBySupport) setActiveStep(2);
   }, [meError, meStep]);
 
   const [avatar, setAvatar] = useState(null);
+
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isBySupport, setIsBySupport] = useState(false);
 
   return (
     <Fragment>
@@ -103,7 +106,13 @@ const AccountToEdit: NextPage = () => {
                 {/* )} */}
               </HStack>
               <Divider mt={6} />
-              {activeStep === 1 && <Step1Form avatar={avatar} />}
+              {activeStep === 1 && (
+                <Step1Form 
+                  avatar={avatar}
+                  isBySupport={isBySupport}
+                  setIsBySupport={setIsBySupport}
+                />
+              )}
               {activeStep === 2 && (
                 <Step2Form
                   activeStep={activeStep}
@@ -123,7 +132,7 @@ const AccountToEdit: NextPage = () => {
   );
 };
 
-const Step1Form = ({ avatar }) => {
+const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const {
@@ -134,6 +143,7 @@ const Step1Form = ({ avatar }) => {
     villages,
     universities,
     professions,
+    fetchCommonData,
     fetchCountriesData,
     fetchRegionsData,
     fetchDistrictsData,
@@ -166,24 +176,40 @@ const Step1Form = ({ avatar }) => {
   const [selectedLivingVillage, setSelectedLivingVillage] =
     useState<Village>(null);
 
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [isBySupport, setIsBySupport] = useState(false);
+  useEffect(() => {
+    fetchCommonData();
+    fetchVillagesData(null); //remove later
+  }, []);
 
   useEffect(() => {
-    fetchCountriesData();
-
-    if (me) {
+    if (!me) {
+      fetchMeData();
+    }
+    else {
       setFirstName(me.firstName);
       setLastName(me.lastName);
-      setSelectedLivingCountry(countries.find(e=>e.uuid === me.livesIn?.uuid));
-      setSelectedVillage(villages.find((e) => e.uuid === me.comesFrom?.uuid));
-      setSelectedUniversity(
-        universities.find((e) => e.uuid === me.graduatedAt.uuid)
-      );
-      setSelectedProfession(professions.find((e) => e.name === me.profession));
-      setSelectedDegree(degrees.find((e) => e.name === me.degree));
     }
   }, [me]);
+
+  useEffect(() => {
+    if (me) {
+      if (countries) {
+        setSelectedLivingCountry(countries.find(e => e.uuid === me.livesIn?.uuid));
+      }
+      if (villages) {
+        setSelectedVillage(villages.find((e) => e.uuid === me.comesFrom?.uuid));
+      }
+      if (universities) {
+        setSelectedUniversity(universities.find((e) => e.uuid === me.graduatedAt?.uuid));
+      }
+      if (professions) {
+        setSelectedProfession(professions.find((e) => e.uuid === me.profession));
+      }
+      if (degrees) {
+        setSelectedDegree(degrees.find((e) => e.href === me.degree));
+      }
+    }
+  }, [me, countries, villages, universities, professions, degrees])
 
   useEffect(() => {
     setSelectedRegion(null);
@@ -246,7 +272,7 @@ const Step1Form = ({ avatar }) => {
           comesFrom: selectedVillage.uuid,
           livesIn: selectedLivingCountry.uuid,
           graduatedAt: selectedUniversity?.uuid,
-          degree: selectedDegree?.name,
+          degree: selectedDegree?.href,
           profession: selectedProfession?.uuid
         };
 
@@ -273,7 +299,7 @@ const Step1Form = ({ avatar }) => {
                 id="firstName"
                 label="First Name"
                 value={firstName ?? ""}
-                onChange={(e)=>setFirstName(e.target.value)}
+                onChange={(e) => setFirstName(e.target.value)}
                 isRequired={true}
                 isInvalid={!!errors.firstName}
                 error={errors.firstName}
@@ -282,7 +308,7 @@ const Step1Form = ({ avatar }) => {
                 id="lastName"
                 label="Last Name"
                 value={lastName ?? ""}
-                onChange={(e)=>setLastName(e.target.value)}
+                onChange={(e) => setLastName(e.target.value)}
                 isRequired={true}
                 isInvalid={!!errors.lastName}
                 error={errors.lastName}

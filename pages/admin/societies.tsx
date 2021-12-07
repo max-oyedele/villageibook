@@ -39,7 +39,7 @@ import { Village } from "types/schema";
 
 const Societies: NextPage = () => {
   const router = useRouter();
-  const { me, fetchCommonData, fetchMeData } = useFetchData();
+  const { me, fetchMeData } = useFetchData();
 
   useEffect(() => {
     const access_token = getUserToken();

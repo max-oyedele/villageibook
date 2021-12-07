@@ -34,7 +34,7 @@ const Videos: NextPage = () => {
   const { village, villageVideos, fetchVillageVideosData } = useFetchData();
   useEffect(() => {
     if (vid) {
-      fetchVillageVideosData({ villageName: vid });
+      fetchVillageVideosData({ villageUuid: vid });
     }
   }, [vid]);
 

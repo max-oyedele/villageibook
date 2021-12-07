@@ -4,6 +4,7 @@ import {
   Flex,
   Stack,
   HStack,
+  VStack,
   Box,
   Center,
   Divider,
@@ -74,9 +75,9 @@ const PostForm: React.FC = () => {
         onChange={(e) => setContent(e.target.value)}
       />
 
-      <Stack direction={{ base: "column", lg: "row" }} spacing={4} my={4}>
+      <VStack spacing={4}>
         {pictureURL && (
-          <Center w="full">
+          <Center w="full" mt={4}>
             <Image
               src={pictureURL}
               alt=""
@@ -88,15 +89,15 @@ const PostForm: React.FC = () => {
           </Center>
         )}
         {videoURL && (
-          <Center w="full">
+          <Center w="full" mt={4}>
             <VideoBox
               videoUrl={videoURL}
             />
           </Center>
         )}
-      </Stack>
+      </VStack>
 
-      <Flex justifyContent="space-between">
+      <Flex justifyContent="space-between" mt={2}>
         <HStack spacing={4} fontSize="13px" color="GrayText">
           <input
             ref={pictureRef}

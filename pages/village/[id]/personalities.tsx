@@ -34,7 +34,7 @@ const Personalities: NextPage = () => {
 
   useEffect(() => {
     if (vid) {
-      fetchVillagePersonalitiesData({ villageName: vid });
+      fetchVillagePersonalitiesData({ villageUuid: vid });
     }
   }, [vid]);
 
