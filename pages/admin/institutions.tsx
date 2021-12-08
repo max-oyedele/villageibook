@@ -125,9 +125,16 @@ const Institutions: NextPage = () => {
 
   const [data, setData] = useState([])
   const tableInstance = useTable({ columns, data })
+  
   useEffect(() => {
     setData(institutions);
-  }, [institutions])
+  }, [institutions]);
+
+  useEffect(()=>{
+    if(village){
+      // setData(institutions.filter(e=>e.href.includes(village.href)));
+    }
+  }, [village])
 
   const {
     getTableProps,

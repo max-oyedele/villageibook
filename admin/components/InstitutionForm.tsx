@@ -11,6 +11,7 @@ import {
     Text,
     Button,
     useBreakpointValue,
+    useToast
 } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
@@ -18,6 +19,7 @@ import * as yup from "yup";
 import AvatarUpload from 'admin/components/AvatarUpload';
 import InputBox from 'components/widgets/InputBox';
 
+import useAdminFetchData from 'hooks/use-admin-fetch-data';
 import useAdminActionDispatch from 'hooks/use-admin-action-dispatch';
 import { Institution, Village } from 'types/schema';
 
@@ -31,6 +33,7 @@ const InstitutionForm: React.FC<{
     institution
 }) => {
         const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
+        const toast = useToast();
 
         const [name, setName] = useState(institution?.name);
         const [avatar, setAvatar] = useState(null);
@@ -41,8 +44,21 @@ const InstitutionForm: React.FC<{
         const [phone, setPhone] = useState(institution?.phone);
         const [history, setHistory] = useState(institution?.history);
 
+        const { error } = useAdminFetchData();
         const { submitInstitutionData } = useAdminActionDispatch();
-
+        
+        if (error) {
+            !toast.isActive("institutionError") &&
+                toast({
+                    id: "institutionError",
+                    title: "Failed! Try again.",
+                    description: error.message,
+                    status: "error",
+                    duration: 3000,
+                    isClosable: true,
+                });
+        }
+        
         const validationSchema = yup.object({
             name: yup.string().nullable().required("Name is required."),
             photoName: yup.string().nullable(),
@@ -53,6 +69,7 @@ const InstitutionForm: React.FC<{
             phone: yup.string().nullable(),
             history: yup.string().nullable(),
         });
+
 
         return (
             <Formik
@@ -72,8 +89,8 @@ const InstitutionForm: React.FC<{
                     // console.log({ values, actions });
                     const params = {
                         villageUuid: village.uuid,
-                        name,                        
-                        photo: {avatar, name: photo.name, description: photo.description},
+                        name,
+                        photo: { avatar, name: photo.name, description: photo.description },
                         yearEstablished,
                         address,
                         email,

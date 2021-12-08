@@ -14,6 +14,7 @@ import {
   SimpleGrid,
   Badge,
   useBreakpointValue,
+  useToast
 } from "@chakra-ui/react";
 
 import Header from "components/Header";
@@ -29,14 +30,27 @@ const UserView: NextPage = () => {
   const { id } = router.query;
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
+  const toast = useToast();
 
-  const { user, fetchUserData } = useFetchData();
+  const { user, userError, fetchUserData } = useFetchData();
 
   useEffect(() => {
     if (id) {
       fetchUserData({ uuid: id });
     }
   }, [id]);
+
+  if (userError) {
+    !toast.isActive("userError") &&
+      toast({
+        id: "userError",
+        title: "Cant't find user information.",
+        description: userError.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+  }
 
   return (
     <Fragment>

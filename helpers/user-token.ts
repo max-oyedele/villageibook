@@ -5,11 +5,11 @@ export const getUserToken = () => {
   if (jwtFromCookie) {
     jwtFromCookie = JSON.parse(jwtFromCookie);
 
-    const expires = jwtFromCookie.expires;
-    if (new Date().getTime() >= new Date(expires).getTime()) {
-      removeUserToken();
-      return null;
-    }
+    // const expires = jwtFromCookie.expires;
+    // if (new Date().getTime() >= new Date(expires).getTime()) {
+    //   removeUserToken();
+    //   return null;
+    // }
 
     return jwtFromCookie.access_token;
   }

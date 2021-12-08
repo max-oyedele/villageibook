@@ -13,6 +13,7 @@ import {
   Image,
   Button,
   useBreakpointValue,
+  useToast
 } from "@chakra-ui/react";
 
 import VideoBox from "components/widgets/VideoBox";
@@ -24,8 +25,9 @@ import useActionDispatch from "hooks/use-action-dispatch";
 
 const PostForm: React.FC = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
+  const toast = useToast();
 
-  const { postStatus } = useFetchData();
+  const { postStatus, postError } = useFetchData();
   const { submitPostData } = useActionDispatch();
 
   const [content, setContent] = useState("");
@@ -65,6 +67,33 @@ const PostForm: React.FC = () => {
 
     await submitPostData(params);
   };
+
+  if (postStatus === Status.SUCCESS) {
+    !toast.isActive("postSuccess") &&
+      toast({
+        id: "postSuccess",
+        title: "Successfully Posted.",
+        description: "",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      setContent("");
+      setPicture(null);
+      setVideo(null);
+  }
+  if (postError) {
+    !toast.isActive("postError") &&
+      toast({
+        id: "postError",
+        title: "Post Failed. Please try again.",
+        description: postError.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+  }
 
   return (
     <Fragment>

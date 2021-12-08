@@ -22,12 +22,7 @@ import { FaHome, FaThList, FaRegMoneyBillAlt } from "react-icons/fa";
 
 import Logo from "components/Logo";
 
-var menus = [
-  {
-    path: "/admin/dashboard",
-    name: "Dashboard",
-    icon: FaHome,
-  },
+var menus = [  
   {
     path: "/admin/posts",
     name: "Post",
