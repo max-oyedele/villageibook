@@ -51,8 +51,9 @@ const Signup = () => {
     base: "base",
     md: "md",
   });
+  const toast = useToast();
 
-  const { signupMe, authStatus } = useFetchData();
+  const { signupMe, authStatus, authError } = useFetchData();
   const { authReset, doSignup } = useActionDispatch();
 
   useEffect(() => {
@@ -61,10 +62,34 @@ const Signup = () => {
 
   useEffect(() => {
     if (signupMe) {
+      !toast.isActive("signupMe") &&
+      toast({
+        id: "signupMe",
+        title: "Account created successfully!",
+        description: "",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
       router.push("/login");
     }
   }, [signupMe]);
-
+  
+  useEffect(() => {
+    if (authError) {
+      !toast.isActive("authError") &&
+        toast({
+          id: "signupError",
+          title: "Signup Failed!",
+          description: authError.message,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+    }
+  }, [authError])
+  
   const signupSchema = yup.object({
     firstname: yup.string().required("First Name is required."),
     lastname: yup.string().required("Last Name is required."),

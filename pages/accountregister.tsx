@@ -14,6 +14,7 @@ import {
   Text,
   Button,
   useBreakpointValue,
+  useToast
 } from "@chakra-ui/react";
 
 import { Formik, Form } from "formik";
@@ -47,10 +48,12 @@ import { Step } from "rdx/types";
 
 const AccountToRegister: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
+  const toast = useToast();
 
   const {
     me,
     meStep,
+    meError,
     countries,
     districts,
     subDistricts,
@@ -108,7 +111,18 @@ const AccountToRegister: NextPage = () => {
       router.push("/feed");
       return;
     }
-  }, [meStep]);
+    if (meError) {
+      !toast.isActive("meError") &&
+        toast({
+          id: "meError",
+          title: "Register Failed. Please try again.",
+          description: meError.message,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });      
+    }
+  }, [meStep, meError]);
 
   useEffect(() => {
     setSelectedRegion(null);

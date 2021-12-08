@@ -11,6 +11,7 @@ import {
     Text,
     Button,
     useBreakpointValue,
+    useToast
 } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
@@ -18,6 +19,7 @@ import * as yup from "yup";
 import AvatarUpload from 'admin/components/AvatarUpload';
 import InputBox from 'components/widgets/InputBox';
 
+import useAdminFetchData from 'hooks/use-admin-fetch-data';
 import useAdminActionDispatch from 'hooks/use-admin-action-dispatch';
 import { Personality, Village } from 'types/schema';
 
@@ -31,6 +33,7 @@ const PersonalityForm: React.FC<{
     personality
 }) => {
         const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
+        const toast = useToast();
 
         const [name, setName] = useState(personality?.name);
         const [avatar, setAvatar] = useState(null);
@@ -42,7 +45,20 @@ const PersonalityForm: React.FC<{
         const [achievements, setAchievements] = useState(personality?.achievements);
         const [career, setCareer] = useState(personality?.career);
 
+        const { error } = useAdminFetchData();
         const { submitPersonalityData } = useAdminActionDispatch();
+
+        if (error) {
+            !toast.isActive("personalityError") &&
+                toast({
+                    id: "personalityError",
+                    title: "Failed! Try again.",
+                    description: error.message,
+                    status: "error",
+                    duration: 3000,
+                    isClosable: true,
+                });
+        }
 
         const validationSchema = yup.object({
             name: yup.string().nullable().required("Name is required."),

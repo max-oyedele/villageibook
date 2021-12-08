@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
 import type { NextPage } from "next";
+import { useRouter } from "next/router";
 
 import {
   Container,
@@ -15,6 +16,7 @@ import {
   AspectRatio,
   Button,
   useBreakpointValue,
+  useToast
 } from "@chakra-ui/react";
 
 import { Formik, Form } from "formik";
@@ -51,6 +53,7 @@ import useActionDispatch from "hooks/use-action-dispatch";
 
 const AccountToEdit: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
+  const toast = useToast();
 
   const [activeStep, setActiveStep] = useState<number>(1);
 
@@ -62,6 +65,17 @@ const AccountToEdit: NextPage = () => {
 
   useEffect(() => {
     if (!meError && meStep === Step.STEP2 && isBySupport) setActiveStep(2);
+    if (meError) {
+      !toast.isActive("meError") &&
+        toast({
+          id: "meError",
+          title: "Can't find you. Please try again.",
+          description: meError.message,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });      
+    }
   }, [meError, meStep]);
 
   const [avatar, setAvatar] = useState(null);
@@ -107,7 +121,7 @@ const AccountToEdit: NextPage = () => {
               </HStack>
               <Divider mt={6} />
               {activeStep === 1 && (
-                <Step1Form 
+                <Step1Form
                   avatar={avatar}
                   isBySupport={isBySupport}
                   setIsBySupport={setIsBySupport}

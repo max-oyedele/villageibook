@@ -94,10 +94,7 @@ const Feed: NextPage = () => {
                 borderColor="gray.200"
                 borderRadius="6px"
               >
-                <VideoBox
-                  videoUrl="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"
-                  videoBackImg="/images/video-caption-back.png"
-                />
+                <CaptionCard name="Skillhet" />
                 <Box mt={8}>
                   <LeftVillageDivider
                     title="My Village"
@@ -217,17 +214,10 @@ const Feed: NextPage = () => {
               top={fixed ? "80px" : 0}
               left={fixed ? rightPartRef.current.offsetLeft : 0}
             >
-              <CaptionCard name="Skillhet" />
-
-              <Box mt={4}>
-                <Text fontSize="24px" mt={8} mb={4}>
-                  Graduates
-                </Text>
-                <VillageGraduatesCountryStatCard
-                  village={me?.comesFrom}
-                  direction="column"
-                />
-              </Box>
+              <VillageGraduatesCountryStatCard
+                village={me?.comesFrom}
+                direction="column"
+              />
 
               <Text fontSize="24px" mt={12} mb={6}>
                 Recently joined

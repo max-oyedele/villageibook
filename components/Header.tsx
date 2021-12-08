@@ -120,7 +120,7 @@ const Header = () => {
                   fontSize="12px"
                 >
                   {/* {me?.role === "admin" && ( */}
-                  <Link href="/admin/dashboard" passHref={true}>
+                  <Link href="/admin/posts" passHref={true}>
                     <Text cursor="pointer">ADMIN</Text>
                   </Link>
                   {/* )} */}

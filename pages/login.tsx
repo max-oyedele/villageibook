@@ -23,6 +23,7 @@ import {
   Divider,
   Image,
   useBreakpointValue,
+  useToast
 } from "@chakra-ui/react";
 import { BiShow, BiHide } from "react-icons/bi";
 
@@ -42,10 +43,11 @@ const Login = () => {
     md: "md",
   });
 
-  const { authStatus, jwt, me, fetchMeData } = useFetchData();
+  const { authStatus, authError, jwt, me, fetchMeData } = useFetchData();
   const { authReset, userReset, doLogin } = useActionDispatch();
 
   const { setToken } = useToken();
+  const toast = useToast();
 
   const [passwordShow, setPasswordShow] = useState(false);
 
@@ -75,6 +77,20 @@ const Login = () => {
       else router.push("/accountregister");
     }
   }, [me])
+
+  useEffect(() => {
+    if (authError) {
+      !toast.isActive("authError") &&
+        toast({
+          id: "loginError",
+          title: "Login Failed!",
+          description: authError.message,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+    }
+  }, [authError])
 
   const loginSchema = yup.object({
     email: yup

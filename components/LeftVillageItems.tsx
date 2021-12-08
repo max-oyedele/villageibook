@@ -85,8 +85,8 @@ const LeftVillageItems: React.FC<{ village: Village, badgeShow?: boolean }> = ({
     switch (item) {
       case "users":
         return villageUsers.length;
-      case "graduates":
-        return villageGraduates.length;
+      // case "graduates":
+      //   return villageGraduates.length;
       case "articles":
         return villageArticles.length;
       case "personalities":
@@ -105,56 +105,59 @@ const LeftVillageItems: React.FC<{ village: Village, badgeShow?: boolean }> = ({
       spacing={1}
       divider={breakpointValue === "base" ? <Divider /> : null}
     >
-      {villageItems.map((item) => (
-        <Link key={item.name} href={`/village/${village?.uuid}/${item.path}`} passHref>
-          <HStack
-            w="full"
-            h={{ base: "60px", md: "40px" }}
-            spacing={4}
-            bgColor={
-              pathname === `/village/[id]/${item.path}`
-                ? item.activeBgColor
-                : "transparent"
-            }
-            borderRadius="8px"
-            px={2}
-            cursor="pointer"
-            _hover={{
-              bgColor: "gray.100",
-            }}
-          >
-            <Image
-              src={item.img}
-              alt=""
-              boxSize={breakpointValue === "base" ? "50px" : "30px"}
-            />
-            <Text w="full" fontSize="13px">
-              {item.name}
-            </Text>
+      {villageItems.map((item) => {
+        const path = item.value != 'graduates' ? `/village/${village?.uuid}/${item.path}` : `/${item.path}`
+        return (
+          <Link key={item.name} href={path} passHref>
+            <HStack
+              w="full"
+              h={{ base: "60px", md: "40px" }}
+              spacing={4}
+              bgColor={
+                pathname === `/village/[id]/${item.path}`
+                  ? item.activeBgColor
+                  : "transparent"
+              }
+              borderRadius="8px"
+              px={2}
+              cursor="pointer"
+              _hover={{
+                bgColor: "gray.100",
+              }}
+            >
+              <Image
+                src={item.img}
+                alt=""
+                boxSize={breakpointValue === "base" ? "50px" : "30px"}
+              />
+              <Text w="full" fontSize="13px">
+                {item.name}
+              </Text>
 
-            {
-              badgeShow &&
-              <Badge
-                bgColor={
-                  pathname === `/village/[id]/${item.path}`
-                    ? item.badgeColor
-                    : "#FBFBFA"
-                }
-                color={pathname === `/village/[id]/${item.path}` ? "white" : ""}
-                fontSize="11px"
-                fontWeight="400"
-                lineHeight={2}
-                px={2}
-                minW={8}
-                h={5}
-                borderRadius="xl"
-              >
-                <Center>{getItemDataLength(item.value)}</Center>
-              </Badge>
-            }
-          </HStack>
-        </Link>
-      ))}
+              {
+                badgeShow &&
+                <Badge
+                  bgColor={
+                    pathname === `/village/[id]/${item.path}`
+                      ? item.badgeColor
+                      : "#FBFBFA"
+                  }
+                  color={pathname === `/village/[id]/${item.path}` ? "white" : ""}
+                  fontSize="11px"
+                  fontWeight="400"
+                  lineHeight={2}
+                  px={2}
+                  minW={8}
+                  h={5}
+                  borderRadius="xl"
+                >
+                  <Center>{getItemDataLength(item.value)}</Center>
+                </Badge>
+              }
+            </HStack>
+          </Link>
+        )
+      })}
     </VStack>
   );
 };
