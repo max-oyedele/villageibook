@@ -3,7 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { MyThunkDispatch, OurStore } from "rdx/store";
 
 import { reset as authResetFunc, login, signup } from "rdx/slices/auth";
-import { reset as userResetFunc, submitPost, submitStepOne, submitStepTwo } from "rdx/slices/user";
+import { reset as accountResetFunc, submitStepOne, submitStepTwo } from "rdx/slices/account";
+import { reset as viewResetFunc } from "rdx/slices/view";
+import { reset as postResetFunc, submitPost } from "rdx/slices/post";
 
 const useActionDispatch = () => {
   const dispatch: MyThunkDispatch = useDispatch();
@@ -12,8 +14,8 @@ const useActionDispatch = () => {
     await dispatch(authResetFunc());
   }
 
-  const userReset = async () => {
-    await dispatch(userResetFunc());
+  const accountReset = async () => {
+    await dispatch(accountResetFunc());
   }
 
   const doLogin = async (params) => {
@@ -38,7 +40,7 @@ const useActionDispatch = () => {
 
   return {
     authReset,
-    userReset,
+    accountReset,
     doLogin,
     doSignup,
     submitPostData,

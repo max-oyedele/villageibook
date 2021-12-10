@@ -37,10 +37,10 @@ const villageItems = [
   },
   {
     id: 2,
-    name: "Society",
-    value: "articles",
-    img: "/icons/village-society.svg",
-    path: "society",
+    name: "Stories",
+    value: "stories",
+    img: "/icons/village-story.svg",
+    path: "stories",
     activeBgColor: "#F4F4FB",
     badgeColor: "#BBBBD7",
   },
@@ -79,7 +79,7 @@ const LeftVillageItems: React.FC<{ village: Village, badgeShow?: boolean }> = ({
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { villageUsers, villageGraduates, villageArticles, villagePersonalities, villageInstitutions, villageVideos } = useFetchData();
+  const { villageUsers, villageGraduates, villageStories, villagePersonalities, villageInstitutions, villageVideos } = useFetchData();
 
   const getItemDataLength = (item) => {
     switch (item) {
@@ -87,8 +87,8 @@ const LeftVillageItems: React.FC<{ village: Village, badgeShow?: boolean }> = ({
         return villageUsers.length;
       // case "graduates":
       //   return villageGraduates.length;
-      case "articles":
-        return villageArticles.length;
+      case "stories":
+        return villageStories.length;
       case "personalities":
         return villagePersonalities.length;
       case "institutions":

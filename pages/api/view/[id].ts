@@ -4,21 +4,24 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 async function handler(req, res) {
   const { access_token } = req.query;
+  const { type } = req.query;
+  const { fields } = req.query;
 
   switch (req.method) {
     case "GET":
-      return getUserById();
+      return getObjById();
     case "PUT":
-      return updateUser();
+      return updateObj();
     case "DELETE":
-      return deleteUser();
+      return deleteObj();
     default:
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
-  async function getUserById() {
+
+  async function getObjById() {
     try {
       let user = fetchWrapper.get(
-        baseUrl + `/users/${req.query.id}.json`,
+        baseUrl + `/${type}/${req.query.id}.json${fields}`,
         access_token
       );
 
@@ -30,7 +33,7 @@ async function handler(req, res) {
     }
   }
 
-  function updateUser() {
+  function updateObj() {
     try {
       //   usersRepo.update(req.query.id, req.body);
       return res.status(200).json({});
@@ -39,7 +42,7 @@ async function handler(req, res) {
     }
   }
 
-  function deleteUser() {
+  function deleteObj() {
     // usersRepo.delete(req.query.id);
     return res.status(200).json({});
   }

@@ -57,26 +57,26 @@ const AccountToEdit: NextPage = () => {
 
   const [activeStep, setActiveStep] = useState<number>(1);
 
-  const { me, meStep, meError, fetchMeData } = useFetchData();
+  const { me, step, accountError, fetchMeData } = useFetchData();
 
   useEffect(() => {
     fetchMeData();
   }, []);
 
   useEffect(() => {
-    if (!meError && meStep === Step.STEP2 && isBySupport) setActiveStep(2);
-    if (meError) {
+    if (!accountError && step === Step.STEP2 && isBySupport) setActiveStep(2);
+    if (accountError) {
       !toast.isActive("meError") &&
         toast({
           id: "meError",
           title: "Can't find you. Please try again.",
-          description: meError.message,
+          description: accountError.message,
           status: "error",
           duration: 3000,
           isClosable: true,
         });      
     }
-  }, [meError, meStep]);
+  }, [accountError, step]);
 
   const [avatar, setAvatar] = useState(null);
 

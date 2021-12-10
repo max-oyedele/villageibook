@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
-
 import { MyThunkDispatch, OurStore } from "rdx/store";
+
 import {
   fetchCountries,
   fetchRegions,
@@ -9,10 +9,11 @@ import {
   fetchVillages,
   fetchUniversities,
   fetchProfessions,
-} from "rdx/slices/location";
-import { fetchMe, fetchUser } from "rdx/slices/user";
+} from "rdx/slices/common";
+import { fetchMe } from "rdx/slices/account";
+import { fetchUser, fetchPersonality, fetchInstitution } from "rdx/slices/view";
 import {
-  fetchFeedPosts,
+  fetchPosts,
   fetchRecentVillages,
   fetchRecentUsers,
 } from "rdx/slices/feedPage";
@@ -20,13 +21,12 @@ import {
   fetchVillage,
   fetchVillageUsers,
   fetchVillageGraduates,
-  fetchVillageArticles,
+  fetchVillageStories,
   fetchVillagePersonalities,
   fetchVillageInstitutions,
   fetchVillageVideos,
 } from "rdx/slices/villagePage";
-import { fetchGraduates } from "rdx/slices/graduatePage";
-import { getGraduatesByLocation } from "rdx/slices/stats";
+import { getGraduates } from "rdx/slices/graduatePage";
 
 const useFetchData = () => {
   const dispatch: MyThunkDispatch = useDispatch();
@@ -39,14 +39,10 @@ const useFetchData = () => {
   } = useSelector((state: OurStore) => state.authReducer);
   const {
     me,
-    meStep,
-    status: meStatus,
-    meError,
-    postStatus,
-    postError,
-    user,
-    userError,
-  } = useSelector((state: OurStore) => state.userReducer);
+    step,
+    status: accountStatus,
+    error: accountError,
+  } = useSelector((state: OurStore) => state.accountReducer);
 
   const {
     countries,
@@ -56,26 +52,23 @@ const useFetchData = () => {
     villages,
     universities,
     professions,
-  } = useSelector((state: OurStore) => state.locationReducer);
+  } = useSelector((state: OurStore) => state.commonReducer);
 
-  const { posts, recentVillages, recentUsers } = useSelector(
-    (state: OurStore) => state.feedPageReducer
-  );
+  const { posts, recentVillages, recentUsers } = useSelector((state: OurStore) => state.feedPageReducer);
+  const { status: postStatus, error: postError } = useSelector((state: OurStore) => state.postReducer);
+  const { user, userError, personality, personalityError, institution, institutionError } = useSelector((state: OurStore) => state.viewReducer);
 
   const {
     village,
     villageUsers,
     villageGraduates,
-    villageArticles,
+    villageStories,
     villagePersonalities,
     villageInstitutions,
     villageVideos,
   } = useSelector((state: OurStore) => state.villagePageReducer);
 
-  const { totalGraduates } = useSelector(
-    (state: OurStore) => state.graduatePageReducer
-  );
-  const { graduatesByLocation } = useSelector((state: OurStore) => state.statsReducer)
+  const { graduates } = useSelector((state: OurStore) => state.graduatePageReducer)
 
   const fetchCountriesData = async () => {
     await dispatch(fetchCountries());
@@ -101,7 +94,6 @@ const useFetchData = () => {
 
   const fetchCommonData = () => {
     fetchCountriesData();
-    //expect other locations    
     fetchUniversitiesData();
     fetchProfessionsData();
   };
@@ -114,8 +106,16 @@ const useFetchData = () => {
     await dispatch(fetchUser(params));
   };
 
+  const fetchPersonalityData = async (params) => {
+    await dispatch(fetchPersonality(params));
+  }
+
+  const fetchInstitutionData = async (params) => {
+    await dispatch(fetchInstitution(params));
+  }
+
   const fetchFeedPageData = async () => {
-    await dispatch(fetchFeedPosts());
+    await dispatch(fetchPosts());
     await dispatch(fetchRecentVillages());
     await dispatch(fetchRecentUsers());
   };
@@ -129,8 +129,8 @@ const useFetchData = () => {
   const fetchVillageGraduatesData = async (params) => {
     await dispatch(fetchVillageGraduates(params));
   };
-  const fetchVillageArticlesData = async (params) => {
-    await dispatch(fetchVillageArticles(params));
+  const fetchVillageStoriesData = async (params) => {
+    await dispatch(fetchVillageStories(params));
   };
   const fetchVillagePersonalitiesData = async (params) => {
     await dispatch(fetchVillagePersonalities(params));
@@ -141,23 +141,18 @@ const useFetchData = () => {
   const fetchVillageVideosData = async (params) => {
     await dispatch(fetchVillageVideos(params));
   };
-  
+
   const fetchVillagePageData = (params) => {
-    fetchVillageData(params);
     fetchVillageUsersData(params);
     fetchVillageGraduatesData(params);
-    fetchVillageArticlesData(params);
+    fetchVillageStoriesData(params);
     fetchVillagePersonalitiesData(params);
     fetchVillageInstitutionsData(params);
     fetchVillageVideosData(params);
   };
 
-  const fetchGraduatePageData = async (params) => {
-    await dispatch(fetchGraduates(params));
-  };
-
-  const getGraduatesByLocationData = async (params) => {
-    await dispatch(getGraduatesByLocation(params));
+  const getGraduatesData = async (params) => {
+    await dispatch(getGraduates(params));
   }
 
   return {
@@ -166,9 +161,9 @@ const useFetchData = () => {
     authStatus,
     authError,
     me,
-    meStep,
-    meStatus,
-    meError,
+    step,
+    accountStatus,
+    accountError,
     postStatus,
     postError,
     countries,
@@ -181,14 +176,17 @@ const useFetchData = () => {
     posts,
     recentVillages,
     recentUsers,
-    totalGraduates,
-    graduatesByLocation,
+    graduates,
     user,
     userError,
+    personality,
+    personalityError,
+    institution,
+    institutionError,
     village,
     villageUsers,
     villageGraduates,
-    villageArticles,
+    villageStories,
     villagePersonalities,
     villageInstitutions,
     villageVideos,
@@ -196,21 +194,22 @@ const useFetchData = () => {
     fetchRegionsData,
     fetchDistrictsData,
     fetchSubDistrictsData,
-    fetchVillagesData,    
+    fetchVillagesData,
     fetchCommonData,
     fetchMeData,
     fetchUserData,
+    fetchPersonalityData,
+    fetchInstitutionData,
     fetchFeedPageData,
     fetchVillageData,
-    fetchVillageUsersData,
-    fetchVillageGraduatesData,
-    fetchVillageArticlesData,
-    fetchVillagePersonalitiesData,
-    fetchVillageInstitutionsData,
-    fetchVillageVideosData,
     fetchVillagePageData,
-    fetchGraduatePageData,
-    getGraduatesByLocationData
+    // fetchVillageUsersData,
+    // fetchVillageGraduatesData,
+    // fetchVillageStoriesData,
+    // fetchVillagePersonalitiesData,
+    // fetchVillageInstitutionsData,
+    // fetchVillageVideosData,
+    getGraduatesData
   };
 };
 

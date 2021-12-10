@@ -52,8 +52,8 @@ const AccountToRegister: NextPage = () => {
 
   const {
     me,
-    meStep,
-    meError,
+    step,
+    accountError,
     countries,
     districts,
     subDistricts,
@@ -107,22 +107,22 @@ const AccountToRegister: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    if (meStep === Step.STEP2) {
+    if (step === Step.STEP2) {
       router.push("/feed");
       return;
     }
-    if (meError) {
+    if (accountError) {
       !toast.isActive("meError") &&
         toast({
           id: "meError",
           title: "Register Failed. Please try again.",
-          description: meError.message,
+          description: accountError.message,
           status: "error",
           duration: 3000,
           isClosable: true,
         });      
     }
-  }, [meStep, meError]);
+  }, [step, accountError]);
 
   useEffect(() => {
     setSelectedRegion(null);

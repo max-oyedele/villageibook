@@ -26,15 +26,15 @@ export const fetchPosts = createAsyncThunk(
   }
 );
 
-export const fetchArticles = createAsyncThunk(
-  "admin/fetchArticles",
+export const fetchStories = createAsyncThunk(
+  "admin/fetchStories",
   async (_, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get("/api/admin/articles", {
+      const response = await axios.get("/api/admin/stories", {
         params: { access_token },
       });
-      return response.data.articles;
+      return response.data.stories;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
@@ -211,7 +211,7 @@ export const submitInstitution = createAsyncThunk(
 const initialState: AdminState = {
   status: Status.IDLE,
   posts: [],
-  articles: [],
+  stories: [],
   personalities: [],
   institutions: [],
   videos: [],
@@ -238,15 +238,15 @@ export const adminSlice = createSlice({
       state.status = Status.IDLE;
       state.error = action.payload;
     });
-    builder.addCase(fetchArticles.pending, (state) => {
+    builder.addCase(fetchStories.pending, (state) => {
       state.status = Status.LOADING;
       state.error = null;
     });
-    builder.addCase(fetchArticles.fulfilled, (state, action) => {
+    builder.addCase(fetchStories.fulfilled, (state, action) => {
       state.status = Status.IDLE;
-      state.articles = action.payload;
+      state.stories = action.payload;
     });
-    builder.addCase(fetchArticles.rejected, (state, action) => {
+    builder.addCase(fetchStories.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

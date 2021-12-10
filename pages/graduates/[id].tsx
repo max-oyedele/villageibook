@@ -1,5 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
+import { useRouter } from "next/router";
 
 import {
   Container,
@@ -52,30 +53,61 @@ const menuItems = [
 const homeCountry = "bangladesh";
 
 const Graduates: NextPage = () => {
+  const router = useRouter();
+  const { id } = router.query;
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { me, totalGraduates, districts, subDistricts, villages, fetchCommonData, fetchVillagesData, fetchGraduatePageData } = useFetchData();
-  
-  const [activeMenuItem, setActiveMenuItem] = useState(menuItems[2]);
+  const {
+    me, districts, subDistricts, villages,
+    fetchMeData,
+    fetchCommonData,
+    fetchRegionsData,
+    fetchDistrictsData,
+    fetchSubDistrictsData,
+    fetchVillagesData,
+  } = useFetchData();
+
+  const [activeMenuItem, setActiveMenuItem] = useState(null);
 
   const [expandedItem, setExpandedItem] = useState(null);
   const [items, setItems] = useState([]);
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState(null);
 
   useEffect(() => {
-    fetchCommonData();
-    fetchVillagesData(null);
-    fetchGraduatePageData(null);
-  }, []);
-
-  useEffect(()=>{
-    setItems(villages);
-  }, [villages])
+    if (me) {
+      fetchCommonData();
+      // fetchRegionsData(null);
+      fetchDistrictsData(null);
+      fetchSubDistrictsData(null);
+      fetchVillagesData(null);
+      // fetchGraduatePageData(null);
+    }
+    else {
+      fetchMeData();
+    }
+  }, [me]);
 
   useEffect(() => {
-    if (activeMenuItem.value === "district") setItems(districts);
-    else if (activeMenuItem.value === "subDistrict") setItems(subDistricts);
-    else if (activeMenuItem.value === "village") setItems(villages);
+    if (districts.find(e => e.uuid === id)) {
+      setActiveMenuItem(menuItems[0]);
+      setItems(districts);
+    }
+    if (subDistricts.find(e => e.uuid === id)) {
+      setActiveMenuItem(menuItems[1]);
+      setItems(subDistricts);
+    }
+    if (villages.find(e => e.uuid === id)) {
+      setActiveMenuItem(menuItems[2]);
+      setItems(villages);
+    }
+    const activeItem = [...districts, ...subDistricts, ...villages].find(e => e.uuid === id)
+    setExpandedItem(activeItem);
+  }, [districts, subDistricts, villages])
+  
+  useEffect(() => {
+    if (activeMenuItem?.value === "district") setItems(districts);
+    else if (activeMenuItem?.value === "subDistrict") setItems(subDistricts);
+    else if (activeMenuItem?.value === "village") setItems(villages);
   }, [activeMenuItem]);
 
   const toast = useToast();
@@ -83,9 +115,7 @@ const Graduates: NextPage = () => {
   const onFind = () => {
     if (districts.find((item) => item.href === location.toLowerCase())) {
       setActiveMenuItem(menuItems[0]);
-    } else if (
-      subDistricts.find((item) => item.href === location.toLowerCase())
-    ) {
+    } else if (subDistricts.find((item) => item.href === location.toLowerCase())) {
       setActiveMenuItem(menuItems[1]);
     } else if (villages.find((item) => item.href === location.toLowerCase())) {
       setActiveMenuItem(menuItems[2]);
@@ -101,10 +131,10 @@ const Graduates: NextPage = () => {
   };
 
   const calcGraduates = (locationItem) => {
-    const totalGraduatesCount = totalGraduates.filter(e=>e.comesFrom === locationItem.href).length;
+    const totalGraduatesCount = 1;//totalGraduates.filter(e=>e.comesFrom === locationItem.href).length;
     const homeGraduatesCount = 0;//totalGraduates.filter(e=>e.comesFrom === locationItem.href && e.graduatedAt === homeCountry).length;
     const overseaGraduateCount = totalGraduatesCount - homeGraduatesCount;
-    
+
     //[total=12, inter=6, oversea=6]
     return [totalGraduatesCount, homeGraduatesCount, overseaGraduateCount];
   };
@@ -136,9 +166,9 @@ const Graduates: NextPage = () => {
               h={8}
               mx={8}
               fontSize="13px"
-              borderBottom={item.id === activeMenuItem.id ? "2px" : "none"}
+              borderBottom={item.id === activeMenuItem?.id ? "2px" : "none"}
               borderBottomColor={
-                item.id === activeMenuItem.id ? "purpleTone" : "none"
+                item.id === activeMenuItem?.id ? "purpleTone" : "none"
               }
               cursor="pointer"
               onClick={() => setActiveMenuItem(item)}

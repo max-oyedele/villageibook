@@ -11,6 +11,7 @@ import {
   Box,
   Text,
   Image,
+  Avatar,
   SimpleGrid,
   Badge,
   useBreakpointValue,
@@ -21,7 +22,6 @@ import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
-import PersonalityCard from "components/PersonalityCard";
 
 import useFetchData from "hooks/use-fetch-data";
 
@@ -102,12 +102,9 @@ const UserView: NextPage = () => {
             <Flex flexDirection="column" p={6}>
               {breakpointValue === "base" && (
                 <Flex flexDirection="column" alignItems="center" mb={6}>
-                  <Image
+                  <Avatar
                     src={user?.avatar}
-                    w="full"
-                    fit="cover"
-                    borderRadius="full"
-                    alt=""
+                    size="2xl"
                     mb={6}
                   />
 
@@ -122,7 +119,7 @@ const UserView: NextPage = () => {
 
               <Text fontSize="18px">Personal Info</Text>
               <VStack
-                w={{ base: "full", md: "400px" }}
+                w="full"
                 spacing={2}
                 divider={<Divider />}
                 mt={6}

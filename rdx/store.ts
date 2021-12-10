@@ -3,22 +3,24 @@ import { createWrapper, MakeStore, HYDRATE } from "next-redux-wrapper";
 import logger from "redux-logger";
 
 import { authSlice } from "./slices/auth";
-import { userSlice } from "./slices/user";
-import { locationSlice } from "./slices/location";
+import { accountSlice } from "./slices/account";
+import { commonSlice } from "./slices/common";
+import { postSlice } from "./slices/post";
+import { viewSlice } from "./slices/view";
 import { feedPageSlice } from "./slices/feedPage";
 import { villagePageSlice } from "./slices/villagePage";
 import { graduatePageSlice } from "./slices/graduatePage";
-import { statsSlice } from "./slices/stats";
 import { adminSlice } from "./slices/admin"
 
 const combinedReducers = combineReducers({
   authReducer: authSlice.reducer,
-  userReducer: userSlice.reducer,
-  locationReducer: locationSlice.reducer,
+  accountReducer: accountSlice.reducer,
+  commonReducer: commonSlice.reducer,
+  postReducer: postSlice.reducer,
+  viewReducer: viewSlice.reducer,
   feedPageReducer: feedPageSlice.reducer,
   villagePageReducer: villagePageSlice.reducer,
-  graduatePageReducer: graduatePageSlice.reducer,
-  statsReducer: statsSlice.reducer,
+  graduatePageReducer: graduatePageSlice.reducer,  
   adminReducer: adminSlice.reducer
 });
 export type OurStore = ReturnType<typeof combinedReducers>;

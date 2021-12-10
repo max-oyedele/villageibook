@@ -29,8 +29,8 @@ var menus = [
     icon: FaThList,
   },
   {
-    path: "/admin/societies",
-    name: "Society",
+    path: "/admin/stories",
+    name: "Story",
     icon: FaRegMoneyBillAlt,
   },
   {

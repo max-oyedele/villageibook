@@ -7,14 +7,14 @@ import {
 
 import axios from "axios";
 
-import { Status, LocationState } from "../types";
+import { Status, CommonState } from "../types";
 
 /*********************** */
 export const fetchCountries = createAsyncThunk(
-  "location/countries",
+  "common/countries",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get('/api/location/countries')
+      const response = await axios.get('/api/common/countries')
       return response.data.countries; // data: {pagination: {}, countries: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -23,10 +23,10 @@ export const fetchCountries = createAsyncThunk(
 );
 
 export const fetchRegions = createAsyncThunk(
-  "location/regions",
+  "common/regions",
   async (params: any, thunkAPI) => {
     try {
-      const response = await axios.get("/api/location/regions", { params });
+      const response = await axios.get("/api/common/regions", { params });
       return response.data.regions;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -35,10 +35,10 @@ export const fetchRegions = createAsyncThunk(
 );
 
 export const fetchDistricts = createAsyncThunk(
-  "location/districts",
+  "common/districts",
   async (params: any, thunkAPI) => {
     try {
-      const response = await axios.get("/api/location/districts", { params });
+      const response = await axios.get("/api/common/districts", { params });
       return response.data.districts; // data: {pagination: {}, districts: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -47,10 +47,10 @@ export const fetchDistricts = createAsyncThunk(
 );
 
 export const fetchSubDistricts = createAsyncThunk(
-  "location/subDistricts",
+  "common/subDistricts",
   async (params: any, thunkAPI) => {
     try {
-      const response = await axios.get("/api/location/subDistricts", { params });
+      const response = await axios.get("/api/common/subDistricts", { params });
       return response.data["sub-districts"]; // data: {pagination: {}, sub-districts: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -59,10 +59,10 @@ export const fetchSubDistricts = createAsyncThunk(
 );
 
 export const fetchVillages = createAsyncThunk(
-  "location/villages",
+  "common/villages",
   async (params: any, thunkAPI) => {
     try {
-      const response = await axios.get('/api/location/villages', { params })
+      const response = await axios.get('/api/common/villages', { params })
       return response.data.villages; // data: {pagination: {}, villages: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -71,10 +71,10 @@ export const fetchVillages = createAsyncThunk(
 );
 
 export const fetchUniversities = createAsyncThunk(
-  "location/universities",
+  "common/universities",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get('/api/location/universities')
+      const response = await axios.get('/api/common/universities')
       return response.data.universities; // data: {pagination: {}, universities: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -83,10 +83,10 @@ export const fetchUniversities = createAsyncThunk(
 );
 
 export const fetchProfessions = createAsyncThunk(
-  "location/professions",
+  "common/professions",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get('/api/location/professions')
+      const response = await axios.get('/api/common/professions')
       return response.data.professions; // data: {pagination: {}, professions: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -95,7 +95,7 @@ export const fetchProfessions = createAsyncThunk(
 );
 
 /************************************* */
-const initialState: LocationState = {
+const initialState: CommonState = {
   status: Status.IDLE,
   countries: [],
   regions: [],
@@ -107,8 +107,8 @@ const initialState: LocationState = {
   error: null,
 };
 
-export const locationSlice = createSlice({
-  name: "location",
+export const commonSlice = createSlice({
+  name: "common",
   initialState: initialState,
   reducers: {
     reset: () => initialState,
@@ -215,4 +215,4 @@ export const locationSlice = createSlice({
   },
 });
 
-export const { reset } = locationSlice.actions;
+export const { reset } = commonSlice.actions;

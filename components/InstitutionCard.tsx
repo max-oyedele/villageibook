@@ -15,7 +15,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import type { Institution } from "types/data";
+import type { Institution } from "types/schema";
 
 const InstitutionCard: React.FC<{ institution: Institution }> = ({
   institution,
@@ -29,6 +29,7 @@ const InstitutionCard: React.FC<{ institution: Institution }> = ({
     <Fragment>
       <SimpleGrid
         w="full"
+        minH="170px"
         columns={{ base: 5, md: 6 }}
         gap={2}
         p={2}
@@ -37,7 +38,7 @@ const InstitutionCard: React.FC<{ institution: Institution }> = ({
         borderRadius="5px"
       >
         <GridItem colSpan={{ base: 2, md: 1 }}>
-          <Image src={institution.img} w="full" h="full" fit="cover" alt="" borderRadius="4px" />
+          <Image src={institution?.photo?.url??"/images/default-photo.jpg"} w="full" h="full" fit="cover" alt="" borderRadius="4px" />
         </GridItem>
         <GridItem
           colSpan={{ base: 3, md: 4 }}
@@ -54,7 +55,7 @@ const InstitutionCard: React.FC<{ institution: Institution }> = ({
               color="GrayText"
               textTransform="capitalize"
             >
-              {institution.category}
+              Established in {institution.yearEstablished}
             </Text>
             <Text
               fontSize="18px"

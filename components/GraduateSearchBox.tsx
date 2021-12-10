@@ -16,7 +16,7 @@ import { BiSearch } from "react-icons/bi";
 import useFetchData from "hooks/use-fetch-data";
 
 const GraduateSearchBox:React.FC<{location: string, setLocation, onFind}> = ({location, setLocation, onFind}) => {
-  const {totalGraduates} = useFetchData();
+  const totalGraduates = 100;
 
   return (
     <Fragment>
@@ -31,7 +31,7 @@ const GraduateSearchBox:React.FC<{location: string, setLocation, onFind}> = ({lo
           <Box textAlign="center">
             <Text fontSize="14px">TOTAL GRADUATES</Text>
             <Text fontSize="36px" fontWeight="700" color="purpleTone" mt={4}>
-              {totalGraduates.length}
+              {totalGraduates}
             </Text>
           </Box>
           <HStack

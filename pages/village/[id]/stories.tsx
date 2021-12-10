@@ -16,13 +16,13 @@ import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
-import ArticleCard from "components/ArticleCard";
+import StoryCard from "components/StoryCard";
 import Alert from "components/widgets/Alert";
 
 import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 
-const Society: NextPage = () => {
+const Story: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const router = useRouter();
@@ -31,11 +31,12 @@ const Society: NextPage = () => {
 
   const { fixed } = useWindowProp();
 
-  const { village, villageArticles, fetchVillageArticlesData } = useFetchData();
+  const { village, villageStories, fetchVillageData, fetchVillagePageData } = useFetchData();
 
-  useEffect(()=>{
-    if(vid){
-      fetchVillageArticlesData({villageUuid: vid})
+  useEffect(() => {
+    if (vid) {
+      fetchVillageData({ villageUuid: vid });
+      fetchVillagePageData({ villageUuid: vid })
     }
   }, [vid])
 
@@ -43,7 +44,7 @@ const Society: NextPage = () => {
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <PageTitle title="Society" />
+        <PageTitle title="Story" />
         <Flex>
           {breakpointValue === "md" && (
             <Box>
@@ -57,11 +58,11 @@ const Society: NextPage = () => {
               fixed && breakpointValue === "md"
                 ? "264px"
                 : breakpointValue === "md"
-                ? "24px"
-                : "0px"
+                  ? "24px"
+                  : "0px"
             }
           >
-            {villageArticles.length > 0 && (
+            {villageStories.length > 0 && (
               <Box bgColor="white" p={6}>
                 <Grid
                   templateColumns={
@@ -72,14 +73,14 @@ const Society: NextPage = () => {
                   columnGap={6}
                   rowGap={12}
                 >
-                  {villageArticles.map((article) => (
-                    <ArticleCard key={article.id} article={article} />
+                  {villageStories.map((story) => (
+                    <StoryCard key={story.uuid} story={story} />
                   ))}
                 </Grid>
               </Box>
             )}
-            {villageArticles.length == 0 && (
-              <Alert message="There is no articles to be displayed." />
+            {villageStories.length == 0 && (
+              <Alert message="There is no story to be displayed." />
             )}
           </Box>
         </Flex>
@@ -92,4 +93,4 @@ const Society: NextPage = () => {
   );
 };
 
-export default Society;
+export default Story;

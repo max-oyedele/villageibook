@@ -22,7 +22,7 @@ import SearchBar from "components/SearchBar";
 import LeftVillageCard from "components/LeftVillageCard";
 import UserCard from "components/UserCard";
 import VillageGraduatesCountryStatCard from "components/VillageGraduatesCountryStatCard";
-import ArticleCard from "components/ArticleCard";
+import StoryCard from "components/StoryCard";
 import PersonalityCard from "components/PersonalityCard";
 import InstitutionCard from "components/InstitutionCard";
 import VideoCard from "components/VideoCard";
@@ -37,13 +37,14 @@ const Posts: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village uuid
 
-  const { village, villageUsers, villageArticles, villagePersonalities, villageInstitutions, villageVideos, fetchVillagePageData } = useFetchData();
+  const { village, villageUsers, villageStories, villagePersonalities, villageInstitutions, villageVideos, fetchVillageData, fetchVillagePageData } = useFetchData();
 
   const { fixed } = useWindowProp();
 
   useEffect(() => {
     if(vid){
-      fetchVillagePageData({ villageUuid: vid });
+      fetchVillageData({ villageUuid: vid });
+      fetchVillagePageData({ villageUuid: vid});
     }
   }, [vid]);
 
@@ -123,29 +124,29 @@ const Posts: NextPage = () => {
               </Box>
             </Box>
 
-            {villageArticles.length > 0 && (
+            {villageStories.length > 0 && (
               <Box bgColor="white" p={6} mb={6}>
-                <Text fontSize="14px">SOCIETY</Text>
+                <Text fontSize="14px">STORY</Text>
                 <SimpleGrid
                   columns={{ base: 1, md: 2 }}
                   columnGap={6}
                   rowGap={10}
                   mt={6}
                 >
-                  {villageArticles.slice(0, 2).map((article) => (
-                    <ArticleCard key={article.id} article={article} />
+                  {villageStories.slice(0, 2).map((story) => (
+                    <StoryCard key={story.uuid} story={story} />
                   ))}
                 </SimpleGrid>
                 <Divider my={6} />
                 <Box>
-                  <Link href="/village/society">
+                  <Link href="/village/stories" passHref>
                     <Text
                       fontSize="12px"
                       color="purpleTone"
                       textAlign="center"
                       cursor="pointer"
                     >
-                      SEE ALL ARTICLES ({villageArticles.length})
+                      SEE ALL STORIES ({villageStories.length})
                     </Text>
                   </Link>
                 </Box>
@@ -157,20 +158,20 @@ const Posts: NextPage = () => {
                 <Text fontSize="14px">PERSONALITIES</Text>
                 {breakpointValue === "md" && (
                   <VStack spacing={2} mt={6}>
-                    {villagePersonalities.slice(0, 5).map((user) => (
-                      <PersonalityCard key={user.id} user={user} />
+                    {villagePersonalities.slice(0, 5).map((personality) => (
+                      <PersonalityCard key={personality.uuid} personality={personality} />
                     ))}
                   </VStack>
                 )}
                 {breakpointValue === "base" && (
                   <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4} mt={6}>
-                    {villagePersonalities.map((user) => (
-                      <PersonalityCard key={user.id} user={user} />
+                    {villagePersonalities.map((personality) => (
+                      <PersonalityCard key={personality.uuid} personality={personality} />
                     ))}
                   </SimpleGrid>
                 )}
                 <Box>
-                  <Link href="/village/personalities">
+                  <Link href="/village/personalities" passHref>
                     <Text
                       fontSize="12px"
                       color="purpleTone"
@@ -197,7 +198,7 @@ const Posts: NextPage = () => {
                   ))}
                 </VStack>
                 <Box>
-                  <Link href="/village/institutions">
+                  <Link href="/village/institutions" passHref>
                     <Text
                       fontSize="12px"
                       color="purpleTone"
@@ -227,7 +228,7 @@ const Posts: NextPage = () => {
                 </SimpleGrid>
                 <Divider mt={10} mb={6} />
                 <Box>
-                  <Link href="/village/videos">
+                  <Link href="/village/videos" passHref>
                     <Text
                       fontSize="12px"
                       color="purpleTone"
