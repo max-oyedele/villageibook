@@ -18,7 +18,7 @@ import { Status } from "rdx/types";
 import useFetchData from "hooks/use-fetch-data";
 
 const HeaderForGuide: React.FC<{ title: string }> = ({ title }) => {
-  const { meStatus } = useFetchData()
+  const { accountStatus } = useFetchData()
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);
@@ -41,7 +41,7 @@ const HeaderForGuide: React.FC<{ title: string }> = ({ title }) => {
             <Box></Box>
           </Flex>
 
-          {meStatus === Status.LOADING && (
+          {accountStatus === Status.LOADING && (
             <Box w="full">
               <Progress h="2px" size="xs" isIndeterminate />
             </Box>
