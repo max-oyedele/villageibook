@@ -29,11 +29,12 @@ const Institutions: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
 
-  const { village, villageInstitutions, fetchVillageInstitutionsData } = useFetchData();
+  const { village, villageInstitutions, fetchVillageData, fetchVillagePageData } = useFetchData();
 
   useEffect(() => {
     if (vid) {
-      fetchVillageInstitutionsData({ villageUuid: vid });
+      fetchVillageData({ villageUuid: vid });
+      fetchVillagePageData({ villageUuid: vid });
     }
   }, [vid]);
 
@@ -55,8 +56,8 @@ const Institutions: NextPage = () => {
               fixed && breakpointValue === "md"
                 ? "264px"
                 : breakpointValue === "md"
-                ? "24px"
-                : "0px"
+                  ? "24px"
+                  : "0px"
             }
           >
             <VStack spacing={2}>

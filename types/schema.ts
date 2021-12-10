@@ -92,10 +92,21 @@ export type Degree = {
   href: string;
   uuid: string;
 };
+
 export type Comment = {
   commentUser: User;
   text: string;
 };
+
+export type Story = {
+  id: number;
+  title: string;
+  content?: string;
+  href?: string;
+  photo?: Photo;
+  video?: Video;
+  uuid: string;
+}
 
 export type Personality = {
   id: number;

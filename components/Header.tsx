@@ -52,7 +52,7 @@ const Header = () => {
   } = router;
 
   const { authStatus, me } = useFetchData();
-  const { authReset, userReset } = useActionDispatch();
+  const { authReset, accountReset } = useActionDispatch();
 
   const vid = id ?? me?.comesFrom?.uuid;
 
@@ -73,7 +73,7 @@ const Header = () => {
 
   const logout = () => {
     authReset();
-    userReset();
+    accountReset();
 
     removeToken();
     router.push("/");
@@ -91,7 +91,7 @@ const Header = () => {
                   <Link
                     key={tab.name}
                     href={
-                      tab.path === "/village" ? `${tab.path}/${vid}` : tab.path
+                      tab.path === "/village" || tab.path === "/graduates" ? `${tab.path}/${vid}` : tab.path
                     }
                     passHref={true}
                   >

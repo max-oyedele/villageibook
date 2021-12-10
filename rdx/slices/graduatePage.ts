@@ -7,28 +7,27 @@ import {
 
 import axios from "axios";
 
-import { Status, GraduatePageState } from "../types";
-
+import { Status, Step, GraduatePageState } from "../types";
 import { getUserToken } from "helpers/user-token";
 
-
-export const fetchGraduates = createAsyncThunk(
-  "graduatePage/fetchGraduates",
+export const getGraduates = createAsyncThunk(
+  "graduatePage/getGraduates",
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get('/api/graduates', {params: {...params, access_token}})
-      return response.data.graduates; // data: {graduates: []}
+      const response = await axios.get(`/api/graduates`, {
+        params: { ...params, access_token, },
+      });
+      return response.data.graduates;
     } catch (error) {
-      return thunkAPI.rejectWithValue({ error: error.message });
+      return thunkAPI.rejectWithValue(error.response.data);
     }
-  }
-);
+  });
 
-/************************************* */
+/********************************** */
 const initialState: GraduatePageState = {
-  status: Status.IDLE,
-  totalGraduates: [],
+  status: Status.IDLE,  
+  graduates: [],
   error: null,
 };
 
@@ -39,15 +38,15 @@ export const graduatePageSlice = createSlice({
     reset: () => initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchGraduates.pending, (state) => {
+    builder.addCase(getGraduates.pending, (state, action) => {
       state.status = Status.LOADING;
       state.error = null;
     });
-    builder.addCase(fetchGraduates.fulfilled, (state, action) => {
+    builder.addCase(getGraduates.fulfilled, (state, action) => {
+      state.graduates = action.payload;
       state.status = Status.IDLE;
-      state.totalGraduates = action.payload;
     });
-    builder.addCase(fetchGraduates.rejected, (state, action) => {
+    builder.addCase(getGraduates.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

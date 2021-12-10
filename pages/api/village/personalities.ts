@@ -15,7 +15,7 @@ async function handler(req, res) {
 
   async function getVillagePersonalities() {
     try {
-      let villagePersonality = fetchWrapper.get(baseUrl + `/villages/${villageUuid}/personalities.json`, access_token);
+      let villagePersonality = fetchWrapper.get(baseUrl + `/villages/${villageUuid}/personalities.json?fields=name,about,photo.url,photo.name,photo.description,dateOfBirth,dateOfDeath,educationLife,achievements,career,uuid`, access_token);
       
       await villagePersonality.then(response=>{
         res.status(200).json(response);

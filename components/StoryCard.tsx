@@ -2,9 +2,9 @@ import { Fragment } from "react";
 import Link from "next/link";
 import { Flex, Box, Text, Image, Button } from "@chakra-ui/react";
 
-import type { Article } from "types/data";
+import type { Story } from "types/schema";
 
-const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
+const StoryCard: React.FC<{ story: Story }> = ({ story }) => {
   return (
     <Fragment>
       <Flex
@@ -15,13 +15,13 @@ const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
         borderRadius="8px"
         borderColor="gray.200"
       >
-        <Image src={article.img} w="full" fit="cover" alt="" />
+        <Image src={story?.photo?.url??"/images/default-photo.jpg"} w="full" fit="cover" alt="" />
         <Box p={4}>
           <Text fontSize="16px" mt={6}>
-            {article.title}
+            {story.title}
           </Text>
           <Text fontSize="12px" color="GrayText" mt={4}>
-            {article.desc}
+            {story.content}
           </Text>
         </Box>
       </Flex>
@@ -29,4 +29,4 @@ const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
   );
 };
 
-export default ArticleCard;
+export default StoryCard;

@@ -7,7 +7,7 @@ import {
   HStack,
   VStack,
   Flex,
-  Box,  
+  Box,
   useBreakpointValue,
 } from "@chakra-ui/react";
 
@@ -30,11 +30,12 @@ const Personalities: NextPage = () => {
 
   const { fixed } = useWindowProp();
 
-  const { village, villagePersonalities, fetchVillagePersonalitiesData } = useFetchData();
+  const { village, villagePersonalities, fetchVillageData, fetchVillagePageData } = useFetchData();
 
   useEffect(() => {
     if (vid) {
-      fetchVillagePersonalitiesData({ villageUuid: vid });
+      fetchVillageData({ villageUuid: vid });
+      fetchVillagePageData({ villageUuid: vid });
     }
   }, [vid]);
 
@@ -56,14 +57,14 @@ const Personalities: NextPage = () => {
               fixed && breakpointValue === "md"
                 ? "264px"
                 : breakpointValue === "md"
-                ? "24px"
-                : "0px"
+                  ? "24px"
+                  : "0px"
             }
           >
             <VStack spacing={2}>
               {villagePersonalities.length > 0 &&
-                villagePersonalities.map((user) => (
-                  <PersonalityCard key={user.id} user={user} />
+                villagePersonalities.map((personality) => (
+                  <PersonalityCard key={personality.id} personality={personality} />
                 ))}
               {villagePersonalities.length == 0 && (
                 <Alert message="There is no personality to be displayed." />

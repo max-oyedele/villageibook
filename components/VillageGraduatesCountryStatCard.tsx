@@ -24,25 +24,25 @@ const VillageGraduatesCountryStatCard: React.FC<{
 }> = ({ village, direction }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { villageGraduates, graduatesByLocation, getGraduatesByLocationData } = useFetchData();
+  const { villageGraduates, graduates, getGraduatesData } = useFetchData();
 
   useEffect(() => {
     if (village) {
-      const locations = watchCountries.filter(e => e.href != "other").map(e => e.href).join(",");
-      getGraduatesByLocationData({ locations: locations, villageUuid: village?.href });
+      const universityCountries = watchCountries.filter(e => e.href != "other").map(e => e.href).join(",");
+      getGraduatesData({ universityCountries, locationUuid: village?.uuid });
     }
   }, [village]);
 
   useEffect(() => {
 
-  }, [graduatesByLocation])
+  }, [graduates])
 
   const maxRowsPerCol = Math.floor(
     watchCountries.length / 2 + (watchCountries.length % 2)
   );
 
   const getGraduatesCountByLocation = (location) => {
-    const existedItem = graduatesByLocation.find(e => e.location === location.name);
+    const existedItem = graduates.find(e => e.location === location.name);
     return existedItem?.graduates ?? 0;
   }
 
@@ -62,7 +62,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
           <GraduatePercent
             village={village}
             totalCount={totalGraduatesCount}
-            graduatesCount={graduatesByLocation.reduce((acc, val) => { return acc + val.graduates }, 0)}
+            graduatesCount={graduates.reduce((acc, val) => { return acc + val.graduates }, 0)}
           />
 
           {direction === "column" && (

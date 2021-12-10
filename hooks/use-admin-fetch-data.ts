@@ -2,20 +2,20 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { MyThunkDispatch, OurStore } from "rdx/store";
 
-import {fetchPosts, fetchArticles, fetchInstitutions, fetchPersonalities, fetchVideos, fetchUsers} from "rdx/slices/admin";
+import {fetchPosts, fetchStories, fetchInstitutions, fetchPersonalities, fetchVideos, fetchUsers} from "rdx/slices/admin";
 
 const useAdminFetchData = () => {
   const dispatch: MyThunkDispatch = useDispatch();
 
-  const { posts, articles, personalities, institutions, videos, users, error } = useSelector(
+  const { posts, stories, personalities, institutions, videos, users, error } = useSelector(
     (state: OurStore) => state.adminReducer
   );
      
   const fetchPostsData = async () => {
     await dispatch(fetchPosts());
   };
-  const fetchArticlesData = async () => {
-    await dispatch(fetchArticles());
+  const fetchStoriesData = async () => {
+    await dispatch(fetchStories());
   }
   const fetchPersonalitiesData = async () => {
     await dispatch(fetchPersonalities());
@@ -32,14 +32,14 @@ const useAdminFetchData = () => {
 
   return {    
     posts,
-    articles,
+    stories,
     personalities,
     institutions,
     videos,
     users,    
     error,    
     fetchPostsData,
-    fetchArticlesData,
+    fetchStoriesData,
     fetchPersonalitiesData,
     fetchInstitutionsData,
     fetchVideosData,

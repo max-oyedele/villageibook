@@ -7,18 +7,18 @@ async function handler(req, res) {
   
   switch (req.method) {
     case "GET":
-      return getArticles();
+      return getStories();
     case "POST":
-      return createArticle();
+      return createStory();
     default:
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 
-  async function getArticles() {
+  async function getStories() {
     try {
-      let article = fetchWrapper.get(baseUrl + "/articles.json", access_token);
+      let story = fetchWrapper.get(baseUrl + "/stories.json", access_token);
       
-      await article.then(response=>{
+      await story.then(response=>{
         res.status(200).json(response);
       })
     } catch (error) {
@@ -26,9 +26,9 @@ async function handler(req, res) {
     }
   }
 
-  async function createArticle() {
+  async function createStory() {
     try {
-      fetchWrapper.post(baseUrl + "/articles", req.body);
+      fetchWrapper.post(baseUrl + "/stories", req.body);
       return res.status(200).json({});
     } catch (error) {
       return res.status(400).json({ message: error });

@@ -19,9 +19,9 @@ const HomeCategoryBar = () => {
     },
     {
       id: 2,
-      title: "society",
+      title: "stories",
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam auctor euismod lobortis. Mauris ornare ante non justo mattis, vitae fermentum ligula consequat. Donec ac quam sit amet libero. Sed ullamcorper dui ac laoreet auctor. Mauris malesuada ante mauris, non elementum purus luctus sit amet. Nullam sed elit lectus.",
-      icon: "/icons/village-society.svg"
+      icon: "/icons/village-story.svg"
     },
     {
       id: 3,

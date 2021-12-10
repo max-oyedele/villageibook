@@ -9,8 +9,12 @@ import {
   Village,
   University,
   Profession,
+  Story,
+  Personality,
+  Institution
 } from "types/schema";
-import { Post, Article, Institution, Video, Personality } from "types/data";
+import { Post, Video } from "types/data";
+import { SVGFactory } from "react";
 
 export enum Status {
   IDLE = "idle",
@@ -33,17 +37,13 @@ export interface AuthState {
   error?: SerializedError;
 }
 
-export interface UserState {
+export interface AccountState {
   status: Status;
   me: User;
-  meStep: Step;
-  meError: SerializedError;
-  postStatus: Status;
-  postError: SerializedError;
-  user?: User;
-  userError: SerializedError;
+  step: Step;
+  error: SerializedError;
 }
-export interface LocationState {
+export interface CommonState {
   status: Status;
   countries: Country[];
   regions: Region[];
@@ -53,6 +53,22 @@ export interface LocationState {
   universities: University[];
   professions: Profession[];
   error?: SerializedError;
+}
+
+export interface ViewState {
+  status: Status;  
+  user?: User;
+  userError?: SerializedError;
+  story?: Story;
+  storyError?: SerializedError;
+  personality?: Personality;
+  personalityError?: SerializedError;
+  institution?: Institution;
+  institutionError?: SerializedError;
+}
+export interface PostState {
+  status: Status;
+  error: SerializedError;
 }
 export interface FeedPageState {
   status: Status;
@@ -66,7 +82,7 @@ export interface VillagePageState {
   village: Village;
   villageUsers: User[];
   villageGraduates: User[];
-  villageArticles: Article[];
+  villageStories: Story[];
   villagePersonalities: Personality[];
   villageInstitutions: Institution[];
   villageVideos: Video[];
@@ -74,24 +90,17 @@ export interface VillagePageState {
 }
 
 export interface GraduatePageState {
-  status: Status;
-  totalGraduates: User[];
-  error?: SerializedError;
-}
-
-export interface StatsState {
-  status: Status;
-  graduatesByLocation: {
+  status: Status;  
+  graduates: {
     graduates: number;
     location: string;
   }[];
   error?: SerializedError;
 }
-
 export interface AdminState {
   status: Status;
   posts: Post[];
-  articles: Article[];
+  stories: Story[];
   personalities: Personality[];
   institutions: Institution[];
   videos: Video[];

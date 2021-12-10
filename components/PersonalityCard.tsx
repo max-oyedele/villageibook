@@ -15,10 +15,10 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import type { User } from "types/schema";
+import type { Personality } from "types/schema";
 
-const PersonalityCard: React.FC<{ user: User }> = ({
-  user,
+const PersonalityCard: React.FC<{ personality: Personality }> = ({
+  personality,
 }) => {
   const router = useRouter();
   const { pathname } = router;
@@ -28,10 +28,10 @@ const PersonalityCard: React.FC<{ user: User }> = ({
   return (
     <Fragment>
       {breakpointValue === "md" && (
-        <HStack w="full" border="1px" borderColor="gray.300" borderRadius="5px">
-          <Box pos="relative" minW="max-content">
+        <HStack w="full" minH="170px" border="1px" borderColor="gray.300" borderRadius="5px">
+          <Box pos="relative" minW="max-content" p={4}>
             <Image
-              src={user.avatar}
+              src={personality?.photo?.url ?? "/images/default-user.png"}
               alt=""
               boxSize="135px"
               fit="cover"
@@ -44,17 +44,17 @@ const PersonalityCard: React.FC<{ user: User }> = ({
               color="GrayText"
               textTransform="capitalize"
             >
-              {user.comesFrom.name}
+              {/* {person.comesFrom?.name} */}
             </Text>
             <Text fontSize="18px" color="primary" textTransform="capitalize">
-              {user.firstName} {user.lastName}
+              {personality?.name}
             </Text>
             <Text fontSize="12px" fontWeight="400" color="GrayText" mt={2}>
-              {user.about}
+              {personality?.about}
             </Text>
           </Box>
           <Box px={4}>
-            <Link href={`/userview/${user.id}`}>
+            <Link href={`/personview/${personality?.uuid}`} passHref>
               <Button
                 px={4}
                 h="26px"
@@ -82,7 +82,7 @@ const PersonalityCard: React.FC<{ user: User }> = ({
         >
           <HStack w="full" pos="relative" spacing={2}>
             <Image
-              src={user.avatar}
+              src={personality?.photo?.url ?? "/images/default-user.png"}
               alt=""
               boxSize="44px"
               fit="cover"
@@ -90,18 +90,18 @@ const PersonalityCard: React.FC<{ user: User }> = ({
             />
             <Box>
               <Text fontSize="10px" color="GrayText">
-                {user.comesFrom.name}
+                {/* {user.comesFrom?.name} */}
               </Text>
               <Text fontSize="13px" fontWeight="600" color="primary">
-                {user.firstName} {user.lastName}
+                {personality?.name}
               </Text>
             </Box>
           </HStack>
           <Text fontSize="11px" color="GrayText">
-            {user.about}
+            {personality.about}
           </Text>
 
-          <Link href={`/userview/${user.id}`}>
+          <Link href={`/personview/${personality?.uuid}`} passHref>
             <Button
               w={{ base: "full", sm: "auto" }}
               h={8}

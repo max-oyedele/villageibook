@@ -8,7 +8,7 @@ import {
   Flex,
   Box,
   Text,
-  SimpleGrid,  
+  SimpleGrid,
   useBreakpointValue,
 } from "@chakra-ui/react";
 
@@ -31,10 +31,11 @@ const Videos: NextPage = () => {
 
   const { fixed } = useWindowProp();
 
-  const { village, villageVideos, fetchVillageVideosData } = useFetchData();
+  const { village, villageVideos, fetchVillageData, fetchVillagePageData } = useFetchData();
   useEffect(() => {
     if (vid) {
-      fetchVillageVideosData({ villageUuid: vid });
+      fetchVillageData({ villageUuid: vid });
+      fetchVillagePageData({ villageUuid: vid });
     }
   }, [vid]);
 
@@ -56,8 +57,8 @@ const Videos: NextPage = () => {
               fixed && breakpointValue === "md"
                 ? "264px"
                 : breakpointValue === "md"
-                ? "24px"
-                : "0px"
+                  ? "24px"
+                  : "0px"
             }
           >
             {villageVideos.length > 0 && (

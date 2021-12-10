@@ -44,7 +44,7 @@ const Login = () => {
   });
 
   const { authStatus, authError, jwt, me, fetchMeData } = useFetchData();
-  const { authReset, userReset, doLogin } = useActionDispatch();
+  const { authReset, accountReset, doLogin } = useActionDispatch();
 
   const { setToken } = useToken();
   const toast = useToast();
@@ -53,7 +53,7 @@ const Login = () => {
 
   useEffect(() => {
     authReset();
-    userReset();
+    accountReset();
   }, []);
 
   useEffect(() => {

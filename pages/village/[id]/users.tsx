@@ -30,10 +30,11 @@ const Users: NextPage = () => {
 
   const { fixed } = useWindowProp();
 
-  const { village, villageUsers, fetchVillageUsersData } = useFetchData();
+  const { village, villageUsers, fetchVillageData, fetchVillagePageData } = useFetchData();
   useEffect(() => {
     if (vid) {
-      fetchVillageUsersData({ villageUuid: vid });
+      fetchVillageData({ villageUuid: vid });
+      fetchVillagePageData({ villageUuid: vid });
     }
   }, [vid]);
 
@@ -55,8 +56,8 @@ const Users: NextPage = () => {
               fixed && breakpointValue === "md"
                 ? "264px"
                 : breakpointValue === "md"
-                ? "24px"
-                : "0px"
+                  ? "24px"
+                  : "0px"
             }
           >
             <VStack spacing={2}>

@@ -6,6 +6,7 @@ import {
   Flex,
   Stack,
   HStack,
+  VStack,
   Box,
   Center,
   Text,
@@ -98,7 +99,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
           </ReactReadMoreReadLess>
         </Text>
 
-        <Stack direction={{ base: "column", lg: "row" }} spacing={4}>
+        <VStack direction={{ base: "column", lg: "row" }} spacing={4}>
           {post.picture && (
             <Center w="full">
               <ImageBox imageUrl={post.picture} />
@@ -109,7 +110,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
               <VideoBox videoUrl={post.video} />
             </Center>
           )}
-        </Stack>
+        </VStack>
         {/* <Center mt={4}>
           {extendView && (
             <BiChevronUp
