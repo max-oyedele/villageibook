@@ -61,7 +61,7 @@ const PersonalityForm: React.FC<{
         }
 
         const validationSchema = yup.object({
-            name: yup.string().nullable().required("Name is required."),
+            name: yup.string().required("Name is required."),
             about: yup.string().nullable(),
             photoName: yup.string().nullable(),
             photoDescription: yup.string().nullable(),

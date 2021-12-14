@@ -9,8 +9,8 @@ async function handler(req, res) {
   switch (req.method) {
     case "GET":
       return getDegrees();
-    case "POST":
-      return createDegree();
+    // case "POST":
+    //   return createDegree();
     default:
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }

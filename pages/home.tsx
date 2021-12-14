@@ -30,7 +30,6 @@ import HomeSlickControl from "components/HomeSlickControl";
 import HomeCategoryBar from "components/HomeCategoryBar";
 import FaqAccordion from "components/FaqAccordion";
 import router from "next/router";
-import _, { isObject, result, values } from "lodash";
 
 const Home: NextPage = () => {
   const breakpointValue = useBreakpointValue({
@@ -51,7 +50,7 @@ const Home: NextPage = () => {
   };
 
   const [sliderIndex1, setSliderIndex1] = useState(0);
-  const [sliderIndex2, setSliderIndex2] = useState(0); 
+  const [sliderIndex2, setSliderIndex2] = useState(0);
 
   return (
     <Fragment>

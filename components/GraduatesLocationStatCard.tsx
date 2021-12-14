@@ -10,6 +10,8 @@ import {
   Image,
   useBreakpointValue,
 } from "@chakra-ui/react";
+import { BiHomeAlt } from "react-icons/bi";
+import { RiGlobalLine } from "react-icons/ri";
 
 import { District, SubDistrict, Village } from "types/schema";
 import GraduatePercent from "./GraduatePercent";
@@ -149,7 +151,7 @@ const CountryBox: React.FC<{ country: Country; count: number }> = ({
       <Text fontSize="12px" textTransform="capitalize">
         {country.name}
       </Text>
-      <Capsule count={count} flag={country.name === homeCountry.name ? "home" : "oversea"} />
+      <Capsule count={count} flag={country.name === homeCountry.name ? "domestic" : "oversea"} />
     </Flex>
   );
 };
@@ -165,7 +167,14 @@ const Capsule: React.FC<{ count: number, flag: string }> = ({ count, flag }) => 
           borderColor="gray.300"
           px={2}
         >
-          <Image src={`/icons/graduate-${flag}.svg`} alt="" />
+          {
+            flag === "domestic" &&
+            <BiHomeAlt fontSize="12px" color="gray.300" />
+          }
+          {
+            flag === "oversea" &&
+            <RiGlobalLine fontSize="12px" color="gray.300" />
+          }
           <Text fontSize="10px" lineHeight={2}>
             {count}
           </Text>

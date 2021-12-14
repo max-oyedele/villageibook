@@ -31,6 +31,7 @@ import {
   TableCaption,
   useColorMode,
   useColorModeValue,
+  useDisclosure
 } from "@chakra-ui/react";
 
 import { FaWallet, FaGlobe, FaFile, FaShoppingCart, FaRegArrowAltCircleRight, FaRocket, FaThList } from "react-icons/fa";
@@ -39,16 +40,19 @@ import { useTable, useSortBy } from 'react-table';
 import Layout from "admin/components/Layout";
 import ImageBox from "components/widgets/ImageBox";
 import VideoBox from "components/widgets/VideoBox";
+import DeleteDialog from "admin/components/DeleteDialog";
 
 import { getUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
-import useActionDispatch from "hooks/use-action-dispatch";
+import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
+import { deleteObj } from "rdx/slices/admin";
 
 const Posts: NextPage = () => {
   const router = useRouter();
   const { me, fetchMeData } = useFetchData();
   const { posts, fetchPostsData } = useAdminFetchData();
+  const { deleteData } = useAdminActionDispatch();
 
   useEffect(() => {
     const access_token = getUserToken();
@@ -108,18 +112,17 @@ const Posts: NextPage = () => {
           )
         }
       },
-      // {
-      //   Header: 'Action',
-      //   accessor: 'action',
-      //   Cell: function ActionItem({ row }){
-      //     return (
-      //       <HStack>
-      //         <Button onClick={()=>console.log(row)}>Edit</Button>
-      //         <Button onClick={()=>console.log(row)}>Delete</Button>
-      //       </HStack>
-      //     )
-      //   }
-      // }
+      {
+        Header: 'Action',
+        accessor: 'action',
+        Cell: function ActionItem({ row }) {
+          return (
+            <HStack>
+              <Button onClick={() => { setUuid(row.original.uuid); onOpen() }}>Delete</Button>
+            </HStack>
+          )
+        }
+      }
     ],
     []
   )
@@ -145,6 +148,13 @@ const Posts: NextPage = () => {
     rows,
     prepareRow,
   } = tableInstance
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [uuid, setUuid] = useState(null);
+  const onDelete = (uuid) => {    
+    deleteObj({ type: "posts", uuid });
+    onClose();
+  }
 
   return (
     <Fragment>
@@ -191,6 +201,7 @@ const Posts: NextPage = () => {
           </Tbody>
         </Table>
       </Layout>
+      <DeleteDialog uuid={uuid} isOpen={isOpen} onClose={onClose} onConfirm={onDelete} />
     </Fragment>
   );
 };

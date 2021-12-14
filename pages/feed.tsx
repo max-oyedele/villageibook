@@ -169,19 +169,19 @@ const Feed: NextPage = () => {
                   ))}
                 </VStack>
 
-                <Link href={`https://www.fundsurfer.com/crowdfund/villageibook?token=975ab55f35fefbd176774045369a62ba`} passHref={true}>
-                  <Button
-                    px={4}
-                    h="26px"
-                    fontSize="12px"
-                    fontWeight="400"
-                    bgColor="#FFB425"
-                    color="white"
-                    _focus={{ boxShadow: "none" }}
-                  >
-                    Sponsor VillageIbook
-                  </Button>
-                </Link>
+                  {/* <Link href={`https://www.fundsurfer.com/crowdfund/villageibook?token=975ab55f35fefbd176774045369a62ba`} passHref={true}>
+                    <Button
+                      px={4}
+                      h="26px"
+                      fontSize="12px"
+                      fontWeight="400"
+                      bgColor="#FFB425"
+                      color="white"
+                      _focus={{ boxShadow: "none" }}
+                    >
+                      Sponsor VillageIbook
+                    </Button>
+                  </Link> */}
               </Box>
             )}
             {breakpointValue === "base" && activeTab === "Graduates" && (
