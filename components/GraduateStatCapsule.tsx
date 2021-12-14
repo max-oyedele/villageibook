@@ -3,36 +3,69 @@ import {
   Flex,
   HStack,
   VStack,
-  StackDivider,
+  Divider,
   Box,
   Text,
   Image,
   Progress,
 } from "@chakra-ui/react";
 
-const Capsule: React.FC<{ inter: number; oversea: number, color?: string }> = ({
+import { BiHomeAlt } from "react-icons/bi";
+import { RiGlobalLine } from "react-icons/ri";
+
+const Capsule: React.FC<{
+  inter: number;
+  oversea: number;
+  style?: {
+    width?: string;
+    bgColor?: string;
+    border?: string;
+    borderColor?: string;
+    borderRadius?: string;
+    iconColor?: string;
+    separatorColor?: string;
+    color?: string;
+  }
+}> = ({
   inter,
   oversea,
-  color
+  style
 }) => {
-  return (
-    <Fragment>
-      <Flex>
-        <HStack w="50px" borderLeftRadius="25px" border="1px" borderColor="gray.300" px={2}>
-          <Image src="/icons/graduate-home.svg" alt="" />
-          <Text fontSize="10px" lineHeight={2}>
-            {inter}
-          </Text>
-        </HStack>
-        <HStack w="50px" borderRightRadius="25px" border="1px" borderColor="gray.300" px={2}>
-          <Image src="/icons/graduate-oversea.svg" alt="" />
-          <Text fontSize="10px" lineHeight={2}>
-            {oversea}
-          </Text>
-        </HStack>
-      </Flex>
-    </Fragment>
-  );
-};
+    return (
+      <Fragment>
+        <Flex>
+          <HStack
+            w={`${style?.width ?? "50px"}`}
+            bgColor={`${style?.bgColor ?? "transparent"}`}
+            border={`${style?.border ?? "1px"}`}
+            borderColor={`${style?.borderColor ?? "gray.300"}`}
+            borderLeftRadius={`${style?.borderRadius ?? "25px"}`}
+            borderRight="0px"
+            px={2}
+          >            
+            <BiHomeAlt fontSize="12px" color={`${style?.iconColor ?? "gray.300"}`} />
+            <Text color={`${style?.color ?? "GrayText"}`} fontSize="10px" fontWeight="semibold" lineHeight={1.8}>
+              {inter}
+            </Text>
+          </HStack>
+          <Divider orientation="vertical" h="20px" borderColor={`${style?.separatorColor ?? "gray.300"}`} />
+          <HStack
+            w={`${style?.width ?? "50px"}`}
+            bgColor={`${style?.bgColor ?? "transparent"}`}
+            border={`${style?.border ?? "1px"}`}
+            borderColor={`${style?.borderColor ?? "gray.300"}`}
+            borderRightRadius={`${style?.borderRadius ?? "25px"}`}
+            borderLeft="0px"
+            px={2}
+          >            
+            <RiGlobalLine fontSize="12px" color={`${style?.iconColor ?? "gray.300"}`} />
+            <Text color={`${style?.color ?? "GrayText"}`} fontSize="10px" fontWeight="semibold" lineHeight={1.8}>
+              {oversea}
+            </Text>
+          </HStack>
+        </Flex>
+      </Fragment >
+    );
+  };
 
 export default Capsule;

@@ -165,7 +165,7 @@ const UserView: NextPage = () => {
                     </Box>
                   </HStack>
                 )}
-                {user?.profession && (
+                {user?.hasProfession && (
                   <HStack w="full">
                     <Box w="full" fontSize="13px" color="purpleTone">
                       Profession
@@ -176,7 +176,7 @@ const UserView: NextPage = () => {
                       color="GrayText"
                       textTransform="capitalize"
                     >
-                      {user?.profession}
+                      {user.hasProfession.name}
                     </Box>
                   </HStack>
                 )}

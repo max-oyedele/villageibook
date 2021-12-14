@@ -51,7 +51,8 @@ const bangladeshGraduates = {
 
 const VillageGraduatesRegionStatCard: React.FC<{
   village: Village;
-}> = ({ village }) => {
+  fixed?: boolean
+}> = ({ village, fixed }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const { villageGraduates } = useFetchData();
@@ -59,14 +60,16 @@ const VillageGraduatesRegionStatCard: React.FC<{
   return (
     <Fragment>
       <Box
-        p={6}
+        w="240px"
+        pos={fixed ? "fixed" : "static"} top={fixed ? "80px" : 0}
+        p={6}        
         bgColor="white"
         border="1px"
-        borderRadius="6px"
+        borderRadius="8px"
         borderColor="gray.200"
       >
         <GraduatePercent
-          village={village}
+          location={village}
           totalCount={totalGraduatesCount}
           graduatesCount={villageGraduates.length}
         />

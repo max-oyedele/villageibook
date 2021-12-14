@@ -94,6 +94,18 @@ export const fetchProfessions = createAsyncThunk(
   }
 );
 
+export const fetchDegrees = createAsyncThunk(
+  "common/degrees",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get('/api/common/degrees')
+      return response.data.properties[0]?.possibleValues;
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
+  }
+);
+
 /************************************* */
 const initialState: CommonState = {
   status: Status.IDLE,
@@ -104,6 +116,7 @@ const initialState: CommonState = {
   villages: [],
   universities: [],
   professions: [],
+  degrees: [],
   error: null,
 };
 
@@ -209,6 +222,19 @@ export const commonSlice = createSlice({
       state.professions = action.payload;
     });
     builder.addCase(fetchProfessions.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(fetchDegrees.pending, (state) => {
+      state.status = Status.LOADING;
+      state.degrees = [];
+      state.error = null;
+    });
+    builder.addCase(fetchDegrees.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.degrees = action.payload;
+    });
+    builder.addCase(fetchDegrees.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

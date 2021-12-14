@@ -30,8 +30,12 @@ import PageTitle from "components/widgets/PageTitle";
 import GraduateSearchBox from "components/GraduateSearchBox";
 import GraduateStatCapsule from "components/GraduateStatCapsule";
 import AlphaBetaBar from "components/widgets/AlphaBetaBar";
+import GraduatesCountryStatBox from "components/GraduatesCountryStatBox";
+import VillageGraduatesRegionStatCard from "components/VillageGraduatesRegionStatCard";
 import useFetchData from "hooks/use-fetch-data";
+import useWindowProp from "hooks/use-window-prop";
 
+import { platformCountries, homeCountry, watchCountries } from "constants/global";
 const menuItems = [
   {
     id: 0,
@@ -50,21 +54,22 @@ const menuItems = [
   },
 ];
 
-const homeCountry = "bangladesh";
-
 const Graduates: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const {
-    me, districts, subDistricts, villages,
+    me, districts, subDistricts, villages, 
+    graduateStatsByCondition, totalGraduateStats,
     fetchMeData,
     fetchCommonData,
     fetchRegionsData,
     fetchDistrictsData,
     fetchSubDistrictsData,
     fetchVillagesData,
+    getGraduatesByConditionData,
+    getTotalGraduatesData
   } = useFetchData();
 
   const [activeMenuItem, setActiveMenuItem] = useState(null);
@@ -72,6 +77,8 @@ const Graduates: NextPage = () => {
   const [expandedItem, setExpandedItem] = useState(null);
   const [items, setItems] = useState([]);
   const [location, setLocation] = useState(null);
+  
+  const universityCountries = watchCountries.filter(e => e.href != "other").map(e => e.href).join(",");
 
   useEffect(() => {
     if (me) {
@@ -79,31 +86,43 @@ const Graduates: NextPage = () => {
       // fetchRegionsData(null);
       fetchDistrictsData(null);
       fetchSubDistrictsData(null);
-      fetchVillagesData(null);
-      // fetchGraduatePageData(null);
+      fetchVillagesData(null);      
     }
     else {
       fetchMeData();
     }
   }, [me]);
 
+  useEffect(()=>{
+    if(id){      
+      getGraduatesByConditionData({ universityCountries, locationUuid: id });
+      getTotalGraduatesData();
+    }
+  }, [id])
+
   useEffect(() => {
-    if (districts.find(e => e.uuid === id)) {
+    const districtItem = districts.find(e => e.uuid === id);
+    if (districtItem) {
       setActiveMenuItem(menuItems[0]);
       setItems(districts);
+      setExpandedItem(districtItem);
     }
-    if (subDistricts.find(e => e.uuid === id)) {
+
+    const subDistrictItem = subDistricts.find(e => e.uuid === id);
+    if (subDistrictItem) {
       setActiveMenuItem(menuItems[1]);
       setItems(subDistricts);
+      setExpandedItem(subDistrictItem);
     }
-    if (villages.find(e => e.uuid === id)) {
+
+    const villageItem = villages.find(e => e.uuid === id);
+    if (villageItem) {
       setActiveMenuItem(menuItems[2]);
       setItems(villages);
-    }
-    const activeItem = [...districts, ...subDistricts, ...villages].find(e => e.uuid === id)
-    setExpandedItem(activeItem);
+      setExpandedItem(villageItem);
+    }    
   }, [districts, subDistricts, villages])
-  
+
   useEffect(() => {
     if (activeMenuItem?.value === "district") setItems(districts);
     else if (activeMenuItem?.value === "subDistrict") setItems(subDistricts);
@@ -111,6 +130,7 @@ const Graduates: NextPage = () => {
   }, [activeMenuItem]);
 
   const toast = useToast();
+  const { fixed } = useWindowProp();
 
   const onFind = () => {
     if (districts.find((item) => item.href === location.toLowerCase())) {
@@ -130,7 +150,7 @@ const Graduates: NextPage = () => {
     }
   };
 
-  const calcGraduates = (locationItem) => {
+  const calcGraduates = (location) => {
     const totalGraduatesCount = 1;//totalGraduates.filter(e=>e.comesFrom === locationItem.href).length;
     const homeGraduatesCount = 0;//totalGraduates.filter(e=>e.comesFrom === locationItem.href && e.graduatedAt === homeCountry).length;
     const overseaGraduateCount = totalGraduatesCount - homeGraduatesCount;
@@ -143,113 +163,122 @@ const Graduates: NextPage = () => {
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        {/* <PageTitle title="Graduates" /> */}
-
-        <Box mt={8}>
-          <GraduateSearchBox
-            location={location}
-            setLocation={setLocation}
-            onFind={onFind}
-          />
-        </Box>
-
-        <Flex
-          justifyContent="center"
-          alignItems="center"
-          borderBottom="1px"
-          borderBottomColor="gray.300"
-          mt={6}
-        >
-          {menuItems.map((item) => (
-            <Box
-              key={item.id}
-              h={8}
-              mx={8}
-              fontSize="13px"
-              borderBottom={item.id === activeMenuItem?.id ? "2px" : "none"}
-              borderBottomColor={
-                item.id === activeMenuItem?.id ? "purpleTone" : "none"
-              }
-              cursor="pointer"
-              onClick={() => setActiveMenuItem(item)}
-            >
-              {item.label}
+        <PageTitle title="Graduates" />
+        <Flex>
+          {breakpointValue === "md" && (
+            <Box>
+              <VillageGraduatesRegionStatCard village={me?.comesFrom} fixed={fixed} />
             </Box>
-          ))}
-        </Flex>
+          )}
 
-        <Accordion
-          w="full"
-          allowToggle
-          mt={6}
-          defaultIndex={0}
-          onChange={(index) => {
-            typeof index === "number"
-              ? setExpandedItem(items[index])
-              : setExpandedItem(items[index[0]]);
-          }}
-        >
-          {items.map((item) => {
-            return (
-              <AccordionItem
-                key={item.id}
-                id={item.id?.toString()}
-                border="none"
-                bgColor="white"
-                mt={4}
-              >
-                <AccordionButton h={14} _focus={{ boxShadow: "none" }}>
-                  <Box
-                    flex="1"
-                    textAlign="left"
-                    fontSize="16px"
-                    textTransform="capitalize"
-                    color={
-                      item.id === expandedItem?.id ? "purpleTone" : "primary"
-                    }
+          <Box
+            w="full"
+            ml={
+              fixed && breakpointValue === "md"
+                ? "264px"
+                : breakpointValue === "md"
+                  ? "24px"
+                  : "0px"
+            }
+          >
+            <GraduateSearchBox
+              location={location}
+              setLocation={setLocation}
+              onFind={onFind}
+            />
+
+            <Flex
+              justifyContent="center"
+              alignItems="center"
+              borderBottom="1px"
+              borderBottomColor="gray.300"
+              mt={6}
+            >
+              {menuItems.map((item) => (
+                <Box
+                  key={item.id}
+                  h={8}
+                  mx={8}
+                  fontSize="13px"
+                  borderBottom={item.id === activeMenuItem?.id ? "2px" : "none"}
+                  borderBottomColor={
+                    item.id === activeMenuItem?.id ? "purpleTone" : "none"
+                  }
+                  cursor="pointer"
+                  onClick={() => setActiveMenuItem(item)}
+                >
+                  {item.label}
+                </Box>
+              ))}
+            </Flex>
+
+            <Accordion
+              w="full"
+              allowToggle
+              mt={6}
+              defaultIndex={0}
+              onChange={(index) => {
+                typeof index === "number"
+                  ? setExpandedItem(items[index])
+                  : setExpandedItem(items[index[0]]);
+              }}
+            >
+              {items.map((item) => {
+                return (
+                  <AccordionItem
+                    key={item.uuid}
+                    id={item.uuid?.toString()}
+                    isFocusable={item.uuid === expandedItem?.uuid}
+                    border="none"
+                    bgColor="white"
+                    mt={4}
                   >
-                    {item.name}
-                  </Box>
-                  {breakpointValue === "md" && (
-                    <TotalCapsule locationItem={item} stats={calcGraduates(item)} />
-                  )}
-                  <AccordionIcon ml={4} />
-                </AccordionButton>
-
-                <AccordionPanel pb={4}>
-                  <Divider />
-                  {breakpointValue === "base" && (
-                    <Flex justifyContent="center" alignItems="center" mt={6}>
-                      <TotalCapsule locationItem={item} stats={calcGraduates(item)} />
-                    </Flex>
-                  )}
-                  <VStack spacing={2} divider={<Divider />} p={6}>
-                    {/* {Object.entries(districtGraduate.stats).map((item) => (
-                    <Flex
-                      key={item[0]}
-                      w="full"
-                      justifyContent="space-between"
-                      alignItems="center"
-                    >
-                      <Text fontSize="13px" textTransform="capitalize">
-                        {item[0]}
-                      </Text>
-                      <Badge
-                        px={4}
-                        borderRadius="full"
-                        fontSize="12px"
-                        fontWeight="400"
+                    <AccordionButton h={14} _focus={{ boxShadow: "none" }}>
+                      <Box
+                        flex="1"
+                        textAlign="left"
+                        fontSize="16px"
+                        textTransform="capitalize"
+                        color={
+                          item.uuid === expandedItem?.uuid ? "purpleTone" : "primary"
+                        }
                       >
-                        {item[1]}
-                      </Badge>
-                    </Flex>
-                  ))} */}
-                  </VStack>
-                </AccordionPanel>
-              </AccordionItem>
-            );
-          })}
-        </Accordion>
+                        {item.name}
+                      </Box>
+                      {breakpointValue === "md" && (
+                        <TotalCapsule
+                          locationItem={item}
+                          stats={calcGraduates(item)}
+                          isExpanded={item.uuid === expandedItem?.uuid}
+                        />
+                      )}
+                      <AccordionIcon ml={4} />
+                    </AccordionButton>
+
+                    <AccordionPanel pb={4}>
+                      <Divider />
+                      {breakpointValue === "base" && (
+                        <Flex justifyContent="center" alignItems="center" mt={6}>
+                          <TotalCapsule
+                            locationItem={item}
+                            stats={calcGraduates(item)}
+                            isExpanded={item.uuid === expandedItem?.uuid}
+                          />
+                        </Flex>
+                      )}
+                      <Box w={{ base: "100%", md: "40%" }} p={6}>
+                        {
+                          me?.comesFrom &&
+                          <GraduatesCountryStatBox graduateStats={graduateStatsByCondition} />
+                        }
+                      </Box>
+                    </AccordionPanel>
+                  </AccordionItem>
+                );
+              })}
+            </Accordion>
+          </Box>
+        </Flex>
       </Container>
 
       {/* <Box mt={20}>
@@ -259,7 +288,7 @@ const Graduates: NextPage = () => {
   );
 };
 
-const TotalCapsule = ({ locationItem, stats }) => {
+const TotalCapsule = ({ locationItem, stats, isExpanded }) => {
   return (
     <HStack spacing={0}>
       <Box fontSize="14px" color="GrayText" mr={4} textTransform="capitalize">
@@ -271,6 +300,13 @@ const TotalCapsule = ({ locationItem, stats }) => {
       <GraduateStatCapsule
         inter={stats[1]}
         oversea={stats[2]}
+        style={{
+          bgColor: "#F7F5FF", //light bg purple
+          border: isExpanded ? "1px" : "0px",
+          borderColor: isExpanded ? "purpleTone" : "transparent",
+          iconColor: "#553CFB", //same purpleTone
+          separatorColor: "purpleTone",
+        }}
       />
     </HStack>
   );

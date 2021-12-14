@@ -45,9 +45,9 @@ import {
   Village,
   University,
   Profession,
-  Degree,
+  Degree
 } from "types/schema";
-import { degrees } from "constants/account";
+
 import { platformCountries } from "constants/global";
 import useActionDispatch from "hooks/use-action-dispatch";
 
@@ -74,7 +74,7 @@ const AccountToEdit: NextPage = () => {
           status: "error",
           duration: 3000,
           isClosable: true,
-        });      
+        });
     }
   }, [accountError, step]);
 
@@ -157,6 +157,7 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
     villages,
     universities,
     professions,
+    degrees: degreeStrs,
     fetchCommonData,
     fetchCountriesData,
     fetchRegionsData,
@@ -171,24 +172,18 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
   const [firstName, setFirstName] = useState<string | null>(null);
   const [lastName, setLastName] = useState<string | null>(null);
 
-  const [selectedUniversity, setSelectedUniversity] =
-    useState<University | null>(null);
-  const [selectedProfession, setSelectedProfession] =
-    useState<Profession | null>(null);
+  const [selectedUniversity, setSelectedUniversity] = useState<University | null>(null);
+  const [selectedProfession, setSelectedProfession] = useState<Profession | null>(null);
+  const [degrees, setDegrees] = useState<Degree[]>([]);
   const [selectedDegree, setSelectedDegree] = useState<Degree | null>(null);
 
-  const [selectedCountry, setSelectedCountry] = useState<Country>(
-    platformCountries[0]
-  );
+  const [selectedCountry, setSelectedCountry] = useState<Country>(platformCountries[0]);
   const [selectedRegion, setSelectedRegion] = useState<Region>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
-  const [selectedSubDistrict, setSelectedSubDistrict] =
-    useState<SubDistrict>(null);
+  const [selectedSubDistrict, setSelectedSubDistrict] = useState<SubDistrict>(null);
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
-  const [selectedLivingCountry, setSelectedLivingCountry] =
-    useState<Country>(null);
-  const [selectedLivingVillage, setSelectedLivingVillage] =
-    useState<Village>(null);
+  const [selectedLivingCountry, setSelectedLivingCountry] = useState<Country>(null);
+  const [selectedLivingVillage, setSelectedLivingVillage] = useState<Village>(null);
 
   useEffect(() => {
     fetchCommonData();
@@ -217,13 +212,24 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
         setSelectedUniversity(universities.find((e) => e.uuid === me.graduatedAt?.uuid));
       }
       if (professions) {
-        setSelectedProfession(professions.find((e) => e.uuid === me.profession));
+        setSelectedProfession(professions.find((e) => e.uuid === me.hasProfession?.uuid));
       }
-      if (degrees) {
-        setSelectedDegree(degrees.find((e) => e.href === me.degree));
-      }
+      if (degreeStrs) {
+        setDegrees(degreeStrs.map((e, index) => ({
+          id: index,
+          name: e,
+          href: e.toLowerCase(),
+          uuid: index.toString() //temp
+        })))
+      }      
     }
-  }, [me, countries, villages, universities, professions, degrees])
+  }, [me, countries, villages, universities, professions, degreeStrs])
+  useEffect(()=>{
+    if (degrees.length > 0) {
+      const selectedDegree = degrees.find((e) => e.name === me?.degree);
+      if(selectedDegree) setSelectedDegree(selectedDegree);
+    }
+  }, [degrees])
 
   useEffect(() => {
     setSelectedRegion(null);
@@ -286,7 +292,7 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
           comesFrom: selectedVillage.uuid,
           livesIn: selectedLivingCountry.uuid,
           graduatedAt: selectedUniversity?.uuid,
-          degree: selectedDegree?.href,
+          degree: selectedDegree?.name,
           profession: selectedProfession?.uuid
         };
 
@@ -601,6 +607,7 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
                         fit="cover"
                         cursor="pointer"
                         onClick={() => photoRefs.current[index].click()}
+                        alt=""
                       />
                     </AspectRatio>
                     <input

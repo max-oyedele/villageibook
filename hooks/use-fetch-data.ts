@@ -9,6 +9,7 @@ import {
   fetchVillages,
   fetchUniversities,
   fetchProfessions,
+  fetchDegrees,
 } from "rdx/slices/common";
 import { fetchMe } from "rdx/slices/account";
 import { fetchUser, fetchPersonality, fetchInstitution } from "rdx/slices/view";
@@ -26,7 +27,10 @@ import {
   fetchVillageInstitutions,
   fetchVillageVideos,
 } from "rdx/slices/villagePage";
-import { getGraduates } from "rdx/slices/graduatePage";
+import { 
+  getGraduatesByCondition,
+  getTotalGraduates
+} from "rdx/slices/graduatePage";
 
 const useFetchData = () => {
   const dispatch: MyThunkDispatch = useDispatch();
@@ -52,6 +56,7 @@ const useFetchData = () => {
     villages,
     universities,
     professions,
+    degrees
   } = useSelector((state: OurStore) => state.commonReducer);
 
   const { posts, recentVillages, recentUsers } = useSelector((state: OurStore) => state.feedPageReducer);
@@ -68,7 +73,7 @@ const useFetchData = () => {
     villageVideos,
   } = useSelector((state: OurStore) => state.villagePageReducer);
 
-  const { graduates } = useSelector((state: OurStore) => state.graduatePageReducer)
+  const { graduateStatsByCondition, totalGraduateStats } = useSelector((state: OurStore) => state.graduatePageReducer)
 
   const fetchCountriesData = async () => {
     await dispatch(fetchCountries());
@@ -91,11 +96,15 @@ const useFetchData = () => {
   const fetchProfessionsData = async () => {
     await dispatch(fetchProfessions());
   };
+  const fetchDegreesData = async () => {
+    await dispatch(fetchDegrees());
+  };
 
   const fetchCommonData = () => {
     fetchCountriesData();
     fetchUniversitiesData();
     fetchProfessionsData();
+    fetchDegreesData();
   };
 
   const fetchMeData = async () => {
@@ -151,8 +160,12 @@ const useFetchData = () => {
     fetchVillageVideosData(params);
   };
 
-  const getGraduatesData = async (params) => {
-    await dispatch(getGraduates(params));
+  const getGraduatesByConditionData = async (params) => {
+    await dispatch(getGraduatesByCondition(params));
+  }
+
+  const getTotalGraduatesData = async () => {
+    await dispatch(getTotalGraduates());
   }
 
   return {
@@ -173,10 +186,12 @@ const useFetchData = () => {
     villages,
     universities,
     professions,
+    degrees,
     posts,
     recentVillages,
     recentUsers,
-    graduates,
+    graduateStatsByCondition,
+    totalGraduateStats,
     user,
     userError,
     personality,
@@ -209,7 +224,8 @@ const useFetchData = () => {
     // fetchVillagePersonalitiesData,
     // fetchVillageInstitutionsData,
     // fetchVillageVideosData,
-    getGraduatesData
+    getGraduatesByConditionData,
+    getTotalGraduatesData
   };
 };
 

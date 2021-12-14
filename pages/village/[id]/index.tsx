@@ -21,7 +21,7 @@ import PageTitle from "components/widgets/PageTitle";
 import SearchBar from "components/SearchBar";
 import LeftVillageCard from "components/LeftVillageCard";
 import UserCard from "components/UserCard";
-import VillageGraduatesCountryStatCard from "components/VillageGraduatesCountryStatCard";
+import GraduatesLocationStatCard from "components/GraduatesLocationStatCard";
 import StoryCard from "components/StoryCard";
 import PersonalityCard from "components/PersonalityCard";
 import InstitutionCard from "components/InstitutionCard";
@@ -117,8 +117,9 @@ const Posts: NextPage = () => {
               <Text fontSize="14px">VILLAGE GRADUATES</Text>
               {/* <Divider mt={6} mb={8} /> */}
               <Box mt={4}>
-                <VillageGraduatesCountryStatCard
-                  village={village}
+                <GraduatesLocationStatCard
+                  location={village}
+                  condition="universityCountries"
                   direction="row"
                 />
               </Box>

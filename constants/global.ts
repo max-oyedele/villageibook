@@ -44,7 +44,7 @@ export const watchCountries:Country[] = [
   },
   {
     id: 5,
-    name: "European Union",
+    name: "EU",
     href: "eu",
     uuid: '',
   },

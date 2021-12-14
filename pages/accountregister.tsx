@@ -42,13 +42,13 @@ import useActionDispatch from "hooks/use-action-dispatch";
 
 import { getUserToken } from "helpers/user-token";
 
-import { degrees } from "constants/account";
 import { platformCountries } from "constants/global";
 import { Step } from "rdx/types";
 
 const AccountToRegister: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const toast = useToast();
+  const router = useRouter();
 
   const {
     me,
@@ -60,6 +60,7 @@ const AccountToRegister: NextPage = () => {
     villages,
     universities,
     professions,
+    degrees: degreeStrs,
     fetchCountriesData,
     fetchRegionsData,
     fetchDistrictsData,
@@ -72,39 +73,30 @@ const AccountToRegister: NextPage = () => {
   const { submitStepOneData } = useActionDispatch();
 
   useEffect(() => {
-    fetchMeData();
-  }, []);
-
-  const [avatar, setAvatar] = useState(null);
-
-  const [selectedUniversity, setSelectedUniversity] =
-    useState<University | null>(null);
-  const [selectedProfession, setSelectedProfession] =
-    useState<Profession | null>(null);
-  const [selectedDegree, setSelectedDegree] = useState<Degree | null>(null);
-
-  const [selectedCountry, setSelectedCountry] = useState<Country>(
-    platformCountries[0]
-  );
-  const [selectedRegion, setSelectedRegion] = useState<Region>(null);
-  const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
-  const [selectedSubDistrict, setSelectedSubDistrict] =
-    useState<SubDistrict>(null);
-  const [selectedVillage, setSelectedVillage] = useState<Village>(null);
-  const [selectedLivingCountry, setSelectedLivingCountry] =
-    useState<Country>(null);
-
-  const router = useRouter();
-
-  useEffect(() => {
+    fetchCommonData();
+    
     const access_token = getUserToken();
     if (access_token) {
       fetchMeData();
-      fetchCommonData();
     } else {
       router.push("/home");
     }
   }, []);
+
+  const [avatar, setAvatar] = useState(null);
+
+  const [selectedUniversity, setSelectedUniversity] = useState<University | null>(null);
+  const [selectedProfession, setSelectedProfession] = useState<Profession | null>(null);
+  const [degrees, setDegrees] = useState<Degree[]>([]);
+  const [selectedDegree, setSelectedDegree] = useState<Degree | null>(null);
+
+  const [selectedCountry, setSelectedCountry] = useState<Country>(platformCountries[0]);
+  const [selectedRegion, setSelectedRegion] = useState<Region>(null);
+  const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
+  const [selectedSubDistrict, setSelectedSubDistrict] = useState<SubDistrict>(null);
+  const [selectedVillage, setSelectedVillage] = useState<Village>(null);
+  const [selectedLivingCountry, setSelectedLivingCountry] = useState<Country>(null);
+
 
   useEffect(() => {
     if (step === Step.STEP2) {
@@ -112,15 +104,15 @@ const AccountToRegister: NextPage = () => {
       return;
     }
     if (accountError) {
-      !toast.isActive("meError") &&
+      !toast.isActive("accountError") &&
         toast({
-          id: "meError",
+          id: "accountError",
           title: "Register Failed. Please try again.",
           description: accountError.message,
           status: "error",
           duration: 3000,
           isClosable: true,
-        });      
+        });
     }
   }, [step, accountError]);
 
@@ -140,6 +132,22 @@ const AccountToRegister: NextPage = () => {
     // setSelectedVillage(null);
     // fetchVillagesData({ subDistrict: selectedSubDistrict });
   }, [selectedSubDistrict]);
+  useEffect(() => {
+    if (degreeStrs) {
+      setDegrees(degreeStrs.map((e, index) => ({
+        id: index,
+        name: e,
+        href: e.toLowerCase(),
+        uuid: index.toString() //temp
+      })))
+    }
+  }, [degreeStrs])
+  useEffect(()=>{
+    if (degrees.length > 0) {
+      const selectedDegree = degrees.find((e) => e.name === me?.degree);
+      if(selectedDegree) setSelectedDegree(selectedDegree);
+    }
+  }, [degrees])
 
   const accountSchema = yup.object({
     university: yup.object().nullable(),
@@ -190,7 +198,7 @@ const AccountToRegister: NextPage = () => {
               degree: selectedDegree?.href,
               profession: selectedProfession?.uuid
             };
-            
+
             actions.setSubmitting(true);
             await submitStepOneData(params);
             actions.setSubmitting(false);

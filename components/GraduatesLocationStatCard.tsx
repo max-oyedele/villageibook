@@ -11,38 +11,39 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import { Village } from "types/schema";
+import { District, SubDistrict, Village } from "types/schema";
 import GraduatePercent from "./GraduatePercent";
 import useFetchData from "hooks/use-fetch-data";
 
 import { platformCountries, homeCountry, watchCountries } from "constants/global";
 const totalGraduatesCount = 1000;
 
-const VillageGraduatesCountryStatCard: React.FC<{
-  village: Village;
+const GraduatesLocationStatCard: React.FC<{
+  location: District | SubDistrict | Village;
+  condition: string;
   direction: string;
-}> = ({ village, direction }) => {
+}> = ({ location, condition, direction }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { villageGraduates, graduates, getGraduatesData } = useFetchData();
+  const { villageGraduates, graduateStatsByCondition, getGraduatesByConditionData } = useFetchData();
 
   useEffect(() => {
-    if (village) {
+    if (location) {
       const universityCountries = watchCountries.filter(e => e.href != "other").map(e => e.href).join(",");
-      getGraduatesData({ universityCountries, locationUuid: village?.uuid });
+      getGraduatesByConditionData({ universityCountries, locationUuid: location?.uuid });
     }
-  }, [village]);
+  }, [location]);
 
   useEffect(() => {
 
-  }, [graduates])
+  }, [graduateStatsByCondition])
 
   const maxRowsPerCol = Math.floor(
     watchCountries.length / 2 + (watchCountries.length % 2)
   );
 
   const getGraduatesCountByLocation = (location) => {
-    const existedItem = graduates.find(e => e.location === location.name);
+    const existedItem = graduateStatsByCondition.find(e => e.location === location.name);
     return existedItem?.graduates ?? 0;
   }
 
@@ -60,9 +61,9 @@ const VillageGraduatesCountryStatCard: React.FC<{
           p={4}
         >
           <GraduatePercent
-            village={village}
+            location={location}
             totalCount={totalGraduatesCount}
-            graduatesCount={graduates.reduce((acc, val) => { return acc + val.graduates }, 0)}
+            graduatesCount={graduateStatsByCondition.reduce((acc, val) => { return acc + val.graduates }, 0)}
           />
 
           {direction === "column" && (
@@ -118,7 +119,7 @@ const VillageGraduatesCountryStatCard: React.FC<{
           p={4}
         >
           <GraduatePercent
-            village={village}
+            location={location}
             totalCount={totalGraduatesCount}
             graduatesCount={villageGraduates.length}
           />
@@ -174,4 +175,4 @@ const Capsule: React.FC<{ count: number, flag: string }> = ({ count, flag }) => 
   );
 };
 
-export default VillageGraduatesCountryStatCard;
+export default GraduatesLocationStatCard;

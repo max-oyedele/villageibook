@@ -6,16 +6,18 @@ import { FixedSizeList as List } from "react-window";
 
 const SelectBox = (props: any) => {
   const [options, setOptions] = React.useState(props.options);
-  const [selectedOption, setSelectedOption] = React.useState(
-    props.selectedOption ?? null
-  );
+  const [selectedOption, setSelectedOption] = React.useState(props.selectedOption ?? null);
 
   React.useEffect(() => {
-    setOptions(props.options);
+    if(props.options.length > 0){
+      setOptions(props.options);
+    }
   }, [props.options]);
 
   React.useEffect(() => {
-    setSelectedOption(props.selectedOption);
+    if(props.selectedOption){
+      setSelectedOption(props.selectedOption);
+    }
   }, [props.selectedOption]);
 
   const handleChange = (value: any) => {

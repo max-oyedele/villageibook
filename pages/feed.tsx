@@ -26,7 +26,7 @@ import RecentVillageCard from "components/RecentVillageCard";
 import PostForm from "components/PostForm";
 import PostCard from "components/PostCard";
 import CaptionCard from "components/CaptionCard";
-import VillageGraduatesCountryStatCard from "components/VillageGraduatesCountryStatCard";
+import GraduatesLocationStatCard from "components/GraduatesLocationStatCard";
 import RecentUserCard from "components/RecentUserCard";
 import VideoBox from "components/widgets/VideoBox";
 
@@ -186,8 +186,9 @@ const Feed: NextPage = () => {
             )}
             {breakpointValue === "base" && activeTab === "Graduates" && (
               <Box>
-                <VillageGraduatesCountryStatCard
-                  village={me?.comesFrom}
+                <GraduatesLocationStatCard
+                  location={me?.comesFrom}
+                  condition="universityCountries"
                   direction="column"
                 />
                 <Box mt={12}>
@@ -214,8 +215,9 @@ const Feed: NextPage = () => {
               top={fixed ? "80px" : 0}
               left={fixed ? rightPartRef.current.offsetLeft : 0}
             >
-              <VillageGraduatesCountryStatCard
-                village={me?.comesFrom}
+              <GraduatesLocationStatCard
+                location={me?.comesFrom}
+                condition="universityCountries"
                 direction="column"
               />
 
