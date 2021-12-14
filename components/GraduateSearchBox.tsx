@@ -49,7 +49,7 @@ const GraduateSearchBox:React.FC<{location: string, setLocation, onFind}> = ({lo
               placeholder="Find a District, Upazila or Village"
               size="md"
               border="none"
-              value={location}
+              value={location??""}
               _focus={{outline: "none"}}
               onChange={(e)=>setLocation(e.target.value)}
             />

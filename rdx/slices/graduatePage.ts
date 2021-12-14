@@ -10,8 +10,8 @@ import axios from "axios";
 import { Status, Step, GraduatePageState } from "../types";
 import { getUserToken } from "helpers/user-token";
 
-export const getGraduates = createAsyncThunk(
-  "graduatePage/getGraduates",
+export const getGraduatesByCondition = createAsyncThunk(
+  "graduatePage/getGraduatesByCondition",
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
@@ -24,10 +24,25 @@ export const getGraduates = createAsyncThunk(
     }
   });
 
+export const getTotalGraduates = createAsyncThunk(
+  "graduatePage/getTotalGraduates",
+  async (_, thunkAPI) => {
+    try {
+      const access_token = getUserToken();
+      const response = await axios.get(`/api/graduates`, {
+        params: { access_token, },
+      });
+      return response.data.graduates;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  });
+
 /********************************** */
 const initialState: GraduatePageState = {
-  status: Status.IDLE,  
-  graduates: [],
+  status: Status.IDLE,
+  graduateStatsByCondition: [],
+  totalGraduateStats: [],
   error: null,
 };
 
@@ -38,15 +53,27 @@ export const graduatePageSlice = createSlice({
     reset: () => initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(getGraduates.pending, (state, action) => {
+    builder.addCase(getGraduatesByCondition.pending, (state, action) => {
       state.status = Status.LOADING;
       state.error = null;
     });
-    builder.addCase(getGraduates.fulfilled, (state, action) => {
-      state.graduates = action.payload;
+    builder.addCase(getGraduatesByCondition.fulfilled, (state, action) => {
+      state.graduateStatsByCondition = action.payload;
       state.status = Status.IDLE;
     });
-    builder.addCase(getGraduates.rejected, (state, action) => {
+    builder.addCase(getGraduatesByCondition.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(getTotalGraduates.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(getTotalGraduates.fulfilled, (state, action) => {
+      state.totalGraduateStats = action.payload;
+      state.status = Status.IDLE;
+    });
+    builder.addCase(getTotalGraduates.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

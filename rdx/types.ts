@@ -52,6 +52,7 @@ export interface CommonState {
   villages: Village[];
   universities: University[];
   professions: Profession[];
+  degrees: string[];
   error?: SerializedError;
 }
 
@@ -91,7 +92,11 @@ export interface VillagePageState {
 
 export interface GraduatePageState {
   status: Status;  
-  graduates: {
+  graduateStatsByCondition: {
+    graduates: number;
+    location: string;
+  }[];
+  totalGraduateStats: {
     graduates: number;
     location: string;
   }[];

@@ -50,6 +50,7 @@ export const submitStepOne = createAsyncThunk(
       bodyFormData.append("livesIn", params.livesIn);
       bodyFormData.append("comesFrom", params.comesFrom);
       if(params.graduatedAt) bodyFormData.append("graduatedAt", params.graduatedAt);
+      console.log('param degree', params.degree)
       if(params.degree) bodyFormData.append("degree", params.degree);
       if(params.profession) bodyFormData.append("profession", params.profession);
 

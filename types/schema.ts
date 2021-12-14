@@ -12,7 +12,7 @@ export type User = {
   comesFrom?: Village;
   livesIn?: Country;
   graduatedAt?: University;
-  profession?: string; //Profession;
+  hasProfession?: Profession;
   degree?: string; //Degree;
   lastUpdated?: string;
   uuid: string;

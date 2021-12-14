@@ -16,7 +16,7 @@ async function handler(req, res) {
 
   async function getGraduates() {
     try {
-      let graduate = fetchWrapper.get(baseUrl + `/stats/graduates-by-location.json?universityCountries=${universityCountries}${locationUuid ? "&locationUuid=" + locationUuid : ""}`, access_token);
+      let graduate = fetchWrapper.get(baseUrl + `/stats/graduates-by-condition.json${universityCountries ? `?universityCountries=${universityCountries}${locationUuid ? "&locationUuid=" + locationUuid : ""}` : ""}`, access_token);
 
       await graduate.then(response => {
         res.status(200).json(response);
