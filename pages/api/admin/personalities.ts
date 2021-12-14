@@ -4,19 +4,20 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 async function handler(req, res) {
   const { access_token } = req.query;
-  
+  const { villageUuid } = req.query;
+
   switch (req.method) {
     case "GET":
       return getPersonalities();
-    case "POST":
-      return createPersonality();
+    // case "POST":
+    //   return createPersonality();
     default:
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 
   async function getPersonalities() {
     try {
-      let personality = fetchWrapper.get(baseUrl + "/personalities.json?fields=name,about,photo.url,photo.name,photo.description,dateOfBirth,dateOfDeath,educationLife,achievements,career,uuid", access_token);
+      let personality = fetchWrapper.get(baseUrl + `${villageUuid ? `/villages/${villageUuid}/HAS_PERSONALITY` : ""}/personalities.json?fields=name,about,photo.url,photo.name,photo.description,dateOfBirth,dateOfDeath,educationLife,achievements,career,uuid`, access_token);
       
       await personality.then(response=>{
         res.status(200).json(response);

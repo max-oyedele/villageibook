@@ -10,10 +10,10 @@ async function handler(req, res) {
   switch (req.method) {
     case "GET":
       return getObjById();
-    case "PUT":
-      return updateObj();
-    case "DELETE":
-      return deleteObj();
+    // case "PUT":
+    //   return updateObj();
+    // case "DELETE":
+    //   return deleteObj();
     default:
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }

@@ -4,19 +4,20 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 async function handler(req, res) {
   const { access_token } = req.query;
-  
+  const { villageUuid } = req.query;
+
   switch (req.method) {
     case "GET":
       return getVideos();
-    case "POST":
-      return createVideo();
+    // case "POST":
+    //   return createVideo();
     default:
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 
   async function getVideos() {
     try {
-      let video = fetchWrapper.get(baseUrl + "/videos.json", access_token);
+      let video = fetchWrapper.get(baseUrl + `${villageUuid ? `/villages/${villageUuid}/HAS_VIDEO` : ""}/videos.json`, access_token);
       
       await video.then(response=>{
         res.status(200).json(response);

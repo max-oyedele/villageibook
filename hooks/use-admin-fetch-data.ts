@@ -14,17 +14,17 @@ const useAdminFetchData = () => {
   const fetchPostsData = async () => {
     await dispatch(fetchPosts());
   };
-  const fetchStoriesData = async () => {
-    await dispatch(fetchStories());
+  const fetchStoriesData = async (params) => {
+    await dispatch(fetchStories(params));
   }
-  const fetchPersonalitiesData = async () => {
-    await dispatch(fetchPersonalities());
+  const fetchPersonalitiesData = async (params) => {
+    await dispatch(fetchPersonalities(params));
   }
-  const fetchInstitutionsData = async () => {
-    await dispatch(fetchInstitutions());
+  const fetchInstitutionsData = async (params) => {
+    await dispatch(fetchInstitutions(params));
   };
-  const fetchVideosData = async () => {
-    await dispatch(fetchVideos());
+  const fetchVideosData = async (params) => {
+    await dispatch(fetchVideos(params));
   };
   const fetchUsersData = async () => {
     await dispatch(fetchUsers());

@@ -28,11 +28,11 @@ export const fetchPosts = createAsyncThunk(
 
 export const fetchStories = createAsyncThunk(
   "admin/fetchStories",
-  async (_, thunkAPI) => {
+  async (params:any, thunkAPI) => {
     try {
       const access_token = getUserToken();
       const response = await axios.get("/api/admin/stories", {
-        params: { access_token },
+        params: { ...params, access_token },
       });
       return response.data.stories;
     } catch (error) {
@@ -43,11 +43,11 @@ export const fetchStories = createAsyncThunk(
 
 export const fetchPersonalities = createAsyncThunk(
   "admin/fetchPersonalities",
-  async (_, thunkAPI) => {
+  async (params:any, thunkAPI) => {
     try {
       const access_token = getUserToken();
       const response = await axios.get("/api/admin/personalities", {
-        params: { access_token },
+        params: { ...params, access_token },
       });
       return response.data.personalities;
     } catch (error) {
@@ -58,11 +58,11 @@ export const fetchPersonalities = createAsyncThunk(
 
 export const fetchInstitutions = createAsyncThunk(
   "admin/fetchInstitutions",
-  async (_, thunkAPI) => {
+  async (params:any, thunkAPI) => {
     try {
       const access_token = getUserToken();
       const response = await axios.get("/api/admin/institutions", {
-        params: { access_token },
+        params: { ...params, access_token },
       });
       return response.data.institutions;
     } catch (error) {
@@ -73,11 +73,11 @@ export const fetchInstitutions = createAsyncThunk(
 
 export const fetchVideos = createAsyncThunk(
   "admin/fetchVideos",
-  async (_, thunkAPI) => {
+  async (params:any, thunkAPI) => {
     try {
       const access_token = getUserToken();
       const response = await axios.get("/api/admin/videos", {
-        params: { access_token },
+        params: { ...params, access_token },
       });
       return response.data.videos;
     } catch (error) {
@@ -97,6 +97,47 @@ export const fetchUsers = createAsyncThunk(
       return response.data.users;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
+    }
+  }
+);
+
+export const submitStory = createAsyncThunk(
+  "admin/submitStory",
+  async (
+    params: {
+      title: string;
+      content: string;
+      photo?: any;
+      video?: any;      
+      villageUuid: string;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const access_token = getUserToken();
+
+      const bodyFormData = new FormData();
+      bodyFormData.append("title", params.title);
+      bodyFormData.append("content", params.content);
+      bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
+      bodyFormData.append("hasPhotoName", params.photo?.name);
+      bodyFormData.append("hasPhotoDescription", params.photo?.description);
+      // bodyFormData.append("hasVideoUrl", params.video?.avatar);     
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/villages/${params.villageUuid}/HAS_STORY/stories`,
+        bodyFormData,
+        {
+          headers: {
+            authorization: "Bearer " + access_token,
+            "content-type": `multipart/form-data`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {      
+      return thunkAPI.rejectWithValue(error.response.statusText);
     }
   }
 );
@@ -124,9 +165,9 @@ export const submitPersonality = createAsyncThunk(
       const bodyFormData = new FormData();
       bodyFormData.append("name", params.name);
       bodyFormData.append("about", params.about);
-      bodyFormData.append("hasPhotoUrl", params.photo.avatar);
-      bodyFormData.append("hasPhotoName", params.photo.name);
-      bodyFormData.append("hasPhotoDescription", params.photo.description);
+      bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
+      bodyFormData.append("hasPhotoName", params.photo?.name);
+      bodyFormData.append("hasPhotoDescription", params.photo?.description);
       // bodyFormData.append("hasVideoUrl", params.video.avatar);
 
       params.dateOfBirth &&
@@ -150,7 +191,6 @@ export const submitPersonality = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      // return thunkAPI.rejectWithValue({ error: error.message });
       return thunkAPI.rejectWithValue(error.response.statusText);
     }
   }
@@ -177,9 +217,9 @@ export const submitInstitution = createAsyncThunk(
 
       const bodyFormData = new FormData();
       bodyFormData.append("name", params.name);
-      bodyFormData.append("hasPhotoUrl", params.photo.avatar);
-      bodyFormData.append("hasPhotoName", params.photo.name);
-      bodyFormData.append("hasPhotoDescription", params.photo.description);
+      bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
+      bodyFormData.append("hasPhotoName", params.photo?.name);
+      bodyFormData.append("hasPhotoDescription", params.photo?.description);
       // bodyFormData.append("hasVideoUrl", params.video.avatar);
 
       bodyFormData.append("yearEstablished", params.yearEstablished);
@@ -201,11 +241,57 @@ export const submitInstitution = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      // return thunkAPI.rejectWithValue({ error: error.message });
       return thunkAPI.rejectWithValue(error.response.statusText);
     }
   }
 );
+
+export const submitVideo = createAsyncThunk(
+  "admin/submitVideo",
+  async (
+    params: {      
+      video: any;      
+      villageUuid: string;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const access_token = getUserToken();
+
+      const bodyFormData = new FormData();
+      bodyFormData.append("name", params.video.name);
+      bodyFormData.append("description", params.video.description);      
+      bodyFormData.append("hasVideoUrl", params.video.avatar);
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/villages/${params.villageUuid}/HAS_VIDEO/videos`,
+        bodyFormData,
+        {
+          headers: {
+            authorization: "Bearer " + access_token,
+            "content-type": `multipart/form-data`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.statusText);
+    }
+  }
+);
+
+export const deleteObj = createAsyncThunk("admin/deleteObj", async (params:any, thunkAPI) => {
+  try {
+    const access_token = getUserToken();
+    const response = await axios.delete(`/api/admin`, {
+      params: { ...params, access_token },
+    });
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
 
 /************************************* */
 const initialState: AdminState = {
@@ -298,6 +384,18 @@ export const adminSlice = createSlice({
       state.status = Status.IDLE;
       state.error = action.payload;
     });
+    builder.addCase(submitStory.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(submitStory.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      // state.me = action.payload;
+    });
+    builder.addCase(submitStory.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
     builder.addCase(submitPersonality.pending, (state, action) => {
       state.status = Status.LOADING;
       state.error = null;
@@ -319,6 +417,18 @@ export const adminSlice = createSlice({
       // state.me = action.payload;
     });
     builder.addCase(submitInstitution.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(submitVideo.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(submitVideo.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      // state.me = action.payload;
+    });
+    builder.addCase(submitVideo.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

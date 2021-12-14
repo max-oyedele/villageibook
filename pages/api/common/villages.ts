@@ -10,8 +10,8 @@ async function handler(req, res) {
   switch (req.method) {
     case "GET":
       return getVillages();
-    case "POST":
-      return createVillage();
+    // case "POST":
+    //   return createVillage();
     default:
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }

@@ -4,21 +4,22 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 async function handler(req, res) {
   const { access_token } = req.query;
-  
+  const { villageUuid } = req.query;
+
   switch (req.method) {
     case "GET":
       return getStories();
-    case "POST":
-      return createStory();
+    // case "POST":
+    //   return createStory();
     default:
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 
   async function getStories() {
     try {
-      let story = fetchWrapper.get(baseUrl + "/stories.json", access_token);
-      
-      await story.then(response=>{
+      let story = fetchWrapper.get(baseUrl + `${villageUuid ? `/villages/${villageUuid}/HAS_STORY` : ""}/stories.json?fields=title,content,photo.url,photo.name,photo.description,uuid`, access_token);
+
+      await story.then(response => {
         res.status(200).json(response);
       })
     } catch (error) {

@@ -58,9 +58,9 @@ const InstitutionForm: React.FC<{
                     isClosable: true,
                 });
         }
-        
+
         const validationSchema = yup.object({
-            name: yup.string().nullable().required("Name is required."),
+            name: yup.string().required("Name is required."),
             photoName: yup.string().nullable(),
             photoDescription: yup.string().nullable(),
             yearEstablished: yup.string().nullable(),

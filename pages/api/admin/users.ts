@@ -8,8 +8,8 @@ async function handler(req, res) {
   switch (req.method) {
     case "GET":
       return getUsers();
-    case "POST":
-      return createUser();
+    // case "POST":
+    //   return createUser();
     default:
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }

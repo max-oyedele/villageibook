@@ -10,8 +10,8 @@ async function handler(req, res) {
   switch (req.method) {
     case "GET":
       return getRegions();
-    case "POST":
-      return createRegion();
+    // case "POST":
+    //   return createRegion();
     default:
       return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
