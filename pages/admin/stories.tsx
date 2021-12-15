@@ -49,17 +49,20 @@ import ImageBox from "components/widgets/ImageBox";
 import VideoBox from "components/widgets/VideoBox";
 import VillageSearchBox from "admin/components/VillageSearchBox";
 import StoryForm from "admin/components/StoryForm";
+import DeleteDialog from "admin/components/DeleteDialog";
 
 import { getUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
+import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
 
-import { Village } from "types/schema";
+import { Village, Story } from "types/schema";
 
 const Stories: NextPage = () => {
   const router = useRouter();
   const { me, fetchMeData } = useFetchData();
   const { stories, fetchStoriesData } = useAdminFetchData();
+  const { deleteData } = useAdminActionDispatch();
 
   useEffect(() => {
     const access_token = getUserToken();
@@ -78,11 +81,11 @@ const Stories: NextPage = () => {
 
   const [village, setVillage] = useState<Village>(null);
 
-  useEffect(()=>{
-    if(village){
-      fetchStoriesData({villageUuid: village.uuid})
+  useEffect(() => {
+    if (village) {
+      fetchStoriesData({ villageUuid: village.uuid })
     }
-    else{
+    else {
       fetchStoriesData(null);
     }
   }, [village])
@@ -107,7 +110,22 @@ const Stories: NextPage = () => {
             </Box>
           );
         },
-      },      
+      },
+      {
+        Header: 'Action',
+        accessor: 'action',
+        Cell: function ActionItem({ row }) {
+          return (
+            <HStack>
+              {
+                !!village &&
+                <Button onClick={() => { setStory(row.original); modal.onOpen() }}>Edit</Button>
+              }
+              <Button onClick={() => { setUuid(row.original.uuid); dialog.onOpen() }}>Delete</Button>
+            </HStack>
+          )
+        }
+      }
     ],
     []
   )
@@ -127,7 +145,15 @@ const Stories: NextPage = () => {
   } = tableInstance
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const modal = useDisclosure();
+  const dialog = useDisclosure();
+
+  const [uuid, setUuid] = useState(null);
+  const [story, setStory] = useState<Story>(null);
+  const onDelete = (uuid) => {
+    deleteData({ type: "stories", uuid });
+    dialog.onClose();
+  }
 
   return (
     <Fragment>
@@ -135,7 +161,7 @@ const Stories: NextPage = () => {
 
         <VillageSearchBox setVillage={setVillage} />
         <Flex justifyContent={"flex-end"}>
-          <Button onClick={() => onOpen()} isDisabled={!village}>Add Story</Button>
+          <Button onClick={() => modal.onOpen()} isDisabled={!village}>Add Story</Button>
         </Flex>
 
         <Table {...getTableProps()}>
@@ -179,14 +205,16 @@ const Stories: NextPage = () => {
         closeOnOverlayClick={true}
         isCentered
         size={breakpointValue === "base" ? "full" : "2xl"}
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={modal.isOpen}
+        onClose={modal.onClose}
       >
         <ModalOverlay />
         <ModalContent m={0} p={6} bgColor="white">
-          <StoryForm type="add" village={village} />
+          <StoryForm type="add" village={village} story={story} />
         </ModalContent>
       </Modal>
+
+      <DeleteDialog uuid={uuid} isOpen={dialog.isOpen} onClose={dialog.onClose} onConfirm={onDelete} />
 
     </Fragment>
   );
