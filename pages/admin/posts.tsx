@@ -46,7 +46,6 @@ import { getUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
-import { deleteObj } from "rdx/slices/admin";
 
 const Posts: NextPage = () => {
   const router = useRouter();
@@ -152,7 +151,7 @@ const Posts: NextPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [uuid, setUuid] = useState(null);
   const onDelete = (uuid) => {    
-    deleteObj({ type: "posts", uuid });
+    deleteData({ type: "posts", uuid });
     onClose();
   }
 

@@ -124,7 +124,7 @@ const InstitutionForm: React.FC<{
                             />
                             <Box w="full" border="1px" borderColor="gray.200" borderRadius="4px" p={4}>
                                 <Center>
-                                    <AvatarUpload setAvatar={setAvatar} />
+                                    <AvatarUpload avatarUrl={photo?.url} setAvatar={setAvatar} />
                                 </Center>
                                 <InputBox
                                     id="photoName"
