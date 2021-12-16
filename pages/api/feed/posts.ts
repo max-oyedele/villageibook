@@ -14,7 +14,7 @@ async function handler(req, res) {
 
   async function getPosts() {
     try {
-      let post = fetchWrapper.get(baseUrl + "/posts.json?page=1&size=200", access_token);
+      let post = fetchWrapper.get(baseUrl + "/posts.json?sort=lastUpdated.DESC", access_token);
       
       await post.then(response=>{
         res.status(200).json(response);
