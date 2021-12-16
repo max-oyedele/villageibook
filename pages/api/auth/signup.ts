@@ -13,6 +13,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     lastName: body.lastname,
     email: body.email,
     password: body.password,
+    roles: body.roles
   });
 
   try {

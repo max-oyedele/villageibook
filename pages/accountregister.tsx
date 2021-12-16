@@ -74,6 +74,7 @@ const AccountToRegister: NextPage = () => {
 
   useEffect(() => {
     fetchCommonData();
+    fetchVillagesData(null); //remove later
     
     const access_token = getUserToken();
     if (access_token) {

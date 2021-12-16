@@ -66,9 +66,9 @@ const AccountToEdit: NextPage = () => {
   useEffect(() => {
     if (!accountError && step === Step.STEP2 && isBySupport) setActiveStep(2);
     if (accountError) {
-      !toast.isActive("meError") &&
+      !toast.isActive("accountError") &&
         toast({
-          id: "meError",
+          id: "accountError",
           title: "Can't find you. Please try again.",
           description: accountError.message,
           status: "error",
@@ -113,11 +113,11 @@ const AccountToEdit: NextPage = () => {
                 <Text minW="max-content" fontSize="12px" fontWeight="600">
                   USER DETAILS
                 </Text>
-                {/* {user?.role === "premium" && ( */}
-                <Flex w="full" justifyContent="center">
-                  <Stepper activeStep={activeStep} />
-                </Flex>
-                {/* )} */}
+                {me?.roles?.includes("PREMIUM") && (
+                  <Flex w="full" justifyContent="center">
+                    <Stepper activeStep={activeStep} />
+                  </Flex>
+                )}
               </HStack>
               <Divider mt={6} />
               {activeStep === 1 && (
@@ -221,13 +221,13 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
           href: e.toLowerCase(),
           uuid: index.toString() //temp
         })))
-      }      
+      }
     }
   }, [me, countries, villages, universities, professions, degreeStrs])
-  useEffect(()=>{
+  useEffect(() => {
     if (degrees.length > 0) {
       const selectedDegree = degrees.find((e) => e.name === me?.degree);
-      if(selectedDegree) setSelectedDegree(selectedDegree);
+      if (selectedDegree) setSelectedDegree(selectedDegree);
     }
   }, [degrees])
 
@@ -464,28 +464,28 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
                 error={errors.degree}
               />
 
-              {/* {user?.role !== "premium" && (
+              {!me?.roles?.includes("PREMIUM") && (
                 <Box mt={12}>
                   <PremiumCard />
                 </Box>
-              )} */}
-              {/* {user?.role === "premium" && ( */}
-              <Box mt={8}>
-                <Text fontSize="11px" color="purpleTone">
-                  For the Premium Page
-                </Text>
+              )}
+              {me?.roles?.includes("PREMIUM") && (
+                <Box mt={8}>
+                  <Text fontSize="11px" color="purpleTone">
+                    For the Premium Page
+                  </Text>
 
-                <Box mt={4}>
-                  <AccountQuestionBar
-                    question="Do you want admin team write your additional profile?"
-                    isTrue={isBySupport}
-                    setIsTrue={setIsBySupport}
-                    yesTooltip="You will receive email and send back support team your additional data"
-                    noTooltip="You might have to complete filling additional data yourself"
-                  />
+                  <Box mt={4}>
+                    <AccountQuestionBar
+                      question="Do you want admin team write your additional profile?"
+                      isTrue={isBySupport}
+                      setIsTrue={setIsBySupport}
+                      yesTooltip="You will receive email and send back support team your additional data"
+                      noTooltip="You might have to complete filling additional data yourself"
+                    />
+                  </Box>
                 </Box>
-              </Box>
-              {/* )} */}
+              )}
             </Box>
           </Stack>
 
@@ -624,20 +624,20 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
           </Box>
 
           <HStack spacing={4} w={{ base: "100%", md: "50%" }} mt={10}>
-            {/* {user?.role === "premium" && activeStep == 2 && ( */}
-            <Button
-              type="submit"
-              w="50%"
-              bgColor="purpleTone"
-              fontSize="12px"
-              fontWeight="400"
-              color="white"
-              _focus={{ boxShadow: "none" }}
-              onClick={() => setActiveStep(activeStep - 1)}
-            >
-              PREV
-            </Button>
-            {/* )} */}
+            {me?.roles?.includes("PREMIUM") && activeStep == 2 && (
+              <Button
+                type="submit"
+                w="50%"
+                bgColor="purpleTone"
+                fontSize="12px"
+                fontWeight="400"
+                color="white"
+                _focus={{ boxShadow: "none" }}
+                onClick={() => setActiveStep(activeStep - 1)}
+              >
+                PREV
+              </Button>
+            )}
 
             <Button
               type="submit"

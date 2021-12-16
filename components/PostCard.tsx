@@ -18,6 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { BiChevronUp, BiChevronDown, BiCommentDots } from "react-icons/bi";
 import ReactStars from "react-rating-stars-component";
+import moment from "moment";
 
 import ImageBox from "components/widgets/ImageBox";
 import VideoBox from "components/widgets/VideoBox";
@@ -33,6 +34,8 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
     const limit = 120;
     e.target.style.height = `${Math.min(e.target.scrollHeight, limit)}px`;
   };
+
+  const ago = post.lastUpdated ? moment(post.lastUpdated).fromNow() : "";
 
   return (
     <Fragment>
@@ -71,7 +74,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
                 </Text>
               </Link>
               <Text fontSize="11px" color="GrayText">
-                {post.lastUpdated}
+                {ago}
               </Text>
             </Box>
           </HStack>

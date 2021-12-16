@@ -28,7 +28,7 @@ const PostForm: React.FC = () => {
   const toast = useToast();
 
   const { postStatus, postError } = useFetchData();
-  const { submitPostData } = useActionDispatch();
+  const { submitPostData, resetPost } = useActionDispatch();
 
   const [content, setContent] = useState("");
   const [picture, setPicture] = useState(null);
@@ -79,9 +79,14 @@ const PostForm: React.FC = () => {
         isClosable: true,
       });
 
-      setContent("");
-      setPicture(null);
-      setVideo(null);
+      setTimeout(()=>{
+        resetPost();
+        setContent("");
+        setPicture(null);
+        setPictureURL(null);
+        setVideo(null);
+        setVideoURL(null);
+      }, 1000)
   }
   if (postError) {
     !toast.isActive("postError") &&

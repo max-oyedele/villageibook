@@ -54,9 +54,9 @@ const Videos: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    // if(me.role !== "admin"){
-    //   router.push("/feed");
-    // }    
+    if(!me?.roles?.includes("ADMIN")){
+      router.push("/feed");
+    }
   }, [me]);
 
   const [village, setVillage] = useState<Village>(null);

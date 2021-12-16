@@ -21,7 +21,7 @@ const Index: NextPage = () => {
 
   useEffect(()=>{
     const isCompletedUser = (user) => {
-      return user.livesIn && user.comesFrom
+      return user?.livesIn?.uuid && user?.comesFrom?.uuid
     }
 
     if(me){

@@ -119,13 +119,13 @@ const Header = () => {
                   spacing={4}
                   fontSize="12px"
                 >
-                  {/* {me?.role === "admin" && ( */}
-                  <Link href="/admin/posts" passHref={true}>
-                    <Text cursor="pointer">ADMIN</Text>
-                  </Link>
-                  {/* )} */}
-                  <Center  
-                    h="full"                   
+                  {me?.roles?.includes('ADMIN') && (
+                    <Link href="/admin/posts" passHref={true}>
+                      <Text cursor="pointer">ADMIN</Text>
+                    </Link>
+                  )}
+                  <Center
+                    h="full"
                     borderBottom={pathname.includes("accountedit") ? "2px" : ""}
                     borderColor={
                       pathname.includes("accountedit") ? "purpleTone" : ""

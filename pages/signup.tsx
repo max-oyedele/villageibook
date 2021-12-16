@@ -72,7 +72,7 @@ const Signup = () => {
         isClosable: true,
       });
 
-      router.push("/login");
+      router.push("/accountregister");
     }
   }, [signupMe]);
   
@@ -176,7 +176,7 @@ const Signup = () => {
               onSubmit={async (values, actions) => {
                 // console.log({ values, actions });
                 actions.setSubmitting(true);
-                await doSignup(values);
+                await doSignup({...values, roles: ['GENERAL']});
                 actions.setSubmitting(false);
               }}
             >
