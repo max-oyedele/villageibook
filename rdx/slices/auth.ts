@@ -30,6 +30,7 @@ export const signup = createAsyncThunk(
       lastname: string;
       email: string;
       password: string;
+      roles: string[];
     },
     thunkAPI
   ) => {

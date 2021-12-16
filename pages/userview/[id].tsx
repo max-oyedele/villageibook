@@ -77,7 +77,7 @@ const UserView: NextPage = () => {
                 {user?.email}
               </Text>
 
-              {user?.role === "premium" && (
+              {user?.roles?.includes("PREMIUM") && (
                 <Badge
                   bgColor="yellow.400"
                   borderRadius="4px"
@@ -197,7 +197,7 @@ const UserView: NextPage = () => {
                 )}
                 
               </VStack>
-              {user?.role === "premium" && (
+              {user?.roles?.includes("PREMIUM") && (
                 <>
                   <Text fontSize="18px" mt={12}>
                     About me

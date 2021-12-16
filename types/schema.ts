@@ -16,7 +16,7 @@ export type User = {
   degree?: string; //Degree;
   lastUpdated?: string;
   uuid: string;
-  role?: string;
+  roles?: string[];
 };
 
 export type Country = {

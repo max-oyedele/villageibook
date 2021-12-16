@@ -38,6 +38,10 @@ const useActionDispatch = () => {
     await dispatch(submitStepTwo(params));
   }
 
+  const resetPost = async () => {
+    await dispatch(postResetFunc());
+  }
+
   return {
     authReset,
     accountReset,
@@ -46,6 +50,7 @@ const useActionDispatch = () => {
     submitPostData,
     submitStepOneData,
     submitStepTwoData,
+    resetPost
   };
 };
 

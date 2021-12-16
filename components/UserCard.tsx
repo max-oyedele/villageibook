@@ -36,7 +36,7 @@ const UserCard: React.FC<{ user: User }> = ({
               alt=""
               fit="cover"
             />
-            {user.role === "premium" && (
+            {user?.roles?.includes("PREMIUM") && (
               <Box pos="absolute" top={2} left={2}>
                 <Badge
                   fontSize="9px"
@@ -101,7 +101,7 @@ const UserCard: React.FC<{ user: User }> = ({
               fit="cover"
               borderRadius="full"
             />
-            {user.role === "premium" && (
+            {user?.roles?.includes("PREMIUM") && (
               <Flex
                 w="full"
                 pos="absolute"
