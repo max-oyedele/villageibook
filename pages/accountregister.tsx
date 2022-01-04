@@ -61,7 +61,6 @@ const AccountToRegister: NextPage = () => {
     universities,
     professions,
     degrees: degreeStrs,
-    fetchCountriesData,
     fetchRegionsData,
     fetchDistrictsData,
     fetchSubDistrictsData,

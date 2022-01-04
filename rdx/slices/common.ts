@@ -15,10 +15,21 @@ export const fetchCountries = createAsyncThunk(
   "common/countries",
   async (_, thunkAPI) => {
     try {
+      const immutableCountries = localStorage.getItem("immutableCountries");
+      if (immutableCountries) {
+        return JSON.parse(immutableCountries);
+      }
+
       const access_token = getUserToken();
       const response = await axios.get("/api/entry", {
         params: { endpoint: "/countries.json?page=1&size=210", access_token },
       });
+
+      localStorage.setItem(
+        "immutableCountries",
+        JSON.stringify(response.data.countries)
+      );
+
       return response.data.countries; // data: {pagination: {}, countries: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -31,7 +42,7 @@ export const fetchRegions = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const endpoint = "/regions.json"
+      const endpoint = "/regions.json";
       const response = await axios.get("/api/entry", {
         params: { endpoint, access_token },
       });
@@ -103,6 +114,13 @@ export const fetchUniversities = createAsyncThunk(
   "common/universities",
   async (_, thunkAPI) => {
     try {
+      const immutableUniversities = localStorage.getItem(
+        "immutableUniversities"
+      );
+      if (immutableUniversities) {
+        return JSON.parse(immutableUniversities);
+      }
+
       const access_token = getUserToken();
       const response = await axios.get("/api/entry", {
         params: {
@@ -110,6 +128,12 @@ export const fetchUniversities = createAsyncThunk(
           access_token,
         },
       });
+
+      localStorage.setItem(
+        "immutableUniversities",
+        JSON.stringify(response.data.universities)
+      );
+
       return response.data.universities; // data: {pagination: {}, universities: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -121,6 +145,11 @@ export const fetchProfessions = createAsyncThunk(
   "common/professions",
   async (_, thunkAPI) => {
     try {
+      const immutableProfessions = localStorage.getItem("immutableProfessions");
+      if (immutableProfessions) {
+        return JSON.parse(immutableProfessions);
+      }
+
       const access_token = getUserToken();
       const response = await axios.get("/api/entry", {
         params: {
@@ -128,6 +157,12 @@ export const fetchProfessions = createAsyncThunk(
           access_token,
         },
       });
+
+      localStorage.setItem(
+        "immutableProfessions",
+        JSON.stringify(response.data.professions)
+      );
+
       return response.data.professions; // data: {pagination: {}, professions: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -139,6 +174,11 @@ export const fetchDegrees = createAsyncThunk(
   "common/degrees",
   async (_, thunkAPI) => {
     try {
+      const immutableDegrees = localStorage.getItem("immutableDegrees");
+      if (immutableDegrees) {
+        return JSON.parse(immutableDegrees);
+      }
+
       const access_token = getUserToken();
       const response = await axios.get("/api/entry", {
         params: {
@@ -147,6 +187,12 @@ export const fetchDegrees = createAsyncThunk(
           access_token,
         },
       });
+
+      localStorage.setItem(
+        "immutableDegrees",
+        JSON.stringify(response.data.properties[0]?.possibleValues)
+      );
+      
       return response.data.properties[0]?.possibleValues;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });

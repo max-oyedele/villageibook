@@ -159,7 +159,6 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
     professions,
     degrees: degreeStrs,
     fetchCommonData,
-    fetchCountriesData,
     fetchRegionsData,
     fetchDistrictsData,
     fetchSubDistrictsData,
