@@ -48,14 +48,12 @@ const Feed: NextPage = () => {
     recentUsers,
     recentVillages,
     fetchMeData,
-    fetchCommonData,
     fetchFeedPageData,
     fetchVillageData,
   } = useFetchData();
 
   useEffect(() => {
     fetchMeData();
-    fetchCommonData();
   }, []);
 
   useEffect(() => {

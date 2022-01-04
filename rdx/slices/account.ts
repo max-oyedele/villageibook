@@ -13,17 +13,27 @@ import { Status, Step, AccountState } from "../types";
 
 import { getUserToken } from "helpers/user-token";
 
-export const fetchMe = createAsyncThunk("account/fetchMe", async (_, thunkAPI) => {
-  try {
-    const access_token = getUserToken();
-    const response = await axios.get(`/api/entry`, {
-      params: { endpoint: "/users/me.json", access_token },
-    });
-    return response.data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.response.data);
+export const fetchMe = createAsyncThunk(
+  "account/fetchMe",
+  async (_, thunkAPI) => {
+    try {
+      const myAccount = localStorage.getItem("myAccount");
+      if (myAccount) {
+        return JSON.parse(myAccount);
+      }
+
+      const access_token = getUserToken();
+      const response = await axios.get(`/api/entry`, {
+        params: { endpoint: "/users/me.json", access_token },
+      });
+
+      localStorage.setItem("myAccount", JSON.stringify(response.data));
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
   }
-});
+);
 
 export const submitStepOne = createAsyncThunk(
   "account/submitStepOne",
@@ -49,10 +59,12 @@ export const submitStepOne = createAsyncThunk(
       bodyFormData.append("avatar", params.avatar);
       bodyFormData.append("livesIn", params.livesIn);
       bodyFormData.append("comesFrom", params.comesFrom);
-      if(params.graduatedAt) bodyFormData.append("graduatedAt", params.graduatedAt);
-      console.log('param degree', params.degree)
-      if(params.degree) bodyFormData.append("degree", params.degree);
-      if(params.profession) bodyFormData.append("profession", params.profession);
+      if (params.graduatedAt)
+        bodyFormData.append("graduatedAt", params.graduatedAt);
+      
+      if (params.degree) bodyFormData.append("degree", params.degree);
+      if (params.profession)
+        bodyFormData.append("profession", params.profession);
 
       const response = await axios.patch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`,
@@ -64,7 +76,8 @@ export const submitStepOne = createAsyncThunk(
           },
         }
       );
-
+      
+      localStorage.setItem("myAccount", JSON.stringify(response.data));
       return response.data;
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });
@@ -107,6 +120,7 @@ export const submitStepTwo = createAsyncThunk(
         }
       );
 
+      localStorage.setItem("myAccount", JSON.stringify(response.data));
       return response.data;
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });
@@ -120,7 +134,7 @@ const initialState: AccountState = {
   status: Status.IDLE,
   me: null,
   step: Step.STEP1,
-  error: null,  
+  error: null,
 };
 
 export const accountSlice = createSlice({
@@ -141,7 +155,7 @@ export const accountSlice = createSlice({
     builder.addCase(fetchMe.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
-    });    
+    });
     builder.addCase(submitStepOne.pending, (state, action) => {
       state.status = Status.LOADING;
       state.step = Step.STEP1;
@@ -169,7 +183,7 @@ export const accountSlice = createSlice({
     builder.addCase(submitStepTwo.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
-    });    
+    });
   },
 });
 
