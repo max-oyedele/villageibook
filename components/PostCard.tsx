@@ -55,7 +55,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
           borderRadius="6px"
         >
           <HStack>
-            <Link href={`/userview/${post.user?.uuid}`} passHref>
+            <Link href={`/userview/${post.user?.uuid}`} passHref={true}>
               <Avatar
                 src={post.user?.avatar ?? "/images/default-user.png"}
                 size="sm"
@@ -63,7 +63,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
               />
             </Link>
             <Box>
-              <Link href={`/userview/${post.user?.uuid}`} passHref>
+              <Link href={`/userview/${post.user?.uuid}`} passHref={true}>
                 <Text
                   fontSize="13px"
                   textTransform="capitalize"

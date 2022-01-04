@@ -54,7 +54,7 @@ const PersonalityCard: React.FC<{ personality: Personality }> = ({
             </Text>
           </Box>
           <Box px={4}>
-            <Link href={`/personview/${personality?.uuid}`} passHref>
+            <Link href={`/personview/${personality?.uuid}`} passHref={true}>
               <Button
                 px={4}
                 h="26px"
@@ -101,7 +101,7 @@ const PersonalityCard: React.FC<{ personality: Personality }> = ({
             {personality.about}
           </Text>
 
-          <Link href={`/personview/${personality?.uuid}`} passHref>
+          <Link href={`/personview/${personality?.uuid}`} passHref={true}>
             <Button
               w={{ base: "full", sm: "auto" }}
               h={8}

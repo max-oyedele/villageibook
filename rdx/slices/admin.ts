@@ -16,8 +16,9 @@ export const fetchPosts = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get("/api/admin/posts", {
-        params: { access_token },
+      const endpoint = "/posts.json";
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
       });
       return response.data.posts;
     } catch (error) {
@@ -28,11 +29,16 @@ export const fetchPosts = createAsyncThunk(
 
 export const fetchStories = createAsyncThunk(
   "admin/fetchStories",
-  async (params:any, thunkAPI) => {
+  async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get("/api/admin/stories", {
-        params: { ...params, access_token },
+      let endpoint = "";
+      if (params?.villageUuid)
+        endpoint += `/villages/${params.villageUuid}/HAS_STORY`;
+      endpoint += `/stories.json?fields=title,content,photo.url,photo.name,photo.description,uuid`;
+
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
       });
       return response.data.stories;
     } catch (error) {
@@ -43,11 +49,16 @@ export const fetchStories = createAsyncThunk(
 
 export const fetchPersonalities = createAsyncThunk(
   "admin/fetchPersonalities",
-  async (params:any, thunkAPI) => {
+  async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get("/api/admin/personalities", {
-        params: { ...params, access_token },
+      let endpoint = "";
+      if (params?.villageUuid)
+        endpoint += `/villages/${params.villageUuid}/HAS_PERSONALITY`;
+      endpoint += `/personalities.json?fields=name,about,photo.url,photo.name,photo.description,dateOfBirth,dateOfDeath,educationLife,achievements,career,uuid`;
+
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
       });
       return response.data.personalities;
     } catch (error) {
@@ -58,11 +69,16 @@ export const fetchPersonalities = createAsyncThunk(
 
 export const fetchInstitutions = createAsyncThunk(
   "admin/fetchInstitutions",
-  async (params:any, thunkAPI) => {
+  async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get("/api/admin/institutions", {
-        params: { ...params, access_token },
+      let endpoint = "";
+      if (params?.villageUuid)
+        endpoint += `/villages/${params.villageUuid}/HAS_INSTITUTION`;
+      endpoint += `/institutions.json?fields=name,photo.url,photo.name,photo.description,yearEstablished,address,email,phone,history,uuid`;
+
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
       });
       return response.data.institutions;
     } catch (error) {
@@ -73,11 +89,16 @@ export const fetchInstitutions = createAsyncThunk(
 
 export const fetchVideos = createAsyncThunk(
   "admin/fetchVideos",
-  async (params:any, thunkAPI) => {
+  async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get("/api/admin/videos", {
-        params: { ...params, access_token },
+      let endpoint = "";
+      if (params?.villageUuid)
+        endpoint += `/villages/${params.villageUuid}/HAS_VIDEO`;
+      endpoint += `/videos.json`;
+
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
       });
       return response.data.videos;
     } catch (error) {
@@ -91,8 +112,9 @@ export const fetchUsers = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get("/api/admin/users", {
-        params: { access_token },
+      const endpoint = `/users.json`;
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
       });
       return response.data.users;
     } catch (error) {
@@ -108,7 +130,7 @@ export const submitStory = createAsyncThunk(
       title: string;
       content: string;
       photo?: any;
-      video?: any;      
+      video?: any;
       villageUuid: string;
     },
     thunkAPI
@@ -122,7 +144,7 @@ export const submitStory = createAsyncThunk(
       bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
       bodyFormData.append("hasPhotoName", params.photo?.name);
       bodyFormData.append("hasPhotoDescription", params.photo?.description);
-      // bodyFormData.append("hasVideoUrl", params.video?.avatar);     
+      // bodyFormData.append("hasVideoUrl", params.video?.avatar);
 
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/villages/${params.villageUuid}/HAS_STORY/stories`,
@@ -136,7 +158,7 @@ export const submitStory = createAsyncThunk(
       );
 
       return response.data;
-    } catch (error) {      
+    } catch (error) {
       return thunkAPI.rejectWithValue(error.response.statusText);
     }
   }
@@ -249,8 +271,8 @@ export const submitInstitution = createAsyncThunk(
 export const submitVideo = createAsyncThunk(
   "admin/submitVideo",
   async (
-    params: {      
-      video: any;      
+    params: {
+      video: any;
       villageUuid: string;
     },
     thunkAPI
@@ -260,7 +282,7 @@ export const submitVideo = createAsyncThunk(
 
       const bodyFormData = new FormData();
       bodyFormData.append("name", params.video.name);
-      bodyFormData.append("description", params.video.description);      
+      bodyFormData.append("description", params.video.description);
       bodyFormData.append("hasVideoUrl", params.video.avatar);
 
       const response = await axios.post(
@@ -281,17 +303,21 @@ export const submitVideo = createAsyncThunk(
   }
 );
 
-export const deleteObj = createAsyncThunk("admin/deleteObj", async (params:any, thunkAPI) => {
-  try {
-    const access_token = getUserToken();
-    const response = await axios.delete(`/api/admin`, {
-      params: { ...params, access_token },
-    });
-    return response.data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.response.data);
+export const deleteObj = createAsyncThunk(
+  "admin/deleteObj",
+  async (params: any, thunkAPI) => {
+    try {
+      const access_token = getUserToken();
+      const endpoint = `/${params?.type}/${params?.uuid}`;
+      const response = await axios.delete(`/api/entry`, {
+        params: { endpoint, access_token },
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
   }
-});
+);
 
 /************************************* */
 const initialState: AdminState = {

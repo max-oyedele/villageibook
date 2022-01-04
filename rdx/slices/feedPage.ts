@@ -16,8 +16,9 @@ export const fetchPosts = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get("/api/feed/posts", {
-        params: { access_token },
+
+      const response = await axios.get("/api/entry", {
+        params: { endpoint: "/posts.json?sort=lastUpdated.DESC", access_token },
       });
       return response.data.posts;
     } catch (error) {
@@ -31,8 +32,8 @@ export const fetchRecentVillages = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get("/api/feed/recentVillages", {
-        params: { access_token },
+      const response = await axios.get("/api/entry", {
+        params: { endpoint: "/villages.json?page=1&size=2", access_token },
       });
       return response.data.villages;
     } catch (error) {
@@ -46,8 +47,8 @@ export const fetchRecentUsers = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get("/api/feed/recentUsers", {
-        params: { access_token },
+      const response = await axios.get("/api/entry", {
+        params: { endpoint: "/users.json?page=1&size=2", access_token },
       });
       return response.data.users;
     } catch (error) {

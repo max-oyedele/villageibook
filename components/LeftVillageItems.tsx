@@ -108,7 +108,7 @@ const LeftVillageItems: React.FC<{ village: Village, badgeShow?: boolean }> = ({
       {villageItems.map((item) => {
         const path = item.value != 'graduates' ? `/village/${village?.uuid}/${item.path}` : `/${item.path}`
         return (
-          <Link key={item.name} href={path} passHref>
+          <Link key={item.name} href={path} passHref={true}>
             <HStack
               w="full"
               h={{ base: "60px", md: "40px" }}

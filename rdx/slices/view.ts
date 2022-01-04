@@ -18,7 +18,10 @@ export const fetchUser = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get(`/api/view/${params.uuid}`, {params: {...params, access_token, type: "users", fields: ""}});
+      const endpoint = `/users/${params.uuid}.json`;
+      const response = await axios.get(`/api/entry`, {
+        params: { endpoint, access_token },
+      });
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -31,7 +34,10 @@ export const fetchPersonality = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get(`/api/view/${params.uuid}`, {params: {...params, access_token, type: "personalities", fields: "?fields=name,about,photo.url,photo.name,photo.description,dateOfBirth,dateOfDeath,educationLife,achievements,career,uuid"}});
+      const endpoint = `/personalities/${params.uuid}.json?fields=name,about,photo.url,photo.name,photo.description,dateOfBirth,dateOfDeath,educationLife,achievements,career,uuid`;
+      const response = await axios.get(`/api/entry`, {
+        params: { endpoint, access_token },
+      });
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -44,7 +50,10 @@ export const fetchInstitution = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get(`/api/view/${params.uuid}`, {params: {...params, access_token, type: "institutions", fields: "?fields=name,photo.url,photo.name,photo.description,yearEstablished,address,email,phone,history,uuid"}});
+      const endpoint = `/institutions/${params.uuid}.json?fields=name,photo.url,photo.name,photo.description,yearEstablished,address,email,phone,history,uuid`
+      const response = await axios.get(`/api/entry`, {
+        params: { endpoint, access_token },
+      });
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -52,10 +61,9 @@ export const fetchInstitution = createAsyncThunk(
   }
 );
 
-
 /********************************** */
 const initialState: ViewState = {
-  status: Status.IDLE,    
+  status: Status.IDLE,
   user: null,
   userError: null,
   story: null,
@@ -63,7 +71,7 @@ const initialState: ViewState = {
   personality: null,
   personalityError: null,
   institution: null,
-  institutionError: null
+  institutionError: null,
 };
 
 export const viewSlice = createSlice({
@@ -72,7 +80,7 @@ export const viewSlice = createSlice({
   reducers: {
     reset: () => initialState,
   },
-  extraReducers: (builder) => {    
+  extraReducers: (builder) => {
     builder.addCase(fetchUser.pending, (state, action) => {
       state.status = Status.LOADING;
       state.userError = null;
@@ -109,7 +117,6 @@ export const viewSlice = createSlice({
       state.status = Status.IDLE;
       state.institutionError = action.payload;
     });
-    
   },
 });
 

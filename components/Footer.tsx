@@ -77,7 +77,7 @@ const Footer = () => {
           </HStack> */}
           <HStack spacing={6}>
             {tabs.map((tab) => (
-              <Link key={tab.name} href={tab.path} passHref>
+              <Link key={tab.name} href={tab.path} passHref={true}>
                 <Text fontSize="13px" color="GrayText" cursor="pointer" _hover={{color: "purpleTone"}}>
                   {tab.name}
                 </Text>

@@ -98,7 +98,7 @@ const Posts: NextPage = () => {
                   </SimpleGrid>
                 )}
                 <Box>
-                  <Link href="/village/users" passHref>
+                  <Link href="/village/users" passHref={true}>
                     <Text
                       fontSize="12px"
                       color="purpleTone"
@@ -140,7 +140,7 @@ const Posts: NextPage = () => {
                 </SimpleGrid>
                 <Divider my={6} />
                 <Box>
-                  <Link href="/village/stories" passHref>
+                  <Link href="/village/stories" passHref={true}>
                     <Text
                       fontSize="12px"
                       color="purpleTone"
@@ -172,7 +172,7 @@ const Posts: NextPage = () => {
                   </SimpleGrid>
                 )}
                 <Box>
-                  <Link href="/village/personalities" passHref>
+                  <Link href="/village/personalities" passHref={true}>
                     <Text
                       fontSize="12px"
                       color="purpleTone"
@@ -199,7 +199,7 @@ const Posts: NextPage = () => {
                   ))}
                 </VStack>
                 <Box>
-                  <Link href="/village/institutions" passHref>
+                  <Link href="/village/institutions" passHref={true}>
                     <Text
                       fontSize="12px"
                       color="purpleTone"
@@ -229,7 +229,7 @@ const Posts: NextPage = () => {
                 </SimpleGrid>
                 <Divider mt={10} mb={6} />
                 <Box>
-                  <Link href="/village/videos" passHref>
+                  <Link href="/village/videos" passHref={true}>
                     <Text
                       fontSize="12px"
                       color="purpleTone"

@@ -11,13 +11,15 @@ import { Status, VillagePageState } from "../types";
 
 import { getUserToken } from "helpers/user-token";
 
-
 export const fetchVillage = createAsyncThunk(
   "villagePage/fetchVillage",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();      
-      const response = await axios.get('/api/village', {params: {...params, access_token}})
+      const access_token = getUserToken();
+      const endpoint = `/villages/${params?.villageUuid}.json`;
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
+      });
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -30,7 +32,10 @@ export const fetchVillageUsers = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get('/api/village/users', {params: {...params, access_token}})
+      const endpoint = `/villages/${params?.villageUuid}/users.json`;
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
+      });
       return response.data.users; // data: {users: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -43,7 +48,10 @@ export const fetchVillageGraduates = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get('/api/village/graduates', {params: {...params, access_token}})
+      const endpoint = `/villages/${params?.villageUuid}/graduates.json`;
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
+      });
       return response.data.graduates; // data: {graduates: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -56,7 +64,10 @@ export const fetchVillageStories = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get('/api/village/stories', {params: {...params, access_token}})
+      const endpoint = `/villages/${params?.villageUuid}/stories.json`;
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
+      });
       return response.data.stories; // data: {stories: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -69,7 +80,10 @@ export const fetchVillagePersonalities = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get('/api/village/personalities', {params: {...params, access_token}})
+      const endpoint = `/villages/${params?.villageUuid}/personalities.json?fields=name,about,photo.url,photo.name,photo.description,dateOfBirth,dateOfDeath,educationLife,achievements,career,uuid`;
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
+      });
       return response.data.personalities; // data: {personalities: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -82,7 +96,10 @@ export const fetchVillageInstitutions = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get('/api/village/institutions', {params: {...params, access_token}})
+      const endpoint = `/villages/${params?.villageUuid}/institutions.json?fields=name,photo.url,photo.name,photo.description,yearEstablished,address,email,phone,history,uuid`;
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
+      });
       return response.data.institutions; // data: {institutions: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -95,7 +112,10 @@ export const fetchVillageVideos = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get('/api/village/videos', {params: {...params, access_token}})
+      const endpoint = `/villages/${params?.villageUuid}/videos.json`;
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
+      });
       return response.data.videos; // data: {videos: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });

@@ -8,13 +8,17 @@ import {
 import axios from "axios";
 
 import { Status, CommonState } from "../types";
+import { getUserToken } from "helpers/user-token";
 
 /*********************** */
 export const fetchCountries = createAsyncThunk(
   "common/countries",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get('/api/common/countries')
+      const access_token = getUserToken();
+      const response = await axios.get("/api/entry", {
+        params: { endpoint: "/countries.json?page=1&size=210", access_token },
+      });
       return response.data.countries; // data: {pagination: {}, countries: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -26,7 +30,11 @@ export const fetchRegions = createAsyncThunk(
   "common/regions",
   async (params: any, thunkAPI) => {
     try {
-      const response = await axios.get("/api/common/regions", { params });
+      const access_token = getUserToken();
+      const endpoint = "/regions.json"
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
+      });
       return response.data.regions;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -38,7 +46,14 @@ export const fetchDistricts = createAsyncThunk(
   "common/districts",
   async (params: any, thunkAPI) => {
     try {
-      const response = await axios.get("/api/common/districts", { params });
+      const access_token = getUserToken();
+      const endpoint = params?.region
+        ? `/region/[href=${params.region.href}]/districts.json`
+        : "/districts.json";
+
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
+      });
       return response.data.districts; // data: {pagination: {}, districts: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -50,7 +65,14 @@ export const fetchSubDistricts = createAsyncThunk(
   "common/subDistricts",
   async (params: any, thunkAPI) => {
     try {
-      const response = await axios.get("/api/common/subDistricts", { params });
+      const access_token = getUserToken();
+      const endpoint = params?.district
+        ? `/district/[href=${params.district.href}]/sub-districts.json`
+        : "/sub-districts.json";
+
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
+      });
       return response.data["sub-districts"]; // data: {pagination: {}, sub-districts: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -62,7 +84,14 @@ export const fetchVillages = createAsyncThunk(
   "common/villages",
   async (params: any, thunkAPI) => {
     try {
-      const response = await axios.get('/api/common/villages', { params })
+      const access_token = getUserToken();
+      const endpoint = params?.subDistrict
+        ? `/sub-district/[href=${params.subDistrict.href}]/villages.json`
+        : "/villages.json?fields=name,heading,description,history,photo.url,href,uuid,lastUpdated";
+
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
+      });
       return response.data.villages; // data: {pagination: {}, villages: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -74,7 +103,13 @@ export const fetchUniversities = createAsyncThunk(
   "common/universities",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get('/api/common/universities')
+      const access_token = getUserToken();
+      const response = await axios.get("/api/entry", {
+        params: {
+          endpoint: "/universities.json", //?page=1&size=9220
+          access_token,
+        },
+      });
       return response.data.universities; // data: {pagination: {}, universities: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -86,7 +121,13 @@ export const fetchProfessions = createAsyncThunk(
   "common/professions",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get('/api/common/professions')
+      const access_token = getUserToken();
+      const response = await axios.get("/api/entry", {
+        params: {
+          endpoint: "/professions.json?page=1&size=1200",
+          access_token,
+        },
+      });
       return response.data.professions; // data: {pagination: {}, professions: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -98,7 +139,14 @@ export const fetchDegrees = createAsyncThunk(
   "common/degrees",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get('/api/common/degrees')
+      const access_token = getUserToken();
+      const response = await axios.get("/api/entry", {
+        params: {
+          endpoint:
+            "/admin/schema/relationships/GRADUATED_AT.json?page=1&size=20",
+          access_token,
+        },
+      });
       return response.data.properties[0]?.possibleValues;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });

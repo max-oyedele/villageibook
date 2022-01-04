@@ -103,9 +103,9 @@ const Home: NextPage = () => {
                   </Center>
                   <Center>
                     <HStack fontSize="xl" fontWeight="semibold" textAlign="center" spacing={8} letterSpacing={4}>
-                      <Link href="/login" passHref><Text color="#553CFB" cursor="pointer" _hover={{ color: "#AE3CFB" }}>Login</Text></Link>
+                      <Link href="/login" passHref={true}><Text color="#553CFB" cursor="pointer" _hover={{ color: "#AE3CFB" }}>Login</Text></Link>
                       <Text color="GrayText">Or</Text>
-                      <Link href="/signup" passHref><Text color="#553CFB" cursor="pointer" _hover={{ color: "#AE3CFB" }}>Signup</Text></Link>
+                      <Link href="/signup" passHref={true}><Text color="#553CFB" cursor="pointer" _hover={{ color: "#AE3CFB" }}>Signup</Text></Link>
                     </HStack>
                   </Center>
                 </VStack>
@@ -161,9 +161,9 @@ const Home: NextPage = () => {
               </Center>
               <Center>
                 <Stack fontSize="3xl" fontWeight="semibold" textAlign="center" spacing={8} letterSpacing={4}>
-                  <Link href="/login" passHref><Text color="#553CFB" cursor="pointer" _hover={{ color: "#AE3CFB" }}>Login</Text></Link>
+                  <Link href="/login" passHref={true}><Text color="#553CFB" cursor="pointer" _hover={{ color: "#AE3CFB" }}>Login</Text></Link>
                   <Text color="GrayText">Or</Text>
-                  <Link href="/signup" passHref><Text color="#553CFB" cursor="pointer" _hover={{ color: "#AE3CFB" }}>Signup</Text></Link>
+                  <Link href="/signup" passHref={true}><Text color="#553CFB" cursor="pointer" _hover={{ color: "#AE3CFB" }}>Signup</Text></Link>
                 </Stack>
               </Center>
             </HStack>

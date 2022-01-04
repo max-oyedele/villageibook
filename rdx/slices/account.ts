@@ -16,8 +16,8 @@ import { getUserToken } from "helpers/user-token";
 export const fetchMe = createAsyncThunk("account/fetchMe", async (_, thunkAPI) => {
   try {
     const access_token = getUserToken();
-    const response = await axios.get(`/api/account/me`, {
-      params: { access_token },
+    const response = await axios.get(`/api/entry`, {
+      params: { endpoint: "/users/me.json", access_token },
     });
     return response.data;
   } catch (error) {

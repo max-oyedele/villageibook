@@ -15,28 +15,37 @@ export const getGraduatesByCondition = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get(`/api/graduates`, {
-        params: { ...params, access_token, },
+      let endpoint = `/stats/graduates-by-condition.json`;
+      if (params?.universityCountries)
+        endpoint += `?universityCountries=${params.universityCountries}`;
+      if (params?.locationUuid)
+        endpoint += `&locationUuid=${params.locationUuid}`;
+
+      const response = await axios.get(`/api/entry`, {
+        params: { endpoint, access_token },
       });
       return response.data.graduates;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
-  });
+  }
+);
 
 export const getTotalGraduates = createAsyncThunk(
   "graduatePage/getTotalGraduates",
   async (_, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const response = await axios.get(`/api/graduates`, {
-        params: { access_token, },
+      const endpoint = "/stats/graduates-by-condition.json";
+      const response = await axios.get(`/api/entry`, {
+        params: { endpoint, access_token },
       });
       return response.data.graduates;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
-  });
+  }
+);
 
 /********************************** */
 const initialState: GraduatePageState = {

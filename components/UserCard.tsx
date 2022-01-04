@@ -67,7 +67,7 @@ const UserCard: React.FC<{ user: User }> = ({
             </Text>
           </Box>
           <Box px={4}>
-            <Link href={`/userview/${user.uuid}`} passHref>
+            <Link href={`/userview/${user.uuid}`} passHref={true}>
               <Button
                 px={4}
                 h="26px"
@@ -132,7 +132,7 @@ const UserCard: React.FC<{ user: User }> = ({
             {user.about}
           </Text>
 
-          <Link href={`/userview/${user.uuid}`} passHref>
+          <Link href={`/userview/${user.uuid}`} passHref={true}>
             <Button
               w={{ base: "full", sm: "auto" }}
               h={8}
