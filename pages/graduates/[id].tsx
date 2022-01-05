@@ -36,6 +36,9 @@ import useFetchData from "hooks/use-fetch-data";
 import useWindowProp from "hooks/use-window-prop";
 
 import { platformCountries, homeCountry, watchCountries } from "constants/global";
+import { css } from "@emotion/react";
+import ScaleLoader from "react-spinners/ScaleLoader";
+
 const menuItems = [
   {
     id: 0,
@@ -80,8 +83,21 @@ const Graduates: NextPage = () => {
   
   const universityCountries = watchCountries.filter(e => e.href != "other").map(e => e.href).join(",");
 
+  const override = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  `;
+  
+  const [loading, setLoading] = useState(true);
+  const [color, setColor] = useState("#553cfb");
+
   useEffect(() => {
     if (me) {
+      console.log("ddddddddddddddddddddddddddddddddddddddddddddddddddddd")
+      setLoading(true);
       fetchCommonData();
       // fetchRegionsData(null);
       fetchDistrictsData(null);
@@ -150,6 +166,10 @@ const Graduates: NextPage = () => {
     }
   };
 
+  if (items && items.length > 0 && loading) {
+    setLoading(false)
+  }
+  
   const calcGraduates = (location) => {
     const totalGraduatesCount = 1;//totalGraduates.filter(e=>e.comesFrom === locationItem.href).length;
     const homeGraduatesCount = 0;//totalGraduates.filter(e=>e.comesFrom === locationItem.href && e.graduatedAt === homeCountry).length;
@@ -212,71 +232,73 @@ const Graduates: NextPage = () => {
               ))}
             </Flex>
 
-            <Accordion
-              w="full"
-              allowToggle
-              mt={6}
-              defaultIndex={0}
-              onChange={(index) => {
-                typeof index === "number"
-                  ? setExpandedItem(items[index])
-                  : setExpandedItem(items[index[0]]);
-              }}
-            >
-              {items.map((item) => {
-                return (
-                  <AccordionItem
-                    key={item.uuid}
-                    id={item.uuid?.toString()}
-                    isFocusable={item.uuid === expandedItem?.uuid}
-                    border="none"
-                    bgColor="white"
-                    mt={4}
-                  >
-                    <AccordionButton h={14} _focus={{ boxShadow: "none" }}>
-                      <Box
-                        flex="1"
-                        textAlign="left"
-                        fontSize="16px"
-                        textTransform="capitalize"
-                        color={
-                          item.uuid === expandedItem?.uuid ? "purpleTone" : "primary"
-                        }
-                      >
-                        {item.name}
-                      </Box>
-                      {breakpointValue === "md" && (
-                        <TotalCapsule
-                          locationItem={item}
-                          stats={calcGraduates(item)}
-                          isExpanded={item.uuid === expandedItem?.uuid}
-                        />
-                      )}
-                      <AccordionIcon ml={4} />
-                    </AccordionButton>
-
-                    <AccordionPanel pb={4}>
-                      <Divider />
-                      {breakpointValue === "base" && (
-                        <Flex justifyContent="center" alignItems="center" mt={6}>
+            { !loading ?
+              <Accordion
+                w="full"
+                allowToggle
+                mt={6}
+                defaultIndex={0}
+                onChange={(index) => {
+                  typeof index === "number"
+                    ? setExpandedItem(items[index])
+                    : setExpandedItem(items[index[0]]);
+                }}
+              >
+                {items.map((item) => {
+                  return (
+                    <AccordionItem
+                      key={item.uuid}
+                      id={item.uuid?.toString()}
+                      isFocusable={item.uuid === expandedItem?.uuid}
+                      border="none"
+                      bgColor="white"
+                      mt={4}
+                    >
+                      <AccordionButton h={14} _focus={{ boxShadow: "none" }}>
+                        <Box
+                          flex="1"
+                          textAlign="left"
+                          fontSize="16px"
+                          textTransform="capitalize"
+                          color={
+                            item.uuid === expandedItem?.uuid ? "purpleTone" : "primary"
+                          }
+                        >
+                          {item.name}
+                        </Box>
+                        {breakpointValue === "md" && (
                           <TotalCapsule
                             locationItem={item}
                             stats={calcGraduates(item)}
                             isExpanded={item.uuid === expandedItem?.uuid}
                           />
-                        </Flex>
-                      )}
-                      <Box w={{ base: "100%", md: "40%" }} p={6}>
-                        {
-                          me?.comesFrom &&
-                          <GraduatesCountryStatBox graduateStats={graduateStatsByCondition} />
-                        }
-                      </Box>
-                    </AccordionPanel>
-                  </AccordionItem>
-                );
-              })}
-            </Accordion>
+                        )}
+                        <AccordionIcon ml={4} />
+                      </AccordionButton>
+
+                      <AccordionPanel pb={4}>
+                        <Divider />
+                        {breakpointValue === "base" && (
+                          <Flex justifyContent="center" alignItems="center" mt={6}>
+                            <TotalCapsule
+                              locationItem={item}
+                              stats={calcGraduates(item)}
+                              isExpanded={item.uuid === expandedItem?.uuid}
+                            />
+                          </Flex>
+                        )}
+                        <Box w={{ base: "100%", md: "40%" }} p={6}>
+                          {
+                            me?.comesFrom &&
+                            <GraduatesCountryStatBox graduateStats={graduateStatsByCondition} />
+                          }
+                        </Box>
+                      </AccordionPanel>
+                    </AccordionItem>
+                  );
+                })}
+              </Accordion> :
+            <ScaleLoader color={color} loading={loading} css={override} /> }
           </Box>
         </Flex>
       </Container>
