@@ -32,6 +32,7 @@ import VideoBox from "components/widgets/VideoBox";
 
 import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Feed: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -41,6 +42,9 @@ const Feed: NextPage = () => {
 
   const tabsMobile = ["Feed", "Village", "Graduates"];
   const [activeTab, setActiveTab] = useState(tabsMobile[0]);
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   const {
     me,
@@ -58,10 +62,32 @@ const Feed: NextPage = () => {
 
   useEffect(() => {
     if (me) {
-      fetchFeedPageData();
+      fetchFeedPageData({ page: 1 });
       fetchVillageData({ villageUuid: me.comesFrom?.uuid });
     }
-  }, [me])
+  }, [me]);
+
+  useEffect(() => {
+    if (posts && posts.length != 0) {
+      const uniqueValuesSet = new Set();
+      const tempData = [...data, ...posts['posts']];
+      const filteredArr = tempData.filter((obj) => {
+        const isPresentInSet = uniqueValuesSet.has(obj.uuid);
+        uniqueValuesSet.add(obj.uuid);
+        return !isPresentInSet;
+      });
+      setData(filteredArr);
+      if (filteredArr.length >= posts['pagination'].total) {
+        setHasMore(false);
+      }
+    }
+  }, [posts['posts']]);
+
+  const getMorePost = async () => {
+    var p = page + 1;
+    fetchFeedPageData({ page: p });
+    setPage(p);
+  };
 
   return (
     <Fragment>
@@ -149,11 +175,25 @@ const Feed: NextPage = () => {
 
             {(breakpointValue === "md" ||
               (breakpointValue === "base" && activeTab === "Feed")) && (
-                <VStack spacing={4}>
-                  {posts.map((post) => (
-                    <PostCard key={post.uuid} post={post} />
-                  ))}
-                </VStack>
+                <InfiniteScroll
+                  dataLength={data?.length}
+                  next={getMorePost}
+                  hasMore={hasMore}
+                  loader={<h3 className="hh"> Loading...</h3>}
+                  endMessage={<h4 className="hh">Nothing more to show</h4>}
+                >
+                  <style>{"\
+                    .hh{\
+                      text-align:center;\
+                      padding-top: 10px;\
+                    }\
+                  "}</style>
+                  <VStack spacing={4}>
+                    {data?.map((post) => (
+                      <PostCard key={post.uuid} post={post} />
+                    ))}
+                  </VStack>
+                </InfiniteScroll>
               )}
             {breakpointValue === "base" && activeTab === "Village" && (
               <Box>
@@ -239,6 +279,17 @@ const Feed: NextPage = () => {
     </Fragment>
   );
 };
+
+<style jsx>
+{`
+  .back {
+    padding: 10px;
+    background-color: dodgerblue;
+    color: white;
+    margin: 10px;
+  }
+`}
+</style>
 
 const TabsMobile: React.FC<{
   tabs: string[];
