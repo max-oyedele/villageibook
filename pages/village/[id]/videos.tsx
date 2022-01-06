@@ -23,6 +23,7 @@ import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 import { css } from "@emotion/react";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import Paginate from "components/Paginate";
 
 const Videos: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -45,6 +46,10 @@ const Videos: NextPage = () => {
   
   const [loading, setLoading] = useState(true);
   const [color, setColor] = useState("#553cfb");
+  const [pageData, setPageData] = useState(null);
+  const [itemOffset, setItemOffset] = useState(1);
+  const [pageCount, setPageCount] = useState(1);
+  const itemsPerPage = 4;
 
   useEffect(() => {
     if (vid) {
@@ -54,8 +59,20 @@ const Videos: NextPage = () => {
   }, [vid]);
 
   if (villageVideos && villageVideos.length > 0 && loading) {
-    setLoading(false)
+    setLoading(false);
+    setItemOffset(0);
   }
+
+  const handlePageClicked = event => {
+    const newOffset = (event.selected * itemsPerPage) % villageVideos.length;
+    setItemOffset(newOffset);
+  };
+  
+  useEffect(() => {
+    const endOffset = itemOffset + itemsPerPage;
+    setPageData(villageVideos.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(villageVideos.length / itemsPerPage));
+  }, [itemOffset, itemsPerPage]);
 
   return (
     <Fragment>
@@ -80,7 +97,7 @@ const Videos: NextPage = () => {
                     : "0px"
               }
             >
-              {villageVideos.length > 0 && (
+              {pageData?.length > 0 && (
                 <SimpleGrid
                   columns={{ base: 2, md: 3 }}
                   columnGap={4}
@@ -91,12 +108,18 @@ const Videos: NextPage = () => {
                   borderColor="gray.200"
                   p={4}
                 >
-                  {villageVideos.map((video) => (
+                  {pageData.map((video) => (
                     <VideoCard key={video.id} video={video} />
                   ))}
                 </SimpleGrid>
               )}
-              {villageVideos.length == 0 && (
+              {pageData?.length > 0 && (
+                <Paginate 
+                handlePageClick={handlePageClicked}
+                pageCount={pageCount}
+              />
+              )}
+              {pageData?.length == 0 && (
                 <Alert message="There is no video to be displayed." />
               )}
             </Box> :

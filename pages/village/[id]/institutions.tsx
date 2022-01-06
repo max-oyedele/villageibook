@@ -21,6 +21,7 @@ import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 import { css } from "@emotion/react";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import Paginate from "components/Paginate";
 
 const Institutions: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -43,6 +44,10 @@ const Institutions: NextPage = () => {
   
   const [loading, setLoading] = useState(true);
   const [color, setColor] = useState("#553cfb");
+  const [pageData, setPageData] = useState(null);
+  const [itemOffset, setItemOffset] = useState(1);
+  const [pageCount, setPageCount] = useState(1);
+  const itemsPerPage = 4;
 
   useEffect(() => {
     if (vid) {
@@ -52,8 +57,20 @@ const Institutions: NextPage = () => {
   }, [vid]);
 
   if (villageInstitutions && villageInstitutions.length > 0 && loading) {
-    setLoading(false)
+    setLoading(false);
+    setItemOffset(0);
   }
+
+  const handlePageClicked = event => {
+    const newOffset = (event.selected * itemsPerPage) % villageInstitutions.length;
+    setItemOffset(newOffset);
+  };
+  
+  useEffect(() => {
+    const endOffset = itemOffset + itemsPerPage;
+    setPageData(villageInstitutions.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(villageInstitutions.length / itemsPerPage));
+  }, [itemOffset, itemsPerPage]);
 
   return (
     <Fragment>
@@ -79,17 +96,21 @@ const Institutions: NextPage = () => {
               }
             >
               <VStack spacing={2}>
-                {villageInstitutions.length > 0 &&
-                  villageInstitutions.map((institution) => (
+                {pageData?.length > 0 &&
+                  pageData.map((institution) => (
                     <InstitutionCard
                       key={institution.id}
                       institution={institution}
                     />
                   ))}
-                {villageInstitutions.length == 0 && (
+                {pageData?.length == 0 && (
                   <Alert message="There is no institution to be displayed." />
                 )}
               </VStack>
+              <Paginate 
+                handlePageClick={handlePageClicked}
+                pageCount={pageCount}
+              />
             </Box> :
           <ScaleLoader color={color} loading={loading} css={override} /> }
         </Flex>
