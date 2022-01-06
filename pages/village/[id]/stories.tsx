@@ -23,6 +23,7 @@ import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 import { css } from "@emotion/react";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import Paginate from "components/Paginate";
 
 const Story: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -45,6 +46,10 @@ const Story: NextPage = () => {
   
   const [loading, setLoading] = useState(true);
   const [color, setColor] = useState("#553cfb");
+  const [pageData, setPageData] = useState(null);
+  const [itemOffset, setItemOffset] = useState(1);
+  const [pageCount, setPageCount] = useState(1);
+  const itemsPerPage = 4;
 
   useEffect(() => {
     if (vid) {
@@ -54,8 +59,20 @@ const Story: NextPage = () => {
   }, [vid])
 
   if (villageStories && villageStories.length > 0 && loading) {
-    setLoading(false)
+    setLoading(false);
+    setItemOffset(0);
   }
+
+  const handlePageClicked = event => {
+    const newOffset = (event.selected * itemsPerPage) % villageStories.length;
+    setItemOffset(newOffset);
+  };
+  
+  useEffect(() => {
+    const endOffset = itemOffset + itemsPerPage;
+    setPageData(villageStories.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(villageStories.length / itemsPerPage));
+  }, [itemOffset, itemsPerPage]);
 
   return (
     <Fragment>
@@ -80,7 +97,7 @@ const Story: NextPage = () => {
                     : "0px"
               }
             >
-              {villageStories.length > 0 && (
+              {pageData?.length > 0 && (
                 <Box bgColor="white" p={6}>
                   <Grid
                     templateColumns={
@@ -91,13 +108,19 @@ const Story: NextPage = () => {
                     columnGap={6}
                     rowGap={12}
                   >
-                    {villageStories.map((story) => (
+                    {pageData.map((story) => (
                       <StoryCard key={story.uuid} story={story} />
                     ))}
                   </Grid>
                 </Box>
               )}
-              {villageStories.length == 0 && (
+              {pageData?.length > 0 && (
+                <Paginate 
+                  handlePageClick={handlePageClicked}
+                  pageCount={pageCount}
+                />
+              )}
+              {pageData?.length == 0 && (
                 <Alert message="There is no story to be displayed." />
               )}
             </Box> :
