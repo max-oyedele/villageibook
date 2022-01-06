@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { useRouter } from "next/router";
-import { BiCaretRight } from "react-icons/bi";
+import { BiCaretRight, BiLoaderCircle } from "react-icons/bi";
 
 import {
   HStack,
@@ -76,6 +76,19 @@ const VideoBox: React.FC<{
             >
               <BiCaretRight fontSize="24px" color="white" />
             </Circle>
+          </Flex>
+        }
+        {
+          !videoUrl &&
+          <Flex
+            pos="absolute"
+            top={0}
+            w="full"
+            h="full"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <BiLoaderCircle fontSize="34px" color="white" />
           </Flex>
         }
       </Box>
