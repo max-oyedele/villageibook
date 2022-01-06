@@ -1,9 +1,10 @@
 import "../styles/globals.css";
 import "../styles/fonts.css";
+import "../styles/paginate.css";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import "slick-carousel/slick/slick-theme.css";
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { wrapper, store } from "rdx/store";
