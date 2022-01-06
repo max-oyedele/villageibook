@@ -48,7 +48,7 @@ const Personalities: NextPage = () => {
   const [pageData, setPageData] = useState(null);
   const [itemOffset, setItemOffset] = useState(1);
   const [pageCount, setPageCount] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 4;
 
   useEffect(() => {
     if (vid) {
@@ -58,10 +58,6 @@ const Personalities: NextPage = () => {
   }, [vid]);
 
   if (villagePersonalities && villagePersonalities.length > 0 && loading) {
-    if (villagePersonalities.length % itemsPerPage == 0)
-      setPageCount(parseInt(villagePersonalities.length / itemsPerPage), 10);
-    else
-      setPageCount(parseInt((villagePersonalities.length / itemsPerPage), 10) + 1);
     setLoading(false);
     setItemOffset(0);
   }
@@ -74,7 +70,7 @@ const Personalities: NextPage = () => {
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
     setPageData(villagePersonalities.slice(itemOffset, endOffset));
-    // setPageCount(Math.ceil(items.length / itemsPerPage));
+    setPageCount(Math.ceil(villagePersonalities.length / itemsPerPage));
   }, [itemOffset, itemsPerPage]);
 
   return (
