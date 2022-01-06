@@ -1,4 +1,4 @@
-# VillageIbook bootstraped with Next.js, ChakraUI, TypeScript
+# VillageIbook bootstraped with Next.js, ChakraUI, Redux Toolkit, TypeScript
 ## Getting Started
 
 First, run the development server:
