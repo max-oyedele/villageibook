@@ -190,8 +190,8 @@ const Feed: NextPage = () => {
                     dataLength={data?.length}
                     next={getMorePost}
                     hasMore={hasMore}
-                    loader={<h3 className="hh"> Loading...</h3>}
-                    endMessage={<h4 className="hh">Nothing more to show</h4>}
+                    loader={<ScaleLoader color={color} loading={true} css={override} />}
+                    // endMessage={<h4 className="hh">Nothing more to show</h4>}
                   >
                     <style>{"\
                       .hh{\
