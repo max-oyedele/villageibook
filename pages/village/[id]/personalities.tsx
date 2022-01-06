@@ -22,6 +22,7 @@ import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 import { css } from "@emotion/react";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import Paginate from "components/Paginate";
 
 const Personalities: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -44,6 +45,10 @@ const Personalities: NextPage = () => {
   
   const [loading, setLoading] = useState(true);
   const [color, setColor] = useState("#553cfb");
+  const [pageData, setPageData] = useState(null);
+  const [itemOffset, setItemOffset] = useState(1);
+  const [pageCount, setPageCount] = useState(1);
+  const itemsPerPage = 5;
 
   useEffect(() => {
     if (vid) {
@@ -53,8 +58,24 @@ const Personalities: NextPage = () => {
   }, [vid]);
 
   if (villagePersonalities && villagePersonalities.length > 0 && loading) {
-    setLoading(false)
+    if (villagePersonalities.length % itemsPerPage == 0)
+      setPageCount(parseInt(villagePersonalities.length / itemsPerPage), 10);
+    else
+      setPageCount(parseInt((villagePersonalities.length / itemsPerPage), 10) + 1);
+    setLoading(false);
+    setItemOffset(0);
   }
+
+  const handlePageClicked = event => {
+    const newOffset = (event.selected * itemsPerPage) % villagePersonalities.length;
+    setItemOffset(newOffset);
+  };
+  
+  useEffect(() => {
+    const endOffset = itemOffset + itemsPerPage;
+    setPageData(villagePersonalities.slice(itemOffset, endOffset));
+    // setPageCount(Math.ceil(items.length / itemsPerPage));
+  }, [itemOffset, itemsPerPage]);
 
   return (
     <Fragment>
@@ -80,14 +101,18 @@ const Personalities: NextPage = () => {
               }
             >
               <VStack spacing={2}>
-                {villagePersonalities.length > 0 &&
-                  villagePersonalities.map((personality) => (
+                {pageData?.length > 0 &&
+                  pageData.map((personality) => (
                     <PersonalityCard key={personality.id} personality={personality} />
                   ))}
-                {villagePersonalities.length == 0 && (
+                {pageData?.length == 0 && (
                   <Alert message="There is no personality to be displayed." />
                 )}
               </VStack>
+              <Paginate 
+                handlePageClick={handlePageClicked}
+                pageCount={pageCount}
+              />
             </Box> :
           <ScaleLoader color={color} loading={loading} css={override} /> }
         </Flex>
