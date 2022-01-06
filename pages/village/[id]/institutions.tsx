@@ -19,6 +19,8 @@ import Alert from "components/widgets/Alert";
 
 import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
+import { css } from "@emotion/react";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 const Institutions: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -31,12 +33,27 @@ const Institutions: NextPage = () => {
 
   const { village, villageInstitutions, fetchVillageData, fetchVillagePageData } = useFetchData();
 
+  const override = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  `;
+  
+  const [loading, setLoading] = useState(true);
+  const [color, setColor] = useState("#553cfb");
+
   useEffect(() => {
     if (vid) {
       fetchVillageData({ villageUuid: vid });
       fetchVillagePageData({ villageUuid: vid });
     }
   }, [vid]);
+
+  if (villageInstitutions && villageInstitutions.length > 0 && loading) {
+    setLoading(false)
+  }
 
   return (
     <Fragment>
@@ -50,29 +67,31 @@ const Institutions: NextPage = () => {
             </Box>
           )}
 
-          <Box
-            w="full"
-            ml={
-              fixed && breakpointValue === "md"
-                ? "264px"
-                : breakpointValue === "md"
-                  ? "24px"
-                  : "0px"
-            }
-          >
-            <VStack spacing={2}>
-              {villageInstitutions.length > 0 &&
-                villageInstitutions.map((institution) => (
-                  <InstitutionCard
-                    key={institution.id}
-                    institution={institution}
-                  />
-                ))}
-              {villageInstitutions.length == 0 && (
-                <Alert message="There is no institution to be displayed." />
-              )}
-            </VStack>
-          </Box>
+          { !loading ?
+            <Box
+              w="full"
+              ml={
+                fixed && breakpointValue === "md"
+                  ? "264px"
+                  : breakpointValue === "md"
+                    ? "24px"
+                    : "0px"
+              }
+            >
+              <VStack spacing={2}>
+                {villageInstitutions.length > 0 &&
+                  villageInstitutions.map((institution) => (
+                    <InstitutionCard
+                      key={institution.id}
+                      institution={institution}
+                    />
+                  ))}
+                {villageInstitutions.length == 0 && (
+                  <Alert message="There is no institution to be displayed." />
+                )}
+              </VStack>
+            </Box> :
+          <ScaleLoader color={color} loading={loading} css={override} /> }
         </Flex>
       </Container>
 

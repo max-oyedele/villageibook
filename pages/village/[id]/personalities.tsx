@@ -20,6 +20,8 @@ import Alert from "components/widgets/Alert";
 
 import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
+import { css } from "@emotion/react";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 const Personalities: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -32,12 +34,27 @@ const Personalities: NextPage = () => {
 
   const { village, villagePersonalities, fetchVillageData, fetchVillagePageData } = useFetchData();
 
+  const override = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  `;
+  
+  const [loading, setLoading] = useState(true);
+  const [color, setColor] = useState("#553cfb");
+
   useEffect(() => {
     if (vid) {
       fetchVillageData({ villageUuid: vid });
       fetchVillagePageData({ villageUuid: vid });
     }
   }, [vid]);
+
+  if (villagePersonalities && villagePersonalities.length > 0 && loading) {
+    setLoading(false)
+  }
 
   return (
     <Fragment>
@@ -51,26 +68,28 @@ const Personalities: NextPage = () => {
             </Box>
           )}
 
-          <Box
-            w="full"
-            ml={
-              fixed && breakpointValue === "md"
-                ? "264px"
-                : breakpointValue === "md"
-                  ? "24px"
-                  : "0px"
-            }
-          >
-            <VStack spacing={2}>
-              {villagePersonalities.length > 0 &&
-                villagePersonalities.map((personality) => (
-                  <PersonalityCard key={personality.id} personality={personality} />
-                ))}
-              {villagePersonalities.length == 0 && (
-                <Alert message="There is no personality to be displayed." />
-              )}
-            </VStack>
-          </Box>
+          { !loading ?
+            <Box
+              w="full"
+              ml={
+                fixed && breakpointValue === "md"
+                  ? "264px"
+                  : breakpointValue === "md"
+                    ? "24px"
+                    : "0px"
+              }
+            >
+              <VStack spacing={2}>
+                {villagePersonalities.length > 0 &&
+                  villagePersonalities.map((personality) => (
+                    <PersonalityCard key={personality.id} personality={personality} />
+                  ))}
+                {villagePersonalities.length == 0 && (
+                  <Alert message="There is no personality to be displayed." />
+                )}
+              </VStack>
+            </Box> :
+          <ScaleLoader color={color} loading={loading} css={override} /> }
         </Flex>
       </Container>
 
