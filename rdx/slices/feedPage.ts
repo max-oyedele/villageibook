@@ -13,14 +13,14 @@ import { getUserToken } from "helpers/user-token";
 
 export const fetchPosts = createAsyncThunk(
   "feedPage/fetchPosts",
-  async (_, thunkAPI) => {
+  async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-
+      const endpoint = `/posts.json?sort=lastUpdated.DESC&size=4&page=${params.page}`;
       const response = await axios.get("/api/entry", {
-        params: { endpoint: "/posts.json?sort=lastUpdated.DESC", access_token },
+        params: { endpoint, access_token },
       });
-      return response.data.posts;
+      return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }

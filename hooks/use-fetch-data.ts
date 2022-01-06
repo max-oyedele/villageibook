@@ -123,8 +123,8 @@ const useFetchData = () => {
     await dispatch(fetchInstitution(params));
   }
 
-  const fetchFeedPageData = async () => {
-    await dispatch(fetchPosts());
+  const fetchFeedPageData = async (params) => {
+    await dispatch(fetchPosts(params));
     await dispatch(fetchRecentVillages());
     await dispatch(fetchRecentUsers());
   };

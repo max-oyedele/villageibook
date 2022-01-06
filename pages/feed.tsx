@@ -9,10 +9,6 @@ import {
   Text,
   HStack,
   VStack,
-  Divider,
-  Button,
-  Image,
-  Textarea,
   useBreakpointValue,
 } from "@chakra-ui/react";
 
@@ -32,6 +28,9 @@ import VideoBox from "components/widgets/VideoBox";
 
 import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { css } from "@emotion/react";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 const Feed: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -41,6 +40,9 @@ const Feed: NextPage = () => {
 
   const tabsMobile = ["Feed", "Village", "Graduates"];
   const [activeTab, setActiveTab] = useState(tabsMobile[0]);
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   const {
     me,
@@ -52,16 +54,51 @@ const Feed: NextPage = () => {
     fetchVillageData,
   } = useFetchData();
 
+  const override = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  `;
+  
+  const [loading, setLoading] = useState(true);
+  const [color, setColor] = useState("#553cfb");
+
   useEffect(() => {
     fetchMeData();
   }, []);
 
   useEffect(() => {
     if (me) {
-      fetchFeedPageData();
+      setLoading(true);
+      fetchFeedPageData({ page: 1 });
       fetchVillageData({ villageUuid: me.comesFrom?.uuid });
     }
-  }, [me])
+  }, [me]);
+
+  useEffect(() => {
+    if (posts && posts.length != 0) {
+      setLoading(false);
+      const uniqueValuesSet = new Set();
+      const tempData = [...data, ...posts['posts']];
+      const filteredArr = tempData.filter((obj) => {
+        const isPresentInSet = uniqueValuesSet.has(obj.uuid);
+        uniqueValuesSet.add(obj.uuid);
+        return !isPresentInSet;
+      });
+      setData(filteredArr);
+      if (filteredArr.length >= posts['pagination'].total) {
+        setHasMore(false);
+      }
+    }
+  }, [posts['posts']]);
+
+  const getMorePost = async () => {
+    var p = page + 1;
+    fetchFeedPageData({ page: p });
+    setPage(p);
+  };
 
   return (
     <Fragment>
@@ -146,64 +183,79 @@ const Feed: NextPage = () => {
             <Box bg="white" borderRadius="4px" mb={4} p={4}>
               <PostForm />
             </Box>
+            { !loading ? <>
+              {(breakpointValue === "md" ||
+                (breakpointValue === "base" && activeTab === "Feed")) && (
+                  <InfiniteScroll
+                    dataLength={data?.length}
+                    next={getMorePost}
+                    hasMore={hasMore}
+                    loader={<ScaleLoader color={color} loading={true} css={override} />}
+                    // endMessage={<h4 className="hh">Nothing more to show</h4>}
+                  >
+                    <style>{"\
+                      .hh{\
+                        text-align:center;\
+                        padding-top: 10px;\
+                      }\
+                    "}</style>
+                    <VStack spacing={4}>
+                      {data?.map((post) => (
+                        <PostCard key={post.uuid} post={post} />
+                      ))}
+                    </VStack>
+                  </InfiniteScroll>
+                )}
+              {breakpointValue === "base" && activeTab === "Village" && (
+                <Box>
+                  <LeftVillageItems village={me?.comesFrom} badgeShow={false} />
+                  <Text fontSize="20px" mt={12} mb={6}>
+                    Recently developed
+                  </Text>
+                  <VStack spacing={4}>
+                    {recentVillages.map((village) => (
+                      <RecentVillageCard key={village.name} village={village} />
+                    ))}
+                  </VStack>
 
-            {(breakpointValue === "md" ||
-              (breakpointValue === "base" && activeTab === "Feed")) && (
-                <VStack spacing={4}>
-                  {posts.map((post) => (
-                    <PostCard key={post.uuid} post={post} />
-                  ))}
-                </VStack>
-              )}
-            {breakpointValue === "base" && activeTab === "Village" && (
-              <Box>
-                <LeftVillageItems village={me?.comesFrom} badgeShow={false} />
-                <Text fontSize="20px" mt={12} mb={6}>
-                  Recently developed
-                </Text>
-                <VStack spacing={4}>
-                  {recentVillages.map((village) => (
-                    <RecentVillageCard key={village.name} village={village} />
-                  ))}
-                </VStack>
-
-                  {/* <Link href={`https://www.fundsurfer.com/crowdfund/villageibook?token=975ab55f35fefbd176774045369a62ba`} passHref={true}>
-                    <Button
-                      px={4}
-                      h="26px"
-                      fontSize="12px"
-                      fontWeight="400"
-                      bgColor="#FFB425"
-                      color="white"
-                      _focus={{ boxShadow: "none" }}
-                    >
-                      Sponsor VillageIbook
-                    </Button>
-                  </Link> */}
-              </Box>
-            )}
-            {breakpointValue === "base" && activeTab === "Graduates" && (
-              <Box>
-                <GraduatesLocationStatCard
-                  location={me?.comesFrom}
-                  condition="universityCountries"
-                  direction="column"
-                />
-                <Box mt={12}>
-                  <VideoBox videoUrl={""} />
+                    {/* <Link href={`https://www.fundsurfer.com/crowdfund/villageibook?token=975ab55f35fefbd176774045369a62ba`} passHref={true}>
+                      <Button
+                        px={4}
+                        h="26px"
+                        fontSize="12px"
+                        fontWeight="400"
+                        bgColor="#FFB425"
+                        color="white"
+                        _focus={{ boxShadow: "none" }}
+                      >
+                        Sponsor VillageIbook
+                      </Button>
+                    </Link> */}
                 </Box>
+              )}
+              {breakpointValue === "base" && activeTab === "Graduates" && (
+                <Box>
+                  <GraduatesLocationStatCard
+                    location={me?.comesFrom}
+                    condition="universityCountries"
+                    direction="column"
+                  />
+                  <Box mt={12}>
+                    <VideoBox videoUrl={""} />
+                  </Box>
 
-                <Text fontSize="20px" mt={12} mb={6}>
-                  Recently joined
-                </Text>
-                <VStack spacing={4}>
-                  {recentUsers.map((user) => (
-                    <RecentUserCard key={user.uuid} user={user} />
-                  ))}
-                </VStack>
-              </Box>
-            )}
-          </Box>
+                  <Text fontSize="20px" mt={12} mb={6}>
+                    Recently joined
+                  </Text>
+                  <VStack spacing={4}>
+                    {recentUsers.map((user) => (
+                      <RecentUserCard key={user.uuid} user={user} />
+                    ))}
+                  </VStack>
+                </Box>
+              )} </> :
+              <ScaleLoader color={color} loading={loading} css={override} /> }
+            </Box>
 
           {breakpointValue === "md" && (
             <Box
@@ -239,6 +291,17 @@ const Feed: NextPage = () => {
     </Fragment>
   );
 };
+
+<style jsx>
+{`
+  .back {
+    padding: 10px;
+    background-color: dodgerblue;
+    color: white;
+    margin: 10px;
+  }
+`}
+</style>
 
 const TabsMobile: React.FC<{
   tabs: string[];
