@@ -6,6 +6,7 @@ import { reset as authResetFunc, login, signup } from "rdx/slices/auth";
 import { reset as accountResetFunc, submitStepOne, submitStepTwo } from "rdx/slices/account";
 import { reset as viewResetFunc } from "rdx/slices/view";
 import { reset as postResetFunc, submitPost } from "rdx/slices/post";
+import { reset as postsResetFunc } from 'rdx/slices/feedPage';
 
 const useActionDispatch = () => {
   const dispatch: MyThunkDispatch = useDispatch();
@@ -42,6 +43,10 @@ const useActionDispatch = () => {
     await dispatch(postResetFunc());
   }
 
+  const resetPosts = async() => {
+    await dispatch(postsResetFunc());
+  }
+
   return {
     authReset,
     accountReset,
@@ -50,7 +55,8 @@ const useActionDispatch = () => {
     submitPostData,
     submitStepOneData,
     submitStepTwoData,
-    resetPost
+    resetPost,
+    resetPosts
   };
 };
 
