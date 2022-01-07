@@ -74,8 +74,8 @@ const Header = () => {
   const logout = () => {
     authReset();
     accountReset();
-
     removeToken();
+    localStorage.removeItem("myAccount");
     router.push("/");
   };
 
