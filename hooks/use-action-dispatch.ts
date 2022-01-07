@@ -6,7 +6,7 @@ import { reset as authResetFunc, login, signup } from "rdx/slices/auth";
 import { reset as accountResetFunc, submitStepOne, submitStepTwo } from "rdx/slices/account";
 import { reset as viewResetFunc } from "rdx/slices/view";
 import { reset as postResetFunc, submitPost } from "rdx/slices/post";
-import { reset as postsResetFunc } from 'rdx/slices/feedPage';
+import { init as postsResetFunc } from 'rdx/slices/feedPage';
 
 const useActionDispatch = () => {
   const dispatch: MyThunkDispatch = useDispatch();
