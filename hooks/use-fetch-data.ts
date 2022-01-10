@@ -1,40 +1,7 @@
-import { useSelector, useDispatch } from "react-redux";
-import { MyThunkDispatch, OurStore } from "rdx/store";
-
-import {
-  fetchCountries,
-  fetchRegions,
-  fetchDistricts,
-  fetchSubDistricts,
-  fetchVillages,
-  fetchUniversities,
-  fetchProfessions,
-  fetchDegrees,
-} from "rdx/slices/common";
-import { fetchMe } from "rdx/slices/account";
-import { fetchUser, fetchPersonality, fetchInstitution } from "rdx/slices/view";
-import {
-  fetchPosts,
-  fetchRecentVillages,
-  fetchRecentUsers,
-} from "rdx/slices/feedPage";
-import {
-  fetchVillage,
-  fetchVillageUsers,
-  fetchVillageGraduates,
-  fetchVillageStories,
-  fetchVillagePersonalities,
-  fetchVillageInstitutions,
-  fetchVillageVideos,
-} from "rdx/slices/villagePage";
-import { 
-  getGraduatesByCondition,
-  getTotalGraduates
-} from "rdx/slices/graduatePage";
+import { useSelector } from "react-redux";
+import { OurStore } from "rdx/store";
 
 const useFetchData = () => {
-  const dispatch: MyThunkDispatch = useDispatch();
-
   const {
     jwt,
     me: signupMe,
@@ -75,99 +42,6 @@ const useFetchData = () => {
 
   const { graduateStatsByCondition, totalGraduateStats } = useSelector((state: OurStore) => state.graduatePageReducer)
 
-  const fetchCountriesData = async () => {
-    await dispatch(fetchCountries());
-  };
-  const fetchRegionsData = async (params) => {
-    await dispatch(fetchRegions(params));
-  };
-  const fetchDistrictsData = async (params) => {
-    await dispatch(fetchDistricts(params));
-  };
-  const fetchSubDistrictsData = async (params) => {
-    await dispatch(fetchSubDistricts(params));
-  };
-  const fetchVillagesData = async (params) => {
-    await dispatch(fetchVillages(params));
-  };
-  const fetchUniversitiesData = async () => {
-    await dispatch(fetchUniversities());
-  };
-  const fetchProfessionsData = async () => {
-    await dispatch(fetchProfessions());
-  };
-  const fetchDegreesData = async () => {
-    await dispatch(fetchDegrees());
-  };
-
-  const fetchCommonData = () => {
-    fetchCountriesData();
-    fetchUniversitiesData();
-    fetchProfessionsData();
-    fetchDegreesData();
-  };
-
-  const fetchMeData = async () => {
-    await dispatch(fetchMe());
-  };
-
-  const fetchUserData = async (params) => {
-    await dispatch(fetchUser(params));
-  };
-
-  const fetchPersonalityData = async (params) => {
-    await dispatch(fetchPersonality(params));
-  }
-
-  const fetchInstitutionData = async (params) => {
-    await dispatch(fetchInstitution(params));
-  }
-
-  const fetchFeedPageData = async (params) => {
-    await dispatch(fetchPosts(params));
-    await dispatch(fetchRecentVillages());
-    await dispatch(fetchRecentUsers());
-  };
-
-  const fetchVillageData = async (params) => {
-    await dispatch(fetchVillage(params));
-  }
-  const fetchVillageUsersData = async (params) => {
-    await dispatch(fetchVillageUsers(params));
-  };
-  const fetchVillageGraduatesData = async (params) => {
-    await dispatch(fetchVillageGraduates(params));
-  };
-  const fetchVillageStoriesData = async (params) => {
-    await dispatch(fetchVillageStories(params));
-  };
-  const fetchVillagePersonalitiesData = async (params) => {
-    await dispatch(fetchVillagePersonalities(params));
-  };
-  const fetchVillageInstitutionsData = async (params) => {
-    await dispatch(fetchVillageInstitutions(params));
-  };
-  const fetchVillageVideosData = async (params) => {
-    await dispatch(fetchVillageVideos(params));
-  };
-
-  const fetchVillagePageData = (params) => {
-    fetchVillageUsersData(params);
-    fetchVillageGraduatesData(params);
-    fetchVillageStoriesData(params);
-    fetchVillagePersonalitiesData(params);
-    fetchVillageInstitutionsData(params);
-    fetchVillageVideosData(params);
-  };
-
-  const getGraduatesByConditionData = async (params) => {
-    await dispatch(getGraduatesByCondition(params));
-  }
-
-  const getTotalGraduatesData = async () => {
-    await dispatch(getTotalGraduates());
-  }
-
   return {
     jwt,
     signupMe,
@@ -204,28 +78,7 @@ const useFetchData = () => {
     villageStories,
     villagePersonalities,
     villageInstitutions,
-    villageVideos,
-    fetchCountriesData,
-    fetchRegionsData,
-    fetchDistrictsData,
-    fetchSubDistrictsData,
-    fetchVillagesData,
-    fetchCommonData,
-    fetchMeData,
-    fetchUserData,
-    fetchPersonalityData,
-    fetchInstitutionData,
-    fetchFeedPageData,
-    fetchVillageData,
-    fetchVillagePageData,
-    // fetchVillageUsersData,
-    // fetchVillageGraduatesData,
-    // fetchVillageStoriesData,
-    // fetchVillagePersonalitiesData,
-    // fetchVillageInstitutionsData,
-    // fetchVillageVideosData,
-    getGraduatesByConditionData,
-    getTotalGraduatesData
+    villageVideos,    
   };
 };
 

@@ -43,8 +43,8 @@ const Login = () => {
     md: "md",
   });
 
-  const { authStatus, authError, jwt, me, fetchMeData } = useFetchData();
-  const { authReset, accountReset, doLogin } = useActionDispatch();
+  const { authStatus, authError, jwt, me } = useFetchData();
+  const { authReset, accountReset, doLogin, fetchMeData } = useActionDispatch();
 
   const { setToken } = useToken();
   const toast = useToast();

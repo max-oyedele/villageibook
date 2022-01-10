@@ -75,7 +75,7 @@ const Header = () => {
     authReset();
     accountReset();
     removeToken();
-    localStorage.removeItem("myAccount");
+    localStorage.removeItem("villageibookAccount");
     router.push("/");
   };
 

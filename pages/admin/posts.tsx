@@ -44,14 +44,16 @@ import DeleteDialog from "admin/components/DeleteDialog";
 
 import { getUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
 
 const Posts: NextPage = () => {
   const router = useRouter();
-  const { me, fetchMeData } = useFetchData();
-  const { posts, fetchPostsData } = useAdminFetchData();
-  const { deleteData } = useAdminActionDispatch();
+  const { me } = useFetchData();
+  const { fetchMeData } = useActionDispatch();
+  const { posts } = useAdminFetchData();
+  const { fetchPostsData, deleteData } = useAdminActionDispatch();
 
   useEffect(() => {
     const access_token = getUserToken();

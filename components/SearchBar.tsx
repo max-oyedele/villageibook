@@ -13,11 +13,13 @@ import { District, SubDistrict, Village } from "types/schema";
 import router from "next/router";
 
 import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 
 const SearchBar = (props) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const {districts, subDistricts, villages, fetchDistrictsData, fetchSubDistrictsData, fetchVillagesData} = useFetchData();
+  const { districts, subDistricts, villages } = useFetchData();
+  const { fetchDistrictsData, fetchSubDistrictsData, fetchVillagesData } = useActionDispatch();
 
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
   const [selectedSubDistrict, setSelectedSubDistrict] =

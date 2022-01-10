@@ -53,6 +53,7 @@ import DeleteDialog from "admin/components/DeleteDialog";
 
 import { getUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
 
@@ -60,9 +61,10 @@ import { Village, Story } from "types/schema";
 
 const Stories: NextPage = () => {
   const router = useRouter();
-  const { me, fetchMeData } = useFetchData();
-  const { stories, fetchStoriesData } = useAdminFetchData();
-  const { deleteData } = useAdminActionDispatch();
+  const { me } = useFetchData();
+  const { fetchMeData } = useActionDispatch();
+  const { stories } = useAdminFetchData();
+  const { fetchStoriesData, deleteData } = useAdminActionDispatch();
 
   useEffect(() => {
     const access_token = getUserToken();

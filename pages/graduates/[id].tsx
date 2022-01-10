@@ -33,6 +33,7 @@ import AlphaBetaBar from "components/widgets/AlphaBetaBar";
 import GraduatesCountryStatBox from "components/GraduatesCountryStatBox";
 import VillageGraduatesRegionStatCard from "components/VillageGraduatesRegionStatCard";
 import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 import useWindowProp from "hooks/use-window-prop";
 
 import { platformCountries, homeCountry, watchCountries } from "constants/global";
@@ -64,7 +65,9 @@ const Graduates: NextPage = () => {
 
   const {
     me, districts, subDistricts, villages, 
-    graduateStatsByCondition, totalGraduateStats,
+    graduateStatsByCondition, totalGraduateStats,  
+  } = useFetchData();
+  const {    
     fetchMeData,
     fetchCommonData,
     fetchRegionsData,
@@ -73,7 +76,7 @@ const Graduates: NextPage = () => {
     fetchVillagesData,
     getGraduatesByConditionData,
     getTotalGraduatesData
-  } = useFetchData();
+  } = useActionDispatch();
 
   const [activeMenuItem, setActiveMenuItem] = useState(null);
 

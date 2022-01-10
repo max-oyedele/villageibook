@@ -39,11 +39,19 @@ import {
   useColorMode,
   useColorModeValue,
   useBreakpointValue,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 
-import { FaWallet, FaGlobe, FaFile, FaShoppingCart, FaRegArrowAltCircleRight, FaRocket, FaThList } from "react-icons/fa";
-import { useTable, useSortBy } from 'react-table';
+import {
+  FaWallet,
+  FaGlobe,
+  FaFile,
+  FaShoppingCart,
+  FaRegArrowAltCircleRight,
+  FaRocket,
+  FaThList,
+} from "react-icons/fa";
+import { useTable, useSortBy } from "react-table";
 
 import Layout from "admin/components/Layout";
 import ImageBox from "components/widgets/ImageBox";
@@ -54,6 +62,7 @@ import DeleteDialog from "admin/components/DeleteDialog";
 
 import { getUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
 
@@ -61,9 +70,10 @@ import { Village, Personality } from "types/schema";
 
 const Personalities: NextPage = () => {
   const router = useRouter();
-  const { me, fetchMeData } = useFetchData();
-  const { personalities, fetchPersonalitiesData } = useAdminFetchData();
-  const { deleteData } = useAdminActionDispatch();
+  const { me } = useFetchData();
+  const { fetchMeData } = useActionDispatch();
+  const { personalities } = useAdminFetchData();
+  const { deleteData, fetchPersonalitiesData } = useAdminActionDispatch();
 
   useEffect(() => {
     const access_token = getUserToken();
@@ -75,7 +85,7 @@ const Personalities: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    if(!me?.roles?.includes("ADMIN")){
+    if (!me?.roles?.includes("ADMIN")) {
       router.push("/feed");
     }
   }, [me]);
@@ -84,22 +94,21 @@ const Personalities: NextPage = () => {
 
   useEffect(() => {
     if (village) {
-      fetchPersonalitiesData({ villageUuid: village.uuid })
-    }
-    else {
+      fetchPersonalitiesData({ villageUuid: village.uuid });
+    } else {
       fetchPersonalitiesData(null);
     }
-  }, [village])
+  }, [village]);
 
   const columns = useMemo(
     () => [
       {
-        Header: 'Name',
-        accessor: 'name',
+        Header: "Name",
+        accessor: "name",
       },
       {
-        Header: 'Photo',
-        accessor: 'photo.url',
+        Header: "Photo",
+        accessor: "photo.url",
         Cell: function PictureItem({ row }) {
           return (
             <Box w={40}>
@@ -109,61 +118,69 @@ const Personalities: NextPage = () => {
         },
       },
       {
-        Header: 'About',
-        accessor: 'about',
+        Header: "About",
+        accessor: "about",
       },
       {
-        Header: 'Date of Birth',
-        accessor: 'dateOfBirth',
+        Header: "Date of Birth",
+        accessor: "dateOfBirth",
       },
       {
-        Header: 'Date of Death',
-        accessor: 'dateOfDeath',
+        Header: "Date of Death",
+        accessor: "dateOfDeath",
       },
       {
-        Header: 'Education Life',
-        accessor: 'educationLife',
+        Header: "Education Life",
+        accessor: "educationLife",
       },
       {
-        Header: 'Achievements',
-        accessor: 'achievements',
+        Header: "Achievements",
+        accessor: "achievements",
       },
       {
-        Header: 'Career',
-        accessor: 'career',
+        Header: "Career",
+        accessor: "career",
       },
       {
-        Header: 'Action',
-        accessor: 'action',
+        Header: "Action",
+        accessor: "action",
         Cell: function ActionItem({ row }) {
           return (
             <HStack>
-              {
-                !!village &&
-                <Button onClick={() => { setPersonality(row.original); modal.onOpen() }}>Edit</Button>
-              }
-              <Button onClick={() => { setUuid(row.original.uuid); dialog.onOpen() }}>Delete</Button>
+              {!!village && (
+                <Button
+                  onClick={() => {
+                    setPersonality(row.original);
+                    modal.onOpen();
+                  }}
+                >
+                  Edit
+                </Button>
+              )}
+              <Button
+                onClick={() => {
+                  setUuid(row.original.uuid);
+                  dialog.onOpen();
+                }}
+              >
+                Delete
+              </Button>
             </HStack>
-          )
-        }
-      }
+          );
+        },
+      },
     ],
     []
-  )
+  );
 
-  const [data, setData] = useState([])
-  const tableInstance = useTable({ columns, data })
+  const [data, setData] = useState([]);
+  const tableInstance = useTable({ columns, data });
   useEffect(() => {
     setData(personalities);
-  }, [personalities])
+  }, [personalities]);
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = tableInstance
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    tableInstance;
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const modal = useDisclosure();
@@ -174,50 +191,45 @@ const Personalities: NextPage = () => {
   const onDelete = (uuid) => {
     deleteData({ type: "stories", uuid });
     dialog.onClose();
-  }
+  };
 
   return (
     <Fragment>
       <Layout>
-
         <VillageSearchBox setVillage={setVillage} />
         <Flex justifyContent={"flex-end"}>
-          <Button onClick={() => modal.onOpen()} isDisabled={!village}>Add Personality</Button>
+          <Button onClick={() => modal.onOpen()} isDisabled={!village}>
+            Add Personality
+          </Button>
         </Flex>
 
         <Table {...getTableProps()}>
           <Thead>
-            {
-              headerGroups.map((headerGroup, index) => (
-                <Tr key={index} {...headerGroup.getHeaderGroupProps()}>
-                  {
-                    headerGroup.headers.map((column, iindex) => (
-                      <Th key={iindex} {...column.getHeaderProps()}>
-                        {
-                          column.render('Header')}
-                      </Th>
-                    ))}
-                </Tr>
-              ))}
+            {headerGroups.map((headerGroup, index) => (
+              <Tr key={index} {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column, iindex) => (
+                  <Th key={iindex} {...column.getHeaderProps()}>
+                    {column.render("Header")}
+                  </Th>
+                ))}
+              </Tr>
+            ))}
           </Thead>
           <Tbody {...getTableBodyProps()}>
-            {
-              rows.map((row, index) => {
-                prepareRow(row)
-                return (
-                  <Tr key={index} {...row.getRowProps()}>
-                    {
-                      row.cells.map((cell, iindex) => {
-                        return (
-                          <Td key={iindex} {...cell.getCellProps()}>
-                            {
-                              cell.render('Cell')}
-                          </Td>
-                        )
-                      })}
-                  </Tr>
-                )
-              })}
+            {rows.map((row, index) => {
+              prepareRow(row);
+              return (
+                <Tr key={index} {...row.getRowProps()}>
+                  {row.cells.map((cell, iindex) => {
+                    return (
+                      <Td key={iindex} {...cell.getCellProps()}>
+                        {cell.render("Cell")}
+                      </Td>
+                    );
+                  })}
+                </Tr>
+              );
+            })}
           </Tbody>
         </Table>
       </Layout>
@@ -231,12 +243,20 @@ const Personalities: NextPage = () => {
       >
         <ModalOverlay />
         <ModalContent m={0} p={6} bgColor="white">
-          <PersonalityForm type="add" village={village} personality={personality} />
+          <PersonalityForm
+            type="add"
+            village={village}
+            personality={personality}
+          />
         </ModalContent>
       </Modal>
 
-      <DeleteDialog uuid={uuid} isOpen={dialog.isOpen} onClose={dialog.onClose} onConfirm={onDelete} />
-
+      <DeleteDialog
+        uuid={uuid}
+        isOpen={dialog.isOpen}
+        onClose={dialog.onClose}
+        onConfirm={onDelete}
+      />
     </Fragment>
   );
 };
