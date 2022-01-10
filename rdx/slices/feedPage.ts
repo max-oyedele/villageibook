@@ -71,6 +71,9 @@ export const feedPageSlice = createSlice({
   initialState: initialState,
   reducers: {
     reset: () => initialState,
+    init: (state) => {
+      state.posts = [];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchPosts.pending, (state) => {
@@ -112,4 +115,4 @@ export const feedPageSlice = createSlice({
   },
 });
 
-export const { reset } = feedPageSlice.actions;
+export const { reset, init } = feedPageSlice.actions;

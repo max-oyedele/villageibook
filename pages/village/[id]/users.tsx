@@ -20,6 +20,9 @@ import Alert from "components/widgets/Alert";
 
 import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
+import { css } from "@emotion/react";
+import ScaleLoader from "react-spinners/ScaleLoader";
+import Paginate from "components/Paginate";
 
 const Users: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -31,12 +34,44 @@ const Users: NextPage = () => {
   const { fixed } = useWindowProp();
 
   const { village, villageUsers, fetchVillageData, fetchVillagePageData } = useFetchData();
+
+  const override = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  `;
+  
+  const [loading, setLoading] = useState(true);
+  const [color, setColor] = useState("#553cfb");
+  const [pageData, setPageData] = useState(null);
+  const [itemOffset, setItemOffset] = useState(1);
+  const [pageCount, setPageCount] = useState(1);
+  const itemsPerPage = 4;
+
   useEffect(() => {
     if (vid) {
       fetchVillageData({ villageUuid: vid });
       fetchVillagePageData({ villageUuid: vid });
     }
   }, [vid]);
+  
+  if (villageUsers && villageUsers.length > 0 && loading) {
+    setLoading(false);
+    setItemOffset(0);
+  }
+
+  const handlePageClicked = event => {
+    const newOffset = (event.selected * itemsPerPage) % villageUsers.length;
+    setItemOffset(newOffset);
+  };
+  
+  useEffect(() => {
+    const endOffset = itemOffset + itemsPerPage;
+    setPageData(villageUsers.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(villageUsers.length / itemsPerPage));
+  }, [itemOffset, itemsPerPage]);
 
   return (
     <Fragment>
@@ -50,26 +85,32 @@ const Users: NextPage = () => {
             </Box>
           )}
 
-          <Box
-            w="full"
-            ml={
-              fixed && breakpointValue === "md"
-                ? "264px"
-                : breakpointValue === "md"
-                  ? "24px"
-                  : "0px"
-            }
-          >
-            <VStack spacing={2}>
-              {villageUsers.length > 0 &&
-                villageUsers.map((user) => (
-                  <UserCard key={user.id} user={user} />
-                ))}
-              {villageUsers.length == 0 && (
-                <Alert message="There is no user to be displayed." />
-              )}
-            </VStack>
-          </Box>
+          { !loading ?
+            <Box
+              w="full"
+              ml={
+                fixed && breakpointValue === "md"
+                  ? "264px"
+                  : breakpointValue === "md"
+                    ? "24px"
+                    : "0px"
+              }
+            >
+              <VStack spacing={2}>
+                {pageData?.length > 0 &&
+                  pageData.map((user) => (
+                    <UserCard key={user.id} user={user} />
+                  ))}
+                {pageData?.length == 0 && (
+                  <Alert message="There is no user to be displayed." />
+                )}
+              </VStack>
+              <Paginate 
+                handlePageClick={handlePageClicked}
+                pageCount={pageCount}
+              />
+            </Box> :
+          <ScaleLoader color={color} loading={loading} css={override} /> }
         </Flex>
       </Container>
 

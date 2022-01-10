@@ -31,6 +31,7 @@ import useFetchData from "hooks/use-fetch-data";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { css } from "@emotion/react";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import useActionDispatch from "hooks/use-action-dispatch";
 
 const Feed: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -43,6 +44,7 @@ const Feed: NextPage = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const { resetPosts } = useActionDispatch();
 
   const {
     me,
@@ -91,6 +93,7 @@ const Feed: NextPage = () => {
       if (filteredArr.length >= posts['pagination'].total) {
         setHasMore(false);
       }
+      resetPosts();
     }
   }, [posts['posts']]);
 
