@@ -21,6 +21,7 @@ import Alert from "components/widgets/Alert";
 
 import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 import { css } from "@emotion/react";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import Paginate from "components/Paginate";
@@ -34,7 +35,8 @@ const Story: NextPage = () => {
 
   const { fixed } = useWindowProp();
 
-  const { village, villageStories, fetchVillageData, fetchVillagePageData } = useFetchData();
+  const { village, villageStories } = useFetchData();
+  const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
 
   const override = css`
     display: flex;

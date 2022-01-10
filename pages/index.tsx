@@ -8,7 +8,8 @@ import useActionDispatch from "hooks/use-action-dispatch";
 
 const Index: NextPage = () => {
   const router = useRouter();
-  const { me, fetchMeData } = useFetchData();
+  const { me } = useFetchData();
+  const { fetchMeData } = useActionDispatch();
   
   useEffect(() => {
     const access_token = getUserToken();

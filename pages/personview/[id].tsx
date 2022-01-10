@@ -24,6 +24,7 @@ import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
 
 import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 import { css } from "@emotion/react";
 import ScaleLoader from "react-spinners/ScaleLoader";
 
@@ -34,7 +35,8 @@ const PersonalityView: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const toast = useToast();
 
-  const { personality, personalityError, fetchPersonalityData } = useFetchData();
+  const { personality, personalityError } = useFetchData();
+  const { fetchPersonalityData } = useActionDispatch();
 
   const override = css`
     display: flex;

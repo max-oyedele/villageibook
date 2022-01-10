@@ -61,15 +61,16 @@ const AccountToRegister: NextPage = () => {
     universities,
     professions,
     degrees: degreeStrs,
+  } = useFetchData();
+  const {
     fetchRegionsData,
     fetchDistrictsData,
     fetchSubDistrictsData,
     fetchVillagesData,
     fetchCommonData,
     fetchMeData,
-  } = useFetchData();
-
-  const { submitStepOneData } = useActionDispatch();
+    submitStepOneData
+  } = useActionDispatch();
 
   useEffect(() => {
     fetchCommonData();

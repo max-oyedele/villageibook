@@ -16,10 +16,12 @@ import { BiSearch } from "react-icons/bi";
 import InputBoxWithSelect from "components/widgets/InputBoxWithSelect";
 import SelectBox from "components/widgets/SelectBox";
 import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 import { Village } from "types/schema";
 
 const VillageSearchBox: React.FC<{ setVillage }> = ({ setVillage }) => {
-  const { villages, fetchVillagesData } = useFetchData();
+  const { villages } = useFetchData();
+  const { fetchVillagesData } = useActionDispatch();
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
 
   useEffect(()=>{

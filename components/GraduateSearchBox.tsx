@@ -13,8 +13,6 @@ import {
 } from "@chakra-ui/react";
 import { BiSearch } from "react-icons/bi";
 
-import useFetchData from "hooks/use-fetch-data";
-
 const GraduateSearchBox:React.FC<{location: string, setLocation, onFind}> = ({location, setLocation, onFind}) => {
   const totalGraduates = 100;
 

@@ -19,6 +19,7 @@ import Alert from "components/widgets/Alert";
 
 import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 import { css } from "@emotion/react";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import Paginate from "components/Paginate";
@@ -32,7 +33,8 @@ const Institutions: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
 
-  const { village, villageInstitutions, fetchVillageData, fetchVillagePageData } = useFetchData();
+  const { village, villageInstitutions } = useFetchData();
+  const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
 
   const override = css`
     display: flex;

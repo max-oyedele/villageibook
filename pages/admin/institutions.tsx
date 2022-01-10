@@ -53,14 +53,18 @@ import InstitutionForm from "admin/components/InstitutionForm";
 
 import { getUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
+import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
 
 import { Village } from "types/schema";
 
 const Institutions: NextPage = () => {
   const router = useRouter();
-  const { me, fetchMeData } = useFetchData();
-  const { institutions, fetchInstitutionsData } = useAdminFetchData();
+  const { me } = useFetchData();
+  const { fetchMeData } = useActionDispatch();
+  const { institutions } = useAdminFetchData();
+  const { fetchInstitutionsData } = useAdminActionDispatch();
 
   useEffect(() => {
     const access_token = getUserToken();

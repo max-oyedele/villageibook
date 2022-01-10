@@ -30,6 +30,7 @@ import FilterCard from "components/FilterCard";
 
 import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 import { css } from "@emotion/react";
 import ScaleLoader from "react-spinners/ScaleLoader";
 
@@ -39,7 +40,8 @@ const Posts: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village uuid
 
-  const { village, villageUsers, villageStories, villagePersonalities, villageInstitutions, villageVideos, fetchVillageData, fetchVillagePageData } = useFetchData();
+  const { village, villageUsers, villageStories, villagePersonalities, villageInstitutions, villageVideos } = useFetchData();
+  const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
 
   const { fixed } = useWindowProp();
 

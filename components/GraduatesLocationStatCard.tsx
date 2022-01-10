@@ -16,6 +16,7 @@ import { RiGlobalLine } from "react-icons/ri";
 import { District, SubDistrict, Village } from "types/schema";
 import GraduatePercent from "./GraduatePercent";
 import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 
 import { platformCountries, homeCountry, watchCountries } from "constants/global";
 const totalGraduatesCount = 1000;
@@ -27,7 +28,8 @@ const GraduatesLocationStatCard: React.FC<{
 }> = ({ location, condition, direction }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { villageGraduates, graduateStatsByCondition, getGraduatesByConditionData } = useFetchData();
+  const { villageGraduates, graduateStatsByCondition } = useFetchData();
+  const { getGraduatesByConditionData } = useActionDispatch();
 
   useEffect(() => {
     if (location) {

@@ -44,17 +44,10 @@ const Feed: NextPage = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const { resetPosts } = useActionDispatch();
-
-  const {
-    me,
-    posts,
-    recentUsers,
-    recentVillages,
-    fetchMeData,
-    fetchFeedPageData,
-    fetchVillageData,
-  } = useFetchData();
+  
+  const { me, posts, recentUsers, recentVillages } = useFetchData();
+  const { resetPosts, fetchMeData, fetchFeedPageData, fetchVillageData } =
+    useActionDispatch();
 
   const override = css`
     display: flex;
@@ -63,7 +56,7 @@ const Feed: NextPage = () => {
     width: 100%;
     height: 100%;
   `;
-  
+
   const [loading, setLoading] = useState(true);
   const [color, setColor] = useState("#553cfb");
 
@@ -83,19 +76,19 @@ const Feed: NextPage = () => {
     if (posts && posts.length != 0) {
       setLoading(false);
       const uniqueValuesSet = new Set();
-      const tempData = [...data, ...posts['posts']];
+      const tempData = [...data, ...posts["posts"]];
       const filteredArr = tempData.filter((obj) => {
         const isPresentInSet = uniqueValuesSet.has(obj.uuid);
         uniqueValuesSet.add(obj.uuid);
         return !isPresentInSet;
       });
       setData(filteredArr);
-      if (filteredArr.length >= posts['pagination'].total) {
+      if (filteredArr.length >= posts["pagination"].total) {
         setHasMore(false);
       }
       resetPosts();
     }
-  }, [posts['posts']]);
+  }, [posts["posts"]]);
 
   const getMorePost = async () => {
     var p = page + 1;
@@ -179,29 +172,40 @@ const Feed: NextPage = () => {
               fixed && breakpointValue === "md"
                 ? "294px"
                 : breakpointValue === "md"
-                  ? "24px"
-                  : "0px"
+                ? "24px"
+                : "0px"
             }
           >
             <Box bg="white" borderRadius="4px" mb={4} p={4}>
               <PostForm />
             </Box>
-            { !loading ? <>
-              {(breakpointValue === "md" ||
-                (breakpointValue === "base" && activeTab === "Feed")) && (
+            {!loading ? (
+              <>
+                {(breakpointValue === "md" ||
+                  (breakpointValue === "base" && activeTab === "Feed")) && (
                   <InfiniteScroll
                     dataLength={data?.length}
                     next={getMorePost}
                     hasMore={hasMore}
-                    loader={<ScaleLoader color={color} loading={true} css={override} />}
+                    loader={
+                      <ScaleLoader
+                        color={color}
+                        loading={true}
+                        css={override}
+                      />
+                    }
                     // endMessage={<h4 className="hh">Nothing more to show</h4>}
                   >
-                    <style>{"\
+                    <style>
+                      {
+                        "\
                       .hh{\
                         text-align:center;\
                         padding-top: 10px;\
                       }\
-                    "}</style>
+                    "
+                      }
+                    </style>
                     <VStack spacing={4}>
                       {data?.map((post) => (
                         <PostCard key={post.uuid} post={post} />
@@ -209,17 +213,23 @@ const Feed: NextPage = () => {
                     </VStack>
                   </InfiniteScroll>
                 )}
-              {breakpointValue === "base" && activeTab === "Village" && (
-                <Box>
-                  <LeftVillageItems village={me?.comesFrom} badgeShow={false} />
-                  <Text fontSize="20px" mt={12} mb={6}>
-                    Recently developed
-                  </Text>
-                  <VStack spacing={4}>
-                    {recentVillages.map((village) => (
-                      <RecentVillageCard key={village.name} village={village} />
-                    ))}
-                  </VStack>
+                {breakpointValue === "base" && activeTab === "Village" && (
+                  <Box>
+                    <LeftVillageItems
+                      village={me?.comesFrom}
+                      badgeShow={false}
+                    />
+                    <Text fontSize="20px" mt={12} mb={6}>
+                      Recently developed
+                    </Text>
+                    <VStack spacing={4}>
+                      {recentVillages.map((village) => (
+                        <RecentVillageCard
+                          key={village.name}
+                          village={village}
+                        />
+                      ))}
+                    </VStack>
 
                     {/* <Link href={`https://www.fundsurfer.com/crowdfund/villageibook?token=975ab55f35fefbd176774045369a62ba`} passHref={true}>
                       <Button
@@ -234,31 +244,34 @@ const Feed: NextPage = () => {
                         Sponsor VillageIbook
                       </Button>
                     </Link> */}
-                </Box>
-              )}
-              {breakpointValue === "base" && activeTab === "Graduates" && (
-                <Box>
-                  <GraduatesLocationStatCard
-                    location={me?.comesFrom}
-                    condition="universityCountries"
-                    direction="column"
-                  />
-                  <Box mt={12}>
-                    <VideoBox videoUrl={""} />
                   </Box>
+                )}
+                {breakpointValue === "base" && activeTab === "Graduates" && (
+                  <Box>
+                    <GraduatesLocationStatCard
+                      location={me?.comesFrom}
+                      condition="universityCountries"
+                      direction="column"
+                    />
+                    <Box mt={12}>
+                      <VideoBox videoUrl={""} />
+                    </Box>
 
-                  <Text fontSize="20px" mt={12} mb={6}>
-                    Recently joined
-                  </Text>
-                  <VStack spacing={4}>
-                    {recentUsers.map((user) => (
-                      <RecentUserCard key={user.uuid} user={user} />
-                    ))}
-                  </VStack>
-                </Box>
-              )} </> :
-              <ScaleLoader color={color} loading={loading} css={override} /> }
-            </Box>
+                    <Text fontSize="20px" mt={12} mb={6}>
+                      Recently joined
+                    </Text>
+                    <VStack spacing={4}>
+                      {recentUsers.map((user) => (
+                        <RecentUserCard key={user.uuid} user={user} />
+                      ))}
+                    </VStack>
+                  </Box>
+                )}{" "}
+              </>
+            ) : (
+              <ScaleLoader color={color} loading={loading} css={override} />
+            )}
+          </Box>
 
           {breakpointValue === "md" && (
             <Box
@@ -282,7 +295,6 @@ const Feed: NextPage = () => {
                   <RecentUserCard key={user.uuid} user={user} />
                 ))}
               </VStack>
-
             </Box>
           )}
         </Flex>
@@ -296,15 +308,15 @@ const Feed: NextPage = () => {
 };
 
 <style jsx>
-{`
-  .back {
-    padding: 10px;
-    background-color: dodgerblue;
-    color: white;
-    margin: 10px;
-  }
-`}
-</style>
+  {`
+    .back {
+      padding: 10px;
+      background-color: dodgerblue;
+      color: white;
+      margin: 10px;
+    }
+  `}
+</style>;
 
 const TabsMobile: React.FC<{
   tabs: string[];
@@ -319,8 +331,9 @@ const TabsMobile: React.FC<{
             key={tab}
             w="full"
             py={4}
-            borderBottom={`${tab === props.activeTab ? "2px solid #553CFB" : ""
-              }`}
+            borderBottom={`${
+              tab === props.activeTab ? "2px solid #553CFB" : ""
+            }`}
             onClick={() => props.setActiveTab(tab)}
           >
             <Text

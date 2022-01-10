@@ -17,7 +17,7 @@ export const fetchMe = createAsyncThunk(
   "account/fetchMe",
   async (_, thunkAPI) => {
     try {
-      const myAccount = localStorage.getItem("myAccount");
+      const myAccount = localStorage.getItem("villageibookAccount");
       if (myAccount) {
         return JSON.parse(myAccount);
       }
@@ -27,7 +27,7 @@ export const fetchMe = createAsyncThunk(
         params: { endpoint: "/users/me.json", access_token },
       });
 
-      localStorage.setItem("myAccount", JSON.stringify(response.data));
+      localStorage.setItem("villageibookAccount", JSON.stringify(response.data));
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -77,7 +77,7 @@ export const submitStepOne = createAsyncThunk(
         }
       );
       
-      localStorage.setItem("myAccount", JSON.stringify(response.data));
+      localStorage.setItem("villageibookAccount", JSON.stringify(response.data));
       return response.data;
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });
@@ -120,7 +120,7 @@ export const submitStepTwo = createAsyncThunk(
         }
       );
 
-      localStorage.setItem("myAccount", JSON.stringify(response.data));
+      localStorage.setItem("villageibookAccount", JSON.stringify(response.data));
       return response.data;
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });

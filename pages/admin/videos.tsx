@@ -35,14 +35,18 @@ import VideoForm from "admin/components/VideoForm";
 
 import { getUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
+import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
 
 import { Village } from "types/schema";
 
 const Videos: NextPage = () => {
   const router = useRouter();
-  const { me, fetchMeData } = useFetchData();
-  const { videos, fetchVideosData } = useAdminFetchData();
+  const { me } = useFetchData();
+  const { fetchMeData } = useActionDispatch();
+  const { videos } = useAdminFetchData();
+  const { fetchVideosData } = useAdminActionDispatch();
 
   useEffect(() => {
     const access_token = getUserToken();

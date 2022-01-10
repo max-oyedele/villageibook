@@ -57,7 +57,8 @@ const AccountToEdit: NextPage = () => {
 
   const [activeStep, setActiveStep] = useState<number>(1);
 
-  const { me, step, accountError, fetchMeData } = useFetchData();
+  const { me, step, accountError } = useFetchData();
+  const { fetchMeData } = useActionDispatch();
 
   useEffect(() => {
     fetchMeData();
@@ -157,16 +158,17 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
     villages,
     universities,
     professions,
-    degrees: degreeStrs,
+    degrees: degreeStrs,  
+  } = useFetchData();
+  const {
     fetchCommonData,
     fetchRegionsData,
     fetchDistrictsData,
     fetchSubDistrictsData,
     fetchVillagesData,
     fetchMeData,
-  } = useFetchData();
-
-  const { submitStepOneData } = useActionDispatch();
+    submitStepOneData
+  } = useActionDispatch();
 
   const [firstName, setFirstName] = useState<string | null>(null);
   const [lastName, setLastName] = useState<string | null>(null);
