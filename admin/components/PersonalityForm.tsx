@@ -26,11 +26,13 @@ import { Personality, Village } from 'types/schema';
 const PersonalityForm: React.FC<{
     type: string,
     village: Village,
-    personality?: Personality
+    personality?: Personality,
+    isEdit: boolean
 }> = ({
     type,
     village,
-    personality
+    personality,
+    isEdit
 }) => {
         const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
         const toast = useToast();
@@ -46,7 +48,7 @@ const PersonalityForm: React.FC<{
         const [career, setCareer] = useState(personality?.career);
 
         const { error } = useAdminFetchData();
-        const { submitPersonalityData } = useAdminActionDispatch();
+        const { submitPersonalityData, submitPersonalityEditData } = useAdminActionDispatch();
 
         if (error) {
             !toast.isActive("personalityError") &&
@@ -102,7 +104,11 @@ const PersonalityForm: React.FC<{
                     };
 
                     actions.setSubmitting(true);
-                    await submitPersonalityData(params);
+                    if (!isEdit) {
+                        await submitPersonalityData(params);
+                    } else {
+                        await submitPersonalityEditData(params);
+                    }
                     actions.setSubmitting(false);
                 }}
             >

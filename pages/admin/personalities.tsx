@@ -39,7 +39,8 @@ import {
   useColorMode,
   useColorModeValue,
   useBreakpointValue,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from "@chakra-ui/react";
 
 import { FaWallet, FaGlobe, FaFile, FaShoppingCart, FaRegArrowAltCircleRight, FaRocket, FaThList } from "react-icons/fa";
@@ -63,7 +64,9 @@ const Personalities: NextPage = () => {
   const router = useRouter();
   const { me, fetchMeData } = useFetchData();
   const { personalities, fetchPersonalitiesData } = useAdminFetchData();
-  const { deleteData } = useAdminActionDispatch();
+  const { delStatus, addPersonality, editPersonality, deleteData, resetState } = useAdminActionDispatch();
+  const [isEdit, setIsEdit] = useState(false);
+  const toast = useToast();
 
   useEffect(() => {
     const access_token = getUserToken();
@@ -76,9 +79,74 @@ const Personalities: NextPage = () => {
 
   useEffect(() => {
     if(!me?.roles?.includes("ADMIN")){
-      router.push("/feed");
+      // router.push("/feed");
     }
   }, [me]);
+
+  useEffect(() => {
+    if (delStatus && delStatus.result == "ok") {
+      !toast.isActive("personalityDelete") &&
+        toast({
+          id: "personalityDelete",
+          title: "Data has been deleted.",
+          description: "Personalities data is deleleted",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+      if (village) {
+        fetchPersonalitiesData({ villageUuid: village.uuid })
+      }
+      else {
+        fetchPersonalitiesData(null);
+      }
+      resetState();
+    }
+  }, [delStatus]);
+
+  useEffect(() => {
+    if (addPersonality) {
+      !toast.isActive("personalityAdd") &&
+        toast({
+          id: "personalityAdd",
+          title: "Data has been added.",
+          description: "Personalities data is added",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+      modal.onClose()
+      if (village) {
+        fetchPersonalitiesData({ villageUuid: village.uuid })
+      }
+      else {
+        fetchPersonalitiesData(null);
+      }
+      resetState();
+    }
+  }, [addPersonality]);
+
+  useEffect(() => {
+    if (editPersonality) {
+      !toast.isActive("personalityEdit") &&
+        toast({
+          id: "personalityEdit",
+          title: "Data has been updated.",
+          description: "Personalities data is update",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+      modal.onClose()
+      if (village) {
+        fetchPersonalitiesData({ villageUuid: village.uuid })
+      }
+      else {
+        fetchPersonalitiesData(null);
+      }
+      resetState();
+    }
+  }, [addPersonality]);
 
   const [village, setVillage] = useState<Village>(null);
 
@@ -139,8 +207,8 @@ const Personalities: NextPage = () => {
           return (
             <HStack>
               {
-                !!village &&
-                <Button onClick={() => { setPersonality(row.original); modal.onOpen() }}>Edit</Button>
+                village &&
+                <Button onClick={() => { setPersonality(row.original); modal.onOpen(); setIsEdit(true); }}>Edit</Button>
               }
               <Button onClick={() => { setUuid(row.original.uuid); dialog.onOpen() }}>Delete</Button>
             </HStack>
@@ -148,7 +216,7 @@ const Personalities: NextPage = () => {
         }
       }
     ],
-    []
+    [village]
   )
 
   const [data, setData] = useState([])
@@ -172,7 +240,7 @@ const Personalities: NextPage = () => {
   const [uuid, setUuid] = useState(null);
   const [personality, setPersonality] = useState<Personality>(null);
   const onDelete = (uuid) => {
-    deleteData({ type: "stories", uuid });
+    deleteData({ type: "personalities", uuid });
     dialog.onClose();
   }
 
@@ -182,7 +250,7 @@ const Personalities: NextPage = () => {
 
         <VillageSearchBox setVillage={setVillage} />
         <Flex justifyContent={"flex-end"}>
-          <Button onClick={() => modal.onOpen()} isDisabled={!village}>Add Personality</Button>
+          <Button onClick={() => { modal.onOpen(); setIsEdit(false);}} isDisabled={!village}>Add Personality</Button>
         </Flex>
 
         <Table {...getTableProps()}>
@@ -231,7 +299,7 @@ const Personalities: NextPage = () => {
       >
         <ModalOverlay />
         <ModalContent m={0} p={6} bgColor="white">
-          <PersonalityForm type="add" village={village} personality={personality} />
+          <PersonalityForm type="add" village={village} personality={personality} isEdit={isEdit} />
         </ModalContent>
       </Modal>
 

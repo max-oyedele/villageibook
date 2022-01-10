@@ -218,6 +218,60 @@ export const submitPersonality = createAsyncThunk(
   }
 );
 
+export const submitEditPersonality = createAsyncThunk(
+  "admin/submitEditPersonality",
+  async (
+    params: {
+      name: string;
+      about?: string;
+      photo?: any;
+      video?: any;
+      dateOfBirth?: string;
+      dateOfDeath?: string;
+      educationLife?: string;
+      achievements?: string;
+      career?: string;
+      villageUuid: string;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const access_token = getUserToken();
+
+      const bodyFormData = new FormData();
+      bodyFormData.append("name", params.name);
+      bodyFormData.append("about", params.about);
+      bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
+      bodyFormData.append("hasPhotoName", params.photo?.name);
+      bodyFormData.append("hasPhotoDescription", params.photo?.description);
+      // bodyFormData.append("hasVideoUrl", params.video.avatar);
+
+      params.dateOfBirth &&
+        bodyFormData.append("dateOfBirth", params.dateOfBirth);
+      params.dateOfDeath &&
+        bodyFormData.append("dateOfDeath", params.dateOfDeath);
+      bodyFormData.append("educationLife", params.educationLife);
+      bodyFormData.append("achievements", params.achievements);
+      bodyFormData.append("career", params.career);
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/villages/${params.villageUuid}/HAS_PERSONALITY/personalities`,
+        bodyFormData,
+        {
+          headers: {
+            authorization: "Bearer " + access_token,
+            "content-type": `multipart/form-data`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.statusText);
+    }
+  }
+);
+
 export const submitInstitution = createAsyncThunk(
   "admin/submitInstitution",
   async (
@@ -328,6 +382,9 @@ const initialState: AdminState = {
   institutions: [],
   videos: [],
   users: [],
+  delStatus: null,
+  addPersonality: null,
+  editPersonality: null,
   error: null,
 };
 
@@ -336,6 +393,11 @@ export const adminSlice = createSlice({
   initialState: initialState,
   reducers: {
     reset: () => initialState,
+    init: (state) => {
+      state.delStatus = null;
+      state.addPersonality = null;
+      state.editPersonality = null;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchPosts.pending, (state) => {
@@ -428,9 +490,21 @@ export const adminSlice = createSlice({
     });
     builder.addCase(submitPersonality.fulfilled, (state, action) => {
       state.status = Status.IDLE;
-      // state.me = action.payload;
+      state.addPersonality = action.payload;
     });
     builder.addCase(submitPersonality.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(submitEditPersonality.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(submitEditPersonality.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.editPersonality = action.payload;
+    });
+    builder.addCase(submitEditPersonality.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });
@@ -458,7 +532,19 @@ export const adminSlice = createSlice({
       state.status = Status.IDLE;
       state.error = action.payload;
     });
+    builder.addCase(deleteObj.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(deleteObj.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.delStatus = action.payload;
+    });
+    builder.addCase(deleteObj.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
   },
 });
 
-export const { reset } = adminSlice.actions;
+export const { reset, init } = adminSlice.actions;
