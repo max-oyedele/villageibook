@@ -164,6 +164,47 @@ export const submitStory = createAsyncThunk(
   }
 );
 
+export const submitEditStory = createAsyncThunk(
+  "admin/submitEditStory",
+  async (
+    params: {
+      title: string;
+      content: string;
+      photo?: any;
+      video?: any;
+      villageUuid: string;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const access_token = getUserToken();
+
+      const bodyFormData = new FormData();
+      bodyFormData.append("title", params.title);
+      bodyFormData.append("content", params.content);
+      bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
+      bodyFormData.append("hasPhotoName", params.photo?.name);
+      bodyFormData.append("hasPhotoDescription", params.photo?.description);
+      // bodyFormData.append("hasVideoUrl", params.video?.avatar);
+
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/sotries/${params.villageUuid}`,
+        bodyFormData,
+        {
+          headers: {
+            authorization: "Bearer " + access_token,
+            "content-type": `multipart/form-data`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.statusText);
+    }
+  }
+);
+
 export const submitPersonality = createAsyncThunk(
   "admin/submitPersonality",
   async (
@@ -241,8 +282,8 @@ export const submitEditPersonality = createAsyncThunk(
       const bodyFormData = new FormData();
       bodyFormData.append("name", params.name);
       bodyFormData.append("about", params.about);
-      bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
-      bodyFormData.append("hasPhotoName", params.photo?.name);
+      // bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
+      // bodyFormData.append("hasPhotoName", params.photo?.name);
       bodyFormData.append("hasPhotoDescription", params.photo?.description);
       // bodyFormData.append("hasVideoUrl", params.video.avatar);
 
@@ -254,8 +295,8 @@ export const submitEditPersonality = createAsyncThunk(
       bodyFormData.append("achievements", params.achievements);
       bodyFormData.append("career", params.career);
 
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/villages/${params.villageUuid}/HAS_PERSONALITY/personalities`,
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/personalities/${params.villageUuid}/`,
         bodyFormData,
         {
           headers: {
@@ -322,6 +363,56 @@ export const submitInstitution = createAsyncThunk(
   }
 );
 
+export const submitEditInstitution = createAsyncThunk(
+  "admin/submitEditInstitution",
+  async (
+    params: {
+      name: string;
+      photo?: any;
+      video?: any;
+      yearEstablished?: string;
+      address?: string;
+      email?: string;
+      phone?: string;
+      history?: string;
+      villageUuid: string;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const access_token = getUserToken();
+
+      const bodyFormData = new FormData();
+      bodyFormData.append("name", params.name);
+      bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
+      bodyFormData.append("hasPhotoName", params.photo?.name);
+      bodyFormData.append("hasPhotoDescription", params.photo?.description);
+      // bodyFormData.append("hasVideoUrl", params.video.avatar);
+
+      bodyFormData.append("yearEstablished", params.yearEstablished);
+      bodyFormData.append("address", params.address);
+      bodyFormData.append("email", params.email);
+      bodyFormData.append("phone", params.phone);
+      bodyFormData.append("history", params.history);
+
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/institutions/${params.villageUuid}`,
+        bodyFormData,
+        {
+          headers: {
+            authorization: "Bearer " + access_token,
+            "content-type": `multipart/form-data`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.statusText);
+    }
+  }
+);
+
 export const submitVideo = createAsyncThunk(
   "admin/submitVideo",
   async (
@@ -341,6 +432,41 @@ export const submitVideo = createAsyncThunk(
 
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/villages/${params.villageUuid}/HAS_VIDEO/videos`,
+        bodyFormData,
+        {
+          headers: {
+            authorization: "Bearer " + access_token,
+            "content-type": `multipart/form-data`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.statusText);
+    }
+  }
+);
+
+export const submitEditVideo = createAsyncThunk(
+  "admin/submitEditVideo",
+  async (
+    params: {
+      video: any;
+      villageUuid: string;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const access_token = getUserToken();
+
+      const bodyFormData = new FormData();
+      bodyFormData.append("name", params.video.name);
+      bodyFormData.append("description", params.video.description);
+      bodyFormData.append("hasVideoUrl", params.video.avatar);
+
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/videos/${params.villageUuid}`,
         bodyFormData,
         {
           headers: {
@@ -385,6 +511,12 @@ const initialState: AdminState = {
   delStatus: null,
   addPersonality: null,
   editPersonality: null,
+  addStory: null,
+  editStory: null,
+  addInstitution: null,
+  editInstitution: null,
+  addVideo: null,
+  editVideo: null,
   error: null,
 };
 
@@ -397,6 +529,12 @@ export const adminSlice = createSlice({
       state.delStatus = null;
       state.addPersonality = null;
       state.editPersonality = null;
+      state.addStory = null;
+      state.editStory = null;
+      state.addInstitution = null;
+      state.editInstitution = null;
+      state.addVideo = null;
+      state.editVideo = null;
     }
   },
   extraReducers: (builder) => {
@@ -478,9 +616,21 @@ export const adminSlice = createSlice({
     });
     builder.addCase(submitStory.fulfilled, (state, action) => {
       state.status = Status.IDLE;
-      // state.me = action.payload;
+      state.addStory = action.payload;
     });
     builder.addCase(submitStory.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(submitEditStory.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(submitEditStory.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.editStory = action.payload;
+    });
+    builder.addCase(submitEditStory.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });
@@ -514,9 +664,21 @@ export const adminSlice = createSlice({
     });
     builder.addCase(submitInstitution.fulfilled, (state, action) => {
       state.status = Status.IDLE;
-      // state.me = action.payload;
+      state.addInstitution = action.payload;
     });
     builder.addCase(submitInstitution.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(submitEditInstitution.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(submitEditInstitution.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.editInstitution = action.payload;
+    });
+    builder.addCase(submitEditInstitution.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });
@@ -526,9 +688,21 @@ export const adminSlice = createSlice({
     });
     builder.addCase(submitVideo.fulfilled, (state, action) => {
       state.status = Status.IDLE;
-      // state.me = action.payload;
+      state.addVideo = action.payload;
     });
     builder.addCase(submitVideo.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(submitEditVideo.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(submitEditVideo.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.editVideo = action.payload;
+    });
+    builder.addCase(submitEditVideo.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

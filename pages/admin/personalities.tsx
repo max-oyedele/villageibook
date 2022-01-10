@@ -142,7 +142,7 @@ const Personalities: NextPage = () => {
         toast({
           id: "personalityEdit",
           title: "Data has been updated.",
-          description: "Personalities data is update",
+          description: "Personalities data is updated.",
           status: "success",
           duration: 3000,
           isClosable: true,

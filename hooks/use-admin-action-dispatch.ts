@@ -10,10 +10,13 @@ import {
   fetchVideos,
   fetchUsers,
   submitStory,
+  submitEditStory,
   submitPersonality,
   submitEditPersonality,
   submitInstitution,
+  submitEditInstitution,
   submitVideo,
+  submitEditVideo,
   deleteObj,
 } from "rdx/slices/admin";
 import { init as resetFunc } from 'rdx/slices/admin';
@@ -21,7 +24,17 @@ import { init as resetFunc } from 'rdx/slices/admin';
 const useAdminActionDispatch = () => {
   const dispatch: MyThunkDispatch = useDispatch();
 
-  const { delStatus, addPersonality, editPersonality } = useSelector(
+  const {
+    delStatus,
+    addPersonality,
+    editPersonality,
+    addStory,
+    editStory,
+    addInstitution,
+    editInstitution,
+    addVideo,
+    editVideo
+  } = useSelector(
     (state: OurStore) => state.adminReducer
   );
      
@@ -47,6 +60,9 @@ const useAdminActionDispatch = () => {
   const submitStoryData = async (params) => {
     await dispatch(submitStory(params));
   };
+  const submitStoryEditData = async (params) => {
+    await dispatch(submitEditStory(params));
+  };
   const submitPersonalityData = async (params) => {
     await dispatch(submitPersonality(params));
   }
@@ -56,9 +72,14 @@ const useAdminActionDispatch = () => {
   const submitInstitutionData = async (params) => {
     await dispatch(submitInstitution(params));
   };
-
+  const submitInstitutionEditData = async (params) => {
+    await dispatch(submitEditInstitution(params));
+  };
   const submitVideoData = async (params) => {
     await dispatch(submitVideo(params));
+  };
+  const submitVideoEditData = async (params) => {
+    await dispatch(submitEditVideo(params));
   };
 
   const deleteData = async (params) => {
@@ -73,6 +94,12 @@ const useAdminActionDispatch = () => {
     delStatus,
     addPersonality,
     editPersonality,
+    addStory,
+    editStory,
+    addInstitution,
+    editInstitution,
+    addVideo,
+    editVideo,
     fetchPostsData,
     fetchStoriesData,
     fetchPersonalitiesData,
@@ -80,10 +107,13 @@ const useAdminActionDispatch = () => {
     fetchVideosData,
     fetchUsersData,
     submitStoryData,
+    submitStoryEditData,
     submitPersonalityData,
     submitPersonalityEditData,
     submitInstitutionData,
+    submitInstitutionEditData,
     submitVideoData,
+    submitVideoEditData,
     deleteData,   
     resetState 
   };

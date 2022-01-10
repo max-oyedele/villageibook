@@ -26,11 +26,13 @@ import { Video, Village } from 'types/schema';
 const VideoForm: React.FC<{
     type: string,
     village: Village,
-    video?: Video
+    video?: Video,
+    isEdit: boolean
 }> = ({
     type,
     village,
-    video
+    video,
+    isEdit
 }) => {
         const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
         const toast = useToast();
@@ -41,7 +43,7 @@ const VideoForm: React.FC<{
         const [videoUrl, setVideoUrl] = useState(video?.url);
 
         const { error } = useAdminFetchData();
-        const { submitVideoData } = useAdminActionDispatch();
+        const { submitVideoData, submitVideoEditData } = useAdminActionDispatch();
 
         if (error) {
             !toast.isActive("videoError") &&
@@ -76,7 +78,11 @@ const VideoForm: React.FC<{
                     };
 
                     actions.setSubmitting(true);
-                    await submitVideoData(params);
+                    if (!isEdit) {
+                        await submitVideoData(params);
+                    } else {
+                        await submitVideoEditData(params);
+                    }
                     actions.setSubmitting(false);
                 }}
             >

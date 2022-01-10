@@ -39,7 +39,8 @@ import {
   useColorMode,
   useColorModeValue,
   useBreakpointValue,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from "@chakra-ui/react";
 
 import { FaWallet, FaGlobe, FaFile, FaShoppingCart, FaRegArrowAltCircleRight, FaRocket, FaThList } from "react-icons/fa";
@@ -50,6 +51,7 @@ import ImageBox from "components/widgets/ImageBox";
 import VideoBox from "components/widgets/VideoBox";
 import VillageSearchBox from "admin/components/VillageSearchBox";
 import InstitutionForm from "admin/components/InstitutionForm";
+import DeleteDialog from "admin/components/DeleteDialog";
 
 import { getUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
@@ -57,14 +59,16 @@ import useActionDispatch from "hooks/use-action-dispatch";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
 
-import { Village } from "types/schema";
+import { Institution, Village } from "types/schema";
 
 const Institutions: NextPage = () => {
   const router = useRouter();
   const { me } = useFetchData();
   const { fetchMeData } = useActionDispatch();
   const { institutions } = useAdminFetchData();
-  const { fetchInstitutionsData } = useAdminActionDispatch();
+  const { delStatus, addInstitution, editInstitution, deleteData, resetState, fetchInstitutionsData } = useAdminActionDispatch();
+  const [isEdit, setIsEdit] = useState(false);
+  const toast = useToast();
 
   useEffect(() => {
     const access_token = getUserToken();
@@ -80,6 +84,71 @@ const Institutions: NextPage = () => {
       router.push("/feed");
     }
   }, [me]);
+
+  useEffect(() => {
+    if (delStatus && delStatus.result == "ok") {
+      !toast.isActive("institutionsDelete") &&
+        toast({
+          id: "institutionsDelete",
+          title: "Data has been deleted.",
+          description: "Institutions data is deleleted",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+      resetState();
+      if (village) {
+        fetchInstitutionsData({ villageUuid: village.uuid })
+      }
+      else {
+        fetchInstitutionsData(null);
+      }
+    }
+  }, [delStatus]);
+
+  useEffect(() => {
+    if (addInstitution) {
+      !toast.isActive("InstitutionAdd") &&
+        toast({
+          id: "InstitutionAdd",
+          title: "Data has been added.",
+          description: "Institutions data is added",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+      modal.onClose()
+      if (village) {
+        fetchInstitutionsData({ villageUuid: village.uuid })
+      }
+      else {
+        fetchInstitutionsData(null);
+      }
+      resetState();
+    }
+  }, [addInstitution]);
+
+  useEffect(() => {
+    if (editInstitution) {
+      !toast.isActive("InstitutionEdit") &&
+        toast({
+          id: "InstitutionEdit",
+          title: "Data has been updated.",
+          description: "Institutions data is updated.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+      modal.onClose()
+      if (village) {
+        fetchInstitutionsData({ villageUuid: village.uuid })
+      }
+      else {
+        fetchInstitutionsData(null);
+      }
+      resetState();
+    }
+  }, [editInstitution]);
 
   const [village, setVillage] = useState<Village>(null);
 
@@ -129,8 +198,38 @@ const Institutions: NextPage = () => {
         Header: 'History',
         accessor: 'history'
       },
+      {
+        Header: 'Action',
+        accessor: 'action',
+        Cell: function ActionItem({ row }) {
+          return (
+            <HStack>
+              {
+                village &&
+                <Button
+                  onClick={() => {
+                    setInstitution(row.original);
+                    modal.onOpen();
+                    setIsEdit(true);
+                  }}
+                >
+                  Edit
+                </Button>
+              }
+              <Button
+                onClick={() => {
+                  setUuid(row.original.uuid);
+                  dialog.onOpen();
+                }}
+              >
+                Delete
+              </Button>
+            </HStack>
+          )
+        }
+      }
     ],
-    []
+    [village]
   )
 
   const [data, setData] = useState([])
@@ -155,14 +254,23 @@ const Institutions: NextPage = () => {
   } = tableInstance
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const modal = useDisclosure();
+  const dialog = useDisclosure();
+
+  const [uuid, setUuid] = useState(null);
+  const [institution, setInstitution] = useState<Institution>(null);
+
+  const onDelete = (uuid) => {
+    deleteData({ type: "institutions", uuid });
+    dialog.onClose();
+  }
 
   return (
     <Fragment>
       <Layout>
         <VillageSearchBox setVillage={setVillage} />
         <Flex justifyContent={"flex-end"}>
-          <Button onClick={() => onOpen()} isDisabled={!village}>Add Institution</Button>
+          <Button onClick={() => modal.onOpen()} isDisabled={!village}>Add Institution</Button>
         </Flex>
 
         <Table {...getTableProps()}>
@@ -206,14 +314,27 @@ const Institutions: NextPage = () => {
         closeOnOverlayClick={true}
         isCentered
         size={breakpointValue === "base" ? "full" : "2xl"}
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={modal.isOpen}
+        onClose={modal.onClose}
       >
         <ModalOverlay />
         <ModalContent m={0} p={6} bgColor="white">
-          <InstitutionForm type="add" village={village} />
+          <InstitutionForm
+            type="add"
+            village={village}
+            institution={institution}
+            isEdit={isEdit}
+          />
         </ModalContent>
       </Modal>
+      
+      <DeleteDialog
+        uuid={uuid}
+        isOpen={dialog.isOpen}
+        onClose={dialog.onClose}
+        onConfirm={onDelete}
+      />
+
     </Fragment>
   );
 };
