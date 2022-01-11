@@ -16,7 +16,7 @@ import {
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 
-import AvatarUpload from 'admin/components/AvatarUpload';
+import VideoUpload from 'admin/components/VideoUpload';
 import InputBox from 'components/widgets/InputBox';
 
 import useAdminFetchData from 'hooks/use-admin-fetch-data';
@@ -40,7 +40,6 @@ const VideoForm: React.FC<{
         const [name, setName] = useState(video?.name);                
         const [description, setDescription] = useState(video?.description);
         const [avatar, setAvatar] = useState(null);
-        const [videoUrl, setVideoUrl] = useState(video?.url);
 
         const { error } = useAdminFetchData();
         const { submitVideoData, submitVideoEditData } = useAdminActionDispatch();
@@ -50,7 +49,7 @@ const VideoForm: React.FC<{
                 toast({
                     id: "videoError",
                     title: "Failed! Try again.",
-                    description: error.message,
+                    description: "Api error.",
                     status: "error",
                     duration: 3000,
                     isClosable: true,
@@ -116,7 +115,7 @@ const VideoForm: React.FC<{
                             />
                             <Box w="full" border="1px" borderColor="gray.200" borderRadius="4px" p={4}>
                                 <Center>
-                                    <AvatarUpload setAvatar={setAvatar} />
+                                    <VideoUpload setAvatar={setAvatar} />
                                 </Center>                                
                             </Box>
                         </VStack>

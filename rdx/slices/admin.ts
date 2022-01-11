@@ -428,10 +428,10 @@ export const submitVideo = createAsyncThunk(
       const bodyFormData = new FormData();
       bodyFormData.append("name", params.video.name);
       bodyFormData.append("description", params.video.description);
-      bodyFormData.append("hasVideoUrl", params.video.avatar);
+      bodyFormData.append("url", params.video.avatar);
 
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/villages/${params.villageUuid}/HAS_VIDEO/videos`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/locations/${params.villageUuid}/HAS_MEDIA/videos`,
         bodyFormData,
         {
           headers: {
@@ -466,7 +466,7 @@ export const submitEditVideo = createAsyncThunk(
       bodyFormData.append("hasVideoUrl", params.video.avatar);
 
       const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/videos/${params.villageUuid}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/locations/${params.villageUuid}/HAS_MEDIA/videos`,
         bodyFormData,
         {
           headers: {
