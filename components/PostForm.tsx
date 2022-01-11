@@ -55,10 +55,9 @@ const PostForm: React.FC = () => {
   };
 
   const handlePost = async () => {
-    console.log("content", content);
+    console.log("content", content.replace(/(?:\r\n|\r|\n)/g, '<br>'));
     console.log("picture", picture);
     console.log("video", video);
-
     const params = {
       content,
       picture,
@@ -69,16 +68,6 @@ const PostForm: React.FC = () => {
   };
 
   if (postStatus === Status.SUCCESS) {
-    !toast.isActive("postSuccess") &&
-      toast({
-        id: "postSuccess",
-        title: "Successfully Posted.",
-        description: "",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-
       setTimeout(()=>{
         resetPost();
         setContent("");

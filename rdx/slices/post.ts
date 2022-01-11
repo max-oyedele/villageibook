@@ -54,6 +54,7 @@ export const submitPost = createAsyncThunk(
 const initialState: PostState = {
   status: Status.IDLE,
   error: null,
+  addPost: null
 };
 
 export const postSlice = createSlice({
@@ -69,6 +70,7 @@ export const postSlice = createSlice({
     });
     builder.addCase(submitPost.fulfilled, (state, action) => {
       state.status = Status.SUCCESS;      
+      state.addPost = action.payload;      
     });
     builder.addCase(submitPost.rejected, (state, action) => {
       state.status = Status.IDLE;
