@@ -94,7 +94,7 @@ const Personalities: NextPage = () => {
   }, [me]);
 
   useEffect(() => {
-    if (delStatus && delStatus.result == "ok") {
+    if (delStatus && delStatus == "ok") {
       !toast.isActive("personalityDelete") &&
         toast({
           id: "personalityDelete",

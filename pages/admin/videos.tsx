@@ -69,7 +69,7 @@ const Videos: NextPage = () => {
   }, [me]);
 
   useEffect(() => {
-    if (delStatus && delStatus.result == "ok") {
+    if (delStatus && delStatus == "ok") {
       !toast.isActive("VideoDelete") &&
         toast({
           id: "VideoDelete",

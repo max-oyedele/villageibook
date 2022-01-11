@@ -492,7 +492,7 @@ export const deleteObj = createAsyncThunk(
       const response = await axios.delete(`/api/entry`, {
         params: { endpoint, access_token },
       });
-      return response.data;
+      return response.data.result;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }

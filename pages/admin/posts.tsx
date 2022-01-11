@@ -74,7 +74,7 @@ const Posts: NextPage = () => {
   }, [me]);
 
   useEffect(() => {
-    if (delStatus && delStatus.result == "ok") {
+    if (delStatus && delStatus == "ok") {
       !toast.isActive("PostDelete") &&
         toast({
           id: "PostDelete",

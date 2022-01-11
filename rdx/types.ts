@@ -70,6 +70,7 @@ export interface ViewState {
 export interface PostState {
   status: Status;
   error: SerializedError;
+  addPost: null;
 }
 export interface FeedPageState {
   status: Status;
@@ -111,4 +112,13 @@ export interface AdminState {
   videos: Video[];
   users: User[];
   error?: SerializedError;
+  delStatus: string;
+  addPersonality: null;
+  editPersonality: null;
+  addStory: null;
+  editStory: null;
+  addInstitution: null;
+  editInstitution: null;
+  addVideo: null;
+  editVideo: null;
 }

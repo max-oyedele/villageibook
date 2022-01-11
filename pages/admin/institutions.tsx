@@ -86,7 +86,7 @@ const Institutions: NextPage = () => {
   }, [me]);
 
   useEffect(() => {
-    if (delStatus && delStatus.result == "ok") {
+    if (delStatus && delStatus == "ok") {
       !toast.isActive("institutionsDelete") &&
         toast({
           id: "institutionsDelete",
