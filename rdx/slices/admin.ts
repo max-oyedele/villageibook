@@ -94,7 +94,7 @@ export const fetchVideos = createAsyncThunk(
       const access_token = getUserToken();
       let endpoint = "";
       if (params?.villageUuid)
-        endpoint += `/villages/${params.villageUuid}/HAS_VIDEO`;
+        endpoint += `/villages/${params.villageUuid}/HAS_MEDIA`;
       endpoint += `/videos.json`;
 
       const response = await axios.get("/api/entry", {
