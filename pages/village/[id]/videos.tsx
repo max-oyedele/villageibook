@@ -60,20 +60,27 @@ const Videos: NextPage = () => {
     }
   }, [vid]);
 
-  if (villageVideos && loading) {
-    setLoading(false);
-    setItemOffset(0);
-  }
+  useEffect(() => {
+    if (villageVideos != null && villageVideos['videos'].length > 0) {
+      setLoading(false);
+      setItemOffset(0);
+    } else if (villageVideos != null && villageVideos['videos'].length == 0) {
+      setLoading(false);
+      setPageData([]);
+    }
+  }, [villageVideos && villageVideos['videos']]);
 
   const handlePageClicked = event => {
-    const newOffset = (event.selected * itemsPerPage) % villageVideos.length;
+    const newOffset = (event.selected * itemsPerPage) % villageVideos['videos'].length;
     setItemOffset(newOffset);
   };
   
   useEffect(() => {
-    const endOffset = itemOffset + itemsPerPage;
-    setPageData(villageVideos.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(villageVideos.length / itemsPerPage));
+    if (villageVideos != null && villageVideos['videos'].length > 0) {
+      const endOffset = itemOffset + itemsPerPage;
+      setPageData(villageVideos['videos'].slice(itemOffset, endOffset));
+      setPageCount(Math.ceil(villageVideos['videos'].length / itemsPerPage));
+    }
   }, [itemOffset, itemsPerPage]);
 
   return (
@@ -113,17 +120,17 @@ const Videos: NextPage = () => {
                   {pageData.map((video) => (
                     <VideoCard key={video.id} video={video} />
                   ))}
+                  {pageData?.length == 0 && (
+                    <Alert message="There is no video to be displayed." />
+                  )}
                 </SimpleGrid>
               )}
-              {pageData?.length > 0 && (
+              { villageVideos && villageVideos['videos'].length > itemsPerPage && 
                 <Paginate 
-                handlePageClick={handlePageClicked}
-                pageCount={pageCount}
-              />
-              )}
-              {pageData?.length == 0 && (
-                <Alert message="There is no video to be displayed." />
-              )}
+                  handlePageClick={handlePageClicked}
+                  pageCount={pageCount}
+                />
+              }
             </Box> :
           <ScaleLoader color={color} loading={loading} css={override} /> }
         </Flex>

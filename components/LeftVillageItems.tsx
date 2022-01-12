@@ -84,19 +84,19 @@ const LeftVillageItems: React.FC<{ village: Village, badgeShow?: boolean }> = ({
   const getItemDataLength = (item) => {
     switch (item) {
       case "users":
-        return villageUsers.length;
+        return villageUsers && villageUsers['users'].length;
       // case "graduates":
       //   return villageGraduates.length;
       case "stories":
-        return villageStories.length;
+        return villageStories && villageStories['stories'].length;
       case "personalities":
-        return villagePersonalities.length;
+        return villagePersonalities && villagePersonalities['personalities'].length;
       case "institutions":
-        return villageInstitutions.length;
+        return villageInstitutions && villageInstitutions['institutions'].length;
       case "videos":
-        return villageVideos.length;
+        return villageVideos && villageVideos['videos'].length;
       case "photos":
-        return villagePhotos.length;
+        return villagePhotos && villagePhotos['photos'].length;
       default:
         return 0
     }

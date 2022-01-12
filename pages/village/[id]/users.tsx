@@ -59,20 +59,27 @@ const Users: NextPage = () => {
     }
   }, [vid]);
   
-  if (villageUsers && loading) {
-    setLoading(false);
-    setItemOffset(0);
-  }
+  useEffect(() => {
+    if (villageUsers != null && villageUsers['users'].length > 0) {
+      setLoading(false);
+      setItemOffset(0);
+    } else if (villageUsers != null && villageUsers['users'].length == 0) {
+      setLoading(false);
+      setPageData([]);
+    }
+  }, [villageUsers && villageUsers['users']]);
 
   const handlePageClicked = event => {
-    const newOffset = (event.selected * itemsPerPage) % villageUsers.length;
+    const newOffset = (event.selected * itemsPerPage) % villageUsers['users'].length;
     setItemOffset(newOffset);
   };
   
   useEffect(() => {
-    const endOffset = itemOffset + itemsPerPage;
-    setPageData(villageUsers.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(villageUsers.length / itemsPerPage));
+    if (villageUsers != null && villageUsers['users'].length > 0) {
+      const endOffset = itemOffset + itemsPerPage;
+      setPageData(villageUsers['users'].slice(itemOffset, endOffset));
+      setPageCount(Math.ceil(villageUsers['users'].length / itemsPerPage));
+    }
   }, [itemOffset, itemsPerPage]);
 
   return (
@@ -107,10 +114,12 @@ const Users: NextPage = () => {
                   <Alert message="There is no user to be displayed." />
                 )}
               </VStack>
-              <Paginate 
-                handlePageClick={handlePageClicked}
-                pageCount={pageCount}
-              />
+              { villageUsers && villageUsers['users'].length > itemsPerPage && 
+                <Paginate 
+                  handlePageClick={handlePageClicked}
+                  pageCount={pageCount}
+                />
+              }
             </Box> :
           <ScaleLoader color={color} loading={loading} css={override} /> }
         </Flex>
