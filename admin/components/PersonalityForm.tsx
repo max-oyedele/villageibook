@@ -90,7 +90,6 @@ const PersonalityForm: React.FC<{
                 enableReinitialize={true}
                 validationSchema={validationSchema}
                 onSubmit={async (values, actions) => {
-                    // console.log({ values, actions });
                     const params = {
                         villageUuid: village.uuid,
                         name,

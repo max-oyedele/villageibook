@@ -188,7 +188,6 @@ const AccountToRegister: NextPage = () => {
           enableReinitialize={true}
           validationSchema={accountSchema}
           onSubmit={async (values, actions) => {
-            // console.log({ values, actions });
             const params = {
               firstName: me.firstName,
               lastName: me.lastName,

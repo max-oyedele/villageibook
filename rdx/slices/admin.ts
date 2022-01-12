@@ -132,7 +132,6 @@ export const fetchPmusers = createAsyncThunk(
       const response = await axios.get("/api/entry", {
         params: { endpoint, access_token },
       });
-      console.log("pmusers = ", response.data['premium-users'])
       return response.data['premium-users'];
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });

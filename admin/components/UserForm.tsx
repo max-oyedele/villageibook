@@ -40,7 +40,6 @@ const UserForm: React.FC<{
     const { me } = useFetchData();
     const { submitStepTwoData } = useActionDispatch();
 
-    console.log("user = ", user)
     const [about, setAbout] = useState(user.about);
     const [avatar, setAvatar] = useState(user.avatar);
     const [id, setId] = useState(user.uuid);

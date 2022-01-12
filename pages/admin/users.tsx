@@ -82,7 +82,6 @@ const Personalities: NextPage = () => {
     const access_token = getUserToken();
     if (access_token) {
       fetchMeData();
-      console.log("ddddddddddddddddddddddddd")
       fetchPmusersData();
     } else {
       router.push("/home");
@@ -167,7 +166,6 @@ const Personalities: NextPage = () => {
         Header: 'User',
         accessor: 'user',
         Cell: function UserItem({ row }) {
-          console.log("row = ", row)
           return (
             <VStack>
               <Avatar src={row.original.avatar} size="sm" />
@@ -258,7 +256,6 @@ const Personalities: NextPage = () => {
   const [data, setData] = useState([]);
   const tableInstance = useTable({ columns, data });
   useEffect(() => {
-    console.log("pmusers = ", pmusers)
     setData(pmusers);
   }, [pmusers]);
 

@@ -70,7 +70,6 @@ const VideoForm: React.FC<{
                 enableReinitialize={true}
                 validationSchema={validationSchema}
                 onSubmit={async (values, actions) => {
-                    // console.log({ values, actions });
                     const params = {
                         villageUuid: village.uuid,                        
                         video: { avatar, name, description },

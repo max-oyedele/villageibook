@@ -55,9 +55,6 @@ const PostForm: React.FC = () => {
   };
 
   const handlePost = async () => {
-    console.log("content", content.replace(/(?:\r\n|\r|\n)/g, '<br>'));
-    console.log("picture", picture);
-    console.log("video", video);
     const params = {
       content,
       picture,
