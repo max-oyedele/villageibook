@@ -37,8 +37,8 @@ const villageItems = [
   },
   {
     id: 2,
-    name: "Stories",
-    value: "stories",
+    name: "Society",
+    value: "society",
     img: "/icons/village-story.svg",
     path: "stories",
     activeBgColor: "#F4F4FB",
