@@ -155,7 +155,7 @@ const Videos: NextPage = () => {
         accessor: 'url',
         Cell: function VideoItem({ row }) {
           return (
-            <Box w={40}>
+            <Box>
               <VideoBox videoUrl={row.original.url} />
             </Box>
           );
@@ -283,7 +283,7 @@ const Videos: NextPage = () => {
           <VideoForm
             type="add"
             village={village}
-            video={video}
+            video={isEdit ? video : null}
             isEdit={isEdit}
           />
         </ModalContent>

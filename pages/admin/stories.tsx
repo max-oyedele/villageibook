@@ -298,7 +298,7 @@ const Stories: NextPage = () => {
           <StoryForm
             type="add"
             village={village}
-            story={story}
+            story={isEdit ? story : null}
             isEdit={isEdit}
           />
         </ModalContent>
