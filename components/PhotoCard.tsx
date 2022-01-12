@@ -13,31 +13,22 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-import VideoBox from "components/widgets/VideoBox";
+import ImageBox from "components/widgets/ImageBox";
 import { Video } from "types/data";
 
-const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
+const PhotoCard: React.FC<{ photo: Video }> = ({ photo }) => {
   const router = useRouter();
   const { pathname } = router;
-  console.log("video = ", video);
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   return (
     <Fragment>
       <Flex w="full" flexDirection="column">
-        <VideoBox videoUrl={video.url} />
-        <Box mt={4}>
-          <Text fontSize="15px" color="primary" textTransform="capitalize">
-            {video.name}
-          </Text>
-          <Text fontSize="12px" color="GrayText" textTransform="capitalize">
-            {video.description}
-          </Text>
-        </Box>
+        <ImageBox imageUrl={photo.url} />
       </Flex>
     </Fragment>
   );
 };
 
-export default VideoCard;
+export default PhotoCard;

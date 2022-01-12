@@ -38,6 +38,7 @@ const useFetchData = () => {
     villagePersonalities,
     villageInstitutions,
     villageVideos,
+    villagePhotos,
   } = useSelector((state: OurStore) => state.villagePageReducer);
 
   const { graduateStatsByCondition, totalGraduateStats } = useSelector((state: OurStore) => state.graduatePageReducer)
@@ -79,6 +80,7 @@ const useFetchData = () => {
     villagePersonalities,
     villageInstitutions,
     villageVideos,    
+    villagePhotos    
   };
 };
 

@@ -60,7 +60,7 @@ const Story: NextPage = () => {
     }
   }, [vid])
 
-  if (villageStories && villageStories.length > 0 && loading) {
+  if (villageStories && loading) {
     setLoading(false);
     setItemOffset(0);
   }

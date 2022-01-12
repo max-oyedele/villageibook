@@ -123,6 +123,27 @@ export const fetchVillageVideos = createAsyncThunk(
   }
 );
 
+export const fetchVillagePhotos = createAsyncThunk(
+  "villagePage/fetchVillagePhotos",
+  async (params: any, thunkAPI) => {
+    try {
+      const access_token = getUserToken();
+      // const endpoint = `/villages/${params?.villageUuid}/photos.json`;
+      let endpoint = "";
+      // if (params?.villageUuid)
+      //   endpoint += `/villages/${params.villageUuid}/HAS_MEDIA`;
+      endpoint += `/photos.json`;
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
+      });
+      console.log("photos = ", response.data)
+      return response.data.photos; // data: {videos: []}
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
+  }
+);
+
 /************************************* */
 const initialState: VillagePageState = {
   status: Status.IDLE,
@@ -133,6 +154,7 @@ const initialState: VillagePageState = {
   villagePersonalities: [],
   villageInstitutions: [],
   villageVideos: [],
+  villagePhotos: [],
   error: null,
 };
 
@@ -224,6 +246,18 @@ export const villagePageSlice = createSlice({
       state.villageVideos = action.payload;
     });
     builder.addCase(fetchVillageVideos.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(fetchVillagePhotos.pending, (state) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(fetchVillagePhotos.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.villagePhotos = action.payload;
+    });
+    builder.addCase(fetchVillagePhotos.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

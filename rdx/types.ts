@@ -88,6 +88,7 @@ export interface VillagePageState {
   villagePersonalities: Personality[];
   villageInstitutions: Institution[];
   villageVideos: Video[];
+  villagePhotos: Video[];
   error?: SerializedError;
 }
 
@@ -110,6 +111,7 @@ export interface AdminState {
   personalities: Personality[];
   institutions: Institution[];
   videos: Video[];
+  photos: Video[];
   users: User[];
   pmusers: User[];
   error?: SerializedError;
