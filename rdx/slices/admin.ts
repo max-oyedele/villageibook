@@ -123,6 +123,23 @@ export const fetchUsers = createAsyncThunk(
   }
 );
 
+export const fetchPmusers = createAsyncThunk(
+  "admin/fetchPmusers",
+  async (_, thunkAPI) => {
+    try {
+      const access_token = getUserToken();
+      const endpoint = `/premium-users.json`;
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
+      });
+      console.log("pmusers = ", response.data['premium-users'])
+      return response.data['premium-users'];
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
+  }
+);
+
 export const submitStory = createAsyncThunk(
   "admin/submitStory",
   async (
@@ -508,6 +525,7 @@ const initialState: AdminState = {
   institutions: [],
   videos: [],
   users: [],
+  pmusers: [],
   delStatus: null,
   addPersonality: null,
   editPersonality: null,
@@ -517,7 +535,7 @@ const initialState: AdminState = {
   editInstitution: null,
   addVideo: null,
   editVideo: null,
-  error: null,
+  error: null
 };
 
 export const adminSlice = createSlice({
@@ -607,6 +625,18 @@ export const adminSlice = createSlice({
       state.users = action.payload;
     });
     builder.addCase(fetchUsers.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(fetchPmusers.pending, (state) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(fetchPmusers.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.pmusers = action.payload;
+    });
+    builder.addCase(fetchPmusers.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

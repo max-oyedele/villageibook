@@ -9,6 +9,7 @@ import {
   fetchPersonalities,
   fetchVideos,
   fetchUsers,
+  fetchPmusers,
   submitStory,
   submitEditStory,
   submitPersonality,
@@ -55,6 +56,9 @@ const useAdminActionDispatch = () => {
   };
   const fetchUsersData = async () => {
     await dispatch(fetchUsers());
+  };
+  const fetchPmusersData = async () => {
+    await dispatch(fetchPmusers());
   };
 
   const submitStoryData = async (params) => {
@@ -106,6 +110,7 @@ const useAdminActionDispatch = () => {
     fetchInstitutionsData,
     fetchVideosData,
     fetchUsersData,
+    fetchPmusersData,
     submitStoryData,
     submitStoryEditData,
     submitPersonalityData,

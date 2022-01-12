@@ -111,6 +111,7 @@ export interface AdminState {
   institutions: Institution[];
   videos: Video[];
   users: User[];
+  pmusers: User[];
   error?: SerializedError;
   delStatus: string;
   addPersonality: null;
