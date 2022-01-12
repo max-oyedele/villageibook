@@ -112,96 +112,138 @@ const UserView: NextPage = () => {
               </Flex>
             )}
 
-            <Box
-              w="full"
-              ml={breakpointValue === "base" ? 0 : "224px"}
-              bgColor="white"
-              borderRadius="8px"
-              border="1px"
-              borderColor="gray.300"
-            >
-              <Flex flexDirection="column" p={6}>
-                {breakpointValue === "base" && (
-                  <Flex flexDirection="column" alignItems="center" mb={6}>
-                    <Avatar
-                      src={user?.avatar}
-                      size="2xl"
-                      mb={6}
-                    />
+            {user?.roles?.includes("PREMIUM") && (
+              <Box
+                w="full"
+                ml={breakpointValue === "base" ? 0 : "224px"}
+                bgColor="white"
+                borderRadius="8px"
+                border="1px"
+                borderColor="gray.300"
+              >
+                <Flex flexDirection="column" p={6}>
+                  {breakpointValue === "base" && (
+                    <Flex flexDirection="column" alignItems="center" mb={6}>
+                      <Avatar
+                        src={user?.avatar}
+                        size="2xl"
+                        mb={6}
+                      />
 
-                    <Text fontSize="18px" textTransform="capitalize" mt={8}>
-                      {user.firstName} {user.lastName}
-                    </Text>
-                    <Text fontSize="13px" mt={4}>
-                      {user.email}
-                    </Text>
-                  </Flex>
-                )}
+                      <Text fontSize="18px" textTransform="capitalize" mt={8}>
+                        {user.firstName} {user.lastName}
+                      </Text>
+                      <Text fontSize="13px" mt={4}>
+                        {user.email}
+                      </Text>
+                    </Flex>
+                  )}
 
-                <Text fontSize="18px">Personal Info</Text>
-                <VStack
-                  w="full"
-                  spacing={2}
-                  divider={<Divider />}
-                  mt={6}
-                >
-                  <HStack w="full">
-                    <Box w="full" fontSize="13px" color="purpleTone">
-                      Living in
-                    </Box>
-                    <Box
+                  <Text fontSize="18px">Personal Info</Text>
+                  <SimpleGrid columns={{ base: 1, md: 2 }} mt={6}>
+                    <VStack
                       w="full"
-                      fontSize="13px"
-                      color="GrayText"
-                      textTransform="capitalize"
+                      spacing={2}
+                      divider={<Divider />}
+                      pr={3}
                     >
-                      {user?.livesIn.name}
-                    </Box>
-                  </HStack>
-                  <HStack w="full">
-                    <Box w="full" fontSize="13px" color="purpleTone">
-                      Comes from
-                    </Box>
-                    <Box
+                      <HStack w="full">
+                        <Box w="full" fontSize="13px" color="purpleTone">
+                          First name
+                        </Box>
+                        <Box
+                          w="full"
+                          fontSize="13px"
+                          color="GrayText"
+                          textTransform="capitalize"
+                        >
+                          {user?.firstName}
+                        </Box>
+                      </HStack>
+                      <HStack w="full">
+                        <Box w="full" fontSize="13px" color="purpleTone">
+                          Last name
+                        </Box>
+                        <Box
+                          w="full"
+                          fontSize="13px"
+                          color="GrayText"
+                          textTransform="capitalize"
+                        >
+                          {user?.lastName}
+                        </Box>
+                      </HStack>
+                      <HStack w="full">
+                        <Box w="full" fontSize="13px" color="purpleTone">
+                          Email
+                        </Box>
+                        <Box
+                          w="full"
+                          fontSize="13px"
+                          color="GrayText"
+                          textTransform="capitalize"
+                        >
+                          {user?.email}
+                        </Box>
+                      </HStack>
+                      <HStack w="full">
+                      </HStack>
+                    </VStack>
+                    <VStack
                       w="full"
-                      fontSize="13px"
-                      color="GrayText"
-                      textTransform="capitalize"
+                      spacing={2}
+                      divider={<Divider />}
+                      pr={3}
                     >
-                      {user?.comesFrom.name}
-                    </Box>
-                  </HStack>
-                  {user?.graduatedAt && (
-                    <HStack w="full">
-                      <Box w="full" fontSize="13px" color="purpleTone">
-                        Graduated at
-                      </Box>
-                      <Box
-                        w="full"
-                        fontSize="13px"
-                        color="GrayText"
-                        textTransform="capitalize"
-                      >
-                        {user?.graduatedAt.name}
-                      </Box>
-                    </HStack>
-                  )}
-                  {user?.hasProfession && (
-                    <HStack w="full">
-                      <Box w="full" fontSize="13px" color="purpleTone">
-                        Profession
-                      </Box>
-                      <Box
-                        w="full"
-                        fontSize="13px"
-                        color="GrayText"
-                        textTransform="capitalize"
-                      >
-                        {user.hasProfession.name}
-                      </Box>
-                    </HStack>
-                  )}
-                  {user?.degree && (
+                      <HStack w="full">
+                        <Box w="full" fontSize="13px" color="purpleTone">
+                          District
+                        </Box>
+                        <Box
+                          w="full"
+                          fontSize="13px"
+                          color="GrayText"
+                          textTransform="capitalize"
+                        >
+                          {/* {user?.district} */}-
+                        </Box>
+                      </HStack>
+                      <HStack w="full">
+                        <Box w="full" fontSize="13px" color="purpleTone">
+                          Upazila
+                        </Box>
+                        <Box
+                          w="full"
+                          fontSize="13px"
+                          color="GrayText"
+                          textTransform="capitalize"
+                        >
+                          {!user?.hasProfession.name ? user?.hasProfession.name : "-"}
+                        </Box>
+                      </HStack>
+                      <HStack w="full">
+                        <Box w="full" fontSize="13px" color="purpleTone">
+                          Village
+                        </Box>
+                        <Box
+                          w="full"
+                          fontSize="13px"
+                          color="GrayText"
+                          textTransform="capitalize"
+                        >
+                          {user.comesFrom?.name}
+                        </Box>
+                      </HStack>
+                      <HStack w="full"></HStack>
+                    </VStack>
+                  </SimpleGrid>
+                  <Text fontSize="18px" marginTop="30px">Education</Text>
+                  <VStack
+                    w="70%"
+                    spacing={2}
+                    divider={<Divider />}
+                    mt={6}
+                  >
                     <HStack w="full">
                       <Box w="full" fontSize="13px" color="purpleTone">
                         Degree
@@ -215,58 +257,180 @@ const UserView: NextPage = () => {
                         {user?.degree}
                       </Box>
                     </HStack>
-                  )}
-                  
-                </VStack>
-                {user?.roles?.includes("PREMIUM") && (
-                  <>
-                    <Text fontSize="18px" mt={12}>
-                      About me
-                    </Text>
-                    <Text
-                      fontSize="15px"
-                      fontWeight="400"
-                      color="GrayText"
-                      mt={6}
-                    >
-                      I am a recent English and Creative Writing graduate from the
-                      University of Birmingham, with particular focus on English
-                      Literature. My teaching is based on essay plans, writing
-                      practice and close analysis of texts significant to the
-                      student&apos;s course.
-                      <br />
-                      <br />
-                      Since the age of fifteen I have been writing creatively. By
-                      sixteen, I finished my first book. Currently, I am in the
-                      progress of writing a historical fantasy novel exploring
-                      witch hunts of the seventeenth century.
-                    </Text>
-                    <Text fontSize="18px" mt={12}>
-                      My Photos
-                    </Text>
-                    <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} mt={8}>
-                      <Image src={user?.photo1} w="full" alt="" />
-                      <Image src={user?.photo2} w="full" alt="" />
-                      <Image src={user?.photo3} w="full" alt="" />
-                    </SimpleGrid>
-                  </>
-                )}
-
-                {/* {breakpointValue === "base" && (
-                  <VStack spacing={6} mt={8}>
-                    {user?.details?.photos.map((photo, index) => (
-                      <Image
-                        key={index}
-                        src={photo}
+                    <HStack w="full">
+                      <Box w="full" fontSize="13px" color="purpleTone">
+                        Graduated in
+                      </Box>
+                      <Box
                         w="full"
-                        fit="cover"
-                        alt=""
-                      />
-                    ))}
+                        fontSize="13px"
+                        color="GrayText"
+                        textTransform="capitalize"
+                      >
+                        {user?.livesIn.name}
+                      </Box>
+                    </HStack>
+                    <HStack w="full">
+                      <Box w="full" fontSize="13px" color="purpleTone">
+                        University
+                      </Box>
+                      <Box
+                        w="full"
+                        fontSize="13px"
+                        color="GrayText"
+                        textTransform="capitalize"
+                      >
+                        {user?.graduatedAt.name}
+                      </Box>
+                    </HStack>
                   </VStack>
-                )} */}
-              </Flex>
-            </Box>
+
+                  <Text fontSize="18px" mt={12}>
+                    About me
+                  </Text>
+                  <Text
+                    fontSize="15px"
+                    fontWeight="400"
+                    color="GrayText"
+                    mt={6}
+                  >
+                    {user?.about}
+                  </Text>
+                  <Text fontSize="18px" mt={12}>
+                    My Photos
+                  </Text>
+                  <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} mt={8}>
+                    <Image src={user?.photo1} w="full" alt="" />
+                    <Image src={user?.photo2} w="full" alt="" />
+                    <Image src={user?.photo3} w="full" alt="" />
+                  </SimpleGrid>
+
+                  {/* {breakpointValue === "base" && (
+                    <VStack spacing={6} mt={8}>
+                      {user?.details?.photos.map((photo, index) => (
+                        <Image
+                          key={index}
+                          src={photo}
+                          w="full"
+                          fit="cover"
+                          alt=""
+                        />
+                      ))}
+                    </VStack>
+                  )} */}
+                </Flex>
+              </Box>
+            )}
+            {!user?.roles?.includes("PREMIUM") && (
+              <Box
+                w="full"
+                ml={breakpointValue === "base" ? 0 : "224px"}
+                bgColor="white"
+                borderRadius="8px"
+                border="1px"
+                borderColor="gray.300"
+              >
+                <Flex flexDirection="column" p={6}>
+                  {breakpointValue === "base" && (
+                    <Flex flexDirection="column" alignItems="center" mb={6}>
+                      <Avatar
+                        src={user?.avatar}
+                        size="2xl"
+                        mb={6}
+                      />
+
+                      <Text fontSize="18px" textTransform="capitalize" mt={8}>
+                        {user.firstName} {user.lastName}
+                      </Text>
+                      <Text fontSize="13px" mt={4}>
+                        {user.email}
+                      </Text>
+                    </Flex>
+                  )}
+
+                  <Text fontSize="18px">Personal Info</Text>
+                  <VStack
+                    w="full"
+                    spacing={2}
+                    divider={<Divider />}
+                    mt={6}
+                  >
+                    <HStack w="full">
+                      <Box w="full" fontSize="13px" color="purpleTone">
+                        Living in
+                      </Box>
+                      <Box
+                        w="full"
+                        fontSize="13px"
+                        color="GrayText"
+                        textTransform="capitalize"
+                      >
+                        {user?.livesIn.name}
+                      </Box>
+                    </HStack>
+                    <HStack w="full">
+                      <Box w="full" fontSize="13px" color="purpleTone">
+                        Comes from
+                      </Box>
+                      <Box
+                        w="full"
+                        fontSize="13px"
+                        color="GrayText"
+                        textTransform="capitalize"
+                      >
+                        {user?.comesFrom.name}
+                      </Box>
+                    </HStack>
+                    {user?.graduatedAt && (
+                      <HStack w="full">
+                        <Box w="full" fontSize="13px" color="purpleTone">
+                          Graduated at
+                        </Box>
+                        <Box
+                          w="full"
+                          fontSize="13px"
+                          color="GrayText"
+                          textTransform="capitalize"
+                        >
+                          {user?.graduatedAt.name}
+                        </Box>
+                      </HStack>
+                    )}
+                    {user?.hasProfession && (
+                      <HStack w="full">
+                        <Box w="full" fontSize="13px" color="purpleTone">
+                          Profession
+                        </Box>
+                        <Box
+                          w="full"
+                          fontSize="13px"
+                          color="GrayText"
+                          textTransform="capitalize"
+                        >
+                          {user.hasProfession.name}
+                        </Box>
+                      </HStack>
+                    )}
+                    {user?.degree && (
+                      <HStack w="full">
+                        <Box w="full" fontSize="13px" color="purpleTone">
+                          Degree
+                        </Box>
+                        <Box
+                          w="full"
+                          fontSize="13px"
+                          color="GrayText"
+                          textTransform="capitalize"
+                        >
+                          {user?.degree}
+                        </Box>
+                      </HStack>
+                    )}
+                    
+                  </VStack>
+                </Flex>
+              </Box>
+            )}
           </Flex> :
         <ScaleLoader color={color} loading={loading} css={override} /> }
       </Container>

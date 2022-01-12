@@ -26,6 +26,7 @@ import StoryCard from "components/StoryCard";
 import PersonalityCard from "components/PersonalityCard";
 import InstitutionCard from "components/InstitutionCard";
 import VideoCard from "components/VideoCard";
+import PhotoCard from "components/PhotoCard";
 import FilterCard from "components/FilterCard";
 
 import useWindowProp from "hooks/use-window-prop";
@@ -40,7 +41,7 @@ const Posts: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village uuid
 
-  const { village, villageUsers, villageStories, villagePersonalities, villageInstitutions, villageVideos } = useFetchData();
+  const { village, villageUsers, villageStories, villagePersonalities, villageInstitutions, villageVideos, villagePhotos } = useFetchData();
   const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
 
   const { fixed } = useWindowProp();
@@ -264,6 +265,35 @@ const Posts: NextPage = () => {
                   </Box>
                 </Box>
               )}
+
+              {/* {villagePhotos.length > 0 && (
+                <Box bgColor="white" p={6} mb={6}>
+                  <Text fontSize="14px">PHOTOS</Text>
+                  <SimpleGrid
+                    columns={{ base: 2, md: 3 }}
+                    columnGap={4}
+                    rowGap={10}
+                    mt={6}
+                  >
+                    {villagePhotos.slice(0, 6).map((photo) => (
+                      <PhotoCard key={photo.id} photo={photo} />
+                    ))}
+                  </SimpleGrid>
+                  <Divider mt={10} mb={6} />
+                  <Box>
+                    <Link href="/village/photos" passHref={true}>
+                      <Text
+                        fontSize="12px"
+                        color="purpleTone"
+                        textAlign="center"
+                        cursor="pointer"
+                      >
+                        SEE ALL PHOTOS ({villagePhotos.length})
+                      </Text>
+                    </Link>
+                  </Box>
+                </Box>
+              )} */}
             </Box> :
           <ScaleLoader color={color} loading={loading} css={override} /> }
         </Flex>

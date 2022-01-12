@@ -14,6 +14,9 @@ export type Post = {
 export type Video = {
   id: number;
   title: string;
+  name: string;
+  description: string;
+  url: string;
   author: string;
   video: string;
   village?: string;
