@@ -39,7 +39,8 @@ import {
   useColorMode,
   useColorModeValue,
   useBreakpointValue,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from "@chakra-ui/react";
 
 import { useTable, useSortBy } from 'react-table';
@@ -64,7 +65,9 @@ const Stories: NextPage = () => {
   const { me } = useFetchData();
   const { fetchMeData } = useActionDispatch();
   const { stories } = useAdminFetchData();
-  const { fetchStoriesData, deleteData } = useAdminActionDispatch();
+  const { delStatus, addStory, editStory, deleteData, resetState, fetchStoriesData } = useAdminActionDispatch();
+  const [isEdit, setIsEdit] = useState(false);
+  const toast = useToast();
 
   useEffect(() => {
     const access_token = getUserToken();
@@ -80,6 +83,71 @@ const Stories: NextPage = () => {
       router.push("/feed");
     }
   }, [me]);
+
+  useEffect(() => {
+    if (delStatus && delStatus == "ok") {
+      !toast.isActive("StoryDelete") &&
+        toast({
+          id: "StoryDelete",
+          title: "Data has been deleted.",
+          description: "Stories data is deleleted",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+      resetState();
+      if (village) {
+        fetchStoriesData({ villageUuid: village.uuid })
+      }
+      else {
+        fetchStoriesData(null);
+      }
+    }
+  }, [delStatus]);
+
+  useEffect(() => {
+    if (addStory) {
+      !toast.isActive("StoryAdd") &&
+        toast({
+          id: "StoryAdd",
+          title: "Data has been added.",
+          description: "Stories data is added",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+      modal.onClose()
+      if (village) {
+        fetchStoriesData({ villageUuid: village.uuid })
+      }
+      else {
+        fetchStoriesData(null);
+      }
+      resetState();
+    }
+  }, [addStory]);
+
+  useEffect(() => {
+    if (editStory) {
+      !toast.isActive("StoryEdit") &&
+        toast({
+          id: "StoryEdit",
+          title: "Data has been updated.",
+          description: "Stories data is updated.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+      modal.onClose()
+      if (village) {
+        fetchStoriesData({ villageUuid: village.uuid })
+      }
+      else {
+        fetchStoriesData(null);
+      }
+      resetState();
+    }
+  }, [editStory]);
 
   const [village, setVillage] = useState<Village>(null);
 
@@ -120,16 +188,31 @@ const Stories: NextPage = () => {
           return (
             <HStack>
               {
-                !!village &&
-                <Button onClick={() => { setStory(row.original); modal.onOpen() }}>Edit</Button>
+                village &&
+                <Button
+                  onClick={() => {
+                    setStory(row.original);
+                    modal.onOpen();
+                    setIsEdit(true);
+                  }}
+                >
+                  Edit
+                </Button>
               }
-              <Button onClick={() => { setUuid(row.original.uuid); dialog.onOpen() }}>Delete</Button>
+              <Button
+                onClick={() => {
+                  setUuid(row.original.uuid);
+                  dialog.onOpen();
+                }}
+              >
+                Delete
+              </Button>
             </HStack>
           )
         }
       }
     ],
-    []
+    [village]
   )
 
   const [data, setData] = useState([])
@@ -212,11 +295,21 @@ const Stories: NextPage = () => {
       >
         <ModalOverlay />
         <ModalContent m={0} p={6} bgColor="white">
-          <StoryForm type="add" village={village} story={story} />
+          <StoryForm
+            type="add"
+            village={village}
+            story={story}
+            isEdit={isEdit}
+          />
         </ModalContent>
       </Modal>
 
-      <DeleteDialog uuid={uuid} isOpen={dialog.isOpen} onClose={dialog.onClose} onConfirm={onDelete} />
+      <DeleteDialog
+        uuid={uuid}
+        isOpen={dialog.isOpen}
+        onClose={dialog.onClose}
+        onConfirm={onDelete}
+      />
 
     </Fragment>
   );

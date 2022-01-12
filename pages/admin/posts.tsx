@@ -31,7 +31,8 @@ import {
   TableCaption,
   useColorMode,
   useColorModeValue,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from "@chakra-ui/react";
 
 import { FaWallet, FaGlobe, FaFile, FaShoppingCart, FaRegArrowAltCircleRight, FaRocket, FaThList } from "react-icons/fa";
@@ -53,7 +54,8 @@ const Posts: NextPage = () => {
   const { me } = useFetchData();
   const { fetchMeData } = useActionDispatch();
   const { posts } = useAdminFetchData();
-  const { fetchPostsData, deleteData } = useAdminActionDispatch();
+  const { delStatus, resetState, fetchPostsData, deleteData } = useAdminActionDispatch();
+  const toast = useToast();
 
   useEffect(() => {
     const access_token = getUserToken();
@@ -70,6 +72,22 @@ const Posts: NextPage = () => {
     }
     fetchPostsData();
   }, [me]);
+
+  useEffect(() => {
+    if (delStatus && delStatus == "ok") {
+      !toast.isActive("PostDelete") &&
+        toast({
+          id: "PostDelete",
+          title: "Data has been deleted.",
+          description: "Post data is deleleted",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+      resetState();
+      fetchPostsData();
+    }
+  }, [delStatus]);
 
   const columns = useMemo(
     () => [

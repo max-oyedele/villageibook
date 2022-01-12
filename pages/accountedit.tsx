@@ -533,13 +533,13 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
     if (event.target.files && event.target.files[0]) {
       const i = event.target.files[0];
 
-      if (index == 1) {
+      if (index == 0) {
         setPhoto1(i);
         setPhotoURL1(URL.createObjectURL(i));
-      } else if (index == 2) {
+      } else if (index == 1) {
         setPhoto2(i);
         setPhotoURL2(URL.createObjectURL(i));
-      } else if (index == 3) {
+      } else if (index == 2) {
         setPhoto3(i);
         setPhotoURL3(URL.createObjectURL(i));
       }

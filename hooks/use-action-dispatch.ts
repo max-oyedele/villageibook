@@ -49,6 +49,12 @@ import {
 const useActionDispatch = () => {
   const dispatch: MyThunkDispatch = useDispatch();
 
+  const {
+    addPost
+  } = useSelector(
+    (state: OurStore) => state.postReducer
+  );
+     
   const authReset = async () => {
     await dispatch(authResetFunc());
   };
@@ -209,6 +215,7 @@ const useActionDispatch = () => {
     // fetchVillageVideosData,
     getGraduatesByConditionData,
     getTotalGraduatesData,
+    addPost
   };
 };
 

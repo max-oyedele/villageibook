@@ -26,11 +26,13 @@ import { Institution, Village } from 'types/schema';
 const InstitutionForm: React.FC<{
     type: string,
     village: Village,
-    institution?: Institution
+    institution?: Institution,
+    isEdit: boolean
 }> = ({
     type,
     village,
-    institution
+    institution,
+    isEdit
 }) => {
         const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
         const toast = useToast();
@@ -45,7 +47,7 @@ const InstitutionForm: React.FC<{
         const [history, setHistory] = useState(institution?.history);
 
         const { error } = useAdminFetchData();
-        const { submitInstitutionData } = useAdminActionDispatch();
+        const { submitInstitutionData, submitInstitutionEditData } = useAdminActionDispatch();
         
         if (error) {
             !toast.isActive("institutionError") &&
@@ -86,7 +88,6 @@ const InstitutionForm: React.FC<{
                 enableReinitialize={true}
                 validationSchema={validationSchema}
                 onSubmit={async (values, actions) => {
-                    // console.log({ values, actions });
                     const params = {
                         villageUuid: village.uuid,
                         name,
@@ -99,7 +100,11 @@ const InstitutionForm: React.FC<{
                     };
 
                     actions.setSubmitting(true);
-                    await submitInstitutionData(params);
+                    if (!isEdit) {
+                        await submitInstitutionData(params);
+                    } else {
+                        await submitInstitutionEditData(params);
+                    }
                     actions.setSubmitting(false);
                 }}
             >

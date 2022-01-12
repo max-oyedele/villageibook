@@ -26,11 +26,13 @@ import { Story, Village } from 'types/schema';
 const StoryForm: React.FC<{
     type: string,
     village: Village,
-    story?: Story
+    story?: Story,
+    isEdit: boolean
 }> = ({
     type,
     village,
-    story
+    story,
+    isEdit
 }) => {
         const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
         const toast = useToast();
@@ -41,7 +43,7 @@ const StoryForm: React.FC<{
         const [photo, setPhoto] = useState(story?.photo);
 
         const { error } = useAdminFetchData();
-        const { submitStoryData } = useAdminActionDispatch();
+        const { submitStoryData, submitStoryEditData } = useAdminActionDispatch();
 
         if (error) {
             !toast.isActive("storyError") &&
@@ -73,7 +75,6 @@ const StoryForm: React.FC<{
                 enableReinitialize={true}
                 validationSchema={validationSchema}
                 onSubmit={async (values, actions) => {
-                    // console.log({ values, actions });
                     const params = {
                         villageUuid: village.uuid,
                         title,
@@ -82,7 +83,11 @@ const StoryForm: React.FC<{
                     };
 
                     actions.setSubmitting(true);
-                    await submitStoryData(params);
+                    if (!isEdit) {
+                        await submitStoryData(params);
+                    } else {
+                        await submitStoryEditData(params);
+                    }
                     actions.setSubmitting(false);
                 }}
             >

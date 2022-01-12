@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { OurStore } from "rdx/store";
 
 const useAdminFetchData = () => {
-  const { posts, stories, personalities, institutions, videos, users, error } = useSelector(
+  const { posts, stories, personalities, institutions, videos, users, pmusers, error } = useSelector(
     (state: OurStore) => state.adminReducer
   );
 
@@ -12,7 +12,8 @@ const useAdminFetchData = () => {
     personalities,
     institutions,
     videos,
-    users,    
+    users,
+    pmusers,
     error,
   };
 };

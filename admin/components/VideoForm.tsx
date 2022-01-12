@@ -16,7 +16,7 @@ import {
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 
-import AvatarUpload from 'admin/components/AvatarUpload';
+import VideoUpload from 'admin/components/VideoUpload';
 import InputBox from 'components/widgets/InputBox';
 
 import useAdminFetchData from 'hooks/use-admin-fetch-data';
@@ -26,11 +26,13 @@ import { Video, Village } from 'types/schema';
 const VideoForm: React.FC<{
     type: string,
     village: Village,
-    video?: Video
+    video?: Video,
+    isEdit: boolean
 }> = ({
     type,
     village,
-    video
+    video,
+    isEdit
 }) => {
         const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
         const toast = useToast();
@@ -38,17 +40,16 @@ const VideoForm: React.FC<{
         const [name, setName] = useState(video?.name);                
         const [description, setDescription] = useState(video?.description);
         const [avatar, setAvatar] = useState(null);
-        const [videoUrl, setVideoUrl] = useState(video?.url);
 
         const { error } = useAdminFetchData();
-        const { submitVideoData } = useAdminActionDispatch();
+        const { submitVideoData, submitVideoEditData } = useAdminActionDispatch();
 
         if (error) {
             !toast.isActive("videoError") &&
                 toast({
                     id: "videoError",
                     title: "Failed! Try again.",
-                    description: error.message,
+                    description: "Api error.",
                     status: "error",
                     duration: 3000,
                     isClosable: true,
@@ -69,14 +70,17 @@ const VideoForm: React.FC<{
                 enableReinitialize={true}
                 validationSchema={validationSchema}
                 onSubmit={async (values, actions) => {
-                    // console.log({ values, actions });
                     const params = {
                         villageUuid: village.uuid,                        
                         video: { avatar, name, description },
                     };
 
                     actions.setSubmitting(true);
-                    await submitVideoData(params);
+                    if (!isEdit) {
+                        await submitVideoData(params);
+                    } else {
+                        await submitVideoEditData(params);
+                    }
                     actions.setSubmitting(false);
                 }}
             >
@@ -110,7 +114,7 @@ const VideoForm: React.FC<{
                             />
                             <Box w="full" border="1px" borderColor="gray.200" borderRadius="4px" p={4}>
                                 <Center>
-                                    <AvatarUpload setAvatar={setAvatar} />
+                                    <VideoUpload setAvatar={setAvatar} />
                                 </Center>                                
                             </Box>
                         </VStack>

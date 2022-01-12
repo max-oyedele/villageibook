@@ -99,7 +99,6 @@ const Graduates: NextPage = () => {
 
   useEffect(() => {
     if (me) {
-      console.log("ddddddddddddddddddddddddddddddddddddddddddddddddddddd")
       setLoading(true);
       fetchCommonData();
       // fetchRegionsData(null);

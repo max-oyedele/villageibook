@@ -10,6 +10,7 @@ import {
   HStack,
   VStack,
   useBreakpointValue,
+  useToast
 } from "@chakra-ui/react";
 
 import Header from "components/Header";
@@ -46,8 +47,9 @@ const Feed: NextPage = () => {
   const [hasMore, setHasMore] = useState(true);
   
   const { me, posts, recentUsers, recentVillages } = useFetchData();
-  const { resetPosts, fetchMeData, fetchFeedPageData, fetchVillageData } =
+  const { resetPosts, fetchMeData, fetchFeedPageData, fetchVillageData, addPost } =
     useActionDispatch();
+  const toast = useToast();
 
   const override = css`
     display: flex;
@@ -71,6 +73,26 @@ const Feed: NextPage = () => {
       fetchVillageData({ villageUuid: me.comesFrom?.uuid });
     }
   }, [me]);
+
+  useEffect(() => {
+    if (me) {
+      if (addPost != null) {
+        !toast.isActive("postSuccess") &&
+          toast({
+            id: "postSuccess",
+            title: "Successfully Posted.",
+            description: "",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        resetPosts();
+        setLoading(true);
+        fetchFeedPageData({ page: 1 });
+        fetchVillageData({ villageUuid: me.comesFrom?.uuid });
+      }
+    }
+  }, [addPost]);
 
   useEffect(() => {
     if (posts && posts.length != 0) {

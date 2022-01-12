@@ -94,7 +94,7 @@ export const fetchVideos = createAsyncThunk(
       const access_token = getUserToken();
       let endpoint = "";
       if (params?.villageUuid)
-        endpoint += `/villages/${params.villageUuid}/HAS_VIDEO`;
+        endpoint += `/villages/${params.villageUuid}/HAS_MEDIA`;
       endpoint += `/videos.json`;
 
       const response = await axios.get("/api/entry", {
@@ -117,6 +117,22 @@ export const fetchUsers = createAsyncThunk(
         params: { endpoint, access_token },
       });
       return response.data.users;
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
+  }
+);
+
+export const fetchPmusers = createAsyncThunk(
+  "admin/fetchPmusers",
+  async (_, thunkAPI) => {
+    try {
+      const access_token = getUserToken();
+      const endpoint = `/premium-users.json`;
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
+      });
+      return response.data['premium-users'];
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
@@ -148,6 +164,47 @@ export const submitStory = createAsyncThunk(
 
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/villages/${params.villageUuid}/HAS_STORY/stories`,
+        bodyFormData,
+        {
+          headers: {
+            authorization: "Bearer " + access_token,
+            "content-type": `multipart/form-data`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.statusText);
+    }
+  }
+);
+
+export const submitEditStory = createAsyncThunk(
+  "admin/submitEditStory",
+  async (
+    params: {
+      title: string;
+      content: string;
+      photo?: any;
+      video?: any;
+      villageUuid: string;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const access_token = getUserToken();
+
+      const bodyFormData = new FormData();
+      bodyFormData.append("title", params.title);
+      bodyFormData.append("content", params.content);
+      bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
+      bodyFormData.append("hasPhotoName", params.photo?.name);
+      bodyFormData.append("hasPhotoDescription", params.photo?.description);
+      // bodyFormData.append("hasVideoUrl", params.video?.avatar);
+
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/sotries/${params.villageUuid}`,
         bodyFormData,
         {
           headers: {
@@ -218,6 +275,60 @@ export const submitPersonality = createAsyncThunk(
   }
 );
 
+export const submitEditPersonality = createAsyncThunk(
+  "admin/submitEditPersonality",
+  async (
+    params: {
+      name: string;
+      about?: string;
+      photo?: any;
+      video?: any;
+      dateOfBirth?: string;
+      dateOfDeath?: string;
+      educationLife?: string;
+      achievements?: string;
+      career?: string;
+      villageUuid: string;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const access_token = getUserToken();
+
+      const bodyFormData = new FormData();
+      bodyFormData.append("name", params.name);
+      bodyFormData.append("about", params.about);
+      // bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
+      // bodyFormData.append("hasPhotoName", params.photo?.name);
+      bodyFormData.append("hasPhotoDescription", params.photo?.description);
+      // bodyFormData.append("hasVideoUrl", params.video.avatar);
+
+      params.dateOfBirth &&
+        bodyFormData.append("dateOfBirth", params.dateOfBirth);
+      params.dateOfDeath &&
+        bodyFormData.append("dateOfDeath", params.dateOfDeath);
+      bodyFormData.append("educationLife", params.educationLife);
+      bodyFormData.append("achievements", params.achievements);
+      bodyFormData.append("career", params.career);
+
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/personalities/${params.villageUuid}/`,
+        bodyFormData,
+        {
+          headers: {
+            authorization: "Bearer " + access_token,
+            "content-type": `multipart/form-data`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.statusText);
+    }
+  }
+);
+
 export const submitInstitution = createAsyncThunk(
   "admin/submitInstitution",
   async (
@@ -268,6 +379,56 @@ export const submitInstitution = createAsyncThunk(
   }
 );
 
+export const submitEditInstitution = createAsyncThunk(
+  "admin/submitEditInstitution",
+  async (
+    params: {
+      name: string;
+      photo?: any;
+      video?: any;
+      yearEstablished?: string;
+      address?: string;
+      email?: string;
+      phone?: string;
+      history?: string;
+      villageUuid: string;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const access_token = getUserToken();
+
+      const bodyFormData = new FormData();
+      bodyFormData.append("name", params.name);
+      bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
+      bodyFormData.append("hasPhotoName", params.photo?.name);
+      bodyFormData.append("hasPhotoDescription", params.photo?.description);
+      // bodyFormData.append("hasVideoUrl", params.video.avatar);
+
+      bodyFormData.append("yearEstablished", params.yearEstablished);
+      bodyFormData.append("address", params.address);
+      bodyFormData.append("email", params.email);
+      bodyFormData.append("phone", params.phone);
+      bodyFormData.append("history", params.history);
+
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/institutions/${params.villageUuid}`,
+        bodyFormData,
+        {
+          headers: {
+            authorization: "Bearer " + access_token,
+            "content-type": `multipart/form-data`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.statusText);
+    }
+  }
+);
+
 export const submitVideo = createAsyncThunk(
   "admin/submitVideo",
   async (
@@ -283,10 +444,45 @@ export const submitVideo = createAsyncThunk(
       const bodyFormData = new FormData();
       bodyFormData.append("name", params.video.name);
       bodyFormData.append("description", params.video.description);
-      bodyFormData.append("hasVideoUrl", params.video.avatar);
+      bodyFormData.append("url", params.video.avatar);
 
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/villages/${params.villageUuid}/HAS_VIDEO/videos`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/locations/${params.villageUuid}/HAS_MEDIA/videos`,
+        bodyFormData,
+        {
+          headers: {
+            authorization: "Bearer " + access_token,
+            "content-type": `multipart/form-data`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.statusText);
+    }
+  }
+);
+
+export const submitEditVideo = createAsyncThunk(
+  "admin/submitEditVideo",
+  async (
+    params: {
+      video: any;
+      villageUuid: string;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const access_token = getUserToken();
+
+      const bodyFormData = new FormData();
+      bodyFormData.append("name", params.video.name);
+      bodyFormData.append("description", params.video.description);
+      bodyFormData.append("hasVideoUrl", params.video.avatar);
+
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/locations/${params.villageUuid}/HAS_MEDIA/videos`,
         bodyFormData,
         {
           headers: {
@@ -312,7 +508,7 @@ export const deleteObj = createAsyncThunk(
       const response = await axios.delete(`/api/entry`, {
         params: { endpoint, access_token },
       });
-      return response.data;
+      return response.data.result;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
@@ -328,7 +524,17 @@ const initialState: AdminState = {
   institutions: [],
   videos: [],
   users: [],
-  error: null,
+  pmusers: [],
+  delStatus: null,
+  addPersonality: null,
+  editPersonality: null,
+  addStory: null,
+  editStory: null,
+  addInstitution: null,
+  editInstitution: null,
+  addVideo: null,
+  editVideo: null,
+  error: null
 };
 
 export const adminSlice = createSlice({
@@ -336,6 +542,17 @@ export const adminSlice = createSlice({
   initialState: initialState,
   reducers: {
     reset: () => initialState,
+    init: (state) => {
+      state.delStatus = null;
+      state.addPersonality = null;
+      state.editPersonality = null;
+      state.addStory = null;
+      state.editStory = null;
+      state.addInstitution = null;
+      state.editInstitution = null;
+      state.addVideo = null;
+      state.editVideo = null;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchPosts.pending, (state) => {
@@ -410,15 +627,39 @@ export const adminSlice = createSlice({
       state.status = Status.IDLE;
       state.error = action.payload;
     });
+    builder.addCase(fetchPmusers.pending, (state) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(fetchPmusers.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.pmusers = action.payload;
+    });
+    builder.addCase(fetchPmusers.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
     builder.addCase(submitStory.pending, (state, action) => {
       state.status = Status.LOADING;
       state.error = null;
     });
     builder.addCase(submitStory.fulfilled, (state, action) => {
       state.status = Status.IDLE;
-      // state.me = action.payload;
+      state.addStory = action.payload;
     });
     builder.addCase(submitStory.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(submitEditStory.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(submitEditStory.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.editStory = action.payload;
+    });
+    builder.addCase(submitEditStory.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });
@@ -428,9 +669,21 @@ export const adminSlice = createSlice({
     });
     builder.addCase(submitPersonality.fulfilled, (state, action) => {
       state.status = Status.IDLE;
-      // state.me = action.payload;
+      state.addPersonality = action.payload;
     });
     builder.addCase(submitPersonality.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(submitEditPersonality.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(submitEditPersonality.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.editPersonality = action.payload;
+    });
+    builder.addCase(submitEditPersonality.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });
@@ -440,9 +693,21 @@ export const adminSlice = createSlice({
     });
     builder.addCase(submitInstitution.fulfilled, (state, action) => {
       state.status = Status.IDLE;
-      // state.me = action.payload;
+      state.addInstitution = action.payload;
     });
     builder.addCase(submitInstitution.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(submitEditInstitution.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(submitEditInstitution.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.editInstitution = action.payload;
+    });
+    builder.addCase(submitEditInstitution.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });
@@ -452,13 +717,37 @@ export const adminSlice = createSlice({
     });
     builder.addCase(submitVideo.fulfilled, (state, action) => {
       state.status = Status.IDLE;
-      // state.me = action.payload;
+      state.addVideo = action.payload;
     });
     builder.addCase(submitVideo.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(submitEditVideo.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(submitEditVideo.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.editVideo = action.payload;
+    });
+    builder.addCase(submitEditVideo.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(deleteObj.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(deleteObj.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.delStatus = action.payload;
+    });
+    builder.addCase(deleteObj.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });
   },
 });
 
-export const { reset } = adminSlice.actions;
+export const { reset, init } = adminSlice.actions;

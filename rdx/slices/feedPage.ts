@@ -16,7 +16,7 @@ export const fetchPosts = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const access_token = getUserToken();
-      const endpoint = `/posts.json?sort=lastUpdated.DESC&size=4&page=${params.page}`;
+      const endpoint = `/posts.json?sort=lastUpdated.DESC&size=5&page=${params.page}`;
       const response = await axios.get("/api/entry", {
         params: { endpoint, access_token },
       });
