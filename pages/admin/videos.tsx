@@ -196,7 +196,7 @@ const Videos: NextPage = () => {
         }
       }
     ],
-    []
+    [village]
   )
 
   const [data, setData] = useState([])
