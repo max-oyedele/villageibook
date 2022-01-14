@@ -87,6 +87,7 @@ const UserView: NextPage = () => {
                   fit="cover"
                   alt=""
                   borderRadius="full"
+                  boxShadow="md"
                 />
 
                 <Text fontSize="18px" textTransform="capitalize" mt={8}>

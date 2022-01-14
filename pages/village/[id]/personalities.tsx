@@ -135,9 +135,9 @@ const Personalities: NextPage = () => {
         </Flex>
       </Container>
 
-      {/* <Box mt={20}>
+      <Box pos="fixed" bottom={0} w="full" bg="white">
         <Footer />
-      </Box> */}
+      </Box>
     </Fragment>
   );
 };

@@ -36,8 +36,8 @@ const Story: NextPage = () => {
 
   const { village, villageStories } = useFetchData();
   const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
-  
-  const [loading, setLoading] = useState(true);  
+
+  const [loading, setLoading] = useState(true);
   const [pageData, setPageData] = useState(null);
   const [itemOffset, setItemOffset] = useState(1);
   const [pageCount, setPageCount] = useState(1);
@@ -132,9 +132,9 @@ const Story: NextPage = () => {
         </Flex>
       </Container>
 
-      {/* <Box mt={20}>
+      <Box pos="fixed" bottom={0} w="full" bg="white">
         <Footer />
-      </Box> */}
+      </Box>
     </Fragment>
   );
 };

@@ -28,7 +28,7 @@ const UserCard: React.FC<{ user: User }> = ({
   return (
     <Fragment>
       {breakpointValue === "md" && (
-        <HStack w="full" border="1px" borderColor="gray.300" borderRadius="5px">
+        <HStack w="full" border="1px" borderColor="gray.200" borderRadius="md">
           <Box pos="relative" minW="max-content">
             <Image
               src={user.avatar??"/images/default-user.png"}
@@ -83,11 +83,12 @@ const UserCard: React.FC<{ user: User }> = ({
 
       {breakpointValue === "base" && (
         <VStack
+          pos="relative"
           w="full"
           spacing={4}
           border="1px"
-          borderColor="gray.300"
-          borderRadius="5px"
+          borderColor="gray.200"
+          borderRadius="md"
           p={4}
         >
           <HStack w="full" pos="relative" spacing={2}>
@@ -128,9 +129,12 @@ const UserCard: React.FC<{ user: User }> = ({
           <Text fontSize="11px" color="GrayText">
             {user.about}
           </Text>
+          <Box h="42px"></Box>
 
           <Link href={`/userview/${user.uuid}`} passHref={true}>
             <Button
+              pos="absolute"
+              bottom={4}
               w={{ base: "full", sm: "auto" }}
               h={8}
               fontSize="12px"

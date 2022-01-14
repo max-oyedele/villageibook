@@ -18,14 +18,16 @@ const Loader: React.FC<{
 
   return (
     <Fragment>
-      {type === "scale" && (
-        <Box my={4}>
-          <ScaleLoader color={color} loading={loading} css={override} />
-        </Box>
-      )}
-      {type === "clip" && (
-        <ClipLoader color={color} loading={loading} css={override} />
-      )}
+      <Box w="full" h="full">
+        {type === "scale" && (
+          <Box my={4}>
+            <ScaleLoader color={color} loading={loading} css={override} />
+          </Box>
+        )}
+        {type === "clip" && (
+          <ClipLoader color={color} loading={loading} css={override} />
+        )}
+      </Box>
     </Fragment>
   );
 };
