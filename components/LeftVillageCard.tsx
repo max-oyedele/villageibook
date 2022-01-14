@@ -19,7 +19,7 @@ import VideoBox from "./widgets/VideoBox";
 const LeftVillageCard:React.FC<{village: Village, fixed?:boolean}> = ({village, fixed}) => {
   return (
     <Fragment>
-      <Box bgColor="white" border="1px" borderRadius="8px" borderColor="gray.200" w="240px" pos={fixed ? "fixed" : "static"} top={fixed ? "80px" : 0}>
+      <Box bgColor="white" borderRadius="8px" boxShadow="sm" w="240px" pos={fixed ? "fixed" : "static"} top={fixed ? "80px" : 0}>
         <Box p={4}>
           <CaptionCard name={village?.name} />
         </Box>
