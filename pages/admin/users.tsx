@@ -187,7 +187,7 @@ const Personalities: NextPage = () => {
         accessor: "photo1",
         Cell: function PictureItem({ row }) {
           return (
-            <Box w={20}>
+            <Box>
               <ImageBox
                 imageUrl={row.original.photo1}
               />
@@ -201,7 +201,7 @@ const Personalities: NextPage = () => {
         accessor: "photo2",
         Cell: function PictureItem({ row }) {
           return (
-            <Box w={20}>
+            <Box>
               <ImageBox
                 imageUrl={row.original.photo2}
               />
@@ -214,7 +214,7 @@ const Personalities: NextPage = () => {
         accessor: "photo3",
         Cell: function PictureItem({ row }) {
           return (
-            <Box w={20}>
+            <Box>
               <ImageBox
                 imageUrl={row.original.photo3}
               />
@@ -277,11 +277,11 @@ const Personalities: NextPage = () => {
     <Fragment>
       <Layout>
         <VillageSearchBox setVillage={setVillage} />
-        <Flex justifyContent={"flex-end"}>
+        {/* <Flex justifyContent={"flex-end"}>
           <Button onClick={() => { modal.onOpen(); setIsEdit(false); }} isDisabled={!village}>
             Add User
           </Button>
-        </Flex>
+        </Flex> */}
 
         <Table {...getTableProps()}>
           <Thead>

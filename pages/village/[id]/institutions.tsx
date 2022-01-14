@@ -58,20 +58,27 @@ const Institutions: NextPage = () => {
     }
   }, [vid]);
 
-  if (villageInstitutions && loading) {
-    setLoading(false);
-    setItemOffset(0);
-  }
+  useEffect(() => {
+    if (villageInstitutions != null && villageInstitutions['institutions'].length > 0) {
+      setLoading(false);
+      setItemOffset(0);
+    } else if (villageInstitutions != null && villageInstitutions['institutions'].length == 0) {
+      setLoading(false);
+      setPageData([]);
+    }
+  }, [villageInstitutions && villageInstitutions['institutions']]);
 
   const handlePageClicked = event => {
-    const newOffset = (event.selected * itemsPerPage) % villageInstitutions.length;
+    const newOffset = (event.selected * itemsPerPage) % villageInstitutions['institutions'].length;
     setItemOffset(newOffset);
   };
   
   useEffect(() => {
-    const endOffset = itemOffset + itemsPerPage;
-    setPageData(villageInstitutions.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(villageInstitutions.length / itemsPerPage));
+    if (villageInstitutions != null && villageInstitutions['institutions'].length > 0) {
+      const endOffset = itemOffset + itemsPerPage;
+      setPageData(villageInstitutions['institutions'].slice(itemOffset, endOffset));
+      setPageCount(Math.ceil(villageInstitutions['institutions'].length / itemsPerPage));
+    }
   }, [itemOffset, itemsPerPage]);
 
   return (
@@ -109,10 +116,12 @@ const Institutions: NextPage = () => {
                   <Alert message="There is no institution to be displayed." />
                 )}
               </VStack>
-              <Paginate 
-                handlePageClick={handlePageClicked}
-                pageCount={pageCount}
-              />
+              {villageInstitutions && villageInstitutions['institutions'].length > itemsPerPage && 
+                <Paginate 
+                  handlePageClick={handlePageClicked}
+                  pageCount={pageCount}
+                />
+              }
             </Box> :
           <ScaleLoader color={color} loading={loading} css={override} /> }
         </Flex>

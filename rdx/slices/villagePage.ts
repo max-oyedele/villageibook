@@ -36,7 +36,7 @@ export const fetchVillageUsers = createAsyncThunk(
       const response = await axios.get("/api/entry", {
         params: { endpoint, access_token },
       });
-      return response.data.users; // data: {users: []}
+      return response.data; // data: {users: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
@@ -68,7 +68,7 @@ export const fetchVillageStories = createAsyncThunk(
       const response = await axios.get("/api/entry", {
         params: { endpoint, access_token },
       });
-      return response.data.stories; // data: {stories: []}
+      return response.data; // data: {stories: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
@@ -84,7 +84,7 @@ export const fetchVillagePersonalities = createAsyncThunk(
       const response = await axios.get("/api/entry", {
         params: { endpoint, access_token },
       });
-      return response.data.personalities; // data: {personalities: []}
+      return response.data; // data: {personalities: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
@@ -100,7 +100,7 @@ export const fetchVillageInstitutions = createAsyncThunk(
       const response = await axios.get("/api/entry", {
         params: { endpoint, access_token },
       });
-      return response.data.institutions; // data: {institutions: []}
+      return response.data; // data: {institutions: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
@@ -116,7 +116,7 @@ export const fetchVillageVideos = createAsyncThunk(
       const response = await axios.get("/api/entry", {
         params: { endpoint, access_token },
       });
-      return response.data.videos; // data: {videos: []}
+      return response.data; // data: {videos: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
@@ -137,7 +137,7 @@ export const fetchVillagePhotos = createAsyncThunk(
         params: { endpoint, access_token },
       });
       console.log("photos = ", response.data)
-      return response.data.photos; // data: {videos: []}
+      return response.data; // data: {videos: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }
@@ -148,13 +148,13 @@ export const fetchVillagePhotos = createAsyncThunk(
 const initialState: VillagePageState = {
   status: Status.IDLE,
   village: null,
-  villageUsers: [],
-  villageGraduates: [],
-  villageStories: [],
-  villagePersonalities: [],
-  villageInstitutions: [],
-  villageVideos: [],
-  villagePhotos: [],
+  villageUsers: null,
+  villageGraduates: null,
+  villageStories: null,
+  villagePersonalities: null,
+  villageInstitutions: null,
+  villageVideos: null,
+  villagePhotos: null,
   error: null,
 };
 

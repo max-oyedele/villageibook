@@ -56,12 +56,14 @@ const Posts: NextPage = () => {
   
   const [loading, setLoading] = useState(true);
   const [color, setColor] = useState("#553cfb");
+  const [link, setLink] = useState("");
 
   useEffect(() => {
     if(vid){
       setLoading(true);
       fetchVillageData({ villageUuid: vid });
       fetchVillagePageData({ villageUuid: vid});
+      setLink('/village/'+ vid)
     }
   }, [vid]);
 
@@ -102,26 +104,26 @@ const Posts: NextPage = () => {
               }
             >
             
-              {villageUsers.length > 0 && (
+              {villageUsers && villageUsers['users'].length > 0 && (
                 <Box bgColor="white" p={6} mb={6}>
                   <Text fontSize="14px">MY PAGES</Text>
 
                   {breakpointValue === "md" && (
                     <VStack spacing={2} mt={6}>
-                      {villageUsers.slice(0, 5).map((user) => (
+                      {villageUsers['users'].slice(0, 5).map((user) => (
                         <UserCard key={user.id} user={user} />
                       ))}
                     </VStack>
                   )}
                   {breakpointValue === "base" && (
                     <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4} mt={6}>
-                      {villageUsers.map((user) => (
+                      {villageUsers['users'].map((user) => (
                         <UserCard key={user.id} user={user} />
                       ))}
                     </SimpleGrid>
                   )}
                   <Box>
-                    <Link href="/village/users" passHref={true}>
+                    <Link href={link + "/users"} passHref={true}>
                       <Text
                         fontSize="12px"
                         color="purpleTone"
@@ -129,7 +131,7 @@ const Posts: NextPage = () => {
                         cursor="pointer"
                         mt={8}
                       >
-                        SEE ALL MY PAGES ({villageUsers.length})
+                        SEE ALL MY PAGES ({villageUsers['users'].length})
                       </Text>
                     </Link>
                   </Box>
@@ -148,7 +150,7 @@ const Posts: NextPage = () => {
                 </Box>
               </Box>
 
-              {villageStories.length > 0 && (
+              {villageStories && villageStories['stories'].length > 0 && (
                 <Box bgColor="white" p={6} mb={6}>
                   <Text fontSize="14px">STORY</Text>
                   <SimpleGrid
@@ -157,45 +159,45 @@ const Posts: NextPage = () => {
                     rowGap={10}
                     mt={6}
                   >
-                    {villageStories.slice(0, 2).map((story) => (
+                    {villageStories['stories'].slice(0, 2).map((story) => (
                       <StoryCard key={story.uuid} story={story} />
                     ))}
                   </SimpleGrid>
                   <Divider my={6} />
                   <Box>
-                    <Link href="/village/stories" passHref={true}>
+                    <Link href={link + "/stories"} passHref={true}>
                       <Text
                         fontSize="12px"
                         color="purpleTone"
                         textAlign="center"
                         cursor="pointer"
                       >
-                        SEE ALL STORIES ({villageStories.length})
+                        SEE ALL STORIES ({villageStories['stories'].length})
                       </Text>
                     </Link>
                   </Box>
                 </Box>
               )}
 
-              {villagePersonalities.length > 0 && (
+              {villagePersonalities && villagePersonalities['personalities'].length > 0 && (
                 <Box bgColor="white" p={6} mb={6}>
                   <Text fontSize="14px">PERSONALITIES</Text>
                   {breakpointValue === "md" && (
                     <VStack spacing={2} mt={6}>
-                      {villagePersonalities.slice(0, 5).map((personality) => (
+                      {villagePersonalities['personalities'].slice(0, 5).map((personality) => (
                         <PersonalityCard key={personality.uuid} personality={personality} />
                       ))}
                     </VStack>
                   )}
                   {breakpointValue === "base" && (
                     <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4} mt={6}>
-                      {villagePersonalities.map((personality) => (
+                      {villagePersonalities['personalities'].map((personality) => (
                         <PersonalityCard key={personality.uuid} personality={personality} />
                       ))}
                     </SimpleGrid>
                   )}
                   <Box>
-                    <Link href="/village/personalities" passHref={true}>
+                    <Link href={link + "/personalities"} passHref={true}>
                       <Text
                         fontSize="12px"
                         color="purpleTone"
@@ -203,18 +205,18 @@ const Posts: NextPage = () => {
                         cursor="pointer"
                         mt={8}
                       >
-                        SEE ALL PERSONALITIES ({villagePersonalities.length})
+                        SEE ALL PERSONALITIES ({villagePersonalities['personalities'].length})
                       </Text>
                     </Link>
                   </Box>
                 </Box>
               )}
 
-              {villageInstitutions.length > 0 && (
+              {villageInstitutions && villageInstitutions['institutions'].length > 0 && (
                 <Box bgColor="white" p={6} mb={6}>
                   <Text fontSize="14px">INSTITUTIONS</Text>
                   <VStack spacing={2} mt={6}>
-                    {villageInstitutions.slice(0, 3).map((institution) => (
+                    {villageInstitutions['institutions'].slice(0, 3).map((institution) => (
                       <InstitutionCard
                         key={institution.id}
                         institution={institution}
@@ -222,7 +224,7 @@ const Posts: NextPage = () => {
                     ))}
                   </VStack>
                   <Box>
-                    <Link href="/village/institutions" passHref={true}>
+                    <Link href={link + "/institutions"} passHref={true}>
                       <Text
                         fontSize="12px"
                         color="purpleTone"
@@ -230,14 +232,14 @@ const Posts: NextPage = () => {
                         mt={8}
                         cursor="pointer"
                       >
-                        SEE ALL INSTITUTIONS ({villageInstitutions.length})
+                        SEE ALL INSTITUTIONS ({villageInstitutions['institutions'].length})
                       </Text>
                     </Link>
                   </Box>
                 </Box>
               )}
 
-              {villageVideos.length > 0 && (
+              {villageVideos && villageVideos['videos'].length > 0 && (
                 <Box bgColor="white" p={6} mb={6}>
                   <Text fontSize="14px">VIDEOS</Text>
                   <SimpleGrid
@@ -246,20 +248,20 @@ const Posts: NextPage = () => {
                     rowGap={10}
                     mt={6}
                   >
-                    {villageVideos.slice(0, 6).map((video) => (
+                    {villageVideos && villageVideos['videos'].slice(0, 6).map((video) => (
                       <VideoCard key={video.id} video={video} />
                     ))}
                   </SimpleGrid>
                   <Divider mt={10} mb={6} />
                   <Box>
-                    <Link href="/village/videos" passHref={true}>
+                    <Link href={link + "/videos"} passHref={true}>
                       <Text
                         fontSize="12px"
                         color="purpleTone"
                         textAlign="center"
                         cursor="pointer"
                       >
-                        SEE ALL VIDEOS ({villageVideos.length})
+                        SEE ALL VIDEOS ({villageVideos && villageVideos['videos'].length})
                       </Text>
                     </Link>
                   </Box>

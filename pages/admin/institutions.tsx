@@ -172,7 +172,7 @@ const Institutions: NextPage = () => {
         accessor: 'photo',
         Cell: function PictureItem({ row }) {
           return (
-            <Box w={40}>
+            <Box>
               <ImageBox imageUrl={row.original.photo?.url} />
             </Box>
           );
@@ -322,7 +322,7 @@ const Institutions: NextPage = () => {
           <InstitutionForm
             type="add"
             village={village}
-            institution={institution}
+            institution={isEdit ? institution : null}
             isEdit={isEdit}
           />
         </ModalContent>

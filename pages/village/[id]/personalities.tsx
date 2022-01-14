@@ -59,20 +59,27 @@ const Personalities: NextPage = () => {
     }
   }, [vid]);
 
-  if (villagePersonalities && loading) {
-    setLoading(false);
-    setItemOffset(0);
-  }
+  useEffect(() => {
+    if (villagePersonalities != null && villagePersonalities['personalities'].length > 0) {
+      setLoading(false);
+      setItemOffset(0);
+    } else if (villagePersonalities != null && villagePersonalities['personalities'].length == 0) {
+      setLoading(false);
+      setPageData([]);
+    }
+  }, [villagePersonalities && villagePersonalities['personalities']]);
 
   const handlePageClicked = event => {
-    const newOffset = (event.selected * itemsPerPage) % villagePersonalities.length;
+    const newOffset = (event.selected * itemsPerPage) % villagePersonalities['personalities'].length;
     setItemOffset(newOffset);
   };
   
   useEffect(() => {
-    const endOffset = itemOffset + itemsPerPage;
-    setPageData(villagePersonalities.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(villagePersonalities.length / itemsPerPage));
+    if (villagePersonalities != null && villagePersonalities['personalities'].length > 0) {
+      const endOffset = itemOffset + itemsPerPage;
+      setPageData(villagePersonalities['personalities'].slice(itemOffset, endOffset));
+      setPageCount(Math.ceil(villagePersonalities['personalities'].length / itemsPerPage));
+    }
   }, [itemOffset, itemsPerPage]);
 
   return (
@@ -107,10 +114,12 @@ const Personalities: NextPage = () => {
                   <Alert message="There is no personality to be displayed." />
                 )}
               </VStack>
-              <Paginate 
-                handlePageClick={handlePageClicked}
-                pageCount={pageCount}
-              />
+              {villagePersonalities && villagePersonalities['personalities'].length > itemsPerPage && 
+                <Paginate 
+                  handlePageClick={handlePageClicked}
+                  pageCount={pageCount}
+                />
+              }
             </Box> :
           <ScaleLoader color={color} loading={loading} css={override} /> }
         </Flex>

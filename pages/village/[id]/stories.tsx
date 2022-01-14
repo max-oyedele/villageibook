@@ -60,20 +60,27 @@ const Story: NextPage = () => {
     }
   }, [vid])
 
-  if (villageStories && loading) {
-    setLoading(false);
-    setItemOffset(0);
-  }
+  useEffect(() => {
+    if (villageStories != null && villageStories['stories'].length > 0) {
+      setLoading(false);
+      setItemOffset(0);
+    } else if (villageStories != null && villageStories['stories'].length == 0) {
+      setLoading(false);
+      setPageData([]);
+    }
+  }, [villageStories && villageStories['stories']]);
 
   const handlePageClicked = event => {
-    const newOffset = (event.selected * itemsPerPage) % villageStories.length;
+    const newOffset = (event.selected * itemsPerPage) % villageStories['stories'].length;
     setItemOffset(newOffset);
   };
   
   useEffect(() => {
-    const endOffset = itemOffset + itemsPerPage;
-    setPageData(villageStories.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(villageStories.length / itemsPerPage));
+    if (villageStories != null && villageStories['stories'].length > 0) {
+      const endOffset = itemOffset + itemsPerPage;
+      setPageData(villageStories['stories'].slice(itemOffset, endOffset));
+      setPageCount(Math.ceil(villageStories['stories'].length / itemsPerPage));
+    }
   }, [itemOffset, itemsPerPage]);
 
   return (
@@ -116,12 +123,12 @@ const Story: NextPage = () => {
                   </Grid>
                 </Box>
               )}
-              {pageData?.length > 0 && (
+              { villageStories && villageStories['stories'].length > itemsPerPage && 
                 <Paginate 
                   handlePageClick={handlePageClicked}
                   pageCount={pageCount}
                 />
-              )}
+              }
               {pageData?.length == 0 && (
                 <Alert message="There is no story to be displayed." />
               )}

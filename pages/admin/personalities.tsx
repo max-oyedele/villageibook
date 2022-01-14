@@ -179,7 +179,7 @@ const Personalities: NextPage = () => {
         accessor: "photo.url",
         Cell: function PictureItem({ row }) {
           return (
-            <Box w={40}>
+            <Box>
               <Avatar src={row.original.photo?.url} size="md" />
             </Box>
           );
@@ -315,7 +315,7 @@ const Personalities: NextPage = () => {
           <PersonalityForm
             type="add"
             village={village}
-            personality={personality}
+            personality={isEdit ? personality : null}
             isEdit={isEdit}
           />
         </ModalContent>
