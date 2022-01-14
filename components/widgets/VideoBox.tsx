@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { useRouter } from "next/router";
 import { BiCaretRight, BiLoaderCircle } from "react-icons/bi";
 
@@ -25,48 +25,52 @@ import {
   ModalBody,
   ModalFooter,
 } from "@chakra-ui/react";
+import Loader from "components/widgets/Loader";
 
 import ReactPlayer from "react-player/lazy";
 
 const VideoBox: React.FC<{
-  videoUrl: string,
-  videoBackImg?: string
+  videoUrl: string;
+  videoBackImg?: string;
 }> = ({ videoUrl, videoBackImg }) => {
   const router = useRouter();
   const { pathname } = router;
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
+  const [videoReady, setVideoReady] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Fragment>
       <Box w="full" pos="relative">
-        {
-          videoBackImg &&
-          <Image src={videoBackImg} alt="" />
-        }
-        {
-          !videoBackImg &&
+        {videoBackImg && <Image src={videoBackImg} alt="" />}
+        {!videoBackImg && (
           <ReactPlayer
             className="react-player"
             url={videoUrl}
             width="100%"
             height="100%"
             playing={false}
-          // light={videoBackImg ?? false}
+            onReady={() => setVideoReady(true)}
+            // light={videoBackImg ?? false}
           />
-        }
-        {
-          videoUrl &&
-          <Flex
-            pos="absolute"
-            top={0}
-            w="full"
-            h="full"
-            justifyContent="center"
-            alignItems="center"
-          >
+        )}
+
+        <Flex
+          pos="absolute"
+          top={0}
+          w="full"
+          h="full"
+          justifyContent="center"
+          alignItems="center"
+        >
+          {!videoReady && (
+            <Box w={9} h={9}>
+              <Loader loading={true} type="clip" />
+            </Box>
+          )}
+          {videoReady && videoUrl && (
             <Circle
               w={9}
               h={9}
@@ -76,10 +80,10 @@ const VideoBox: React.FC<{
             >
               <BiCaretRight fontSize="24px" color="white" />
             </Circle>
-          </Flex>
-        }
-        {
-          !videoUrl &&
+          )}
+        </Flex>
+
+        {!videoUrl && (
           <Flex
             pos="absolute"
             top={0}
@@ -90,7 +94,7 @@ const VideoBox: React.FC<{
           >
             <BiLoaderCircle fontSize="34px" color="white" />
           </Flex>
-        }
+        )}
       </Box>
 
       <Modal
@@ -102,7 +106,7 @@ const VideoBox: React.FC<{
       >
         <ModalOverlay />
         <ModalContent m={0} p={0} bgColor="transparent">
-          {/* <ModalCloseButton color="white" zIndex={10} /> */}
+          <ModalCloseButton color="white" zIndex={10} />
           <ReactPlayer
             className="react-player"
             url={videoUrl}
