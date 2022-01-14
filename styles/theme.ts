@@ -11,10 +11,34 @@ const theme: Theme = extendTheme({
     primary: "teal.600",
     purpleTone: "#553CFB",
     grayBg: "#F8F8FA",
-    greenTone: "#36CFD1"
-  },  
+    greenTone: "#36CFD1",
+  },
   fonts: {
     body: `'Sofia Pro', sans-serif`,
+  },
+  components: {
+    Button: {
+      variants: {
+        solid: {
+          bg: "purpleTone",
+          color: "white",
+          _hover: {
+            bg: "purpleTone",            
+            _disabled: {
+              bg: "purpleTone",              
+            }
+          },
+          _focus: { 
+            outline: "none",
+            boxShadow: "none"
+          },
+          _disabled: {
+            bg: "purpleTone",
+            opacity: 1
+          }
+        },
+      },
+    },
   },
   styles: {
     global: (props: GlobalStyleProps): SystemStyleObject => ({

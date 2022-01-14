@@ -60,9 +60,7 @@ const PersonalityCard: React.FC<{ personality: Personality }> = ({
                 h="26px"
                 fontSize="12px"
                 fontWeight="400"
-                bgColor="#FFB425"
-                color="white"
-                _focus={{ boxShadow: "none" }}
+                bgColor="#FFB425"                
               >
                 View More
               </Button>
@@ -108,7 +106,6 @@ const PersonalityCard: React.FC<{ personality: Personality }> = ({
               fontSize="12px"
               fontWeight="400"
               bgColor="#FFB425"
-              color="white"
             >
               View More
             </Button>

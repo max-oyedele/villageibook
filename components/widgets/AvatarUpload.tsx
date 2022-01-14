@@ -52,13 +52,14 @@ const AvatarUpload:React.FC<{avatarUrl?, setAvatar}> = ({avatarUrl, setAvatar}) 
           />
           <Button
             h="25px"
+            bgColor="white"
             color="purpleTone"
+            _hover={{bgColor: "white"}}
             fontSize="12px"
             fontWeight="400"
             border="1px"
             borderColor="gray.300"
             borderRadius="full"
-            _focus={{ boxShadow: "none" }}
             mt={8}
             onClick={() => avatarRef.current?.click()}
           >

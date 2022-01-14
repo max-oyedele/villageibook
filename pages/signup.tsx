@@ -303,12 +303,9 @@ const Signup = () => {
 
                   <Button
                     type="submit"
-                    bgColor="purpleTone"
-                    color="white"
                     size="md"
                     fontSize="12px"
-                    fontWeight="400"
-                    _focus={{ boxShadow: "none" }}
+                    fontWeight="400"                    
                     w="full"
                     mt={8}
                     isLoading={isSubmitting}

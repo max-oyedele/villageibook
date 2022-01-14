@@ -494,11 +494,8 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
             <Button
               type="submit"
               w="50%"
-              bgColor="purpleTone"
               fontSize="12px"
               fontWeight="400"
-              color="white"
-              _focus={{ boxShadow: "none" }}
               isLoading={isSubmitting}
               disabled={isSubmitting}
             >
@@ -629,11 +626,8 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
               <Button
                 type="submit"
                 w="50%"
-                bgColor="purpleTone"
                 fontSize="12px"
                 fontWeight="400"
-                color="white"
-                _focus={{ boxShadow: "none" }}
                 onClick={() => setActiveStep(activeStep - 1)}
               >
                 PREV
@@ -643,11 +637,8 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
             <Button
               type="submit"
               w="50%"
-              bgColor="purpleTone"
               fontSize="12px"
               fontWeight="400"
-              color="white"
-              _focus={{ boxShadow: "none" }}
               isLoading={isSubmitting}
               disabled={isSubmitting}
             >

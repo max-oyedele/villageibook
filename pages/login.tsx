@@ -205,12 +205,9 @@ const Login = () => {
 
                   <Button
                     type="submit"
-                    bgColor="purpleTone"
-                    color="white"
                     size="md"
                     fontSize="12px"
                     fontWeight="400"
-                    _focus={{ boxShadow: "none" }}
                     w="full"
                     mt={8}
                     isLoading={isSubmitting || authStatus === Status.LOADING}

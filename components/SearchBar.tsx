@@ -78,12 +78,9 @@ const SearchBar = (props) => {
             <Button
               w="165px"
               h="full"
-              bgColor="purpleTone"
               fontSize="14px"
               fontWeight="400"
-              color="white"
               borderRadius="6px"
-              _focus={{ boxShadow: "none" }}
               ml={6}
               disabled={!selectedVillage}
               onClick={() => {
@@ -100,10 +97,8 @@ const SearchBar = (props) => {
         <Button
           w="full"
           h="45px"
-          bgColor="purpleTone"
           fontSize="14px"
           fontWeight="400"
-          color="white"
           borderRadius="6px"
           mt={6}
           disabled={!selectedVillage}

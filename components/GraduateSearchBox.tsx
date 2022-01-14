@@ -54,12 +54,9 @@ const GraduateSearchBox:React.FC<{location: string, setLocation, onFind}> = ({lo
             <Button
               w="140px"
               h="42px"
-              bgColor="purpleTone"
-              color="white"
               fontSize="14px"
               fontWeight="400"
               disabled={!location}
-              _focus={{ boxShadow: "none" }}
               onClick={onFind}
             >
               Find now

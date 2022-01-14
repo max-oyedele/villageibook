@@ -43,9 +43,8 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
         w="full"
         p={4}
         bgColor="white"
-        borderRadius="6px"
-        border="1px"
-        borderColor="gray.200"
+        borderRadius="8px"
+        boxShadow="sm"
       >
         <Flex
           w="full"
@@ -59,6 +58,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
               <Avatar
                 src={post.user?.avatar ?? "/images/default-user.png"}
                 size="sm"
+                boxShadow="sm"
                 cursor="pointer"
               />
             </Link>
@@ -144,7 +144,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
               onKeyDown={handleKeyDown}
             />
             {comment && (
-              <Button h="32px" _focus={{ outline: "none" }} my={2}>
+              <Button h="32px" my={2}>
                 Post
               </Button>
             )}

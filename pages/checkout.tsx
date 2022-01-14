@@ -53,7 +53,7 @@ const Checkout: NextPage = () => {
               </Stack>
             </RadioGroup>
 
-            <Button bgColor="purpleTone" color="white" px={12}>
+            <Button px={12}>
               Confirm
             </Button>
           </VStack>

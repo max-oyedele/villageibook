@@ -379,11 +379,8 @@ const AccountToRegister: NextPage = () => {
                     <Button
                       type="submit"
                       w="50%"
-                      bgColor="purpleTone"
                       fontSize="12px"
-                      fontWeight="400"
-                      color="white"
-                      _focus={{ boxShadow: "none" }}
+                      fontWeight="400"                      
                       isLoading={isSubmitting}
                       disabled={isSubmitting}
                     >

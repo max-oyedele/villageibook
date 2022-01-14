@@ -154,9 +154,6 @@ const PostForm: React.FC = () => {
           h="27px"
           fontSize="13px"
           fontWeight="400"
-          bgColor="purpleTone"
-          color="white"
-          _focus={{ boxShadow: "none" }}
           isLoading={postStatus === Status.LOADING}
           disabled={postStatus === Status.LOADING || !content}
           onClick={handlePost}

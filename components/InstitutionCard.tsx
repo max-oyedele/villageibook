@@ -74,12 +74,9 @@ const InstitutionCard: React.FC<{ institution: Institution }> = ({
               <Box mt={4}>
                 <Button
                   w={{ base: "full", sm: "70%" }}
-                  // px={4}
                   h="26px"
                   fontSize="12px"
                   fontWeight="400"
-                  bgColor="purpleTone"
-                  color="white"
                 >
                   More
                 </Button>
@@ -95,9 +92,6 @@ const InstitutionCard: React.FC<{ institution: Institution }> = ({
                 h="26px"
                 fontSize="12px"
                 fontWeight="400"
-                bgColor="purpleTone"
-                color="white"
-                _focus={{boxShadow: "none"}}
               >
                 More
               </Button>
