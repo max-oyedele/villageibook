@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import {
   Alert,
+  Text
 } from "@chakra-ui/react";
 
 const CAlert: React.FC<{
@@ -8,7 +9,7 @@ const CAlert: React.FC<{
 }> = ({ message }) => {
   return (
     <Fragment>
-      <Alert
+      {/* <Alert
         status="error"
         justifyContent="center"
         bgColor="white"
@@ -17,7 +18,8 @@ const CAlert: React.FC<{
         borderRadius="6px"
       >
         {message}
-      </Alert>
+      </Alert> */}
+      <Text>{message}</Text>
     </Fragment>
   );
 };
