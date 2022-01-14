@@ -32,13 +32,17 @@ import GraduateStatCapsule from "components/GraduateStatCapsule";
 import AlphaBetaBar from "components/widgets/AlphaBetaBar";
 import GraduatesCountryStatBox from "components/GraduatesCountryStatBox";
 import VillageGraduatesRegionStatCard from "components/VillageGraduatesRegionStatCard";
+import Loader from "components/widgets/Loader";
+
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
 import useWindowProp from "hooks/use-window-prop";
 
-import { platformCountries, homeCountry, watchCountries } from "constants/global";
-import { css } from "@emotion/react";
-import ScaleLoader from "react-spinners/ScaleLoader";
+import {
+  platformCountries,
+  homeCountry,
+  watchCountries,
+} from "constants/global";
 
 const menuItems = [
   {
@@ -64,10 +68,14 @@ const Graduates: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const {
-    me, districts, subDistricts, villages, 
-    graduateStatsByCondition, totalGraduateStats,  
+    me,
+    districts,
+    subDistricts,
+    villages,
+    graduateStatsByCondition,
+    totalGraduateStats,
   } = useFetchData();
-  const {    
+  const {
     fetchMeData,
     fetchCommonData,
     fetchRegionsData,
@@ -75,7 +83,7 @@ const Graduates: NextPage = () => {
     fetchSubDistrictsData,
     fetchVillagesData,
     getGraduatesByConditionData,
-    getTotalGraduatesData
+    getTotalGraduatesData,
   } = useActionDispatch();
 
   const [activeMenuItem, setActiveMenuItem] = useState(null);
@@ -83,19 +91,13 @@ const Graduates: NextPage = () => {
   const [expandedItem, setExpandedItem] = useState(null);
   const [items, setItems] = useState([]);
   const [location, setLocation] = useState(null);
-  
-  const universityCountries = watchCountries.filter(e => e.href != "other").map(e => e.href).join(",");
 
-  const override = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  `;
-  
-  const [loading, setLoading] = useState(true);
-  const [color, setColor] = useState("#553cfb");
+  const universityCountries = watchCountries
+    .filter((e) => e.href != "other")
+    .map((e) => e.href)
+    .join(",");
+
+  const [loading, setLoading] = useState(true);  
 
   useEffect(() => {
     if (me) {
@@ -104,42 +106,41 @@ const Graduates: NextPage = () => {
       // fetchRegionsData(null);
       fetchDistrictsData(null);
       fetchSubDistrictsData(null);
-      fetchVillagesData(null);      
-    }
-    else {
+      fetchVillagesData(null);
+    } else {
       fetchMeData();
     }
   }, [me]);
 
-  useEffect(()=>{
-    if(id){      
+  useEffect(() => {
+    if (id) {
       getGraduatesByConditionData({ universityCountries, locationUuid: id });
       getTotalGraduatesData();
     }
-  }, [id])
+  }, [id]);
 
   useEffect(() => {
-    const districtItem = districts.find(e => e.uuid === id);
+    const districtItem = districts.find((e) => e.uuid === id);
     if (districtItem) {
       setActiveMenuItem(menuItems[0]);
       setItems(districts);
       setExpandedItem(districtItem);
     }
 
-    const subDistrictItem = subDistricts.find(e => e.uuid === id);
+    const subDistrictItem = subDistricts.find((e) => e.uuid === id);
     if (subDistrictItem) {
       setActiveMenuItem(menuItems[1]);
       setItems(subDistricts);
       setExpandedItem(subDistrictItem);
     }
 
-    const villageItem = villages.find(e => e.uuid === id);
+    const villageItem = villages.find((e) => e.uuid === id);
     if (villageItem) {
       setActiveMenuItem(menuItems[2]);
       setItems(villages);
       setExpandedItem(villageItem);
-    }    
-  }, [districts, subDistricts, villages])
+    }
+  }, [districts, subDistricts, villages]);
 
   useEffect(() => {
     if (activeMenuItem?.value === "district") setItems(districts);
@@ -153,7 +154,9 @@ const Graduates: NextPage = () => {
   const onFind = () => {
     if (districts.find((item) => item.href === location.toLowerCase())) {
       setActiveMenuItem(menuItems[0]);
-    } else if (subDistricts.find((item) => item.href === location.toLowerCase())) {
+    } else if (
+      subDistricts.find((item) => item.href === location.toLowerCase())
+    ) {
       setActiveMenuItem(menuItems[1]);
     } else if (villages.find((item) => item.href === location.toLowerCase())) {
       setActiveMenuItem(menuItems[2]);
@@ -169,12 +172,12 @@ const Graduates: NextPage = () => {
   };
 
   if (items && items.length > 0 && loading) {
-    setLoading(false)
+    setLoading(false);
   }
-  
+
   const calcGraduates = (location) => {
-    const totalGraduatesCount = 1;//totalGraduates.filter(e=>e.comesFrom === locationItem.href).length;
-    const homeGraduatesCount = 0;//totalGraduates.filter(e=>e.comesFrom === locationItem.href && e.graduatedAt === homeCountry).length;
+    const totalGraduatesCount = 1; //totalGraduates.filter(e=>e.comesFrom === locationItem.href).length;
+    const homeGraduatesCount = 0; //totalGraduates.filter(e=>e.comesFrom === locationItem.href && e.graduatedAt === homeCountry).length;
     const overseaGraduateCount = totalGraduatesCount - homeGraduatesCount;
 
     //[total=12, inter=6, oversea=6]
@@ -189,7 +192,10 @@ const Graduates: NextPage = () => {
         <Flex>
           {breakpointValue === "md" && (
             <Box>
-              <VillageGraduatesRegionStatCard village={me?.comesFrom} fixed={fixed} />
+              <VillageGraduatesRegionStatCard
+                village={me?.comesFrom}
+                fixed={fixed}
+              />
             </Box>
           )}
 
@@ -199,8 +205,8 @@ const Graduates: NextPage = () => {
               fixed && breakpointValue === "md"
                 ? "264px"
                 : breakpointValue === "md"
-                  ? "24px"
-                  : "0px"
+                ? "24px"
+                : "0px"
             }
           >
             <GraduateSearchBox
@@ -233,8 +239,8 @@ const Graduates: NextPage = () => {
                 </Box>
               ))}
             </Flex>
-
-            { !loading ?
+            {loading && <Loader loading={loading} />}
+            {!loading && (
               <Accordion
                 w="full"
                 allowToggle
@@ -263,7 +269,9 @@ const Graduates: NextPage = () => {
                           fontSize="16px"
                           textTransform="capitalize"
                           color={
-                            item.uuid === expandedItem?.uuid ? "purpleTone" : "primary"
+                            item.uuid === expandedItem?.uuid
+                              ? "purpleTone"
+                              : "primary"
                           }
                         >
                           {item.name}
@@ -281,7 +289,11 @@ const Graduates: NextPage = () => {
                       <AccordionPanel pb={4}>
                         <Divider />
                         {breakpointValue === "base" && (
-                          <Flex justifyContent="center" alignItems="center" mt={6}>
+                          <Flex
+                            justifyContent="center"
+                            alignItems="center"
+                            mt={6}
+                          >
                             <TotalCapsule
                               locationItem={item}
                               stats={calcGraduates(item)}
@@ -290,17 +302,18 @@ const Graduates: NextPage = () => {
                           </Flex>
                         )}
                         <Box w={{ base: "100%", md: "40%" }} p={6}>
-                          {
-                            me?.comesFrom &&
-                            <GraduatesCountryStatBox graduateStats={graduateStatsByCondition} />
-                          }
+                          {me?.comesFrom && (
+                            <GraduatesCountryStatBox
+                              graduateStats={graduateStatsByCondition}
+                            />
+                          )}
                         </Box>
                       </AccordionPanel>
                     </AccordionItem>
                   );
                 })}
-              </Accordion> :
-            <ScaleLoader color={color} loading={loading} css={override} /> }
+              </Accordion>
+            )}
           </Box>
         </Flex>
       </Container>

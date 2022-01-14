@@ -17,12 +17,12 @@ import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
 import PersonalityCard from "components/PersonalityCard";
 import Alert from "components/widgets/Alert";
+import Loader from "components/widgets/Loader";
 
 import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
-import { css } from "@emotion/react";
-import ScaleLoader from "react-spinners/ScaleLoader";
+
 import Paginate from "components/Paginate";
 
 const Personalities: NextPage = () => {
@@ -37,16 +37,7 @@ const Personalities: NextPage = () => {
   const { village, villagePersonalities } = useFetchData();
   const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
 
-  const override = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  `;
-  
-  const [loading, setLoading] = useState(true);
-  const [color, setColor] = useState("#553cfb");
+  const [loading, setLoading] = useState(true);  
   const [pageData, setPageData] = useState(null);
   const [itemOffset, setItemOffset] = useState(1);
   const [pageCount, setPageCount] = useState(1);
@@ -60,25 +51,40 @@ const Personalities: NextPage = () => {
   }, [vid]);
 
   useEffect(() => {
-    if (villagePersonalities != null && villagePersonalities['personalities'].length > 0) {
+    if (
+      villagePersonalities != null &&
+      villagePersonalities["personalities"].length > 0
+    ) {
       setLoading(false);
       setItemOffset(0);
-    } else if (villagePersonalities != null && villagePersonalities['personalities'].length == 0) {
+    } else if (
+      villagePersonalities != null &&
+      villagePersonalities["personalities"].length == 0
+    ) {
       setLoading(false);
       setPageData([]);
     }
-  }, [villagePersonalities && villagePersonalities['personalities']]);
+  }, [villagePersonalities && villagePersonalities["personalities"]]);
 
-  const handlePageClicked = event => {
-    const newOffset = (event.selected * itemsPerPage) % villagePersonalities['personalities'].length;
+  const handlePageClicked = (event) => {
+    const newOffset =
+      (event.selected * itemsPerPage) %
+      villagePersonalities["personalities"].length;
     setItemOffset(newOffset);
   };
-  
+
   useEffect(() => {
-    if (villagePersonalities != null && villagePersonalities['personalities'].length > 0) {
+    if (
+      villagePersonalities != null &&
+      villagePersonalities["personalities"].length > 0
+    ) {
       const endOffset = itemOffset + itemsPerPage;
-      setPageData(villagePersonalities['personalities'].slice(itemOffset, endOffset));
-      setPageCount(Math.ceil(villagePersonalities['personalities'].length / itemsPerPage));
+      setPageData(
+        villagePersonalities["personalities"].slice(itemOffset, endOffset)
+      );
+      setPageCount(
+        Math.ceil(villagePersonalities["personalities"].length / itemsPerPage)
+      );
     }
   }, [itemOffset, itemsPerPage]);
 
@@ -93,35 +99,39 @@ const Personalities: NextPage = () => {
               <LeftVillageCard village={village} fixed={fixed} />
             </Box>
           )}
-
-          { !loading ?
+          {loading && <Loader loading={loading} />}
+          {!loading && (
             <Box
               w="full"
               ml={
                 fixed && breakpointValue === "md"
                   ? "264px"
                   : breakpointValue === "md"
-                    ? "24px"
-                    : "0px"
+                  ? "24px"
+                  : "0px"
               }
             >
               <VStack spacing={2}>
                 {pageData?.length > 0 &&
                   pageData.map((personality) => (
-                    <PersonalityCard key={personality.id} personality={personality} />
+                    <PersonalityCard
+                      key={personality.id}
+                      personality={personality}
+                    />
                   ))}
-                {pageData?.length == 0 && (
-                  <Alert message="There is no personality to be displayed." />
-                )}
               </VStack>
-              {villagePersonalities && villagePersonalities['personalities'].length > itemsPerPage && 
-                <Paginate 
-                  handlePageClick={handlePageClicked}
-                  pageCount={pageCount}
-                />
-              }
-            </Box> :
-          <ScaleLoader color={color} loading={loading} css={override} /> }
+              {pageData?.length == 0 && (
+                <Alert message="There is no personality to be displayed." />
+              )}
+              {villagePersonalities &&
+                villagePersonalities["personalities"].length > itemsPerPage && (
+                  <Paginate
+                    handlePageClick={handlePageClicked}
+                    pageCount={pageCount}
+                  />
+                )}
+            </Box>
+          )}
         </Flex>
       </Container>
 

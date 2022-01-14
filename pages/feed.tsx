@@ -10,7 +10,7 @@ import {
   HStack,
   VStack,
   useBreakpointValue,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 
 import Header from "components/Header";
@@ -26,13 +26,12 @@ import CaptionCard from "components/CaptionCard";
 import GraduatesLocationStatCard from "components/GraduatesLocationStatCard";
 import RecentUserCard from "components/RecentUserCard";
 import VideoBox from "components/widgets/VideoBox";
+import Loader from "components/widgets/Loader";
 
 import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { css } from "@emotion/react";
-import ScaleLoader from "react-spinners/ScaleLoader";
 import useActionDispatch from "hooks/use-action-dispatch";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Feed: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -45,23 +44,19 @@ const Feed: NextPage = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  
+
   const { me, posts, recentUsers, recentVillages } = useFetchData();
-  const { resetPosts, fetchMeData, fetchFeedPageData, fetchVillageData, addPost } =
-    useActionDispatch();
+  const {
+    resetPosts,
+    fetchMeData,
+    fetchFeedPageData,
+    fetchVillageData,
+    addPost,
+  } = useActionDispatch();
   const toast = useToast();
 
-  const override = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  `;
-
   const [loading, setLoading] = useState(true);
-  const [color, setColor] = useState("#553cfb");
-
+  
   useEffect(() => {
     fetchMeData();
   }, []);
@@ -201,7 +196,8 @@ const Feed: NextPage = () => {
             <Box bg="white" borderRadius="4px" mb={4} p={4}>
               <PostForm />
             </Box>
-            {!loading ? (
+            {loading && <Loader loading={loading} />}
+            {!loading && (
               <>
                 {(breakpointValue === "md" ||
                   (breakpointValue === "base" && activeTab === "Feed")) && (
@@ -209,13 +205,7 @@ const Feed: NextPage = () => {
                     dataLength={data?.length}
                     next={getMorePost}
                     hasMore={hasMore}
-                    loader={
-                      <ScaleLoader
-                        color={color}
-                        loading={true}
-                        css={override}
-                      />
-                    }
+                    loader={<Loader loading={true} />}
                     // endMessage={<h4 className="hh">Nothing more to show</h4>}
                   >
                     <style>
@@ -290,8 +280,6 @@ const Feed: NextPage = () => {
                   </Box>
                 )}{" "}
               </>
-            ) : (
-              <ScaleLoader color={color} loading={loading} css={override} />
             )}
           </Box>
 

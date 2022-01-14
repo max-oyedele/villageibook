@@ -15,18 +15,17 @@ import {
   SimpleGrid,
   Badge,
   useBreakpointValue,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 
 import Header from "components/Header";
 import Footer from "components/Footer";
 import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
+import Loader from "components/widgets/Loader";
 
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
-import { css } from "@emotion/react";
-import ScaleLoader from "react-spinners/ScaleLoader";
 
 const UserView: NextPage = () => {
   const router = useRouter();
@@ -38,17 +37,8 @@ const UserView: NextPage = () => {
   const { user, userError } = useFetchData();
   const { fetchUserData } = useActionDispatch();
 
-  const override = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  `;
-  
   const [loading, setLoading] = useState(true);
-  const [color, setColor] = useState("#553cfb");
-
+  
   useEffect(() => {
     if (id) {
       setLoading(true);
@@ -69,7 +59,7 @@ const UserView: NextPage = () => {
   }
 
   if (user && loading) {
-    setLoading(false)
+    setLoading(false);
   }
 
   return (
@@ -78,12 +68,20 @@ const UserView: NextPage = () => {
       <Container maxW="container.xl" px={6} mt={8} mb={48}>
         {/* <PageTitle title={user?.firstName + " " + user?.lastName ?? ""} /> */}
 
-        { !loading ?
+        {loading && <Loader loading={loading} />}
+        {!loading && (
           <Flex>
             {breakpointValue === "md" && (
-              <Flex minW="max-content" flexDirection="column" alignItems="center" pos="fixed" top="80px" spacing={6}>
+              <Flex
+                minW="max-content"
+                flexDirection="column"
+                alignItems="center"
+                pos="fixed"
+                top="80px"
+                spacing={6}
+              >
                 <Image
-                  src={user?.avatar??"/images/default-user.png"}
+                  src={user?.avatar ?? "/images/default-user.png"}
                   boxSize="200px"
                   loading="eager"
                   fit="cover"
@@ -124,11 +122,7 @@ const UserView: NextPage = () => {
                 <Flex flexDirection="column" p={6}>
                   {breakpointValue === "base" && (
                     <Flex flexDirection="column" alignItems="center" mb={6}>
-                      <Avatar
-                        src={user?.avatar}
-                        size="2xl"
-                        mb={6}
-                      />
+                      <Avatar src={user?.avatar} size="2xl" mb={6} />
 
                       <Text fontSize="18px" textTransform="capitalize" mt={8}>
                         {user.firstName} {user.lastName}
@@ -141,12 +135,7 @@ const UserView: NextPage = () => {
 
                   <Text fontSize="18px">Personal Info</Text>
                   <SimpleGrid columns={{ base: 1, md: 2 }} mt={6}>
-                    <VStack
-                      w="full"
-                      spacing={2}
-                      divider={<Divider />}
-                      pr={3}
-                    >
+                    <VStack w="full" spacing={2} divider={<Divider />} pr={3}>
                       <HStack w="full">
                         <Box w="full" fontSize="13px" color="purpleTone">
                           First name
@@ -186,15 +175,9 @@ const UserView: NextPage = () => {
                           {user?.email}
                         </Box>
                       </HStack>
-                      <HStack w="full">
-                      </HStack>
+                      <HStack w="full"></HStack>
                     </VStack>
-                    <VStack
-                      w="full"
-                      spacing={2}
-                      divider={<Divider />}
-                      pr={3}
-                    >
+                    <VStack w="full" spacing={2} divider={<Divider />} pr={3}>
                       <HStack w="full">
                         <Box w="full" fontSize="13px" color="purpleTone">
                           District
@@ -218,7 +201,9 @@ const UserView: NextPage = () => {
                           color="GrayText"
                           textTransform="capitalize"
                         >
-                          {!user?.hasProfession.name ? user?.hasProfession.name : "-"}
+                          {!user?.hasProfession.name
+                            ? user?.hasProfession.name
+                            : "-"}
                         </Box>
                       </HStack>
                       <HStack w="full">
@@ -237,13 +222,10 @@ const UserView: NextPage = () => {
                       <HStack w="full"></HStack>
                     </VStack>
                   </SimpleGrid>
-                  <Text fontSize="18px" marginTop="30px">Education</Text>
-                  <VStack
-                    w="70%"
-                    spacing={2}
-                    divider={<Divider />}
-                    mt={6}
-                  >
+                  <Text fontSize="18px" marginTop="30px">
+                    Education
+                  </Text>
+                  <VStack w="70%" spacing={2} divider={<Divider />} mt={6}>
                     <HStack w="full">
                       <Box w="full" fontSize="13px" color="purpleTone">
                         Degree
@@ -333,11 +315,7 @@ const UserView: NextPage = () => {
                 <Flex flexDirection="column" p={6}>
                   {breakpointValue === "base" && (
                     <Flex flexDirection="column" alignItems="center" mb={6}>
-                      <Avatar
-                        src={user?.avatar}
-                        size="2xl"
-                        mb={6}
-                      />
+                      <Avatar src={user?.avatar} size="2xl" mb={6} />
 
                       <Text fontSize="18px" textTransform="capitalize" mt={8}>
                         {user.firstName} {user.lastName}
@@ -349,12 +327,7 @@ const UserView: NextPage = () => {
                   )}
 
                   <Text fontSize="18px">Personal Info</Text>
-                  <VStack
-                    w="full"
-                    spacing={2}
-                    divider={<Divider />}
-                    mt={6}
-                  >
+                  <VStack w="full" spacing={2} divider={<Divider />} mt={6}>
                     <HStack w="full">
                       <Box w="full" fontSize="13px" color="purpleTone">
                         Living in
@@ -426,13 +399,12 @@ const UserView: NextPage = () => {
                         </Box>
                       </HStack>
                     )}
-                    
                   </VStack>
                 </Flex>
               </Box>
             )}
-          </Flex> :
-        <ScaleLoader color={color} loading={loading} css={override} /> }
+          </Flex>
+        )}
       </Container>
 
       {/* <Box pos="fixed" w="full" bottom={0}>

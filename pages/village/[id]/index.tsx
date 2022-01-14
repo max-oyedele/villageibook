@@ -28,12 +28,11 @@ import InstitutionCard from "components/InstitutionCard";
 import VideoCard from "components/VideoCard";
 import PhotoCard from "components/PhotoCard";
 import FilterCard from "components/FilterCard";
+import Loader from "components/widgets/Loader";
 
 import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
-import { css } from "@emotion/react";
-import ScaleLoader from "react-spinners/ScaleLoader";
 
 const Posts: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -41,34 +40,33 @@ const Posts: NextPage = () => {
   const { query } = router;
   const vid = query.id; //village uuid
 
-  const { village, villageUsers, villageStories, villagePersonalities, villageInstitutions, villageVideos, villagePhotos } = useFetchData();
+  const {
+    village,
+    villageUsers,
+    villageStories,
+    villagePersonalities,
+    villageInstitutions,
+    villageVideos,
+    villagePhotos,
+  } = useFetchData();
   const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
 
   const { fixed } = useWindowProp();
 
-  const override = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  `;
-  
   const [loading, setLoading] = useState(true);
-  const [color, setColor] = useState("#553cfb");
   const [link, setLink] = useState("");
 
   useEffect(() => {
-    if(vid){
+    if (vid) {
       setLoading(true);
       fetchVillageData({ villageUuid: vid });
-      fetchVillagePageData({ villageUuid: vid});
-      setLink('/village/'+ vid)
+      fetchVillagePageData({ villageUuid: vid });
+      setLink("/village/" + vid);
     }
   }, [vid]);
 
   if (village && loading) {
-    setLoading(false)
+    setLoading(false);
   }
 
   return (
@@ -92,7 +90,8 @@ const Posts: NextPage = () => {
             </Box>
           )}
 
-          { !loading ?
+          {loading && <Loader loading={loading} />}
+          {!loading && (
             <Box
               w="full"
               ml={
@@ -103,21 +102,20 @@ const Posts: NextPage = () => {
                   : "0px"
               }
             >
-            
-              {villageUsers && villageUsers['users'].length > 0 && (
+              {villageUsers && villageUsers["users"].length > 0 && (
                 <Box bgColor="white" p={6} mb={6}>
                   <Text fontSize="14px">MY PAGES</Text>
 
                   {breakpointValue === "md" && (
                     <VStack spacing={2} mt={6}>
-                      {villageUsers['users'].slice(0, 5).map((user) => (
+                      {villageUsers["users"].slice(0, 5).map((user) => (
                         <UserCard key={user.id} user={user} />
                       ))}
                     </VStack>
                   )}
                   {breakpointValue === "base" && (
                     <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4} mt={6}>
-                      {villageUsers['users'].map((user) => (
+                      {villageUsers["users"].map((user) => (
                         <UserCard key={user.id} user={user} />
                       ))}
                     </SimpleGrid>
@@ -131,7 +129,7 @@ const Posts: NextPage = () => {
                         cursor="pointer"
                         mt={8}
                       >
-                        SEE ALL MY PAGES ({villageUsers['users'].length})
+                        SEE ALL MY PAGES ({villageUsers["users"].length})
                       </Text>
                     </Link>
                   </Box>
@@ -150,7 +148,7 @@ const Posts: NextPage = () => {
                 </Box>
               </Box>
 
-              {villageStories && villageStories['stories'].length > 0 && (
+              {villageStories && villageStories["stories"].length > 0 && (
                 <Box bgColor="white" p={6} mb={6}>
                   <Text fontSize="14px">STORY</Text>
                   <SimpleGrid
@@ -159,7 +157,7 @@ const Posts: NextPage = () => {
                     rowGap={10}
                     mt={6}
                   >
-                    {villageStories['stories'].slice(0, 2).map((story) => (
+                    {villageStories["stories"].slice(0, 2).map((story) => (
                       <StoryCard key={story.uuid} story={story} />
                     ))}
                   </SimpleGrid>
@@ -172,74 +170,90 @@ const Posts: NextPage = () => {
                         textAlign="center"
                         cursor="pointer"
                       >
-                        SEE ALL STORIES ({villageStories['stories'].length})
+                        SEE ALL STORIES ({villageStories["stories"].length})
                       </Text>
                     </Link>
                   </Box>
                 </Box>
               )}
 
-              {villagePersonalities && villagePersonalities['personalities'].length > 0 && (
-                <Box bgColor="white" p={6} mb={6}>
-                  <Text fontSize="14px">PERSONALITIES</Text>
-                  {breakpointValue === "md" && (
+              {villagePersonalities &&
+                villagePersonalities["personalities"].length > 0 && (
+                  <Box bgColor="white" p={6} mb={6}>
+                    <Text fontSize="14px">PERSONALITIES</Text>
+                    {breakpointValue === "md" && (
+                      <VStack spacing={2} mt={6}>
+                        {villagePersonalities["personalities"]
+                          .slice(0, 5)
+                          .map((personality) => (
+                            <PersonalityCard
+                              key={personality.uuid}
+                              personality={personality}
+                            />
+                          ))}
+                      </VStack>
+                    )}
+                    {breakpointValue === "base" && (
+                      <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4} mt={6}>
+                        {villagePersonalities["personalities"].map(
+                          (personality) => (
+                            <PersonalityCard
+                              key={personality.uuid}
+                              personality={personality}
+                            />
+                          )
+                        )}
+                      </SimpleGrid>
+                    )}
+                    <Box>
+                      <Link href={link + "/personalities"} passHref={true}>
+                        <Text
+                          fontSize="12px"
+                          color="purpleTone"
+                          textAlign="center"
+                          cursor="pointer"
+                          mt={8}
+                        >
+                          SEE ALL PERSONALITIES (
+                          {villagePersonalities["personalities"].length})
+                        </Text>
+                      </Link>
+                    </Box>
+                  </Box>
+                )}
+
+              {villageInstitutions &&
+                villageInstitutions["institutions"].length > 0 && (
+                  <Box bgColor="white" p={6} mb={6}>
+                    <Text fontSize="14px">INSTITUTIONS</Text>
                     <VStack spacing={2} mt={6}>
-                      {villagePersonalities['personalities'].slice(0, 5).map((personality) => (
-                        <PersonalityCard key={personality.uuid} personality={personality} />
-                      ))}
+                      {villageInstitutions["institutions"]
+                        .slice(0, 3)
+                        .map((institution) => (
+                          <InstitutionCard
+                            key={institution.id}
+                            institution={institution}
+                          />
+                        ))}
                     </VStack>
-                  )}
-                  {breakpointValue === "base" && (
-                    <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4} mt={6}>
-                      {villagePersonalities['personalities'].map((personality) => (
-                        <PersonalityCard key={personality.uuid} personality={personality} />
-                      ))}
-                    </SimpleGrid>
-                  )}
-                  <Box>
-                    <Link href={link + "/personalities"} passHref={true}>
-                      <Text
-                        fontSize="12px"
-                        color="purpleTone"
-                        textAlign="center"
-                        cursor="pointer"
-                        mt={8}
-                      >
-                        SEE ALL PERSONALITIES ({villagePersonalities['personalities'].length})
-                      </Text>
-                    </Link>
+                    <Box>
+                      <Link href={link + "/institutions"} passHref={true}>
+                        <Text
+                          fontSize="12px"
+                          color="purpleTone"
+                          textAlign="center"
+                          mt={8}
+                          cursor="pointer"
+                        >
+                          SEE ALL INSTITUTIONS (
+                          {villageInstitutions["institutions"].length})
+                        </Text>
+                      </Link>
+                    </Box>
                   </Box>
-                </Box>
-              )}
+                )}
 
-              {villageInstitutions && villageInstitutions['institutions'].length > 0 && (
-                <Box bgColor="white" p={6} mb={6}>
-                  <Text fontSize="14px">INSTITUTIONS</Text>
-                  <VStack spacing={2} mt={6}>
-                    {villageInstitutions['institutions'].slice(0, 3).map((institution) => (
-                      <InstitutionCard
-                        key={institution.id}
-                        institution={institution}
-                      />
-                    ))}
-                  </VStack>
-                  <Box>
-                    <Link href={link + "/institutions"} passHref={true}>
-                      <Text
-                        fontSize="12px"
-                        color="purpleTone"
-                        textAlign="center"
-                        mt={8}
-                        cursor="pointer"
-                      >
-                        SEE ALL INSTITUTIONS ({villageInstitutions['institutions'].length})
-                      </Text>
-                    </Link>
-                  </Box>
-                </Box>
-              )}
-
-              {villageVideos && villageVideos['videos'].length > 0 && (
+              {villageVideos && villageVideos["videos"].length > 0 && (
                 <Box bgColor="white" p={6} mb={6}>
                   <Text fontSize="14px">VIDEOS</Text>
                   <SimpleGrid
@@ -248,9 +262,12 @@ const Posts: NextPage = () => {
                     rowGap={10}
                     mt={6}
                   >
-                    {villageVideos && villageVideos['videos'].slice(0, 6).map((video) => (
-                      <VideoCard key={video.id} video={video} />
-                    ))}
+                    {villageVideos &&
+                      villageVideos["videos"]
+                        .slice(0, 6)
+                        .map((video) => (
+                          <VideoCard key={video.id} video={video} />
+                        ))}
                   </SimpleGrid>
                   <Divider mt={10} mb={6} />
                   <Box>
@@ -261,7 +278,8 @@ const Posts: NextPage = () => {
                         textAlign="center"
                         cursor="pointer"
                       >
-                        SEE ALL VIDEOS ({villageVideos && villageVideos['videos'].length})
+                        SEE ALL VIDEOS (
+                        {villageVideos && villageVideos["videos"].length})
                       </Text>
                     </Link>
                   </Box>
@@ -296,8 +314,8 @@ const Posts: NextPage = () => {
                   </Box>
                 </Box>
               )} */}
-            </Box> :
-          <ScaleLoader color={color} loading={loading} css={override} /> }
+            </Box>
+          )}
         </Flex>
       </Container>
 

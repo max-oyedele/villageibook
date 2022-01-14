@@ -16,12 +16,11 @@ import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
 import InstitutionCard from "components/InstitutionCard";
 import Alert from "components/widgets/Alert";
+import Loader from "components/widgets/Loader";
 
 import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
-import { css } from "@emotion/react";
-import ScaleLoader from "react-spinners/ScaleLoader";
 import Paginate from "components/Paginate";
 
 const Institutions: NextPage = () => {
@@ -36,16 +35,7 @@ const Institutions: NextPage = () => {
   const { village, villageInstitutions } = useFetchData();
   const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
 
-  const override = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  `;
-  
-  const [loading, setLoading] = useState(true);
-  const [color, setColor] = useState("#553cfb");
+  const [loading, setLoading] = useState(true);  
   const [pageData, setPageData] = useState(null);
   const [itemOffset, setItemOffset] = useState(1);
   const [pageCount, setPageCount] = useState(1);
@@ -59,25 +49,40 @@ const Institutions: NextPage = () => {
   }, [vid]);
 
   useEffect(() => {
-    if (villageInstitutions != null && villageInstitutions['institutions'].length > 0) {
+    if (
+      villageInstitutions != null &&
+      villageInstitutions["institutions"].length > 0
+    ) {
       setLoading(false);
       setItemOffset(0);
-    } else if (villageInstitutions != null && villageInstitutions['institutions'].length == 0) {
+    } else if (
+      villageInstitutions != null &&
+      villageInstitutions["institutions"].length == 0
+    ) {
       setLoading(false);
       setPageData([]);
     }
-  }, [villageInstitutions && villageInstitutions['institutions']]);
+  }, [villageInstitutions && villageInstitutions["institutions"]]);
 
-  const handlePageClicked = event => {
-    const newOffset = (event.selected * itemsPerPage) % villageInstitutions['institutions'].length;
+  const handlePageClicked = (event) => {
+    const newOffset =
+      (event.selected * itemsPerPage) %
+      villageInstitutions["institutions"].length;
     setItemOffset(newOffset);
   };
-  
+
   useEffect(() => {
-    if (villageInstitutions != null && villageInstitutions['institutions'].length > 0) {
+    if (
+      villageInstitutions != null &&
+      villageInstitutions["institutions"].length > 0
+    ) {
       const endOffset = itemOffset + itemsPerPage;
-      setPageData(villageInstitutions['institutions'].slice(itemOffset, endOffset));
-      setPageCount(Math.ceil(villageInstitutions['institutions'].length / itemsPerPage));
+      setPageData(
+        villageInstitutions["institutions"].slice(itemOffset, endOffset)
+      );
+      setPageCount(
+        Math.ceil(villageInstitutions["institutions"].length / itemsPerPage)
+      );
     }
   }, [itemOffset, itemsPerPage]);
 
@@ -93,15 +98,16 @@ const Institutions: NextPage = () => {
             </Box>
           )}
 
-          { !loading ?
+          {loading && <Loader loading={loading} />}
+          {!loading && (
             <Box
               w="full"
               ml={
                 fixed && breakpointValue === "md"
                   ? "264px"
                   : breakpointValue === "md"
-                    ? "24px"
-                    : "0px"
+                  ? "24px"
+                  : "0px"
               }
             >
               <VStack spacing={2}>
@@ -112,18 +118,19 @@ const Institutions: NextPage = () => {
                       institution={institution}
                     />
                   ))}
-                {pageData?.length == 0 && (
-                  <Alert message="There is no institution to be displayed." />
-                )}
               </VStack>
-              {villageInstitutions && villageInstitutions['institutions'].length > itemsPerPage && 
-                <Paginate 
-                  handlePageClick={handlePageClicked}
-                  pageCount={pageCount}
-                />
-              }
-            </Box> :
-          <ScaleLoader color={color} loading={loading} css={override} /> }
+              {pageData?.length == 0 && (
+                <Alert message="There is no institution to be displayed." />
+              )}
+              {villageInstitutions &&
+                villageInstitutions["institutions"].length > itemsPerPage && (
+                  <Paginate
+                    handlePageClick={handlePageClicked}
+                    pageCount={pageCount}
+                  />
+                )}
+            </Box>
+          )}
         </Flex>
       </Container>
 

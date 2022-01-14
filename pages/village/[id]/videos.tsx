@@ -18,12 +18,12 @@ import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
 import VideoCard from "components/VideoCard";
 import Alert from "components/widgets/Alert";
+import Loader from "components/widgets/Loader";
 
 import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
-import { css } from "@emotion/react";
-import ScaleLoader from "react-spinners/ScaleLoader";
+
 import Paginate from "components/Paginate";
 
 const Videos: NextPage = () => {
@@ -37,17 +37,8 @@ const Videos: NextPage = () => {
 
   const { village, villageVideos } = useFetchData();
   const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
-  
-  const override = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  `;
-  
+
   const [loading, setLoading] = useState(true);
-  const [color, setColor] = useState("#553cfb");
   const [pageData, setPageData] = useState(null);
   const [itemOffset, setItemOffset] = useState(1);
   const [pageCount, setPageCount] = useState(1);
@@ -61,25 +52,26 @@ const Videos: NextPage = () => {
   }, [vid]);
 
   useEffect(() => {
-    if (villageVideos != null && villageVideos['videos'].length > 0) {
+    if (villageVideos != null && villageVideos["videos"].length > 0) {
       setLoading(false);
       setItemOffset(0);
-    } else if (villageVideos != null && villageVideos['videos'].length == 0) {
+    } else if (villageVideos != null && villageVideos["videos"].length == 0) {
       setLoading(false);
       setPageData([]);
     }
-  }, [villageVideos && villageVideos['videos']]);
+  }, [villageVideos && villageVideos["videos"]]);
 
-  const handlePageClicked = event => {
-    const newOffset = (event.selected * itemsPerPage) % villageVideos['videos'].length;
+  const handlePageClicked = (event) => {
+    const newOffset =
+      (event.selected * itemsPerPage) % villageVideos["videos"].length;
     setItemOffset(newOffset);
   };
-  
+
   useEffect(() => {
-    if (villageVideos != null && villageVideos['videos'].length > 0) {
+    if (villageVideos != null && villageVideos["videos"].length > 0) {
       const endOffset = itemOffset + itemsPerPage;
-      setPageData(villageVideos['videos'].slice(itemOffset, endOffset));
-      setPageCount(Math.ceil(villageVideos['videos'].length / itemsPerPage));
+      setPageData(villageVideos["videos"].slice(itemOffset, endOffset));
+      setPageCount(Math.ceil(villageVideos["videos"].length / itemsPerPage));
     }
   }, [itemOffset, itemsPerPage]);
 
@@ -95,44 +87,55 @@ const Videos: NextPage = () => {
             </Box>
           )}
 
-          { !loading ?
+          {loading && <Loader loading={loading} />}
+          {!loading && (
             <Box
               w="full"
+              bg="white"
               ml={
                 fixed && breakpointValue === "md"
                   ? "264px"
                   : breakpointValue === "md"
-                    ? "24px"
-                    : "0px"
+                  ? "24px"
+                  : "0px"
               }
+              borderRadius="md"
+              boxShadow="sm"
+              p={4}
             >
+              <Text fontWeight="semibold" color="primary">
+                VIDEOS
+                {pageData?.length && (
+                  <Text color="red.400" display="inline" mx={2}>
+                    ({pageData.length})
+                  </Text>
+                )}
+              </Text>
               {pageData?.length > 0 && (
                 <SimpleGrid
                   columns={{ base: 1, md: 3 }}
                   columnGap={4}
                   rowGap={10}
-                  bgColor="white"
-                  border="1px"
-                  borderRadius="8px"
-                  borderColor="gray.200"
-                  p={4}
+                  mt={4}
                 >
                   {pageData.map((video) => (
                     <VideoCard key={video.id} video={video} />
                   ))}
+
                   {pageData?.length == 0 && (
-                    <Alert message="There is no video to be displayed." />
+                    <Alert message="There is no video to be displayed." />                    
                   )}
                 </SimpleGrid>
               )}
-              { villageVideos && villageVideos['videos'].length > itemsPerPage && 
-                <Paginate 
-                  handlePageClick={handlePageClicked}
-                  pageCount={pageCount}
-                />
-              }
-            </Box> :
-          <ScaleLoader color={color} loading={loading} css={override} /> }
+              {villageVideos &&
+                villageVideos["videos"].length > itemsPerPage && (
+                  <Paginate
+                    handlePageClick={handlePageClicked}
+                    pageCount={pageCount}
+                  />
+                )}
+            </Box>
+          )}
         </Flex>
       </Container>
 

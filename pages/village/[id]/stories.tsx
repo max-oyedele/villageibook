@@ -18,12 +18,11 @@ import PageTitle from "components/widgets/PageTitle";
 import LeftVillageCard from "components/LeftVillageCard";
 import StoryCard from "components/StoryCard";
 import Alert from "components/widgets/Alert";
+import Loader from "components/widgets/Loader";
 
 import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
-import { css } from "@emotion/react";
-import ScaleLoader from "react-spinners/ScaleLoader";
 import Paginate from "components/Paginate";
 
 const Story: NextPage = () => {
@@ -37,17 +36,8 @@ const Story: NextPage = () => {
 
   const { village, villageStories } = useFetchData();
   const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
-
-  const override = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  `;
   
-  const [loading, setLoading] = useState(true);
-  const [color, setColor] = useState("#553cfb");
+  const [loading, setLoading] = useState(true);  
   const [pageData, setPageData] = useState(null);
   const [itemOffset, setItemOffset] = useState(1);
   const [pageCount, setPageCount] = useState(1);
@@ -56,30 +46,34 @@ const Story: NextPage = () => {
   useEffect(() => {
     if (vid) {
       fetchVillageData({ villageUuid: vid });
-      fetchVillagePageData({ villageUuid: vid })
+      fetchVillagePageData({ villageUuid: vid });
     }
-  }, [vid])
+  }, [vid]);
 
   useEffect(() => {
-    if (villageStories != null && villageStories['stories'].length > 0) {
+    if (villageStories != null && villageStories["stories"].length > 0) {
       setLoading(false);
       setItemOffset(0);
-    } else if (villageStories != null && villageStories['stories'].length == 0) {
+    } else if (
+      villageStories != null &&
+      villageStories["stories"].length == 0
+    ) {
       setLoading(false);
       setPageData([]);
     }
-  }, [villageStories && villageStories['stories']]);
+  }, [villageStories && villageStories["stories"]]);
 
-  const handlePageClicked = event => {
-    const newOffset = (event.selected * itemsPerPage) % villageStories['stories'].length;
+  const handlePageClicked = (event) => {
+    const newOffset =
+      (event.selected * itemsPerPage) % villageStories["stories"].length;
     setItemOffset(newOffset);
   };
-  
+
   useEffect(() => {
-    if (villageStories != null && villageStories['stories'].length > 0) {
+    if (villageStories != null && villageStories["stories"].length > 0) {
       const endOffset = itemOffset + itemsPerPage;
-      setPageData(villageStories['stories'].slice(itemOffset, endOffset));
-      setPageCount(Math.ceil(villageStories['stories'].length / itemsPerPage));
+      setPageData(villageStories["stories"].slice(itemOffset, endOffset));
+      setPageCount(Math.ceil(villageStories["stories"].length / itemsPerPage));
     }
   }, [itemOffset, itemsPerPage]);
 
@@ -87,23 +81,23 @@ const Story: NextPage = () => {
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <PageTitle title="Story" />
+        <PageTitle title="Society" />
         <Flex>
           {breakpointValue === "md" && (
             <Box>
               <LeftVillageCard village={village} fixed={fixed} />
             </Box>
           )}
-
-          { !loading ?
+          {loading && <Loader loading={loading} />}
+          {!loading && (
             <Box
               w="full"
               ml={
                 fixed && breakpointValue === "md"
                   ? "264px"
                   : breakpointValue === "md"
-                    ? "24px"
-                    : "0px"
+                  ? "24px"
+                  : "0px"
               }
             >
               {pageData?.length > 0 && (
@@ -123,17 +117,18 @@ const Story: NextPage = () => {
                   </Grid>
                 </Box>
               )}
-              { villageStories && villageStories['stories'].length > itemsPerPage && 
-                <Paginate 
-                  handlePageClick={handlePageClicked}
-                  pageCount={pageCount}
-                />
-              }
               {pageData?.length == 0 && (
                 <Alert message="There is no story to be displayed." />
               )}
-            </Box> :
-          <ScaleLoader color={color} loading={loading} css={override} /> }
+              {villageStories &&
+                villageStories["stories"].length > itemsPerPage && (
+                  <Paginate
+                    handlePageClick={handlePageClicked}
+                    pageCount={pageCount}
+                  />
+                )}
+            </Box>
+          )}
         </Flex>
       </Container>
 
