@@ -87,7 +87,7 @@ const LeftVillageItems: React.FC<{ village: Village, badgeShow?: boolean }> = ({
         return villageUsers && villageUsers['users'].length;
       // case "graduates":
       //   return villageGraduates.length;
-      case "stories":
+      case "society":
         return villageStories && villageStories['stories'].length;
       case "personalities":
         return villagePersonalities && villagePersonalities['personalities'].length;

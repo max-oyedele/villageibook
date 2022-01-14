@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { ScaleLoader, ClipLoader } from "react-spinners";
+import { Box } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 
 const Loader: React.FC<{
@@ -18,7 +19,9 @@ const Loader: React.FC<{
   return (
     <Fragment>
       {type === "scale" && (
-        <ScaleLoader color={color} loading={loading} css={override} />
+        <Box my={4}>
+          <ScaleLoader color={color} loading={loading} css={override} />
+        </Box>
       )}
       {type === "clip" && (
         <ClipLoader color={color} loading={loading} css={override} />

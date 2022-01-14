@@ -137,10 +137,9 @@ const Feed: NextPage = () => {
             >
               <Box
                 bgColor="white"
+                borderRadius="8px"
+                boxShadow="sm"
                 p={4}
-                border="1px"
-                borderColor="gray.200"
-                borderRadius="6px"
               >
                 <CaptionCard name="Skillhet" />
                 <Box mt={8}>
@@ -163,7 +162,6 @@ const Feed: NextPage = () => {
                   fontWeight="400"
                   bgColor="#FFB425"
                   color="white"
-                  _focus={{ boxShadow: "none" }}
                 >
                   Sponsor VillageIbook
                 </Button>
@@ -250,8 +248,7 @@ const Feed: NextPage = () => {
                         fontSize="12px"
                         fontWeight="400"
                         bgColor="#FFB425"
-                        color="white"
-                        _focus={{ boxShadow: "none" }}
+                        color="white"                        
                       >
                         Sponsor VillageIbook
                       </Button>

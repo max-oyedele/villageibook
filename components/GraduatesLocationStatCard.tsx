@@ -59,9 +59,8 @@ const GraduatesLocationStatCard: React.FC<{
           spacing={direction === "row" ? 12 : 6}
           align="start"
           bgColor="white"
-          border="1px"
           borderRadius="8px"
-          borderColor="gray.200"
+          boxShadow="sm"
           p={4}
         >
           <GraduatePercent

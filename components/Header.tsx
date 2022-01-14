@@ -179,6 +179,7 @@ const Header = () => {
               aria-label=""
               icon={showMenuMobile ? <BiX /> : <BiMenu />}
               fontSize="26px"
+              bgColor="gray.400"
               onClick={() => setShowMenuMobile(!showMenuMobile)}
             />
           </Flex>

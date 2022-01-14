@@ -13,7 +13,7 @@ import {
   Image,
   Button,
   useBreakpointValue,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 
 import VideoBox from "components/widgets/VideoBox";
@@ -65,14 +65,14 @@ const PostForm: React.FC = () => {
   };
 
   if (postStatus === Status.SUCCESS) {
-      setTimeout(()=>{
-        resetPost();
-        setContent("");
-        setPicture(null);
-        setPictureURL(null);
-        setVideo(null);
-        setVideoURL(null);
-      }, 1000)
+    setTimeout(() => {
+      resetPost();
+      setContent("");
+      setPicture(null);
+      setPictureURL(null);
+      setVideo(null);
+      setVideoURL(null);
+    }, 1000);
   }
   if (postError) {
     !toast.isActive("postError") &&
@@ -110,9 +110,7 @@ const PostForm: React.FC = () => {
         )}
         {videoURL && (
           <Center w="full" mt={4}>
-            <VideoBox
-              videoUrl={videoURL}
-            />
+            <VideoBox videoUrl={videoURL} />
           </Center>
         )}
       </VStack>
@@ -126,14 +124,16 @@ const PostForm: React.FC = () => {
             accept="image/*"
             onChange={(e) => uploadToClient(e, "picture")}
           />
-          <HStack
-            spacing={1}
+          <Flex
+            alignItems="end"
             cursor="pointer"
             onClick={() => pictureRef.current?.click()}
           >
             <Image src="/icons/post-photo.svg" alt="" />
-            <Text>Picture</Text>
-          </HStack>
+            <Text letterSpacing="0" lineHeight="1" ml={1}>
+              Picture
+            </Text>
+          </Flex>          
           <input
             ref={videoRef}
             type="file"
@@ -141,17 +141,20 @@ const PostForm: React.FC = () => {
             accept="video/*"
             onChange={(e) => uploadToClient(e, "video")}
           />
-          <HStack
-            spacing={1}
+          <Flex            
+            alignItems="end"
             cursor="pointer"
             onClick={() => videoRef.current?.click()}
           >
             <Image src="/icons/post-video.svg" alt="" />
-            <Text>Video</Text>
-          </HStack>
+            <Text letterSpacing="0" lineHeight="1" ml={1}>
+              Video
+            </Text>
+          </Flex>
         </HStack>
         <Button
-          h="27px"
+          w="132px"
+          h="28px"
           fontSize="13px"
           fontWeight="400"
           isLoading={postStatus === Status.LOADING}

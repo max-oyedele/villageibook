@@ -18,10 +18,11 @@ const RecentVillageCard: React.FC<{ village: Village }> = ({ village }) => {
         bgColor="white"
         borderRadius="6px"
         _hover={{
-          transform: "scale(1.03)",
-          transition: "transform 0.2s ease",
-          cursor: "pointer",
+          // transform: "scale(1.03)",
+          // transition: "transform 0.2s ease",
+          boxShadow: "sm"
         }}
+        cursor="pointer"
         onClick={() => router.push(`/village/${village?.uuid}`)}
       >
         <Image src={village.photo?.url??"/images/default-village.png"} alt="" borderRadius="4px" />

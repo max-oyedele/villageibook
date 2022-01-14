@@ -19,10 +19,11 @@ const RecentUserCard: React.FC<{ user: User }> = ({ user }) => {
         bgColor="white"
         borderRadius="6px"
         _hover={{
-          transform: "scale(1.03)",
-          transition: "transform 0.2s ease",
-          cursor: "pointer",
+          // transform: "scale(1.03)",
+          // transition: "transform 0.2s ease",
+          boxShadow: "sm"
         }}
+        cursor="pointer"
         onClick={() => router.push(`/userview/${user.id}`)}
       >
         <Avatar src={user.avatar ?? "/images/default-user.png"} size="sm" cursor="pointer" />

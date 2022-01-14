@@ -20,7 +20,7 @@ const GraduatePercent: React.FC<{
   return (
     <Fragment>
       <Box w="full">
-        <Text fontSize="13px" textTransform="capitalize">
+        <Text fontSize="14px" textTransform="capitalize">
           {location?.name} Graduates
         </Text>
         <Progress
