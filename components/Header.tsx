@@ -82,7 +82,7 @@ const Header = () => {
   return (
     <Fragment>
       {breakpointValue === "md" && (
-        <Box bg="white" pos="sticky" top={0} zIndex={10} shadow="md">
+        <Box bg="white" pos="sticky" top={0} zIndex={10} shadow="sm">
           <Container maxW="container.xl" px={6}>
             <Flex justifyContent="space-between">
               <HStack spacing={6} mr={1}>
