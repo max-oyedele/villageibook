@@ -1,10 +1,11 @@
 import { Fragment } from "react";
-import ScaleLoader from "react-spinners/ScaleLoader";
+import { ScaleLoader, ClipLoader } from "react-spinners";
 import { css } from "@emotion/react";
 
 const Loader: React.FC<{
   loading: boolean;
-}> = ({ loading }) => {
+  type?: string;
+}> = ({ loading, type = "scale" }) => {
   const color = "#553cfb";
   const override = css`
     display: flex;
@@ -16,7 +17,12 @@ const Loader: React.FC<{
 
   return (
     <Fragment>
-      <ScaleLoader color={color} loading={loading} css={override} />
+      {type === "scale" && (
+        <ScaleLoader color={color} loading={loading} css={override} />
+      )}
+      {type === "clip" && (
+        <ClipLoader color={color} loading={loading} css={override} />
+      )}
     </Fragment>
   );
 };
