@@ -51,7 +51,7 @@ const Videos: NextPage = () => {
   const [pageData, setPageData] = useState(null);
   const [itemOffset, setItemOffset] = useState(1);
   const [pageCount, setPageCount] = useState(1);
-  const itemsPerPage = 4;
+  const itemsPerPage = 6;
 
   useEffect(() => {
     if (vid) {
@@ -60,7 +60,7 @@ const Videos: NextPage = () => {
     }
   }, [vid]);
 
-  if (villageVideos && villageVideos.length > 0 && loading) {
+  if (villageVideos && loading) {
     setLoading(false);
     setItemOffset(0);
   }
@@ -101,7 +101,7 @@ const Videos: NextPage = () => {
             >
               {pageData?.length > 0 && (
                 <SimpleGrid
-                  columns={{ base: 2, md: 3 }}
+                  columns={{ base: 1, md: 3 }}
                   columnGap={4}
                   rowGap={10}
                   bgColor="white"

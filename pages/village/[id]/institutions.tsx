@@ -58,7 +58,7 @@ const Institutions: NextPage = () => {
     }
   }, [vid]);
 
-  if (villageInstitutions && villageInstitutions.length > 0 && loading) {
+  if (villageInstitutions && loading) {
     setLoading(false);
     setItemOffset(0);
   }

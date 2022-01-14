@@ -59,7 +59,7 @@ const Personalities: NextPage = () => {
     }
   }, [vid]);
 
-  if (villagePersonalities && villagePersonalities.length > 0 && loading) {
+  if (villagePersonalities && loading) {
     setLoading(false);
     setItemOffset(0);
   }

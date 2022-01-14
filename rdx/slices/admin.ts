@@ -107,6 +107,26 @@ export const fetchVideos = createAsyncThunk(
   }
 );
 
+export const fetchPhotos = createAsyncThunk(
+  "admin/fetchPhotos",
+  async (params: any, thunkAPI) => {
+    try {
+      const access_token = getUserToken();
+      let endpoint = "";
+      if (params?.villageUuid)
+        endpoint += `/villages/${params.villageUuid}/HAS_MEDIA`;
+      endpoint += `/photos.json`;
+
+      const response = await axios.get("/api/entry", {
+        params: { endpoint, access_token },
+      });
+      return response.data.photos;
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
+  }
+);
+
 export const fetchUsers = createAsyncThunk(
   "admin/fetchUsers",
   async (_, thunkAPI) => {
@@ -523,6 +543,7 @@ const initialState: AdminState = {
   personalities: [],
   institutions: [],
   videos: [],
+  photos: [],
   users: [],
   pmusers: [],
   delStatus: null,
@@ -612,6 +633,18 @@ export const adminSlice = createSlice({
       state.videos = action.payload;
     });
     builder.addCase(fetchVideos.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(fetchPhotos.pending, (state) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(fetchPhotos.fulfilled, (state, action) => {
+      state.status = Status.IDLE;
+      state.photos = action.payload;
+    });
+    builder.addCase(fetchPhotos.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

@@ -59,7 +59,7 @@ const Users: NextPage = () => {
     }
   }, [vid]);
   
-  if (villageUsers && villageUsers.length > 0 && loading) {
+  if (villageUsers && loading) {
     setLoading(false);
     setItemOffset(0);
   }
@@ -79,7 +79,7 @@ const Users: NextPage = () => {
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <PageTitle title="Personalities" />
+        <PageTitle title="MyPages" />
         <Flex>
           {breakpointValue === "md" && (
             <Box>

@@ -79,7 +79,7 @@ const LeftVillageItems: React.FC<{ village: Village, badgeShow?: boolean }> = ({
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { villageUsers, villageGraduates, villageStories, villagePersonalities, villageInstitutions, villageVideos } = useFetchData();
+  const { villageUsers, villageGraduates, villageStories, villagePersonalities, villageInstitutions, villageVideos, villagePhotos } = useFetchData();
 
   const getItemDataLength = (item) => {
     switch (item) {
@@ -95,6 +95,8 @@ const LeftVillageItems: React.FC<{ village: Village, badgeShow?: boolean }> = ({
         return villageInstitutions.length;
       case "videos":
         return villageVideos.length;
+      case "photos":
+        return villagePhotos.length;
       default:
         return 0
     }
