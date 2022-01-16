@@ -40,6 +40,7 @@ const VideoForm: React.FC<{
         const [name, setName] = useState(video?.name);                
         const [description, setDescription] = useState(video?.description);
         const [avatar, setAvatar] = useState(null);
+        const [avatarUrl, setAvatarUrl] = useState(video?.url);
 
         const { error } = useAdminFetchData();
         const { submitVideoData, submitVideoEditData } = useAdminActionDispatch();
@@ -114,7 +115,7 @@ const VideoForm: React.FC<{
                             />
                             <Box w="full" border="1px" borderColor="gray.200" borderRadius="4px" p={4}>
                                 <Center>
-                                    <VideoUpload setAvatar={setAvatar} />
+                                    <VideoUpload setAvatar={setAvatar} avatarUrl={avatarUrl} />
                                 </Center>                                
                             </Box>
                         </VStack>

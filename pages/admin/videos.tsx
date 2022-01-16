@@ -230,7 +230,10 @@ const Videos: NextPage = () => {
 
         <VillageSearchBox setVillage={setVillage} />
         <Flex justifyContent={"flex-end"}>
-          <Button onClick={() => modal.onOpen()} isDisabled={!village}>Add Video</Button>
+          <Button onClick={() => {
+            modal.onOpen();
+            setIsEdit(false);
+            }} isDisabled={!village}>Add Video</Button>
         </Flex>
 
         <Table {...getTableProps()}>
