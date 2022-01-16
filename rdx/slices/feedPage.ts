@@ -5,20 +5,17 @@ import {
   SerializedError,
 } from "@reduxjs/toolkit";
 
-import axios from "axios";
+import axiosAuth from "libs/axios-auth";
 
 import { Status, FeedPageState } from "../types";
-
-import { getUserToken } from "helpers/user-token";
 
 export const fetchPosts = createAsyncThunk(
   "feedPage/fetchPosts",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       const endpoint = `/posts.json?sort=lastUpdated.DESC&size=5&page=${params.page}`;
-      const response = await axios.get("/api/entry", {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint },
       });
       return response.data;
     } catch (error) {
@@ -31,9 +28,8 @@ export const fetchRecentVillages = createAsyncThunk(
   "feedPage/fetchRecentVillages",
   async (_, thunkAPI) => {
     try {
-      const access_token = getUserToken();
-      const response = await axios.get("/api/entry", {
-        params: { endpoint: "/villages.json?page=1&size=2", access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint: "/villages.json?page=1&size=2" },
       });
       return response.data.villages;
     } catch (error) {
@@ -46,9 +42,8 @@ export const fetchRecentUsers = createAsyncThunk(
   "feedPage/fetchRecentUsers",
   async (_, thunkAPI) => {
     try {
-      const access_token = getUserToken();
-      const response = await axios.get("/api/entry", {
-        params: { endpoint: "/users.json?page=1&size=2", access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint: "/users.json?page=1&size=2" },
       });
       return response.data.users;
     } catch (error) {

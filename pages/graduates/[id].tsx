@@ -30,19 +30,13 @@ import PageTitle from "components/widgets/PageTitle";
 import GraduateSearchBox from "components/GraduateSearchBox";
 import GraduateStatCapsule from "components/GraduateStatCapsule";
 import AlphaBetaBar from "components/widgets/AlphaBetaBar";
-import GraduatesCountryStatBox from "components/GraduatesCountryStatBox";
-import VillageGraduatesRegionStatCard from "components/VillageGraduatesRegionStatCard";
+import GraduateStatsCard from "components/GraduateStatsCard";
+import GraduateStatsByCountries from "components/GraduateStatByCountries";
 import Loader from "components/widgets/Loader";
 
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
 import useWindowProp from "hooks/use-window-prop";
-
-import {
-  platformCountries,
-  homeCountry,
-  watchCountries,
-} from "constants/global";
 
 const menuItems = [
   {
@@ -67,14 +61,7 @@ const Graduates: NextPage = () => {
   const { id } = router.query;
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const {
-    me,
-    districts,
-    subDistricts,
-    villages,
-    graduateStatsByCondition,
-    totalGraduateStats,
-  } = useFetchData();
+  const { me, districts, subDistricts, villages, graduateStats } = useFetchData();
   const {
     fetchMeData,
     fetchCommonData,
@@ -82,8 +69,7 @@ const Graduates: NextPage = () => {
     fetchDistrictsData,
     fetchSubDistrictsData,
     fetchVillagesData,
-    getGraduatesByConditionData,
-    getTotalGraduatesData,
+    fetchGraduateStatsData,
   } = useActionDispatch();
 
   const [activeMenuItem, setActiveMenuItem] = useState(null);
@@ -92,12 +78,7 @@ const Graduates: NextPage = () => {
   const [items, setItems] = useState([]);
   const [location, setLocation] = useState(null);
 
-  const universityCountries = watchCountries
-    .filter((e) => e.href != "other")
-    .map((e) => e.href)
-    .join(",");
-
-  const [loading, setLoading] = useState(true);  
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (me) {
@@ -107,34 +88,34 @@ const Graduates: NextPage = () => {
       fetchDistrictsData(null);
       fetchSubDistrictsData(null);
       fetchVillagesData(null);
+      fetchGraduateStatsData({type: 'region'});
     } else {
       fetchMeData();
     }
   }, [me]);
 
   useEffect(() => {
-    if (id) {
-      getGraduatesByConditionData({ universityCountries, locationUuid: id });
-      getTotalGraduatesData();
+    if (activeMenuItem) {
+      fetchGraduateStatsData({ type: activeMenuItem.value });
     }
-  }, [id]);
+  }, [activeMenuItem]);
 
   useEffect(() => {
-    const districtItem = districts.find((e) => e.uuid === id);
+    const districtItem = districts?.find((e) => e.uuid === id);
     if (districtItem) {
       setActiveMenuItem(menuItems[0]);
       setItems(districts);
       setExpandedItem(districtItem);
     }
 
-    const subDistrictItem = subDistricts.find((e) => e.uuid === id);
+    const subDistrictItem = subDistricts?.find((e) => e.uuid === id);
     if (subDistrictItem) {
       setActiveMenuItem(menuItems[1]);
       setItems(subDistricts);
       setExpandedItem(subDistrictItem);
     }
 
-    const villageItem = villages.find((e) => e.uuid === id);
+    const villageItem = villages?.find((e) => e.uuid === id);
     if (villageItem) {
       setActiveMenuItem(menuItems[2]);
       setItems(villages);
@@ -176,8 +157,8 @@ const Graduates: NextPage = () => {
   }
 
   const calcGraduates = (location) => {
-    const totalGraduatesCount = 1; //totalGraduates.filter(e=>e.comesFrom === locationItem.href).length;
-    const homeGraduatesCount = 0; //totalGraduates.filter(e=>e.comesFrom === locationItem.href && e.graduatedAt === homeCountry).length;
+    const totalGraduatesCount = 1;
+    const homeGraduatesCount = 0;
     const overseaGraduateCount = totalGraduatesCount - homeGraduatesCount;
 
     //[total=12, inter=6, oversea=6]
@@ -191,10 +172,11 @@ const Graduates: NextPage = () => {
         <PageTitle title="Graduates" />
         <Flex>
           {breakpointValue === "md" && (
-            <Box>
-              <VillageGraduatesRegionStatCard
-                village={me?.comesFrom}
-                fixed={fixed}
+            <Box minW="280px" pos={fixed ? "fixed" : "static"} top={fixed ? "80px" : 0}>
+              <GraduateStatsCard
+                type='region'
+                graduateStats={graduateStats}
+                direction='column'
               />
             </Box>
           )}
@@ -203,7 +185,7 @@ const Graduates: NextPage = () => {
             w="full"
             ml={
               fixed && breakpointValue === "md"
-                ? "264px"
+                ? "304px"
                 : breakpointValue === "md"
                 ? "24px"
                 : "0px"
@@ -211,6 +193,7 @@ const Graduates: NextPage = () => {
           >
             <GraduateSearchBox
               location={location}
+              totalGraduates={10}
               setLocation={setLocation}
               onFind={onFind}
             />
@@ -303,8 +286,9 @@ const Graduates: NextPage = () => {
                         )}
                         <Box w={{ base: "100%", md: "40%" }} p={6}>
                           {me?.comesFrom && (
-                            <GraduatesCountryStatBox
-                              graduateStats={graduateStatsByCondition}
+                            <GraduateStatsByCountries                              
+                              graduateStats={graduateStats}
+                              direction='column'
                             />
                           )}
                         </Box>
@@ -335,8 +319,8 @@ const TotalCapsule = ({ locationItem, stats, isExpanded }) => {
         </Text>
       </Box>
       <GraduateStatCapsule
-        inter={stats[1]}
-        oversea={stats[2]}
+        domestic={stats[1]}
+        overseas={stats[2]}
         style={{
           bgColor: "#F7F5FF", //light bg purple
           border: isExpanded ? "1px" : "0px",

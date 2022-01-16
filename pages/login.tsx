@@ -23,17 +23,16 @@ import {
   Divider,
   Image,
   useBreakpointValue,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { BiShow, BiHide } from "react-icons/bi";
 
-import useToken from "hooks/use-token";
+import { setUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
 
 import Logo from "components/Logo";
 import { Status } from "rdx/types";
-
 
 const Login = () => {
   const router = useRouter();
@@ -46,7 +45,6 @@ const Login = () => {
   const { authStatus, authError, jwt, me } = useFetchData();
   const { authReset, accountReset, doLogin, fetchMeData } = useActionDispatch();
 
-  const { setToken } = useToken();
   const toast = useToast();
 
   const [passwordShow, setPasswordShow] = useState(false);
@@ -58,25 +56,25 @@ const Login = () => {
 
   useEffect(() => {
     const preFunc = async (jwt) => {
-      await setToken(jwt);
+      await setUserToken(jwt);
       await fetchMeData();
-    }
+    };
 
     if (jwt) {
-      preFunc(jwt)
+      preFunc(jwt);
     }
   }, [jwt]);
 
   useEffect(() => {
     const isCompletedUser = (user) => {
-      return user?.livesIn?.uuid && user?.comesFrom?.uuid
-    }
+      return user?.livesIn?.uuid && user?.comesFrom?.uuid;
+    };
 
     if (me) {
       if (isCompletedUser(me)) router.push("/feed");
       else router.push("/accountregister");
     }
-  }, [me])
+  }, [me]);
 
   useEffect(() => {
     if (authError) {
@@ -90,7 +88,7 @@ const Login = () => {
           isClosable: true,
         });
     }
-  }, [authError])
+  }, [authError]);
 
   const loginSchema = yup.object({
     email: yup

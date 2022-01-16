@@ -22,7 +22,7 @@ import PageTitle from "components/widgets/PageTitle";
 import SearchBar from "components/SearchBar";
 import LeftVillageCard from "components/LeftVillageCard";
 import UserCard from "components/UserCard";
-import GraduatesLocationStatCard from "components/GraduatesLocationStatCard";
+import GraduateStatsCard from "components/GraduateStatsCard";
 import StoryCard from "components/StoryCard";
 import PersonalityCard from "components/PersonalityCard";
 import InstitutionCard from "components/InstitutionCard";
@@ -49,8 +49,9 @@ const Posts: NextPage = () => {
     villageInstitutions,
     villageVideos,
     villagePhotos,
+    graduateStats,
   } = useFetchData();
-  const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
+  const { fetchVillageData, fetchVillagePageData, fetchGraduateStatsData } = useActionDispatch();
 
   const { fixed } = useWindowProp();
 
@@ -62,6 +63,7 @@ const Posts: NextPage = () => {
       setLoading(true);
       fetchVillageData({ villageUuid: vid });
       fetchVillagePageData({ villageUuid: vid });
+      fetchGraduateStatsData({type: 'village'});
       setLink("/village/" + vid);
     }
   }, [vid]);
@@ -140,9 +142,9 @@ const Posts: NextPage = () => {
                 <Text fontSize="14px">VILLAGE GRADUATES</Text>
                 {/* <Divider mt={6} mb={8} /> */}
                 <Box mt={4}>
-                  <GraduatesLocationStatCard
-                    location={village}
-                    condition="universityCountries"
+                  <GraduateStatsCard                    
+                    type='village'
+                    graduateStats={graduateStats}                    
                     direction="row"
                   />
                 </Box>

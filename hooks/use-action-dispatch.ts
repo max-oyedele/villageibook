@@ -43,8 +43,7 @@ import {
   fetchVillagePhotos,
 } from "rdx/slices/villagePage";
 import {
-  getGraduatesByCondition,
-  getTotalGraduates,
+  fetchGraduateStats
 } from "rdx/slices/graduatePage";
 
 const useActionDispatch = () => {
@@ -161,13 +160,9 @@ const useActionDispatch = () => {
     fetchVillagePhotosData(params);
   };
 
-  const getGraduatesByConditionData = async (params) => {
-    await dispatch(getGraduatesByCondition(params));
-  };
-
-  const getTotalGraduatesData = async () => {
-    await dispatch(getTotalGraduates());
-  };
+  const fetchGraduateStatsData = async (params) => {
+    await dispatch(fetchGraduateStats(params))
+  }
 
   const submitPostData = async (params) => {
     await dispatch(submitPost(params));
@@ -217,9 +212,8 @@ const useActionDispatch = () => {
     // fetchVillageStoriesData,
     // fetchVillagePersonalitiesData,
     // fetchVillageInstitutionsData,
-    // fetchVillageVideosData,
-    getGraduatesByConditionData,
-    getTotalGraduatesData,
+    // fetchVillageVideosData,    
+    fetchGraduateStatsData,
     addPost
   };
 };

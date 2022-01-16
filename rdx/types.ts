@@ -94,14 +94,13 @@ export interface VillagePageState {
 
 export interface GraduatePageState {
   status: Status;  
-  graduateStatsByCondition: {
-    graduates: number;
-    location: string;
-  }[];
-  totalGraduateStats: {
-    graduates: number;
-    location: string;
-  }[];
+  graduateStats: {
+    country?: any;
+    region?: any;
+    district?: any;
+    subDistrict?: any;
+    village?: any;
+  };
   error?: SerializedError;
 }
 export interface AdminState {

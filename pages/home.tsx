@@ -1,7 +1,8 @@
 import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Link from "next/link";
-import { BsDot } from 'react-icons/bs';
+import { useRouter } from 'next/router';
+import { BsDot } from "react-icons/bs";
 import { BiCaretRight } from "react-icons/bi";
 
 import {
@@ -29,28 +30,21 @@ import HomeSlick from "components/HomeSlick";
 import HomeSlickControl from "components/HomeSlickControl";
 import HomeCategoryBar from "components/HomeCategoryBar";
 import FaqAccordion from "components/FaqAccordion";
-import router from "next/router";
 
 const Home: NextPage = () => {
+  const router = useRouter();
+  
+  useEffect(() => {
+    const account = localStorage.getItem("villageibookAccount")
+    if (account) {
+      router.push("/feed");
+    }
+  }, []);
+  
   const breakpointValue = useBreakpointValue({
     base: "base",
     md: "md",
   });
-
-  const heroImgSlideConf = {
-    dots: false,
-    arrows: false,
-    infinite: true,
-    fade: true,
-    autoplay: true,
-    autoplaySpeed: 4000,
-    adaptiveHeight: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-
-  const [sliderIndex1, setSliderIndex1] = useState(0);
-  const [sliderIndex2, setSliderIndex2] = useState(0);
 
   return (
     <Fragment>
@@ -81,12 +75,16 @@ const Home: NextPage = () => {
                 </Text>
               </Box>
             </Center>
-            {
-              breakpointValue === "base" &&
+            {breakpointValue === "base" && (
               <Box px={6} mt={12}>
                 <VStack spacing={4} justifyContent="space-around">
                   <Center>
-                    <HStack fontSize="xl" fontWeight="semibold" spacing={8} letterSpacing={4}>
+                    <HStack
+                      fontSize="xl"
+                      fontWeight="semibold"
+                      spacing={8}
+                      letterSpacing={4}
+                    >
                       <HStack color="#E64E90">
                         <BsDot />
                         <Text>Search</Text>
@@ -102,28 +100,38 @@ const Home: NextPage = () => {
                     </HStack>
                   </Center>
                   <Center>
-                    <HStack fontSize="xl" fontWeight="semibold" textAlign="center" spacing={8} letterSpacing={4}>
-                      <Link href="/login" passHref={true}><Text color="#553CFB" cursor="pointer" _hover={{ color: "#AE3CFB" }}>Login</Text></Link>
+                    <HStack
+                      fontSize="xl"
+                      fontWeight="semibold"
+                      textAlign="center"
+                      spacing={8}
+                      letterSpacing={4}
+                    >
+                      <Link href="/login" passHref={true}>
+                        <Text
+                          color="#553CFB"
+                          cursor="pointer"
+                          _hover={{ color: "#AE3CFB" }}
+                        >
+                          Login
+                        </Text>
+                      </Link>
                       <Text color="GrayText">Or</Text>
-                      <Link href="/signup" passHref={true}><Text color="#553CFB" cursor="pointer" _hover={{ color: "#AE3CFB" }}>Signup</Text></Link>
+                      <Link href="/signup" passHref={true}>
+                        <Text
+                          color="#553CFB"
+                          cursor="pointer"
+                          _hover={{ color: "#AE3CFB" }}
+                        >
+                          Signup
+                        </Text>
+                      </Link>
                     </HStack>
                   </Center>
                 </VStack>
               </Box>
-            }
-            <Box w="full">
-              {/* <Slider {...heroImgSlideConf}>
-                {[1, 2, 3, 4].map((number) => (
-                  <Box key={number} index={number}>
-                    <Image
-                      src={`/images/logo-img.svg`}
-                      alt=""
-                      w="full"
-                      objectFit="cover"
-                    />
-                  </Box>
-                ))}
-              </Slider> */}
+            )}
+            <Box w="full">              
               <Image
                 src={`/images/logo-img.svg`}
                 alt=""
@@ -137,14 +145,13 @@ const Home: NextPage = () => {
         {breakpointValue === "md" && (
           <Box px={36} mt={24}>
             <HStack spacing={4} justifyContent="space-around">
-              {/* <Button onClick={() => router.push("/login")}>
-                Get Started
-              </Button>
-              <Button onClick={() => router.push("/signup")}>
-                Join Community
-              </Button> */}
               <Center>
-                <Stack fontSize="3xl" fontWeight="semibold" spacing={8} letterSpacing={4}>
+                <Stack
+                  fontSize="3xl"
+                  fontWeight="semibold"
+                  spacing={8}
+                  letterSpacing={4}
+                >
                   <HStack color="#E64E90">
                     <BsDot />
                     <Text>Search</Text>
@@ -160,10 +167,32 @@ const Home: NextPage = () => {
                 </Stack>
               </Center>
               <Center>
-                <Stack fontSize="3xl" fontWeight="semibold" textAlign="center" spacing={8} letterSpacing={4}>
-                  <Link href="/login" passHref={true}><Text color="#553CFB" cursor="pointer" _hover={{ color: "#AE3CFB" }}>Login</Text></Link>
+                <Stack
+                  fontSize="3xl"
+                  fontWeight="semibold"
+                  textAlign="center"
+                  spacing={8}
+                  letterSpacing={4}
+                >
+                  <Link href="/login" passHref={true}>
+                    <Text
+                      color="#553CFB"
+                      cursor="pointer"
+                      _hover={{ color: "#AE3CFB" }}
+                    >
+                      Login
+                    </Text>
+                  </Link>
                   <Text color="GrayText">Or</Text>
-                  <Link href="/signup" passHref={true}><Text color="#553CFB" cursor="pointer" _hover={{ color: "#AE3CFB" }}>Signup</Text></Link>
+                  <Link href="/signup" passHref={true}>
+                    <Text
+                      color="#553CFB"
+                      cursor="pointer"
+                      _hover={{ color: "#AE3CFB" }}
+                    >
+                      Signup
+                    </Text>
+                  </Link>
                 </Stack>
               </Center>
             </HStack>
@@ -181,7 +210,10 @@ const Home: NextPage = () => {
           mt={24}
         >
           <Box mt={-4} pos="relative" zIndex={0}>
-            <Flex justifyContent={{ base: "center", xl: "end" }} alignItems="start">
+            <Flex
+              justifyContent={{ base: "center", xl: "end" }}
+              alignItems="start"
+            >
               <ReactPlayer
                 className="react-player"
                 url="https://www.rmp-streaming.com/media/big-buck-bunny-360p.mp4"
@@ -195,19 +227,40 @@ const Home: NextPage = () => {
                   <BiCaretRight fontSize="24px" color="white" />
                 </Circle>
               </Center> */}
-              <Box pos="absolute" top={-4} right={-4} display={{ base: "block", md: "none", xl: "block" }} w="50%" h="50%" bgColor="#36CFD1" opacity={0.5} zIndex={-1}></Box>
+              <Box
+                pos="absolute"
+                top={-4}
+                right={-4}
+                display={{ base: "block", md: "none", xl: "block" }}
+                w="50%"
+                h="50%"
+                bgColor="#36CFD1"
+                opacity={0.5}
+                zIndex={-1}
+              ></Box>
             </Flex>
           </Box>
           <Center>
             <Box p={12}>
-              <Text fontSize="xl" fontWeight="semibold">Let{"'"}s explore</Text>
-              <Text fontSize="md" color="GrayText" mt={4}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam auctor euismod lobortis. Mauris ornare ante non justo mattis, vitae fermentum ligula consequat. Donec ac quam sit amet libero. Sed ullamcorper dui ac laoreet auctor. Mauris malesuada ante mauris, non elementum purus luctus sit amet. Nullam sed elit lectus.</Text>
+              <Text fontSize="xl" fontWeight="semibold">
+                Let{"'"}s explore
+              </Text>
+              <Text fontSize="md" color="GrayText" mt={4}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
+                auctor euismod lobortis. Mauris ornare ante non justo mattis,
+                vitae fermentum ligula consequat. Donec ac quam sit amet libero.
+                Sed ullamcorper dui ac laoreet auctor. Mauris malesuada ante
+                mauris, non elementum purus luctus sit amet. Nullam sed elit
+                lectus.
+              </Text>
             </Box>
           </Center>
         </Stack>
 
         <Box w={{ base: "100%", md: "70%" }} px={{ base: 6, md: 36 }} mt={24}>
-          <Text fontSize="2xl" fontWeight="semibold" mb={6}>FAQ</Text>
+          <Text fontSize="2xl" fontWeight="semibold" mb={6}>
+            FAQ
+          </Text>
           <FaqAccordion />
         </Box>
 

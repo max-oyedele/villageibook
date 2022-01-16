@@ -13,9 +13,19 @@ import {
 } from "@chakra-ui/react";
 import { BiSearch } from "react-icons/bi";
 
-const GraduateSearchBox:React.FC<{location: string, setLocation, onFind}> = ({location, setLocation, onFind}) => {
-  const totalGraduates = 100;
+type GraduateSearchBoxProps = {
+  location: string;
+  totalGraduates: number;
+  setLocation: any;
+  onFind: any;
+};
 
+const GraduateSearchBox: React.FC<GraduateSearchBoxProps> = ({
+  location,
+  totalGraduates,
+  setLocation,
+  onFind,
+}) => {
   return (
     <Fragment>
       <Flex
@@ -47,9 +57,9 @@ const GraduateSearchBox:React.FC<{location: string, setLocation, onFind}> = ({lo
               placeholder="Find a District, Upazila or Village"
               size="md"
               border="none"
-              value={location??""}
-              _focus={{outline: "none"}}
-              onChange={(e)=>setLocation(e.target.value)}
+              value={location ?? ""}
+              _focus={{ outline: "none" }}
+              onChange={(e) => setLocation(e.target.value)}
             />
             <Button
               w="140px"

@@ -20,7 +20,7 @@ import {
 import Logo from "components/Logo";
 import SocialLinkBar from "components/SocialLinkBar";
 
-import useToken from "hooks/use-token";
+import { removeUserToken} from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
 
@@ -68,13 +68,11 @@ const Header = () => {
           ? tabs[2]
           : null
   );
-
-  const { removeToken } = useToken();
-
+  
   const logout = () => {
     authReset();
     accountReset();
-    removeToken();
+    removeUserToken();
     localStorage.removeItem("villageibookAccount");
     router.push("/");
   };

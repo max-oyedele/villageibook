@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import { useRouter } from "next/router";
 import {
   HStack,
   VStack,
@@ -17,12 +16,6 @@ import VideoBox from "components/widgets/VideoBox";
 import { Video } from "types/data";
 
 const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
-  const router = useRouter();
-  const { pathname } = router;
-  console.log("video = ", video);
-
-  const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-
   return (
     <Fragment>
       <Flex w="full" flexDirection="column">

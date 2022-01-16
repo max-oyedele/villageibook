@@ -6,6 +6,8 @@ import {
 } from "@reduxjs/toolkit";
 
 import axios from "axios";
+import axiosAuth from "libs/axios-auth";
+
 var FormData = require("form-data");
 
 import { Status, AdminState } from "../types";
@@ -15,10 +17,9 @@ export const fetchPosts = createAsyncThunk(
   "admin/fetchPosts",
   async (_, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       const endpoint = "/posts.json";
-      const response = await axios.get("/api/entry", {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint },
       });
       return response.data.posts;
     } catch (error) {
@@ -31,14 +32,13 @@ export const fetchStories = createAsyncThunk(
   "admin/fetchStories",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       let endpoint = "";
       if (params?.villageUuid)
         endpoint += `/villages/${params.villageUuid}/HAS_STORY`;
       endpoint += `/stories.json?fields=title,content,photo.url,photo.name,photo.description,uuid`;
 
-      const response = await axios.get("/api/entry", {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint },
       });
       return response.data.stories;
     } catch (error) {
@@ -51,14 +51,13 @@ export const fetchPersonalities = createAsyncThunk(
   "admin/fetchPersonalities",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       let endpoint = "";
       if (params?.villageUuid)
         endpoint += `/villages/${params.villageUuid}/HAS_PERSONALITY`;
       endpoint += `/personalities.json?fields=name,about,photo.url,photo.name,photo.description,dateOfBirth,dateOfDeath,educationLife,achievements,career,uuid`;
 
-      const response = await axios.get("/api/entry", {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint },
       });
       return response.data.personalities;
     } catch (error) {
@@ -71,14 +70,13 @@ export const fetchInstitutions = createAsyncThunk(
   "admin/fetchInstitutions",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       let endpoint = "";
       if (params?.villageUuid)
         endpoint += `/villages/${params.villageUuid}/HAS_INSTITUTION`;
       endpoint += `/institutions.json?fields=name,photo.url,photo.name,photo.description,yearEstablished,address,email,phone,history,uuid`;
 
-      const response = await axios.get("/api/entry", {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint },
       });
       return response.data.institutions;
     } catch (error) {
@@ -91,14 +89,13 @@ export const fetchVideos = createAsyncThunk(
   "admin/fetchVideos",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       let endpoint = "";
       if (params?.villageUuid)
         endpoint += `/villages/${params.villageUuid}/HAS_MEDIA`;
       endpoint += `/videos.json`;
 
-      const response = await axios.get("/api/entry", {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint },
       });
       return response.data.videos;
     } catch (error) {
@@ -111,14 +108,13 @@ export const fetchPhotos = createAsyncThunk(
   "admin/fetchPhotos",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       let endpoint = "";
       if (params?.villageUuid)
         endpoint += `/villages/${params.villageUuid}/HAS_MEDIA`;
       endpoint += `/photos.json`;
 
-      const response = await axios.get("/api/entry", {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint },
       });
       return response.data.photos;
     } catch (error) {
@@ -131,10 +127,9 @@ export const fetchUsers = createAsyncThunk(
   "admin/fetchUsers",
   async (_, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       const endpoint = `/users.json`;
-      const response = await axios.get("/api/entry", {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint },
       });
       return response.data.users;
     } catch (error) {
@@ -147,10 +142,9 @@ export const fetchPmusers = createAsyncThunk(
   "admin/fetchPmusers",
   async (_, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       const endpoint = `/premium-users.json`;
-      const response = await axios.get("/api/entry", {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint },
       });
       return response.data['premium-users'];
     } catch (error) {
@@ -523,10 +517,9 @@ export const deleteObj = createAsyncThunk(
   "admin/deleteObj",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       const endpoint = `/${params?.type}/${params?.uuid}`;
-      const response = await axios.delete(`/api/entry`, {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.delete(`/api/entry`, {
+        params: { endpoint },
       });
       return response.data.result;
     } catch (error) {
