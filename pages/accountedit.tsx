@@ -48,7 +48,6 @@ import {
   Degree
 } from "types/schema";
 
-import { platformCountries } from "constants/global";
 import useActionDispatch from "hooks/use-action-dispatch";
 
 const AccountToEdit: NextPage = () => {
@@ -169,6 +168,15 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
     fetchMeData,
     submitStepOneData
   } = useActionDispatch();
+
+  const platformCountries = [
+    {
+      id: 0,
+      name: "Bangladesh",
+      href: "bangladesh",
+      uuid: "",
+    },
+  ];
 
   const [firstName, setFirstName] = useState<string | null>(null);
   const [lastName, setLastName] = useState<string | null>(null);

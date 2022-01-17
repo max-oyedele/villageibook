@@ -42,7 +42,6 @@ import useActionDispatch from "hooks/use-action-dispatch";
 
 import { getUserToken } from "helpers/user-token";
 
-import { platformCountries } from "constants/global";
 import { Step } from "rdx/types";
 
 const AccountToRegister: NextPage = () => {
@@ -83,6 +82,15 @@ const AccountToRegister: NextPage = () => {
       router.push("/home");
     }
   }, []);
+
+  const platformCountries = [
+    {
+      id: 0,
+      name: "Bangladesh",
+      href: "bangladesh",
+      uuid: "",
+    },
+  ];
 
   const [avatar, setAvatar] = useState(null);
 

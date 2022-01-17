@@ -11,6 +11,7 @@ import {
   Divider,
   Flex,
   Box,
+  Center,
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
@@ -21,7 +22,7 @@ import PageTitle from "components/widgets/PageTitle";
 import SearchBar from "components/SearchBar";
 import LeftVillageCard from "components/LeftVillageCard";
 import UserCard from "components/UserCard";
-import GraduatesLocationStatCard from "components/GraduatesLocationStatCard";
+import GraduateStatsCard from "components/GraduateStatsCard";
 import StoryCard from "components/StoryCard";
 import PersonalityCard from "components/PersonalityCard";
 import InstitutionCard from "components/InstitutionCard";
@@ -48,8 +49,9 @@ const Posts: NextPage = () => {
     villageInstitutions,
     villageVideos,
     villagePhotos,
+    graduateStats,
   } = useFetchData();
-  const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
+  const { fetchVillageData, fetchVillagePageData, fetchGraduateStatsData } = useActionDispatch();
 
   const { fixed } = useWindowProp();
 
@@ -61,6 +63,7 @@ const Posts: NextPage = () => {
       setLoading(true);
       fetchVillageData({ villageUuid: vid });
       fetchVillagePageData({ villageUuid: vid });
+      fetchGraduateStatsData({type: 'village'});
       setLink("/village/" + vid);
     }
   }, [vid]);
@@ -120,19 +123,18 @@ const Posts: NextPage = () => {
                       ))}
                     </SimpleGrid>
                   )}
-                  <Box>
+                  <Center>
                     <Link href={link + "/users"} passHref={true}>
                       <Text
                         fontSize="12px"
                         color="purpleTone"
-                        textAlign="center"
                         cursor="pointer"
                         mt={8}
                       >
                         SEE ALL MY PAGES ({villageUsers["users"].length})
                       </Text>
                     </Link>
-                  </Box>
+                  </Center>
                 </Box>
               )}
 
@@ -140,9 +142,9 @@ const Posts: NextPage = () => {
                 <Text fontSize="14px">VILLAGE GRADUATES</Text>
                 {/* <Divider mt={6} mb={8} /> */}
                 <Box mt={4}>
-                  <GraduatesLocationStatCard
-                    location={village}
-                    condition="universityCountries"
+                  <GraduateStatsCard                    
+                    type='village'
+                    graduateStats={graduateStats}                    
                     direction="row"
                   />
                 </Box>
@@ -150,7 +152,7 @@ const Posts: NextPage = () => {
 
               {villageStories && villageStories["stories"].length > 0 && (
                 <Box bgColor="white" p={6} mb={6}>
-                  <Text fontSize="14px">STORY</Text>
+                  <Text fontSize="14px">SOCIETY</Text>
                   <SimpleGrid
                     columns={{ base: 1, md: 2 }}
                     columnGap={6}
@@ -162,7 +164,7 @@ const Posts: NextPage = () => {
                     ))}
                   </SimpleGrid>
                   <Divider my={6} />
-                  <Box>
+                  <Center>
                     <Link href={link + "/stories"} passHref={true}>
                       <Text
                         fontSize="12px"
@@ -173,7 +175,7 @@ const Posts: NextPage = () => {
                         SEE ALL STORIES ({villageStories["stories"].length})
                       </Text>
                     </Link>
-                  </Box>
+                  </Center>
                 </Box>
               )}
 
@@ -205,7 +207,7 @@ const Posts: NextPage = () => {
                         )}
                       </SimpleGrid>
                     )}
-                    <Box>
+                    <Center>
                       <Link href={link + "/personalities"} passHref={true}>
                         <Text
                           fontSize="12px"
@@ -218,7 +220,7 @@ const Posts: NextPage = () => {
                           {villagePersonalities["personalities"].length})
                         </Text>
                       </Link>
-                    </Box>
+                    </Center>
                   </Box>
                 )}
 
@@ -236,7 +238,7 @@ const Posts: NextPage = () => {
                           />
                         ))}
                     </VStack>
-                    <Box>
+                    <Center>
                       <Link href={link + "/institutions"} passHref={true}>
                         <Text
                           fontSize="12px"
@@ -249,7 +251,7 @@ const Posts: NextPage = () => {
                           {villageInstitutions["institutions"].length})
                         </Text>
                       </Link>
-                    </Box>
+                    </Center>
                   </Box>
                 )}
 
@@ -270,7 +272,7 @@ const Posts: NextPage = () => {
                         ))}
                   </SimpleGrid>
                   <Divider mt={10} mb={6} />
-                  <Box>
+                  <Center>
                     <Link href={link + "/videos"} passHref={true}>
                       <Text
                         fontSize="12px"
@@ -282,7 +284,7 @@ const Posts: NextPage = () => {
                         {villageVideos && villageVideos["videos"].length})
                       </Text>
                     </Link>
-                  </Box>
+                  </Center>
                 </Box>
               )}
 
@@ -300,7 +302,7 @@ const Posts: NextPage = () => {
                     ))}
                   </SimpleGrid>
                   <Divider mt={10} mb={6} />
-                  <Box>
+                  <Center>
                     <Link href="/village/photos" passHref={true}>
                       <Text
                         fontSize="12px"
@@ -311,7 +313,7 @@ const Posts: NextPage = () => {
                         SEE ALL PHOTOS ({villagePhotos.length})
                       </Text>
                     </Link>
-                  </Box>
+                  </Center>
                 </Box>
               )} */}
             </Box>
@@ -319,9 +321,9 @@ const Posts: NextPage = () => {
         </Flex>
       </Container>
 
-      {/* <Box mt={20}>
+      <Box bg="white" mt={20}>
         <Footer />
-      </Box> */}
+      </Box>
     </Fragment>
   );
 };

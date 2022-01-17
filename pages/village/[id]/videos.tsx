@@ -91,7 +91,6 @@ const Videos: NextPage = () => {
           {!loading && (
             <Box
               w="full"
-              bg="white"
               ml={
                 fixed && breakpointValue === "md"
                   ? "264px"
@@ -99,49 +98,49 @@ const Videos: NextPage = () => {
                   ? "24px"
                   : "0px"
               }
-              borderRadius="md"
-              boxShadow="sm"
-              p={4}
+              // borderRadius="md"
+              // boxShadow="sm"
             >
-              <Text fontWeight="semibold" color="primary">
-                VIDEOS
-                {pageData?.length && (
-                  <Text color="red.400" display="inline" mx={2}>
-                    ({pageData.length})
-                  </Text>
-                )}
-              </Text>
               {pageData?.length > 0 && (
-                <SimpleGrid
-                  columns={{ base: 1, md: 3 }}
-                  columnGap={4}
-                  rowGap={10}
-                  mt={4}
-                >
-                  {pageData.map((video) => (
-                    <VideoCard key={video.id} video={video} />
-                  ))}
+                <Box bg="white" borderRadius="md" p={4}>
+                  <Text fontWeight="semibold" color="primary">
+                    VIDEOS
+                    <Text color="red.400" display="inline" mx={2}>
+                      ({pageData.length})
+                    </Text>
+                  </Text>
 
-                  {pageData?.length == 0 && (
-                    <Alert message="There is no video to be displayed." />                    
-                  )}
-                </SimpleGrid>
+                  <SimpleGrid
+                    columns={{ base: 1, md: 3 }}
+                    columnGap={4}
+                    rowGap={10}
+                    mt={4}
+                  >
+                    {pageData.map((video) => (
+                      <VideoCard key={video.id} video={video} />
+                    ))}
+                  </SimpleGrid>
+
+                  {villageVideos &&
+                    villageVideos["videos"].length > itemsPerPage && (
+                      <Paginate
+                        handlePageClick={handlePageClicked}
+                        pageCount={pageCount}
+                      />
+                    )}
+                </Box>
               )}
-              {villageVideos &&
-                villageVideos["videos"].length > itemsPerPage && (
-                  <Paginate
-                    handlePageClick={handlePageClicked}
-                    pageCount={pageCount}
-                  />
-                )}
+              {pageData?.length == 0 && (
+                <Alert message="There is no video to be displayed." />
+              )}
             </Box>
           )}
         </Flex>
       </Container>
 
-      {/* <Box mt={20}>
+      <Box pos="fixed" bottom={0} w="full" bg="white">
         <Footer />
-      </Box> */}
+      </Box>
     </Fragment>
   );
 };

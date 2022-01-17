@@ -13,9 +13,9 @@ import {
 import { BiHomeAlt } from "react-icons/bi";
 import { RiGlobalLine } from "react-icons/ri";
 
-const Capsule: React.FC<{
-  inter: number;
-  oversea: number;
+const StatCapsule: React.FC<{
+  domestic: number;
+  overseas: number;
   style?: {
     width?: string;
     bgColor?: string;
@@ -27,8 +27,8 @@ const Capsule: React.FC<{
     color?: string;
   }
 }> = ({
-  inter,
-  oversea,
+  domestic,
+  overseas,
   style
 }) => {
     return (
@@ -45,7 +45,7 @@ const Capsule: React.FC<{
           >            
             <BiHomeAlt fontSize="12px" color={`${style?.iconColor ?? "gray.300"}`} />
             <Text color={`${style?.color ?? "GrayText"}`} fontSize="10px" fontWeight="semibold" lineHeight={1.8}>
-              {inter}
+              {domestic}
             </Text>
           </HStack>
           <Divider orientation="vertical" h="20px" borderColor={`${style?.separatorColor ?? "gray.300"}`} />
@@ -60,7 +60,7 @@ const Capsule: React.FC<{
           >            
             <RiGlobalLine fontSize="12px" color={`${style?.iconColor ?? "gray.300"}`} />
             <Text color={`${style?.color ?? "GrayText"}`} fontSize="10px" fontWeight="semibold" lineHeight={1.8}>
-              {oversea}
+              {overseas}
             </Text>
           </HStack>
         </Flex>
@@ -68,4 +68,4 @@ const Capsule: React.FC<{
     );
   };
 
-export default Capsule;
+export default StatCapsule;

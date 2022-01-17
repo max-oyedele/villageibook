@@ -10,22 +10,19 @@ import {
   Progress,
 } from "@chakra-ui/react";
 
-import { District, SubDistrict, Village } from "types/schema";
-
 const GraduatePercent: React.FC<{
-  location: District | SubDistrict | Village;
   totalCount: number;
-  graduatesCount: number;
-}> = ({ location, totalCount, graduatesCount }) => {
+  domesticCount: number;
+}> = ({ totalCount, domesticCount }) => {
   return (
     <Fragment>
       <Box w="full">
         <Text fontSize="14px" textTransform="capitalize">
-          {location?.name} Graduates
+          Our Graduates
         </Text>
         <Progress
           max={totalCount}
-          value={graduatesCount}
+          value={domesticCount}
           size="xs"
           colorScheme="purple"
           mt={4}
@@ -33,14 +30,15 @@ const GraduatePercent: React.FC<{
         <Flex justifyContent="space-between" mt={4}>
           <HStack>
             <Text fontSize="26px" fontWeight="bold" color="purpleTone">
-              {graduatesCount}
+              {domesticCount}
             </Text>
-            <Text fontSize="11px">
-              /{totalCount}
-            </Text>
+            <Text fontSize="11px">/{totalCount}</Text>
           </HStack>
           <Text fontSize="11px">
-            {(graduatesCount / totalCount) * 100}%
+            {isNaN(domesticCount / totalCount)
+              ? 0
+              : (domesticCount / totalCount) * 100}
+            %
           </Text>
         </Flex>
       </Box>

@@ -23,7 +23,7 @@ import RecentVillageCard from "components/RecentVillageCard";
 import PostForm from "components/PostForm";
 import PostCard from "components/PostCard";
 import CaptionCard from "components/CaptionCard";
-import GraduatesLocationStatCard from "components/GraduatesLocationStatCard";
+import GraduateStatsCard from "components/GraduateStatsCard";
 import RecentUserCard from "components/RecentUserCard";
 import VideoBox from "components/widgets/VideoBox";
 import Loader from "components/widgets/Loader";
@@ -45,29 +45,27 @@ const Feed: NextPage = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  const { me, posts, recentUsers, recentVillages } = useFetchData();
+  const { me, posts, recentUsers, recentVillages, graduateStats } = useFetchData();
   const {
     resetPosts,
     fetchMeData,
     fetchFeedPageData,
     fetchVillageData,
     addPost,
+    fetchGraduateStatsData
   } = useActionDispatch();
   const toast = useToast();
 
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
+    setLoading(true);
+    
     fetchMeData();
+    fetchFeedPageData({ page: 1 });
+    fetchVillageData({ villageUuid: me?.comesFrom?.uuid });
+    fetchGraduateStatsData({ type: 'region' });
   }, []);
-
-  useEffect(() => {
-    if (me) {
-      setLoading(true);
-      fetchFeedPageData({ page: 1 });
-      fetchVillageData({ villageUuid: me.comesFrom?.uuid });
-    }
-  }, [me]);
 
   useEffect(() => {
     if (me) {
@@ -87,7 +85,7 @@ const Feed: NextPage = () => {
         fetchVillageData({ villageUuid: me.comesFrom?.uuid });
       }
     }
-  }, [addPost]);
+  }, [me, addPost]);
 
   useEffect(() => {
     if (posts && posts.length != 0) {
@@ -257,9 +255,9 @@ const Feed: NextPage = () => {
                 )}
                 {breakpointValue === "base" && activeTab === "Graduates" && (
                   <Box>
-                    <GraduatesLocationStatCard
-                      location={me?.comesFrom}
-                      condition="universityCountries"
+                    <GraduateStatsCard
+                      type='region'
+                      graduateStats={graduateStats}
                       direction="column"
                     />
                     <Box mt={12}>
@@ -288,9 +286,9 @@ const Feed: NextPage = () => {
               top={fixed ? "80px" : 0}
               left={fixed ? rightPartRef.current.offsetLeft : 0}
             >
-              <GraduatesLocationStatCard
-                location={me?.comesFrom}
-                condition="universityCountries"
+              <GraduateStatsCard
+                type='region'
+                graduateStats={graduateStats}
                 direction="column"
               />
 
@@ -313,17 +311,6 @@ const Feed: NextPage = () => {
     </Fragment>
   );
 };
-
-<style jsx>
-  {`
-    .back {
-      padding: 10px;
-      background-color: dodgerblue;
-      color: white;
-      margin: 10px;
-    }
-  `}
-</style>;
 
 const TabsMobile: React.FC<{
   tabs: string[];

@@ -5,20 +5,17 @@ import {
   SerializedError,
 } from "@reduxjs/toolkit";
 
-import axios from "axios";
+import axiosAuth from "libs/axios-auth";
 
 import { Status, VillagePageState } from "../types";
-
-import { getUserToken } from "helpers/user-token";
 
 export const fetchVillage = createAsyncThunk(
   "villagePage/fetchVillage",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       const endpoint = `/villages/${params?.villageUuid}.json`;
-      const response = await axios.get("/api/entry", {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint },
       });
       return response.data;
     } catch (error) {
@@ -31,10 +28,9 @@ export const fetchVillageUsers = createAsyncThunk(
   "villagePage/fetchVillageUsers",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       const endpoint = `/villages/${params?.villageUuid}/users.json`;
-      const response = await axios.get("/api/entry", {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint },
       });
       return response.data; // data: {users: []}
     } catch (error) {
@@ -47,10 +43,9 @@ export const fetchVillageGraduates = createAsyncThunk(
   "villagePage/fetchVillageGraduates",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       const endpoint = `/villages/${params?.villageUuid}/graduates.json`;
-      const response = await axios.get("/api/entry", {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint },
       });
       return response.data.graduates; // data: {graduates: []}
     } catch (error) {
@@ -63,10 +58,9 @@ export const fetchVillageStories = createAsyncThunk(
   "villagePage/fetchVillageStories",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       const endpoint = `/villages/${params?.villageUuid}/stories.json`;
-      const response = await axios.get("/api/entry", {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint },
       });
       return response.data; // data: {stories: []}
     } catch (error) {
@@ -79,10 +73,9 @@ export const fetchVillagePersonalities = createAsyncThunk(
   "villagePage/fetchVillagePersonalities",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       const endpoint = `/villages/${params?.villageUuid}/personalities.json?fields=name,about,photo.url,photo.name,photo.description,dateOfBirth,dateOfDeath,educationLife,achievements,career,uuid`;
-      const response = await axios.get("/api/entry", {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint },
       });
       return response.data; // data: {personalities: []}
     } catch (error) {
@@ -95,10 +88,9 @@ export const fetchVillageInstitutions = createAsyncThunk(
   "villagePage/fetchVillageInstitutions",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       const endpoint = `/villages/${params?.villageUuid}/institutions.json?fields=name,photo.url,photo.name,photo.description,yearEstablished,address,email,phone,history,uuid`;
-      const response = await axios.get("/api/entry", {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint },
       });
       return response.data; // data: {institutions: []}
     } catch (error) {
@@ -111,10 +103,9 @@ export const fetchVillageVideos = createAsyncThunk(
   "villagePage/fetchVillageVideos",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       const endpoint = `/villages/${params?.villageUuid}/videos.json`;
-      const response = await axios.get("/api/entry", {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint },
       });
       return response.data; // data: {videos: []}
     } catch (error) {
@@ -127,17 +118,15 @@ export const fetchVillagePhotos = createAsyncThunk(
   "villagePage/fetchVillagePhotos",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       // const endpoint = `/villages/${params?.villageUuid}/photos.json`;
       let endpoint = "";
       // if (params?.villageUuid)
       //   endpoint += `/villages/${params.villageUuid}/HAS_MEDIA`;
       endpoint += `/photos.json`;
-      const response = await axios.get("/api/entry", {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get("/api/entry", {
+        params: { endpoint },
       });
-      console.log("photos = ", response.data)
-      return response.data; // data: {videos: []}
+      return response.data; // data: {photos: []}
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
     }

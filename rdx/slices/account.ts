@@ -5,13 +5,13 @@ import {
   SerializedError,
 } from "@reduxjs/toolkit";
 
+import axiosAuth from "libs/axios-auth";;
 import axios from "axios";
+import { getUserToken } from "helpers/user-token";
 
 var FormData = require("form-data");
 
 import { Status, Step, AccountState } from "../types";
-
-import { getUserToken } from "helpers/user-token";
 
 export const fetchMe = createAsyncThunk(
   "account/fetchMe",
@@ -22,9 +22,8 @@ export const fetchMe = createAsyncThunk(
         return JSON.parse(myAccount);
       }
 
-      const access_token = getUserToken();
-      const response = await axios.get(`/api/entry`, {
-        params: { endpoint: "/users/me.json", access_token },
+      const response = await axiosAuth.get(`/api/entry`, {
+        params: { endpoint: "/users/me.json" },
       });
 
       localStorage.setItem("villageibookAccount", JSON.stringify(response.data));

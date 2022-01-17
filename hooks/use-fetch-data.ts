@@ -41,7 +41,7 @@ const useFetchData = () => {
     villagePhotos,
   } = useSelector((state: OurStore) => state.villagePageReducer);
 
-  const { graduateStatsByCondition, totalGraduateStats } = useSelector((state: OurStore) => state.graduatePageReducer)
+  const { graduateStats } = useSelector((state: OurStore) => state.graduatePageReducer)
 
   return {
     jwt,
@@ -65,8 +65,7 @@ const useFetchData = () => {
     posts,
     recentVillages,
     recentUsers,
-    graduateStatsByCondition,
-    totalGraduateStats,
+    graduateStats,
     user,
     userError,
     personality,

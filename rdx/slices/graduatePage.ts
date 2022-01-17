@@ -5,42 +5,22 @@ import {
   SerializedError,
 } from "@reduxjs/toolkit";
 
-import axios from "axios";
+import axiosAuth from "libs/axios-auth";
 
 import { Status, Step, GraduatePageState } from "../types";
-import { getUserToken } from "helpers/user-token";
 
-export const getGraduatesByCondition = createAsyncThunk(
-  "graduatePage/getGraduatesByCondition",
+export const fetchGraduateStats = createAsyncThunk(
+  "graduatePage/fetchGraduateStats",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
-      let endpoint = `/stats/graduates-by-condition.json`;
-      if (params?.universityCountries)
-        endpoint += `?universityCountries=${params.universityCountries}`;
-      if (params?.locationUuid)
-        endpoint += `&locationUuid=${params.locationUuid}`;
+      const homeCountry = 'bangladesh';
+      const universityCountries = 'australia,bangladesh,canada,eu,united-kingdom,united-states';
+      let endpoint = `/stats/graduates-by-location.json?type=${params.type}&home=${homeCountry}&universityCountries=${universityCountries}`;
 
-      const response = await axios.get(`/api/entry`, {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get(`/api/entry`, {
+        params: { endpoint },
       });
-      return response.data.graduates;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
-  }
-);
-
-export const getTotalGraduates = createAsyncThunk(
-  "graduatePage/getTotalGraduates",
-  async (_, thunkAPI) => {
-    try {
-      const access_token = getUserToken();
-      const endpoint = "/stats/graduates-by-condition.json";
-      const response = await axios.get(`/api/entry`, {
-        params: { endpoint, access_token },
-      });
-      return response.data.graduates;
+      return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
@@ -50,8 +30,7 @@ export const getTotalGraduates = createAsyncThunk(
 /********************************** */
 const initialState: GraduatePageState = {
   status: Status.IDLE,
-  graduateStatsByCondition: [],
-  totalGraduateStats: [],
+  graduateStats: {},
   error: null,
 };
 
@@ -62,30 +41,18 @@ export const graduatePageSlice = createSlice({
     reset: () => initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(getGraduatesByCondition.pending, (state, action) => {
+    builder.addCase(fetchGraduateStats.pending, (state, action) => {
       state.status = Status.LOADING;
       state.error = null;
     });
-    builder.addCase(getGraduatesByCondition.fulfilled, (state, action) => {
-      state.graduateStatsByCondition = action.payload;
+    builder.addCase(fetchGraduateStats.fulfilled, (state, action) => {      
+      state.graduateStats[action.meta.arg.type] = action.payload;
       state.status = Status.IDLE;
     });
-    builder.addCase(getGraduatesByCondition.rejected, (state, action) => {
-      state.status = Status.IDLE;
-      state.error = action.payload;
-    });
-    builder.addCase(getTotalGraduates.pending, (state, action) => {
-      state.status = Status.LOADING;
-      state.error = null;
-    });
-    builder.addCase(getTotalGraduates.fulfilled, (state, action) => {
-      state.totalGraduateStats = action.payload;
-      state.status = Status.IDLE;
-    });
-    builder.addCase(getTotalGraduates.rejected, (state, action) => {
+    builder.addCase(fetchGraduateStats.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
-    });
+    });    
   },
 });
 

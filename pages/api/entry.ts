@@ -3,7 +3,7 @@ import axios from "axios";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 async function handler(req: any, res: any) {
-  const { access_token } = req.query;
+  const { authorization } = req.headers;
   const { endpoint, searchParams } = req.query;
   const search = new URLSearchParams(
     searchParams ? JSON.parse(searchParams) : ""
@@ -15,7 +15,7 @@ async function handler(req: any, res: any) {
 
   console.log("url", url);
 
-  axios.defaults.headers.common = { Authorization: `bearer ${access_token}` };
+  axios.defaults.headers.common = { Authorization: authorization };
 
   switch (req.method) {
     case "GET":
@@ -30,9 +30,10 @@ async function handler(req: any, res: any) {
     try {
       const response = await axios.get(url);
       // console.log('response', response.data)
-      res.status(200).json(response.data);
+      res.status(response.status).json(response.data);
     } catch (error) {
-      return res.status(400).json({ message: error });
+      console.log("error", error.response.data)
+      return res.status(error.response.status).json(error);
     }
   }
 

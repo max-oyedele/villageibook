@@ -5,22 +5,19 @@ import {
   SerializedError,
 } from "@reduxjs/toolkit";
 
-import axios from "axios";
+import axiosAuth from "libs/axios-auth";
 
 var FormData = require("form-data");
 
 import { Status, ViewState } from "../types";
 
-import { getUserToken } from "helpers/user-token";
-
 export const fetchUser = createAsyncThunk(
   "view/fetchUser",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       const endpoint = `/users/${params.uuid}.json`;
-      const response = await axios.get(`/api/entry`, {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get(`/api/entry`, {
+        params: { endpoint },
       });
       return response.data;
     } catch (error) {
@@ -33,10 +30,9 @@ export const fetchPersonality = createAsyncThunk(
   "view/fetchPersonality",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       const endpoint = `/personalities/${params.uuid}.json?fields=name,about,photo.url,photo.name,photo.description,dateOfBirth,dateOfDeath,educationLife,achievements,career,uuid`;
-      const response = await axios.get(`/api/entry`, {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get(`/api/entry`, {
+        params: { endpoint },
       });
       return response.data;
     } catch (error) {
@@ -49,10 +45,9 @@ export const fetchInstitution = createAsyncThunk(
   "view/fetchInstitution",
   async (params: any, thunkAPI) => {
     try {
-      const access_token = getUserToken();
       const endpoint = `/institutions/${params.uuid}.json?fields=name,photo.url,photo.name,photo.description,yearEstablished,address,email,phone,history,uuid`
-      const response = await axios.get(`/api/entry`, {
-        params: { endpoint, access_token },
+      const response = await axiosAuth.get(`/api/entry`, {
+        params: { endpoint },
       });
       return response.data;
     } catch (error) {
