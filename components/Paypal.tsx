@@ -9,7 +9,7 @@ const ReactPayPal = (props) => {
   const [succeeded, setSucceeded] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter();
-  const { submitPremiumUser } = useActionDispatch();
+  const { submitPremiumUserData } = useActionDispatch();
   const { me } = useFetchData();
 
   const createOrder = (data, actions) => {
@@ -67,14 +67,15 @@ const ReactPayPal = (props) => {
         roles: ["PREMIUM"]
       }
       
-      submitPremiumUser(params)
+      submitPremiumUserData(params)
       localStorage.removeItem('order')
+      localStorage.removeItem('__paypal_storage__')
       localStorage.removeItem('orderDetails')
     }
   }
 
   useEffect(() => {
-    router.push("/accountedit");
+    // router.push("/accountedit");
   }, [succeeded])
 
   return (

@@ -13,7 +13,6 @@ import { wrapper, store } from "rdx/store";
 import { ChakraProvider as ThemeProvider } from "@chakra-ui/react";
 import theme from "styles/theme";
 
-import supabase from './libs/supabase'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 
 const initialOptions = {

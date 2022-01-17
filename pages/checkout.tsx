@@ -12,9 +12,10 @@ import {
 } from "@chakra-ui/react";
 import HeaderForGuide from "components/HeaderForGuide";
 import Footer from "components/Footer";
-import { fetchPostJSON } from './libs/api-helpers';
-import getStripe from './libs/get-stripejs';
+import useActionDispatch from "hooks/use-action-dispatch";
+import getStripe from '../libs/get-stripejs';
 import ReactPayPal from 'components/Paypal';
+import useFetchData from "hooks/use-fetch-data";
 
 const Checkout: NextPage = () => {
   const [confirmModal, setConfirmModal] = useState(false)
@@ -22,26 +23,36 @@ const Checkout: NextPage = () => {
   const [paypal, setPaypal] = useState(1)
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const modal = useDisclosure();
+  const {
+    fetchCheckoutSession
+  } = useActionDispatch();
+  const { session } = useFetchData();
 
   const paymentWithStripe = async (amount) => {
     setLoading(true)
-    const response = await fetchPostJSON('/api/checkout_sessions', {
+    fetchCheckoutSession({
       amount: amount,
     })
 
-    console.log("checkout session = ", response)
-    if (response.statusCode === 500) {
-      console.error(response.message)
-      return
-    }
-    // Redirect to Checkout.
-    const stripe = await getStripe()
-    const { error } = await stripe!.redirectToCheckout({
-      sessionId: response.id,
-    })
     setLoading(false)
   }
 
+  useEffect(() => {
+    async function stripe() {
+      if (session) {
+        if (session.statusCode === 500) {
+          console.error(session.message)
+          return
+        }
+        // Redirect to Checkout.
+        const stripe = await getStripe()
+        const { error } = await stripe!.redirectToCheckout({
+          sessionId: session.id,
+        })
+      }
+    }
+    stripe()
+  }, [session])
   return (
     <Fragment>
       <HeaderForGuide title="CHECKOUT" />

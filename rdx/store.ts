@@ -9,7 +9,8 @@ import { viewPageSlice } from "./slices/viewPage";
 import { feedPageSlice } from "./slices/feedPage";
 import { villagePageSlice } from "./slices/villagePage";
 import { graduatePageSlice } from "./slices/graduatePage";
-import { adminSlice } from "./slices/admin"
+import { adminSlice } from "./slices/admin";
+import { checkoutSessionSlice } from "./slices/checkout";
 
 const combinedReducers = combineReducers({
   authReducer: authSlice.reducer,
@@ -18,8 +19,9 @@ const combinedReducers = combineReducers({
   viewPageReducer: viewPageSlice.reducer,
   feedPageReducer: feedPageSlice.reducer,
   villagePageReducer: villagePageSlice.reducer,
-  graduatePageReducer: graduatePageSlice.reducer,  
-  adminReducer: adminSlice.reducer
+  graduatePageReducer: graduatePageSlice.reducer,
+  adminReducer: adminSlice.reducer,
+  checkoutSessionReducer: checkoutSessionSlice.reducer
 });
 export type OurStore = ReturnType<typeof combinedReducers>;
 

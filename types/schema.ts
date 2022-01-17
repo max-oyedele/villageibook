@@ -135,3 +135,15 @@ export type Institution = {
   href?: string;
   uuid: string;
 };
+
+export interface Session {
+  amount_subtotal: number;
+  amount_total: number;
+  cancel_url: string;
+  currency: string;
+  id: string;
+  success_url: string;
+  url: string;
+  statusCode: number;
+  message: string;
+}

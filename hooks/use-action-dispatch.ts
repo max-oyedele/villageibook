@@ -13,11 +13,13 @@ import {
   fetchDegrees,
 } from "rdx/slices/common";
 import { reset as authResetFunc, login, signup } from "rdx/slices/auth";
+import { checkoutSession } from "rdx/slices/checkout";
 import {
   reset as accountResetFunc,
   fetchMe,
   submitStepOne,
   submitStepTwo,
+  submitPremiumUser
 } from "rdx/slices/account";
 import {
   reset as viewResetFunc,
@@ -27,6 +29,7 @@ import {
 } from "rdx/slices/viewPage";
 
 import {
+  reset as postResetFunc,
   resetPosts as postsResetFunc,
   fetchPosts,
   fetchRecentVillages,
@@ -169,7 +172,7 @@ const useActionDispatch = () => {
     await dispatch(submitStepTwo(params));
   };
 
-  const submitPremiumUser = async (params) => {
+  const submitPremiumUserData = async (params) => {
     await dispatch(submitPremiumUser(params));
   };
 
@@ -181,6 +184,10 @@ const useActionDispatch = () => {
     await dispatch(postsResetFunc());
   };
 
+  const fetchCheckoutSession = async (params) => {
+    await dispatch(checkoutSession(params));
+  };
+
   return {
     authReset,
     accountReset,
@@ -189,7 +196,7 @@ const useActionDispatch = () => {
     submitPostData,
     submitStepOneData,
     submitStepTwoData,
-    submitPremiumUser,
+    submitPremiumUserData,
     resetPost,
     resetPosts,
     fetchCountriesData,
@@ -206,6 +213,7 @@ const useActionDispatch = () => {
     fetchFeedPageData,
     fetchVillageData,
     fetchVillagePageData,
+    fetchCheckoutSession,
     // fetchVillageUsersData,
     // fetchVillageStoriesData,
     // fetchVillagePersonalitiesData,

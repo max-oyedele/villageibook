@@ -41,6 +41,10 @@ const useFetchData = () => {
 
   const { status: viewPageStatus, user, userError, story, storyError, personality, personalityError, institution, institutionError } = useSelector((state: OurStore) => state.viewPageReducer);
 
+  const {
+    session
+  } = useSelector((state: OurStore) => state.checkoutSessionReducer);
+  
   return {
     jwt,
     signupMe,
@@ -82,6 +86,7 @@ const useFetchData = () => {
     villagePhotos,
     graduatePageStatus,
     graduateStats,
+    session
   };
 };
 
