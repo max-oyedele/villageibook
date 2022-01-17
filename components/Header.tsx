@@ -210,7 +210,7 @@ const Header = () => {
                     >
                       <Link
                         href={
-                          tab.path === "/village"
+                          tab.path === "/village" || tab.path === "/graduates"
                             ? `${tab.path}/${vid}`
                             : tab.path
                         }

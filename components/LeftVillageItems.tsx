@@ -153,7 +153,7 @@ const LeftVillageItems: React.FC<{ village: Village; badgeShow?: boolean }> = ({
                   bgColor={
                     pathname === `/village/[id]/${item.value}`
                       ? item.badgeColor
-                      : "#FBFBFA"
+                      : "gray.100"
                   }
                   color={
                     pathname === `/village/[id]/${item.value}` ? "white" : ""

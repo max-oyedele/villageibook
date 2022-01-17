@@ -40,7 +40,7 @@ const Feed: NextPage = () => {
 
   const rightPartRef = useRef(null);
 
-  const tabsMobile = ["Feed", "Village", "Graduates"];
+  const tabsMobile = ["Post", "My Village", "Graduates"];
   const [activeTab, setActiveTab] = useState(tabsMobile[0]);
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
@@ -175,27 +175,29 @@ const Feed: NextPage = () => {
                 : "0px"
             }
           >
-            <Box bg="white" borderRadius="4px" mb={4} p={4}>
-              <PostForm />
-            </Box>
             {(breakpointValue === "md" ||
-              (breakpointValue === "base" && activeTab === "Feed")) && (
-              <InfiniteScroll
-                dataLength={data?.length}
-                next={getMorePost}
-                hasMore={hasMore}
-                loader={<Loader loading={true} />}
-              >
-                <VStack spacing={4}>
-                  {data?.map((post) => (
-                    <PostCard key={post.uuid} post={post} />
-                  ))}
-                </VStack>
-              </InfiniteScroll>
+              (breakpointValue === "base" && activeTab === "Post")) && (
+              <>
+                <Box bg="white" borderRadius="4px" mb={4} p={4}>
+                  <PostForm />
+                </Box>
+                <InfiniteScroll
+                  dataLength={data?.length}
+                  next={getMorePost}
+                  hasMore={hasMore}
+                  loader={<Loader loading={true} />}
+                >
+                  <VStack spacing={4}>
+                    {data?.map((post) => (
+                      <PostCard key={post.uuid} post={post} />
+                    ))}
+                  </VStack>
+                </InfiniteScroll>
+              </>
             )}
-            {breakpointValue === "base" && activeTab === "Village" && (
+            {breakpointValue === "base" && activeTab === "My Village" && (
               <Box>
-                <LeftVillageItems village={me?.comesFrom} badgeShow={false} />
+                <LeftVillageItems village={me?.comesFrom} badgeShow={true} />
                 <Text fontSize="20px" mt={12} mb={6}>
                   Recently developed
                 </Text>
