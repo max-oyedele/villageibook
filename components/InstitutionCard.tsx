@@ -10,7 +10,7 @@ import {
   Box,
   Image,
   Text,
-  Badge,
+  Link,
   Button,
   useBreakpointValue,
 } from "@chakra-ui/react";
@@ -87,14 +87,16 @@ const InstitutionCard: React.FC<{ institution: Institution }> = ({
         {breakpointValue === "md" && (
           <GridItem colSpan={1}>
             <Flex w="full" h="full" justifyContent="center" alignItems="center">
-              <Button
-                px={4}
-                h="26px"
-                fontSize="12px"
-                fontWeight="400"
-              >
-                More
-              </Button>
+              <Link href={`/institutionview/${institution?.uuid}`} passHref={true}>
+                <Button
+                  px={4}
+                  h="26px"
+                  fontSize="12px"
+                  fontWeight="400"
+                >
+                  More
+                </Button>
+              </Link>
             </Flex>
           </GridItem>
         )}
