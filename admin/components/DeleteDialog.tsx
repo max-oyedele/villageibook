@@ -40,7 +40,7 @@ const DeleteDialog: React.FC<{
           <AlertDialogOverlay>
             <AlertDialogContent>
               <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                Delete Post
+                Delete Data
               </AlertDialogHeader>
 
               <AlertDialogBody>

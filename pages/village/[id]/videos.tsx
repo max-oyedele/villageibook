@@ -123,6 +123,8 @@ const Videos: NextPage = () => {
                       <Paginate
                         handlePageClick={handlePageClicked}
                         pageCount={pageCount}
+                        itemOffset={itemOffset}
+                        isLast={villageVideos["videos"].length - itemsPerPage > itemOffset}
                       />
                     )}
                 </Box>

@@ -11,7 +11,7 @@ const StoryCard: React.FC<{ story: Story }> = ({ story }) => {
       <Flex
         w="full"
         flexDirection="column"
-        justifyContent="center"
+        justifyContent="flex-start"
         borderRadius="8px"
         boxShadow="sm"
       >

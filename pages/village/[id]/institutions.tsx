@@ -124,6 +124,8 @@ const Institutions: NextPage = () => {
                   <Paginate
                     handlePageClick={handlePageClicked}
                     pageCount={pageCount}
+                    itemOffset={itemOffset}
+                    isLast={villageInstitutions["institutions"].length - itemsPerPage > itemOffset}
                   />
                 )}
             </Box>

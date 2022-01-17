@@ -107,6 +107,8 @@ const Users: NextPage = () => {
                 <Paginate
                   handlePageClick={handlePageClicked}
                   pageCount={pageCount}
+                  itemOffset={itemOffset}
+                  isLast={villageUsers["users"].length - itemsPerPage > itemOffset}
                 />
               )}
             </Box>

@@ -26,6 +26,16 @@ ul.pagination li {
     text-align: center;
 }
 
+ul.pagination li.previouse-disabled.disabled,
+ul.pagination li.next-disabled.disabled {
+    display: none;
+}
+
+ul.pagination li.previouse-disabled,
+ul.pagination li.next-disabled {
+    width: 7rem;
+}
+
 ul.pagination li a {
     text-decoration: none;
     color: #000000;
@@ -43,7 +53,7 @@ ul.pagination li.active {
 
 ul.pagination li a:hover,
 ul.pagination li a.active {
-    color: white;
+    color: #e2e2e2;
 }
 
 .page-selection {
