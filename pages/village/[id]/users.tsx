@@ -33,10 +33,9 @@ const Users: NextPage = () => {
 
   const { fixed } = useWindowProp();
 
-  const { village, villageUsers } = useFetchData();
+  const { villagePageStatus, village, villageUsers } = useFetchData();
   const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
 
-  const [loading, setLoading] = useState(true);
   const [pageData, setPageData] = useState(null);
   const [itemOffset, setItemOffset] = useState(1);
   const [pageCount, setPageCount] = useState(1);
@@ -51,10 +50,8 @@ const Users: NextPage = () => {
 
   useEffect(() => {
     if (villageUsers != null && villageUsers["users"].length > 0) {
-      setLoading(false);
       setItemOffset(0);
     } else if (villageUsers != null && villageUsers["users"].length == 0) {
-      setLoading(false);
       setPageData([]);
     }
   }, [villageUsers && villageUsers["users"]]);
@@ -77,7 +74,7 @@ const Users: NextPage = () => {
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6}>
-        <PageTitle title="MyPages" />
+        <PageTitle title="My Pages" />
         <Flex>
           {breakpointValue === "md" && (
             <Box>
@@ -85,8 +82,8 @@ const Users: NextPage = () => {
             </Box>
           )}
 
-          {loading && <Loader loading={loading} />}
-          {!loading && (
+          {villagePageStatus === 'loading' && <Loader />}
+          {villagePageStatus !== 'loading' && (
             <Box
               w="full"
               ml={
@@ -117,9 +114,16 @@ const Users: NextPage = () => {
         </Flex>
       </Container>
 
-      <Box pos="fixed" bottom={0} w="full" bg="white">
-        <Footer />
-      </Box>
+      {villageUsers?.["users"]?.length <= 3 && (
+        <Box w="full" pos="fixed" bottom={0} bg="white" mt={20}>
+          <Footer />
+        </Box>
+      )}
+      {villageUsers?.["users"]?.length > 3 && (
+        <Box bg="white" mt={20}>
+          <Footer />
+        </Box>
+      )}
     </Fragment>
   );
 };

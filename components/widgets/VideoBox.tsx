@@ -67,7 +67,7 @@ const VideoBox: React.FC<{
         >
           {!videoReady && (
             <Box w={9} h={9}>
-              <Loader loading={true} type="clip" />
+              {/* <Loader loading={true} type="clip" /> */}
             </Box>
           )}
           {videoReady && videoUrl && (

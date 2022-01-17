@@ -4,9 +4,9 @@ import { Box } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 
 const Loader: React.FC<{
-  loading: boolean;
+  loading?: boolean;
   type?: string;
-}> = ({ loading, type = "scale" }) => {
+}> = ({ loading = true, type = "scale" }) => {
   const color = "#553cfb";
   const override = css`
     display: flex;

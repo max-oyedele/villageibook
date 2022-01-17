@@ -27,8 +27,8 @@ const PostForm: React.FC = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const toast = useToast();
 
-  const { postStatus, postError } = useFetchData();
-  const { submitPostData, resetPost } = useActionDispatch();
+  const { postStatus } = useFetchData();
+  const { submitPostData } = useActionDispatch();
 
   const [content, setContent] = useState("");
   const [picture, setPicture] = useState(null);
@@ -65,8 +65,18 @@ const PostForm: React.FC = () => {
   };
 
   if (postStatus === Status.SUCCESS) {
+    if(!toast.isActive("postSuccess")){
+      toast({
+        id: "postSuccess",
+        title: "Successfully Posted.",
+        description: "",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+
     setTimeout(() => {
-      resetPost();
       setContent("");
       setPicture(null);
       setPictureURL(null);
@@ -74,17 +84,17 @@ const PostForm: React.FC = () => {
       setVideoURL(null);
     }, 1000);
   }
-  if (postError) {
-    !toast.isActive("postError") &&
-      toast({
-        id: "postError",
-        title: "Post Failed. Please try again.",
-        description: postError.message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-  }
+  // if (postError) {
+  //   !toast.isActive("postError") &&
+  //     toast({
+  //       id: "postError",
+  //       title: "Post Failed. Please try again.",
+  //       description: postError.message,
+  //       status: "error",
+  //       duration: 3000,
+  //       isClosable: true,
+  //     });
+  // }
 
   return (
     <Fragment>
@@ -133,7 +143,7 @@ const PostForm: React.FC = () => {
             <Text letterSpacing="0" lineHeight="1" ml={1}>
               Picture
             </Text>
-          </Flex>          
+          </Flex>
           <input
             ref={videoRef}
             type="file"
@@ -141,7 +151,7 @@ const PostForm: React.FC = () => {
             accept="video/*"
             onChange={(e) => uploadToClient(e, "video")}
           />
-          <Flex            
+          <Flex
             alignItems="end"
             cursor="pointer"
             onClick={() => videoRef.current?.click()}

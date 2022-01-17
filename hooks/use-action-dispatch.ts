@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { MyThunkDispatch, OurStore } from "rdx/store";
 
@@ -24,18 +24,18 @@ import {
   fetchUser,
   fetchPersonality,
   fetchInstitution,
-} from "rdx/slices/view";
-import { reset as postResetFunc, submitPost } from "rdx/slices/post";
+} from "rdx/slices/viewPage";
+
 import {
-  init as postsResetFunc,
+  resetPosts as postsResetFunc,
   fetchPosts,
   fetchRecentVillages,
   fetchRecentUsers,
+  submitPost
 } from "rdx/slices/feedPage";
 import {
   fetchVillage,
   fetchVillageUsers,
-  fetchVillageGraduates,
   fetchVillageStories,
   fetchVillagePersonalities,
   fetchVillageInstitutions,
@@ -48,12 +48,6 @@ import {
 
 const useActionDispatch = () => {
   const dispatch: MyThunkDispatch = useDispatch();
-
-  const {
-    addPost
-  } = useSelector(
-    (state: OurStore) => state.postReducer
-  );
      
   const authReset = async () => {
     await dispatch(authResetFunc());
@@ -119,8 +113,11 @@ const useActionDispatch = () => {
     await dispatch(fetchInstitution(params));
   };
 
-  const fetchFeedPageData = async (params) => {
+  const fetchPostsData = async (params) => {
     await dispatch(fetchPosts(params));
+  }
+  const fetchFeedPageData = async (params) => {
+    fetchPostsData(params);
     await dispatch(fetchRecentVillages());
     await dispatch(fetchRecentUsers());
   };
@@ -130,9 +127,6 @@ const useActionDispatch = () => {
   };
   const fetchVillageUsersData = async (params) => {
     await dispatch(fetchVillageUsers(params));
-  };
-  const fetchVillageGraduatesData = async (params) => {
-    await dispatch(fetchVillageGraduates(params));
   };
   const fetchVillageStoriesData = async (params) => {
     await dispatch(fetchVillageStories(params));
@@ -152,7 +146,6 @@ const useActionDispatch = () => {
 
   const fetchVillagePageData = (params) => {
     fetchVillageUsersData(params);
-    fetchVillageGraduatesData(params);
     fetchVillageStoriesData(params);
     fetchVillagePersonalitiesData(params);
     fetchVillageInstitutionsData(params);
@@ -209,17 +202,16 @@ const useActionDispatch = () => {
     fetchUserData,
     fetchPersonalityData,
     fetchInstitutionData,
+    fetchPostsData,
     fetchFeedPageData,
     fetchVillageData,
     fetchVillagePageData,
     // fetchVillageUsersData,
-    // fetchVillageGraduatesData,
     // fetchVillageStoriesData,
     // fetchVillagePersonalitiesData,
     // fetchVillageInstitutionsData,
     // fetchVillageVideosData,    
     fetchGraduateStatsData,
-    addPost
   };
 };
 

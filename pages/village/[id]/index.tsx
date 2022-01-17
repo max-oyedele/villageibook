@@ -22,7 +22,7 @@ import PageTitle from "components/widgets/PageTitle";
 import SearchBar from "components/SearchBar";
 import LeftVillageCard from "components/LeftVillageCard";
 import UserCard from "components/UserCard";
-import GraduateStatsCard from "components/GraduateStatsCard";
+import GraduateStatsByCountries from "components/GraduateStatByCountries";
 import StoryCard from "components/StoryCard";
 import PersonalityCard from "components/PersonalityCard";
 import InstitutionCard from "components/InstitutionCard";
@@ -42,6 +42,7 @@ const Posts: NextPage = () => {
   const vid = query.id; //village uuid
 
   const {
+    villagePageStatus,
     village,
     villageUsers,
     villageStories,
@@ -51,26 +52,27 @@ const Posts: NextPage = () => {
     villagePhotos,
     graduateStats,
   } = useFetchData();
-  const { fetchVillageData, fetchVillagePageData, fetchGraduateStatsData } = useActionDispatch();
+  const { fetchVillageData, fetchVillagePageData, fetchGraduateStatsData } =
+    useActionDispatch();
 
   const { fixed } = useWindowProp();
 
-  const [loading, setLoading] = useState(true);
   const [link, setLink] = useState("");
 
   useEffect(() => {
-    if (vid) {
-      setLoading(true);
+    if (vid) {      
       fetchVillageData({ villageUuid: vid });
       fetchVillagePageData({ villageUuid: vid });
-      fetchGraduateStatsData({type: 'village'});
+      fetchGraduateStatsData({ type: "village" });
       setLink("/village/" + vid);
     }
   }, [vid]);
 
-  if (village && loading) {
-    setLoading(false);
-  }
+  const findStat = (location) => {
+    return graduateStats['village']?.stats.find(
+      (e) => e.location === location
+    );
+  };
 
   return (
     <Fragment>
@@ -93,8 +95,8 @@ const Posts: NextPage = () => {
             </Box>
           )}
 
-          {loading && <Loader loading={loading} />}
-          {!loading && (
+          {villagePageStatus === 'loading' && <Loader />}
+          {villagePageStatus !== 'loading' && (
             <Box
               w="full"
               ml={
@@ -142,10 +144,8 @@ const Posts: NextPage = () => {
                 <Text fontSize="14px">VILLAGE GRADUATES</Text>
                 {/* <Divider mt={6} mb={8} /> */}
                 <Box mt={4}>
-                  <GraduateStatsCard                    
-                    type='village'
-                    graduateStats={graduateStats}                    
-                    direction="row"
+                  <GraduateStatsByCountries
+                    overseasCountries={findStat(village?.name)?.overseasCountries}
                   />
                 </Box>
               </Box>

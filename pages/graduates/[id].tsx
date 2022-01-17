@@ -61,7 +61,14 @@ const Graduates: NextPage = () => {
   const { id } = router.query;
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { me, districts, subDistricts, villages, graduateStats } = useFetchData();
+  const {
+    me,
+    districts,
+    subDistricts,
+    villages,
+    graduatePageStatus,
+    graduateStats,
+  } = useFetchData();
   const {
     fetchMeData,
     fetchCommonData,
@@ -78,17 +85,14 @@ const Graduates: NextPage = () => {
   const [items, setItems] = useState([]);
   const [location, setLocation] = useState(null);
 
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     if (me) {
-      setLoading(true);
       fetchCommonData();
       // fetchRegionsData(null);
       fetchDistrictsData(null);
       fetchSubDistrictsData(null);
       fetchVillagesData(null);
-      fetchGraduateStatsData({type: 'region'});
+      fetchGraduateStatsData({ type: "region" });
     } else {
       fetchMeData();
     }
@@ -97,6 +101,7 @@ const Graduates: NextPage = () => {
   useEffect(() => {
     if (activeMenuItem) {
       fetchGraduateStatsData({ type: activeMenuItem.value });
+      setLocation(null);
     }
   }, [activeMenuItem]);
 
@@ -133,15 +138,40 @@ const Graduates: NextPage = () => {
   const { fixed } = useWindowProp();
 
   const onFind = () => {
-    if (districts.find((item) => item.href === location.toLowerCase())) {
+    const districtItem = districts?.find(
+      (e) => e.href === location.toLowerCase()
+    );
+    if (districtItem) {
       setActiveMenuItem(menuItems[0]);
-    } else if (
-      subDistricts.find((item) => item.href === location.toLowerCase())
-    ) {
+      setExpandedItem(districtItem);
+      router.push("/graduates/" + districtItem.uuid, undefined, {
+        shallow: true,
+      });
+    }
+
+    const subDistrictItem = subDistricts?.find(
+      (e) => e.href === location.toLowerCase()
+    );
+    if (subDistrictItem) {
       setActiveMenuItem(menuItems[1]);
-    } else if (villages.find((item) => item.href === location.toLowerCase())) {
+      setExpandedItem(subDistrictItem);
+      router.push("/graduates/" + subDistrictItem.uuid, undefined, {
+        shallow: true,
+      });
+    }
+
+    const villageItem = villages?.find(
+      (e) => e.href === location.toLowerCase()
+    );
+    if (villageItem) {
       setActiveMenuItem(menuItems[2]);
-    } else {
+      setExpandedItem(villageItem);
+      router.push("/graduates/" + villageItem.uuid, undefined, {
+        shallow: true,
+      });
+    }
+
+    if (!districtItem && !subDistrictItem && !villageItem) {
       toast({
         title: "No Found " + location,
         description: "Please try to find correct name",
@@ -152,17 +182,10 @@ const Graduates: NextPage = () => {
     }
   };
 
-  if (items && items.length > 0 && loading) {
-    setLoading(false);
-  }
-
-  const calcGraduates = (location) => {
-    const totalGraduatesCount = 1;
-    const homeGraduatesCount = 0;
-    const overseaGraduateCount = totalGraduatesCount - homeGraduatesCount;
-
-    //[total=12, inter=6, oversea=6]
-    return [totalGraduatesCount, homeGraduatesCount, overseaGraduateCount];
+  const findStat = (location) => {
+    return graduateStats[activeMenuItem.value]?.stats.find(
+      (e) => e.location === location
+    );
   };
 
   return (
@@ -172,12 +195,12 @@ const Graduates: NextPage = () => {
         <PageTitle title="Graduates" />
         <Flex>
           {breakpointValue === "md" && (
-            <Box minW="280px" pos={fixed ? "fixed" : "static"} top={fixed ? "80px" : 0}>
-              <GraduateStatsCard
-                type='region'
-                graduateStats={graduateStats}
-                direction='column'
-              />
+            <Box
+              minW="280px"
+              pos={fixed ? "fixed" : "static"}
+              top={fixed ? "80px" : 0}
+            >
+              <GraduateStatsCard type="region" graduateStats={graduateStats} />
             </Box>
           )}
 
@@ -193,7 +216,9 @@ const Graduates: NextPage = () => {
           >
             <GraduateSearchBox
               location={location}
-              totalGraduates={10}
+              totalGraduates={
+                graduateStats[activeMenuItem?.value]?.totalGraduates ?? 0
+              }
               setLocation={setLocation}
               onFind={onFind}
             />
@@ -222,13 +247,13 @@ const Graduates: NextPage = () => {
                 </Box>
               ))}
             </Flex>
-            {loading && <Loader loading={loading} />}
-            {!loading && (
+            {graduatePageStatus === "loading" && <Loader />}
+            {graduatePageStatus !== "loading" && (
               <Accordion
                 w="full"
                 allowToggle
                 mt={6}
-                defaultIndex={0}
+                index={items.findIndex((e) => e.uuid === expandedItem?.uuid)}
                 onChange={(index) => {
                   typeof index === "number"
                     ? setExpandedItem(items[index])
@@ -239,7 +264,7 @@ const Graduates: NextPage = () => {
                   return (
                     <AccordionItem
                       key={item.uuid}
-                      id={item.uuid?.toString()}
+                      id={item.uuid}
                       isFocusable={item.uuid === expandedItem?.uuid}
                       border="none"
                       bgColor="white"
@@ -262,7 +287,7 @@ const Graduates: NextPage = () => {
                         {breakpointValue === "md" && (
                           <TotalCapsule
                             locationItem={item}
-                            stats={calcGraduates(item)}
+                            stat={findStat(item.name) ?? {}}
                             isExpanded={item.uuid === expandedItem?.uuid}
                           />
                         )}
@@ -279,16 +304,17 @@ const Graduates: NextPage = () => {
                           >
                             <TotalCapsule
                               locationItem={item}
-                              stats={calcGraduates(item)}
+                              stat={findStat(item.name) ?? {}}
                               isExpanded={item.uuid === expandedItem?.uuid}
                             />
                           </Flex>
                         )}
-                        <Box w={{ base: "100%", md: "40%" }} p={6}>
+                        <Box w={{ base: "100%", md: "80%" }} p={6}>
                           {me?.comesFrom && (
-                            <GraduateStatsByCountries                              
-                              graduateStats={graduateStats}
-                              direction='column'
+                            <GraduateStatsByCountries
+                              overseasCountries={
+                                findStat(item.name)?.overseasCountries
+                              }
                             />
                           )}
                         </Box>
@@ -302,25 +328,35 @@ const Graduates: NextPage = () => {
         </Flex>
       </Container>
 
-      {/* <Box mt={20}>
-        <Footer />
-      </Box> */}
+      {!expandedItem && (
+        <Box w="full" pos="fixed" bottom={0} bg="white" mt={20}>
+          <Footer />
+        </Box>
+      )}
+      {expandedItem && (
+        <Box bg="white" mt={20}>
+          <Footer />
+        </Box>
+      )}
     </Fragment>
   );
 };
 
-const TotalCapsule = ({ locationItem, stats, isExpanded }) => {
+const TotalCapsule = ({ locationItem, stat, isExpanded }) => {
+  let totalGraduates = stat.domestic + stat.overseas;
+  if (isNaN(totalGraduates)) totalGraduates = 0;
+
   return (
     <HStack spacing={0}>
       <Box fontSize="14px" color="GrayText" mr={4} textTransform="capitalize">
         {locationItem.name} Graduates Total -{" "}
         <Text color="greenTone" display="inline">
-          {stats[0]}
+          {totalGraduates}
         </Text>
       </Box>
       <GraduateStatCapsule
-        domestic={stats[1]}
-        overseas={stats[2]}
+        domestic={stat?.domestic ?? 0}
+        overseas={stat?.overseas ?? 0}
         style={{
           bgColor: "#F7F5FF", //light bg purple
           border: isExpanded ? "1px" : "0px",

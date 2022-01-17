@@ -35,10 +35,9 @@ const Videos: NextPage = () => {
 
   const { fixed } = useWindowProp();
 
-  const { village, villageVideos } = useFetchData();
+  const { villagePageStatus, village, villageVideos } = useFetchData();
   const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
 
-  const [loading, setLoading] = useState(true);
   const [pageData, setPageData] = useState(null);
   const [itemOffset, setItemOffset] = useState(1);
   const [pageCount, setPageCount] = useState(1);
@@ -53,10 +52,8 @@ const Videos: NextPage = () => {
 
   useEffect(() => {
     if (villageVideos != null && villageVideos["videos"].length > 0) {
-      setLoading(false);
       setItemOffset(0);
     } else if (villageVideos != null && villageVideos["videos"].length == 0) {
-      setLoading(false);
       setPageData([]);
     }
   }, [villageVideos && villageVideos["videos"]]);
@@ -87,8 +84,8 @@ const Videos: NextPage = () => {
             </Box>
           )}
 
-          {loading && <Loader loading={loading} />}
-          {!loading && (
+          {villagePageStatus === 'loading' && <Loader />}
+          {villagePageStatus !== 'loading' && (
             <Box
               w="full"
               ml={
@@ -138,9 +135,16 @@ const Videos: NextPage = () => {
         </Flex>
       </Container>
 
-      <Box pos="fixed" bottom={0} w="full" bg="white">
-        <Footer />
-      </Box>
+      {villageVideos?.["videos"]?.length <= 6 && (
+        <Box w="full" pos="fixed" bottom={0} bg="white" mt={20}>
+          <Footer />
+        </Box>
+      )}
+      {villageVideos?.["videos"]?.length > 6 && (
+        <Box bg="white" mt={20}>
+          <Footer />
+        </Box>
+      )}
     </Fragment>
   );
 };

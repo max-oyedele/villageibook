@@ -9,10 +9,10 @@ import axiosAuth from "libs/axios-auth";
 
 var FormData = require("form-data");
 
-import { Status, ViewState } from "../types";
+import { Status, ViewPageState } from "../types";
 
 export const fetchUser = createAsyncThunk(
-  "view/fetchUser",
+  "viewPage/fetchUser",
   async (params: any, thunkAPI) => {
     try {
       const endpoint = `/users/${params.uuid}.json`;
@@ -27,7 +27,7 @@ export const fetchUser = createAsyncThunk(
 );
 
 export const fetchPersonality = createAsyncThunk(
-  "view/fetchPersonality",
+  "viewPage/fetchPersonality",
   async (params: any, thunkAPI) => {
     try {
       const endpoint = `/personalities/${params.uuid}.json?fields=name,about,photo.url,photo.name,photo.description,dateOfBirth,dateOfDeath,educationLife,achievements,career,uuid`;
@@ -42,7 +42,7 @@ export const fetchPersonality = createAsyncThunk(
 );
 
 export const fetchInstitution = createAsyncThunk(
-  "view/fetchInstitution",
+  "viewPage/fetchInstitution",
   async (params: any, thunkAPI) => {
     try {
       const endpoint = `/institutions/${params.uuid}.json?fields=name,photo.url,photo.name,photo.description,yearEstablished,address,email,phone,history,uuid`
@@ -57,7 +57,7 @@ export const fetchInstitution = createAsyncThunk(
 );
 
 /********************************** */
-const initialState: ViewState = {
+const initialState: ViewPageState = {
   status: Status.IDLE,
   user: null,
   userError: null,
@@ -69,8 +69,8 @@ const initialState: ViewState = {
   institutionError: null,
 };
 
-export const viewSlice = createSlice({
-  name: "view",
+export const viewPageSlice = createSlice({
+  name: "viewPage",
   initialState: initialState,
   reducers: {
     reset: () => initialState,
@@ -115,4 +115,4 @@ export const viewSlice = createSlice({
   },
 });
 
-export const { reset } = viewSlice.actions;
+export const { reset } = viewPageSlice.actions;

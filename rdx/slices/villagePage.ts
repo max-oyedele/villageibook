@@ -39,21 +39,6 @@ export const fetchVillageUsers = createAsyncThunk(
   }
 );
 
-export const fetchVillageGraduates = createAsyncThunk(
-  "villagePage/fetchVillageGraduates",
-  async (params: any, thunkAPI) => {
-    try {
-      const endpoint = `/villages/${params?.villageUuid}/graduates.json`;
-      const response = await axiosAuth.get("/api/entry", {
-        params: { endpoint },
-      });
-      return response.data.graduates; // data: {graduates: []}
-    } catch (error) {
-      return thunkAPI.rejectWithValue({ error: error.message });
-    }
-  }
-);
-
 export const fetchVillageStories = createAsyncThunk(
   "villagePage/fetchVillageStories",
   async (params: any, thunkAPI) => {
@@ -138,7 +123,6 @@ const initialState: VillagePageState = {
   status: Status.IDLE,
   village: null,
   villageUsers: null,
-  villageGraduates: null,
   villageStories: null,
   villagePersonalities: null,
   villageInstitutions: null,
@@ -175,18 +159,6 @@ export const villagePageSlice = createSlice({
       state.villageUsers = action.payload;
     });
     builder.addCase(fetchVillageUsers.rejected, (state, action) => {
-      state.status = Status.IDLE;
-      state.error = action.payload;
-    });
-    builder.addCase(fetchVillageGraduates.pending, (state) => {
-      state.status = Status.LOADING;
-      state.error = null;
-    });
-    builder.addCase(fetchVillageGraduates.fulfilled, (state, action) => {
-      state.status = Status.IDLE;
-      state.villageGraduates = action.payload;
-    });
-    builder.addCase(fetchVillageGraduates.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });
