@@ -12,12 +12,13 @@ import {
 const InputTextArea: React.FC<{
   id: string;
   label: string;
-  rows: number;
+  rows?: number;
   onChange: React.Dispatch<React.SetStateAction<string | null>>;
   isRequired: boolean;
   isInvalid: boolean;
+  value?: string;
   error: any;
-}> = ({ id, label, rows, onChange, isRequired, isInvalid, error }) => {
+}> = ({ id, label, rows, value, onChange, isRequired, isInvalid, error }) => {
   return (
     <Fragment>
       <FormControl id={id} isRequired={isRequired} isInvalid={isInvalid}>
@@ -26,7 +27,7 @@ const InputTextArea: React.FC<{
             {label}
           </FormLabel>
           <Box w="full">
-            <Textarea rows={rows} onChange={(e) => onChange(e.target.value)} placeholder="Write here..." />
+            <Textarea rows={rows? rows : 4} onChange={(e) => onChange(e.target.value)} value={value} placeholder="Write here..." />
           </Box>
         </HStack>
         <HStack spacing={5}>

@@ -18,6 +18,7 @@ import * as yup from "yup";
 
 import AvatarUpload from 'admin/components/AvatarUpload';
 import InputBox from 'components/widgets/InputBox';
+import InputTextArea from 'components/widgets/InputTextArea';
 
 import useAdminFetchData from 'hooks/use-admin-fetch-data';
 import useAdminActionDispatch from 'hooks/use-admin-action-dispatch';
@@ -133,11 +134,11 @@ const PersonalityForm: React.FC<{
                                 isInvalid={!!errors.name}
                                 error={errors.name}
                             />
-                            <InputBox
+                            <InputTextArea
                                 id="about"
                                 label="About"
                                 value={about ?? ""}
-                                onChange={(e) => setAbout(e.target.value)}
+                                onChange={setAbout}
                                 isRequired={false}
                                 isInvalid={!!errors.about}
                                 error={errors.about}
@@ -185,29 +186,29 @@ const PersonalityForm: React.FC<{
                                 isInvalid={!!errors.dateOfDeath}
                                 error={errors.dateOfDeath}
                             />
-                            <InputBox
+                            <InputTextArea
                                 id="educationLife"
                                 label="Education Life"
                                 value={educationLife ?? ""}
-                                onChange={(e) => setEducationLife(e.target.value)}
+                                onChange={setEducationLife}
                                 isRequired={false}
                                 isInvalid={!!errors.educationLife}
                                 error={errors.educationLife}
                             />
-                            <InputBox
+                            <InputTextArea
                                 id="achievements"
                                 label="achievements"
                                 value={achievements ?? ""}
-                                onChange={(e) => setAchievements(e.target.value)}
+                                onChange={setAchievements}
                                 isRequired={false}
                                 isInvalid={!!errors.achievements}
                                 error={errors.achievements}
                             />
-                            <InputBox
+                            <InputTextArea
                                 id="career"
                                 label="Career"
                                 value={career ?? ""}
-                                onChange={(e) => setCareer(e.target.value)}
+                                onChange={setCareer}
                                 isRequired={false}
                                 isInvalid={!!errors.career}
                                 error={errors.career}

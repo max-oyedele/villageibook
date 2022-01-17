@@ -18,6 +18,7 @@ import * as yup from "yup";
 
 import AvatarUpload from 'admin/components/AvatarUpload';
 import InputBox from 'components/widgets/InputBox';
+import InputTextArea from 'components/widgets/InputTextArea';
 
 import useAdminFetchData from 'hooks/use-admin-fetch-data';
 import useAdminActionDispatch from 'hooks/use-admin-action-dispatch';
@@ -186,11 +187,11 @@ const InstitutionForm: React.FC<{
                                 isInvalid={!!errors.phone}
                                 error={errors.phone}
                             />
-                            <InputBox
+                            <InputTextArea
                                 id="history"
                                 label="History"
                                 value={history ?? ""}
-                                onChange={(e) => setHistory(e.target.value)}
+                                onChange={setHistory}
                                 isRequired={false}
                                 isInvalid={!!errors.history}
                                 error={errors.history}

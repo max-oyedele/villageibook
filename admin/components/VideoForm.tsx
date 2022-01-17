@@ -18,6 +18,7 @@ import * as yup from "yup";
 
 import VideoUpload from 'admin/components/VideoUpload';
 import InputBox from 'components/widgets/InputBox';
+import InputTextArea from 'components/widgets/InputTextArea';
 
 import useAdminFetchData from 'hooks/use-admin-fetch-data';
 import useAdminActionDispatch from 'hooks/use-admin-action-dispatch';
@@ -104,11 +105,11 @@ const VideoForm: React.FC<{
                                 isInvalid={!!errors.name}
                                 error={errors.name}
                             />
-                            <InputBox
+                            <InputTextArea
                                 id="description"
                                 label="Description"
                                 value={description ?? ""}
-                                onChange={(e) => setDescription(e.target.value)}
+                                onChange={setDescription}
                                 isRequired={false}
                                 isInvalid={!!errors.description}
                                 error={errors.description}
