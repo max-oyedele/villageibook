@@ -52,7 +52,7 @@ const DeleteDialog: React.FC<{
                   Cancel
                 </Button>
                 <Button colorScheme='red' onClick={() => onConfirm(uuid)} ml={3}>
-                  Delete
+                  Yes
                 </Button>
               </AlertDialogFooter>
             </AlertDialogContent>

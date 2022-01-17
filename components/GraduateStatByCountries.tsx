@@ -4,78 +4,53 @@ import {
   StackDirection,
   HStack,
   VStack,
+  Center,
   Divider,
   Flex,
   Text,
   Image,
+  Badge,
   useBreakpointValue,
 } from "@chakra-ui/react";
 
 import GraduatePercent from "./GraduatePercent";
-import StatCapsule from "./GraduateStatCapsule";
+
+const countries = [
+  "Bangladesh",
+  "Australia",
+  "Canada",
+  "EU",
+  "United Kingdom",
+  "United States",
+  "other",
+];
 
 const GraduateStatByCountries: React.FC<{
-  graduateStats: any;
-  direction: string;
-}> = ({ graduateStats, direction }) => {
+  overseasCountries: any;
+}> = ({ overseasCountries }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
+
+  const getCount = (country: string) => {
+    if (country === "other")
+      return overseasCountries?.find((e) => e.other)?.other ?? 0;
+    return overseasCountries?.find((e) => e.name === country)?.count ?? 0;
+  };
 
   return (
     <Fragment>
       {breakpointValue === "md" && (
-        <Stack
-          direction={direction as StackDirection}
-          spacing={direction === "row" ? 12 : 6}
-          align="start"
-          bgColor="white"
-          borderRadius="8px"
-          boxShadow="sm"
-          p={4}
-        >
-          {direction === "column" && (
-            <VStack w="full" divider={<Divider />}>
-              {graduateStats.stats?.map((item, index) => (
-                <StatBox
-                  key={item.location}
-                  location={item.location}
-                  domestic={item.domestic}
-                  overseas={item.overseas}
-                />
-              ))}
-            </VStack>
-          )}
-
-          {direction === "row" && (
-            <>
-              <VStack w="full" divider={<Divider />}>
-                {graduateStats.stats.map((item, index) => {
-                  if (index >= 4) return null;
-                  return (
-                    <StatBox
-                      key={item.location}
-                      location={item.location}
-                      domestic={item.domestic}
-                      overseas={item.overseas}
-                    />
-                  );
-                })}
-              </VStack>
-              <VStack w="full" divider={<Divider />}>
-                {graduateStats.stats.map((item, index) => {
-                  if (index < 4) return null;
-                  return (
-                    <StatBox
-                      key={item.location}
-                      location={item.location}
-                      domestic={item.domestic}
-                      overseas={item.overseas}
-                    />
-                  );
-                })}
-              </VStack>
-            </>
-          )}
-        </Stack>
+        <HStack w="full" spacing={12} align="start" p={4}>
+          <VStack w="full" divider={<Divider />}>
+            {countries.slice(0, 4).map((item) => (
+              <StatBox key={item} country={item} count={getCount(item)} />
+            ))}
+          </VStack>
+          <VStack w="full" divider={<Divider />}>
+            {countries.slice(4).map((item) => (
+              <StatBox key={item} country={item} count={getCount(item)} />
+            ))}
+          </VStack>
+        </HStack>
       )}
 
       {breakpointValue === "base" && (
@@ -87,20 +62,9 @@ const GraduateStatByCountries: React.FC<{
           borderColor="gray.200"
           p={4}
         >
-          <GraduatePercent
-            totalCount={graduateStats.totalGraduates}
-            domesticCount={graduateStats.stats.reduce((acc, val) => {
-              return acc + val.domestic;
-            }, 0)}
-          />
           <VStack w="full" divider={<Divider />}>
-            {graduateStats.stats?.map((item, index) => (
-              <StatBox
-                key={item.location}
-                location={item.location}
-                domestic={item.domestic}
-                overseas={item.overseas}
-              />
+            {countries.map((item) => (
+              <StatBox key={item} country={item} count={getCount(item)} />
             ))}
           </VStack>
         </VStack>
@@ -110,43 +74,32 @@ const GraduateStatByCountries: React.FC<{
 };
 
 const StatBox: React.FC<{
-  location: string;
-  domestic: number;
-  overseas: number;
-}> = ({ location, domestic, overseas }) => {
+  country: string;
+  count: number;
+}> = ({ country, count }) => {
   return (
     <Flex w="full" justifyContent="space-between" alignItems="center">
       <Text fontSize="12px" textTransform="capitalize">
-        {location}
+        {country}
       </Text>
-      {/* <Capsule
-        count={count}
-        flag={location === homeCountry.name ? "domestic" : "oversea"}
-      /> */}
-      <StatCapsule domestic={domestic} overseas={overseas} />
+      <Badge
+        // bgColor={
+        //   pathname === `/village/[id]/${item.path}`
+        //     ? item.badgeColor
+        //     : "#FBFBFA"
+        // }
+        // color={pathname === `/village/[id]/${item.path}` ? "white" : ""}
+        fontSize="11px"
+        fontWeight="400"
+        lineHeight={2}
+        px={2}
+        minW={8}
+        h={5}
+        borderRadius="xl"
+      >
+        <Center>{count}</Center>
+      </Badge>
     </Flex>
-  );
-};
-
-const Capsule: React.FC<{ count: number }> = ({
-  count,
-}) => {
-  return (
-    <Fragment>
-      <Flex>
-        <HStack
-          w="50px"
-          borderRadius="25px"
-          border="1px"
-          borderColor="gray.300"
-          px={2}
-        >          
-          <Text fontSize="10px" lineHeight={2}>
-            {count}
-          </Text>
-        </HStack>
-      </Flex>
-    </Fragment>
   );
 };
 

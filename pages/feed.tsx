@@ -32,6 +32,7 @@ import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { Status } from "rdx/types";
 
 const Feed: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -45,51 +46,41 @@ const Feed: NextPage = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  const { me, posts, recentUsers, recentVillages, graduateStats } = useFetchData();
+  const {
+    me,
+    feedPageStatus,
+    postStatus,
+    posts,
+    recentUsers,
+    recentVillages,
+    graduateStats,
+  } = useFetchData();
   const {
     resetPosts,
     fetchMeData,
+    fetchPostsData,
     fetchFeedPageData,
     fetchVillageData,
-    addPost,
-    fetchGraduateStatsData
+    fetchGraduateStatsData,
   } = useActionDispatch();
-  const toast = useToast();
 
-  const [loading, setLoading] = useState(true);
-  
   useEffect(() => {
-    setLoading(true);
-    
     fetchMeData();
     fetchFeedPageData({ page: 1 });
     fetchVillageData({ villageUuid: me?.comesFrom?.uuid });
-    fetchGraduateStatsData({ type: 'region' });
+    fetchGraduateStatsData({ type: "region" });
+    fetchGraduateStatsData({ type: "village" });
   }, []);
 
   useEffect(() => {
-    if (me) {
-      if (addPost != null) {
-        !toast.isActive("postSuccess") &&
-          toast({
-            id: "postSuccess",
-            title: "Successfully Posted.",
-            description: "",
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-          });
-        resetPosts();
-        setLoading(true);
-        fetchFeedPageData({ page: 1 });
-        fetchVillageData({ villageUuid: me.comesFrom?.uuid });
-      }
+    if (postStatus === Status.SUCCESS) {
+      resetPosts();
+      fetchPostsData({ page: 1 });
     }
-  }, [me, addPost]);
+  }, [postStatus]);
 
   useEffect(() => {
     if (posts && posts.length != 0) {
-      setLoading(false);
       const uniqueValuesSet = new Set();
       const tempData = [...data, ...posts["posts"]];
       const filteredArr = tempData.filter((obj) => {
@@ -107,7 +98,7 @@ const Feed: NextPage = () => {
 
   const getMorePost = async () => {
     var p = page + 1;
-    fetchFeedPageData({ page: p });
+    fetchPostsData({ page: p });
     setPage(p);
   };
 
@@ -133,12 +124,7 @@ const Feed: NextPage = () => {
               pos={fixed ? "fixed" : "static"}
               top={fixed ? "80px" : 0}
             >
-              <Box
-                bgColor="white"
-                borderRadius="8px"
-                boxShadow="sm"
-                p={4}
-              >
+              <Box bgColor="white" borderRadius="8px" boxShadow="sm" p={4}>
                 <CaptionCard name="Skillhet" />
                 <Box mt={8}>
                   <LeftVillageDivider
@@ -192,54 +178,34 @@ const Feed: NextPage = () => {
             <Box bg="white" borderRadius="4px" mb={4} p={4}>
               <PostForm />
             </Box>
-            {loading && <Loader loading={loading} />}
-            {!loading && (
-              <>
-                {(breakpointValue === "md" ||
-                  (breakpointValue === "base" && activeTab === "Feed")) && (
-                  <InfiniteScroll
-                    dataLength={data?.length}
-                    next={getMorePost}
-                    hasMore={hasMore}
-                    loader={<Loader loading={true} />}
-                    // endMessage={<h4 className="hh">Nothing more to show</h4>}
-                  >
-                    <style>
-                      {
-                        "\
-                      .hh{\
-                        text-align:center;\
-                        padding-top: 10px;\
-                      }\
-                    "
-                      }
-                    </style>
-                    <VStack spacing={4}>
-                      {data?.map((post) => (
-                        <PostCard key={post.uuid} post={post} />
-                      ))}
-                    </VStack>
-                  </InfiniteScroll>
-                )}
-                {breakpointValue === "base" && activeTab === "Village" && (
-                  <Box>
-                    <LeftVillageItems
-                      village={me?.comesFrom}
-                      badgeShow={false}
-                    />
-                    <Text fontSize="20px" mt={12} mb={6}>
-                      Recently developed
-                    </Text>
-                    <VStack spacing={4}>
-                      {recentVillages.map((village) => (
-                        <RecentVillageCard
-                          key={village.name}
-                          village={village}
-                        />
-                      ))}
-                    </VStack>
+            {(breakpointValue === "md" ||
+              (breakpointValue === "base" && activeTab === "Feed")) && (
+              <InfiniteScroll
+                dataLength={data?.length}
+                next={getMorePost}
+                hasMore={hasMore}
+                loader={<Loader loading={true} />}
+              >
+                <VStack spacing={4}>
+                  {data?.map((post) => (
+                    <PostCard key={post.uuid} post={post} />
+                  ))}
+                </VStack>
+              </InfiniteScroll>
+            )}
+            {breakpointValue === "base" && activeTab === "Village" && (
+              <Box>
+                <LeftVillageItems village={me?.comesFrom} badgeShow={false} />
+                <Text fontSize="20px" mt={12} mb={6}>
+                  Recently developed
+                </Text>
+                <VStack spacing={4}>
+                  {recentVillages.map((village) => (
+                    <RecentVillageCard key={village.name} village={village} />
+                  ))}
+                </VStack>
 
-                    {/* <Link href={`https://www.fundsurfer.com/crowdfund/villageibook?token=975ab55f35fefbd176774045369a62ba`} passHref={true}>
+                {/* <Link href={`https://www.fundsurfer.com/crowdfund/villageibook?token=975ab55f35fefbd176774045369a62ba`} passHref={true}>
                       <Button
                         px={4}
                         h="26px"
@@ -251,30 +217,27 @@ const Feed: NextPage = () => {
                         Sponsor VillageIbook
                       </Button>
                     </Link> */}
-                  </Box>
-                )}
-                {breakpointValue === "base" && activeTab === "Graduates" && (
-                  <Box>
-                    <GraduateStatsCard
-                      type='region'
-                      graduateStats={graduateStats}
-                      direction="column"
-                    />
-                    <Box mt={12}>
-                      <VideoBox videoUrl={""} />
-                    </Box>
+              </Box>
+            )}
+            {breakpointValue === "base" && activeTab === "Graduates" && (
+              <Box>
+                <GraduateStatsCard
+                  type="region"
+                  graduateStats={graduateStats}
+                />
+                <Box mt={12}>
+                  <VideoBox videoUrl={""} />
+                </Box>
 
-                    <Text fontSize="20px" mt={12} mb={6}>
-                      Recently joined
-                    </Text>
-                    <VStack spacing={4}>
-                      {recentUsers.map((user) => (
-                        <RecentUserCard key={user.uuid} user={user} />
-                      ))}
-                    </VStack>
-                  </Box>
-                )}{" "}
-              </>
+                <Text fontSize="20px" mt={12} mb={6}>
+                  Recently joined
+                </Text>
+                <VStack spacing={4}>
+                  {recentUsers.map((user) => (
+                    <RecentUserCard key={user.uuid} user={user} />
+                  ))}
+                </VStack>
+              </Box>
             )}
           </Box>
 
@@ -286,11 +249,7 @@ const Feed: NextPage = () => {
               top={fixed ? "80px" : 0}
               left={fixed ? rightPartRef.current.offsetLeft : 0}
             >
-              <GraduateStatsCard
-                type='region'
-                graduateStats={graduateStats}
-                direction="column"
-              />
+              <GraduateStatsCard type="region" graduateStats={graduateStats} />
 
               <Text fontSize="24px" mt={12} mb={6}>
                 Recently joined

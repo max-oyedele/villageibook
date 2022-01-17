@@ -20,7 +20,6 @@ export enum Status {
   IDLE = "idle",
   LOADING = "loading",
   SUCCESS = "success",
-  PENDING = "pending",
   ERROR = "error",
 }
 
@@ -55,25 +54,9 @@ export interface CommonState {
   degrees: string[];
   error?: SerializedError;
 }
-
-export interface ViewState {
-  status: Status;  
-  user?: User;
-  userError?: SerializedError;
-  story?: Story;
-  storyError?: SerializedError;
-  personality?: Personality;
-  personalityError?: SerializedError;
-  institution?: Institution;
-  institutionError?: SerializedError;
-}
-export interface PostState {
-  status: Status;
-  error: SerializedError;
-  addPost: null;
-}
 export interface FeedPageState {
   status: Status;
+  postStatus: Status;
   posts: Post[];
   recentVillages: Village[];
   recentUsers: User[];
@@ -82,8 +65,7 @@ export interface FeedPageState {
 export interface VillagePageState {
   status: Status;
   village: Village;
-  villageUsers: User[];
-  villageGraduates: User[];
+  villageUsers: User[];  
   villageStories: Story[];
   villagePersonalities: Personality[];
   villageInstitutions: Institution[];
@@ -91,7 +73,6 @@ export interface VillagePageState {
   villagePhotos: Video[];
   error?: SerializedError;
 }
-
 export interface GraduatePageState {
   status: Status;  
   graduateStats: {
@@ -102,6 +83,17 @@ export interface GraduatePageState {
     village?: any;
   };
   error?: SerializedError;
+}
+export interface ViewPageState {
+  status: Status;  
+  user?: User;
+  userError?: SerializedError;
+  story?: Story;
+  storyError?: SerializedError;
+  personality?: Personality;
+  personalityError?: SerializedError;
+  institution?: Institution;
+  institutionError?: SerializedError;
 }
 export interface AdminState {
   status: Status;

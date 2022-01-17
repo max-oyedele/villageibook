@@ -34,14 +34,11 @@ const PersonalityView: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const toast = useToast();
 
-  const { personality, personalityError } = useFetchData();
+  const { viewPageStatus, personality, personalityError } = useFetchData();
   const { fetchPersonalityData } = useActionDispatch();
 
-  const [loading, setLoading] = useState(true);
-  
   useEffect(() => {
     if (id) {
-      setLoading(true);
       fetchPersonalityData({ uuid: id });
     }
   }, [id]);
@@ -58,18 +55,14 @@ const PersonalityView: NextPage = () => {
       });
   }
 
-  if (personality && loading) {
-    setLoading(false);
-  }
-
   return (
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6} mt={8} mb={48}>
         {/* <PageTitle title={user?.firstName + " " + user?.lastName ?? ""} /> */}
 
-        {loading && <Loader loading={loading} />}
-        {!loading && (
+        {viewPageStatus === 'loading' && <Loader />}
+        {viewPageStatus !== 'loading' && (
           <Flex>
             {breakpointValue === "md" && (
               <Flex

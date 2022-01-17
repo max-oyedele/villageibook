@@ -34,14 +34,11 @@ const UserView: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const toast = useToast();
 
-  const { user, userError } = useFetchData();
+  const { viewPageStatus, user, userError } = useFetchData();
   const { fetchUserData } = useActionDispatch();
 
-  const [loading, setLoading] = useState(true);
-  
   useEffect(() => {
     if (id) {
-      setLoading(true);
       fetchUserData({ uuid: id });
     }
   }, [id]);
@@ -58,18 +55,14 @@ const UserView: NextPage = () => {
       });
   }
 
-  if (user && loading) {
-    setLoading(false);
-  }
-
   return (
     <Fragment>
       <Header />
       <Container maxW="container.xl" px={6} mt={8} mb={48}>
         {/* <PageTitle title={user?.firstName + " " + user?.lastName ?? ""} /> */}
 
-        {loading && <Loader loading={loading} />}
-        {!loading && (
+        {viewPageStatus === 'loading' && <Loader />}
+        {viewPageStatus !== 'loading' && (
           <Flex>
             {breakpointValue === "md" && (
               <Flex

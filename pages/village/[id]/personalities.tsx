@@ -34,10 +34,9 @@ const Personalities: NextPage = () => {
 
   const { fixed } = useWindowProp();
 
-  const { village, villagePersonalities } = useFetchData();
+  const { villagePageStatus, village, villagePersonalities } = useFetchData();
   const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
 
-  const [loading, setLoading] = useState(true);  
   const [pageData, setPageData] = useState(null);
   const [itemOffset, setItemOffset] = useState(1);
   const [pageCount, setPageCount] = useState(1);
@@ -55,13 +54,11 @@ const Personalities: NextPage = () => {
       villagePersonalities != null &&
       villagePersonalities["personalities"].length > 0
     ) {
-      setLoading(false);
       setItemOffset(0);
     } else if (
       villagePersonalities != null &&
       villagePersonalities["personalities"].length == 0
     ) {
-      setLoading(false);
       setPageData([]);
     }
   }, [villagePersonalities && villagePersonalities["personalities"]]);
@@ -99,8 +96,8 @@ const Personalities: NextPage = () => {
               <LeftVillageCard village={village} fixed={fixed} />
             </Box>
           )}
-          {loading && <Loader loading={loading} />}
-          {!loading && (
+          {villagePageStatus === 'loading' && <Loader />}
+          {villagePageStatus !== 'loading' && (
             <Box
               w="full"
               ml={
@@ -135,9 +132,16 @@ const Personalities: NextPage = () => {
         </Flex>
       </Container>
 
-      <Box pos="fixed" bottom={0} w="full" bg="white">
-        <Footer />
-      </Box>
+      {villagePersonalities?.["personalities"]?.length <= 2 && (
+        <Box w="full" pos="fixed" bottom={0} bg="white" mt={20}>
+          <Footer />
+        </Box>
+      )}
+      {villagePersonalities?.["personalities"]?.length > 2 && (
+        <Box bg="white" mt={20}>
+          <Footer />
+        </Box>
+      )}
     </Fragment>
   );
 };

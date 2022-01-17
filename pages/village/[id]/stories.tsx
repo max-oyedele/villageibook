@@ -30,14 +30,13 @@ const Story: NextPage = () => {
 
   const router = useRouter();
   const { query } = router;
-  const vid = query.id; //village name currently, but replace to uuid
+  const vid = query.id;
 
   const { fixed } = useWindowProp();
 
-  const { village, villageStories } = useFetchData();
+  const { villagePageStatus, village, villageStories } = useFetchData();
   const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
 
-  const [loading, setLoading] = useState(true);
   const [pageData, setPageData] = useState(null);
   const [itemOffset, setItemOffset] = useState(1);
   const [pageCount, setPageCount] = useState(1);
@@ -52,13 +51,11 @@ const Story: NextPage = () => {
 
   useEffect(() => {
     if (villageStories != null && villageStories["stories"].length > 0) {
-      setLoading(false);
       setItemOffset(0);
     } else if (
       villageStories != null &&
       villageStories["stories"].length == 0
     ) {
-      setLoading(false);
       setPageData([]);
     }
   }, [villageStories && villageStories["stories"]]);
@@ -88,8 +85,8 @@ const Story: NextPage = () => {
               <LeftVillageCard village={village} fixed={fixed} />
             </Box>
           )}
-          {loading && <Loader loading={loading} />}
-          {!loading && (
+          {villagePageStatus === 'loading' && <Loader />}
+          {villagePageStatus !== 'loading' && (
             <Box
               w="full"
               ml={
@@ -132,9 +129,16 @@ const Story: NextPage = () => {
         </Flex>
       </Container>
 
-      <Box pos="fixed" bottom={0} w="full" bg="white">
-        <Footer />
-      </Box>
+      {villageStories?.["stories"]?.length <= 2 && (
+        <Box w="full" pos="fixed" bottom={0} bg="white" mt={20}>
+          <Footer />
+        </Box>
+      )}
+      {villageStories?.["stories"]?.length > 2 && (
+        <Box bg="white" mt={20}>
+          <Footer />
+        </Box>
+      )}
     </Fragment>
   );
 };

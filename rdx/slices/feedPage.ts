@@ -5,7 +5,9 @@ import {
   SerializedError,
 } from "@reduxjs/toolkit";
 
+import axios from "axios";
 import axiosAuth from "libs/axios-auth";
+import { getUserToken } from "helpers/user-token";
 
 import { Status, FeedPageState } from "../types";
 
@@ -52,9 +54,47 @@ export const fetchRecentUsers = createAsyncThunk(
   }
 );
 
+export const submitPost = createAsyncThunk(
+  "feedPage/submitPost",
+  async (
+    params: {
+      content?: string;
+      picture?: any;
+      video?: any;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const access_token = getUserToken();
+
+      const bodyFormData = new FormData();
+      bodyFormData.append("content", params.content);
+      bodyFormData.append("picture", params.picture);
+      bodyFormData.append("video", params.video);
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/users/me/post`,
+        bodyFormData,
+        {
+          headers: {
+            authorization: "Bearer " + access_token,
+            "content-type": `multipart/form-data`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      // return thunkAPI.rejectWithValue({ error: error.message });
+      return thunkAPI.rejectWithValue(error.response.statusText);
+    }
+  }
+);
+
 /************************************* */
 const initialState: FeedPageState = {
   status: Status.IDLE,
+  postStatus: Status.IDLE,
   posts: [],
   recentVillages: [],
   recentUsers: [],
@@ -66,7 +106,8 @@ export const feedPageSlice = createSlice({
   initialState: initialState,
   reducers: {
     reset: () => initialState,
-    init: (state) => {
+    resetPosts: (state) => {
+      state.postStatus =  Status.IDLE;
       state.posts = [];
     },
   },
@@ -107,7 +148,18 @@ export const feedPageSlice = createSlice({
       state.status = Status.IDLE;
       state.error = action.payload;
     });
+    builder.addCase(submitPost.pending, (state, action) => {
+      state.postStatus = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(submitPost.fulfilled, (state, action) => {
+      state.postStatus = Status.SUCCESS;      
+    });
+    builder.addCase(submitPost.rejected, (state, action) => {
+      state.postStatus = Status.IDLE;
+      state.error = action.payload;
+    });
   },
 });
 
-export const { reset, init } = feedPageSlice.actions;
+export const { reset, resetPosts } = feedPageSlice.actions;

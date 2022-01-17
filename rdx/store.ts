@@ -5,8 +5,7 @@ import logger from "redux-logger";
 import { authSlice } from "./slices/auth";
 import { accountSlice } from "./slices/account";
 import { commonSlice } from "./slices/common";
-import { postSlice } from "./slices/post";
-import { viewSlice } from "./slices/view";
+import { viewPageSlice } from "./slices/viewPage";
 import { feedPageSlice } from "./slices/feedPage";
 import { villagePageSlice } from "./slices/villagePage";
 import { graduatePageSlice } from "./slices/graduatePage";
@@ -16,8 +15,7 @@ const combinedReducers = combineReducers({
   authReducer: authSlice.reducer,
   accountReducer: accountSlice.reducer,
   commonReducer: commonSlice.reducer,
-  postReducer: postSlice.reducer,
-  viewReducer: viewSlice.reducer,
+  viewPageReducer: viewPageSlice.reducer,
   feedPageReducer: feedPageSlice.reducer,
   villagePageReducer: villagePageSlice.reducer,
   graduatePageReducer: graduatePageSlice.reducer,  

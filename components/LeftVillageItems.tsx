@@ -22,7 +22,6 @@ const villageItems = [
     name: "My Pages",
     value: "users",
     img: "/icons/village-mypage.svg",
-    path: "users",
     activeBgColor: "#EFFBFA",
     badgeColor: "#36CFD1",
   },
@@ -31,16 +30,14 @@ const villageItems = [
     name: "Graduates",
     value: "graduates",
     img: "/icons/village-graduate.svg",
-    path: "graduates",
     activeBgColor: "#AD5BFF22",
     badgeColor: "#BF5AFF66",
   },
   {
     id: 2,
     name: "Society",
-    value: "society",
+    value: "stories",
     img: "/icons/village-story.svg",
-    path: "stories",
     activeBgColor: "#F4F4FB",
     badgeColor: "#BBBBD7",
   },
@@ -49,7 +46,6 @@ const villageItems = [
     name: "Personalities",
     value: "personalities",
     img: "/icons/village-personality.svg",
-    path: "personalities",
     activeBgColor: "#FFF9E8",
     badgeColor: "#FFB425",
   },
@@ -58,7 +54,6 @@ const villageItems = [
     name: "Institutions",
     value: "institutions",
     img: "/icons/village-institution.svg",
-    path: "institutions",
     activeBgColor: "#5B8FFF22",
     badgeColor: "#5A8FFF",
   },
@@ -67,40 +62,54 @@ const villageItems = [
     name: "Videos",
     value: "videos",
     img: "/icons/village-video.svg",
-    path: "videos",
     activeBgColor: "#FF5B5B22",
     badgeColor: "#FF645A",
   },
 ];
 
-const LeftVillageItems: React.FC<{ village: Village, badgeShow?: boolean }> = ({ village, badgeShow }) => {
+const LeftVillageItems: React.FC<{ village: Village; badgeShow?: boolean }> = ({
+  village,
+  badgeShow,
+}) => {
   const router = useRouter();
   const { pathname } = router;
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
-  const { villageUsers, villageGraduates, villageStories, villagePersonalities, villageInstitutions, villageVideos, villagePhotos } = useFetchData();
+  const {
+    villageUsers,
+    villageStories,
+    villagePersonalities,
+    villageInstitutions,
+    villageVideos,
+    villagePhotos,
+    graduateStats,
+  } = useFetchData();
 
   const getItemDataLength = (item) => {
     switch (item) {
       case "users":
-        return villageUsers && villageUsers['users'].length;
-      // case "graduates":
-      //   return villageGraduates.length;
-      case "society":
-        return villageStories && villageStories['stories'].length;
+        return villageUsers && villageUsers["users"].length;
+      case "graduates":
+        return graduateStats["village"]?.totalGraduates ?? 0;
+      case "stories":
+        return villageStories && villageStories["stories"].length;
       case "personalities":
-        return villagePersonalities && villagePersonalities['personalities'].length;
+        return (
+          villagePersonalities && villagePersonalities["personalities"].length
+        );
       case "institutions":
-        return villageInstitutions && villageInstitutions['institutions'].length;
+        return (
+          villageInstitutions && villageInstitutions["institutions"].length
+        );
       case "videos":
-        return villageVideos && villageVideos['videos'].length;
+        return villageVideos && villageVideos["videos"].length;
       case "photos":
-        return villagePhotos && villagePhotos['photos'].length;
+        return villagePhotos && villagePhotos["photos"].length;
       default:
-        return 0
+        return 0;
     }
-  }
+  };
 
   return (
     <VStack
@@ -108,7 +117,10 @@ const LeftVillageItems: React.FC<{ village: Village, badgeShow?: boolean }> = ({
       divider={breakpointValue === "base" ? <Divider /> : null}
     >
       {villageItems.map((item) => {
-        const path = item.value != 'graduates' ? `/village/${village?.uuid}/${item.path}` : `/${item.path}`
+        const path =
+          item.value != "graduates"
+            ? `/village/${village?.uuid}/${item.value}`
+            : `/graduates/${village?.uuid}`;
         return (
           <Link key={item.name} href={path} passHref={true}>
             <HStack
@@ -116,7 +128,7 @@ const LeftVillageItems: React.FC<{ village: Village, badgeShow?: boolean }> = ({
               h={{ base: "60px", md: "40px" }}
               spacing={4}
               bgColor={
-                pathname === `/village/[id]/${item.path}`
+                pathname === `/village/[id]/${item.value}`
                   ? item.activeBgColor
                   : "transparent"
               }
@@ -136,15 +148,16 @@ const LeftVillageItems: React.FC<{ village: Village, badgeShow?: boolean }> = ({
                 {item.name}
               </Text>
 
-              {
-                badgeShow &&
+              {badgeShow && (
                 <Badge
                   bgColor={
-                    pathname === `/village/[id]/${item.path}`
+                    pathname === `/village/[id]/${item.value}`
                       ? item.badgeColor
                       : "#FBFBFA"
                   }
-                  color={pathname === `/village/[id]/${item.path}` ? "white" : ""}
+                  color={
+                    pathname === `/village/[id]/${item.value}` ? "white" : ""
+                  }
                   fontSize="11px"
                   fontWeight="400"
                   lineHeight={2}
@@ -155,10 +168,10 @@ const LeftVillageItems: React.FC<{ village: Village, badgeShow?: boolean }> = ({
                 >
                   <Center>{getItemDataLength(item.value)}</Center>
                 </Badge>
-              }
+              )}
             </HStack>
           </Link>
-        )
+        );
       })}
     </VStack>
   );

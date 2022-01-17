@@ -87,7 +87,7 @@ const SearchBar = (props) => {
                 router.push(`/village/${selectedVillage.uuid}`);
               }}
             >
-              Find Village
+              Go Village
             </Button>
           </Box>
         )}
@@ -106,7 +106,7 @@ const SearchBar = (props) => {
             router.push(`/village/${selectedVillage.uuid}`);
           }}
         >
-          Find Village
+          Go Village
         </Button>
       )}
     </Fragment>

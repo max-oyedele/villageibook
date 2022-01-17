@@ -26,22 +26,20 @@ const useFetchData = () => {
     degrees
   } = useSelector((state: OurStore) => state.commonReducer);
 
-  const { posts, recentVillages, recentUsers } = useSelector((state: OurStore) => state.feedPageReducer);
-  const { status: postStatus, error: postError } = useSelector((state: OurStore) => state.postReducer);
-  const { user, userError, personality, personalityError, institution, institutionError } = useSelector((state: OurStore) => state.viewReducer);
-
+  const { status: feedPageStatus, postStatus, posts, recentVillages, recentUsers } = useSelector((state: OurStore) => state.feedPageReducer);
   const {
+    status: villagePageStatus,
     village,
-    villageUsers,
-    villageGraduates,
+    villageUsers,    
     villageStories,
     villagePersonalities,
     villageInstitutions,
     villageVideos,
     villagePhotos,
   } = useSelector((state: OurStore) => state.villagePageReducer);
+  const { status: graduatePageStatus, graduateStats } = useSelector((state: OurStore) => state.graduatePageReducer)
 
-  const { graduateStats } = useSelector((state: OurStore) => state.graduatePageReducer)
+  const { status: viewPageStatus, user, userError, story, storyError, personality, personalityError, institution, institutionError } = useSelector((state: OurStore) => state.viewPageReducer);
 
   return {
     jwt,
@@ -52,8 +50,6 @@ const useFetchData = () => {
     step,
     accountStatus,
     accountError,
-    postStatus,
-    postError,
     countries,
     regions,
     districts,
@@ -62,24 +58,30 @@ const useFetchData = () => {
     universities,
     professions,
     degrees,
+    feedPageStatus,
+    postStatus,
     posts,
     recentVillages,
     recentUsers,
-    graduateStats,
+    viewPageStatus,
     user,
     userError,
+    story,
+    storyError,
     personality,
     personalityError,
     institution,
     institutionError,
+    villagePageStatus,
     village,
-    villageUsers,
-    villageGraduates,
+    villageUsers,    
     villageStories,
     villagePersonalities,
     villageInstitutions,
     villageVideos,    
-    villagePhotos    
+    villagePhotos,
+    graduatePageStatus,
+    graduateStats,
   };
 };
 

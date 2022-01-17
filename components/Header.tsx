@@ -20,7 +20,7 @@ import {
 import Logo from "components/Logo";
 import SocialLinkBar from "components/SocialLinkBar";
 
-import { removeUserToken} from "helpers/user-token";
+import { removeUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
 
@@ -46,15 +46,12 @@ const tabs = [
 
 const Header = () => {
   const router = useRouter();
-  const {
-    pathname,
-    query: { id },
-  } = router;
+  const { pathname } = router;
 
   const { authStatus, me } = useFetchData();
   const { authReset, accountReset } = useActionDispatch();
 
-  const vid = id ?? me?.comesFrom?.uuid;
+  const vid = me?.comesFrom?.uuid;
 
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const [showMenuMobile, setShowMenuMobile] = useState(false);
@@ -63,12 +60,12 @@ const Header = () => {
     pathname === "/feed"
       ? tabs[0]
       : pathname.includes("village")
-        ? tabs[1]
-        : pathname.includes("graduates")
-          ? tabs[2]
-          : null
+      ? tabs[1]
+      : pathname.includes("graduates")
+      ? tabs[2]
+      : null
   );
-  
+
   const logout = () => {
     authReset();
     accountReset();
@@ -89,7 +86,9 @@ const Header = () => {
                   <Link
                     key={tab.name}
                     href={
-                      tab.path === "/village" || tab.path === "/graduates" ? `${tab.path}/${vid}` : tab.path
+                      tab.path === "/village" || tab.path === "/graduates"
+                        ? `${tab.path}/${vid}`
+                        : tab.path
                     }
                     passHref={true}
                   >
@@ -112,12 +111,8 @@ const Header = () => {
                 ))}
               </HStack>
               <HStack spacing={6} ml={1}>
-                <HStack
-                  h="full"
-                  spacing={4}
-                  fontSize="12px"
-                >
-                  {me?.roles?.includes('ADMIN') && (
+                <HStack h="full" spacing={4} fontSize="12px">
+                  {me?.roles?.includes("ADMIN") && (
                     <Link href="/admin/posts" passHref={true}>
                       <Text cursor="pointer">ADMIN</Text>
                     </Link>
