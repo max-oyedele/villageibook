@@ -46,7 +46,6 @@ const ReactPayPal = (props) => {
   }
 
   const onError = (err) => {
-    console.log('paypal payment error: ', err)
     setError('Something went wrong with your payment')
   }
 

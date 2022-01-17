@@ -337,7 +337,6 @@ export const submitEditPersonality = createAsyncThunk(
         }
       );
 
-      console.log("result = ", response.data)
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.statusText);

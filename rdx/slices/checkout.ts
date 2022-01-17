@@ -11,10 +11,8 @@ export const checkoutSession = createAsyncThunk(
   "checkout/checkoutSession",
   async (params: any, thunkAPI) => {
     try {
-      console.log("params = ", params)
       const response = await axios.post("/api/checkout_sessions", params);
 
-      console.log("response = ", response.data)
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
