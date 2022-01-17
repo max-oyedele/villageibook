@@ -46,6 +46,7 @@ const PersonalityForm: React.FC<{
         const [educationLife, setEducationLife] = useState(personality?.educationLife);
         const [achievements, setAchievements] = useState(personality?.achievements);
         const [career, setCareer] = useState(personality?.career);
+        const [uuid, setUuid] = useState(personality?.uuid);
 
         const { error } = useAdminFetchData();
         const { submitPersonalityData, submitPersonalityEditData } = useAdminActionDispatch();
@@ -85,7 +86,8 @@ const PersonalityForm: React.FC<{
                     dateOfDeath: dateOfDeath,
                     educationLife: educationLife,
                     achievements: achievements,
-                    career: career
+                    career: career,
+                    uuid: uuid,
                 }}
                 enableReinitialize={true}
                 validationSchema={validationSchema}
@@ -100,6 +102,7 @@ const PersonalityForm: React.FC<{
                         educationLife,
                         achievements,
                         career,
+                        uuid
                     };
 
                     actions.setSubmitting(true);

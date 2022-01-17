@@ -102,15 +102,21 @@ const Checkout: NextPage = () => {
 
             <ReactPayPal amount={29.99}/>
             
-            <button
-              className={`h-11 hover:bg-blue-500 rounded px-5 py-2 text-md text-white font-semibold mt-10`}
+            <Button
               onClick={() => {
                 paymentWithStripe(29.99)
               }}
-              style={{ backgroundColor: '#0070ba' }}
+              style={{
+                width: "100%",
+                backgroundColor: '#0070ba',
+                padding: "10px",
+                borderRadius: "5px",
+                color: "white",
+                fontWeight: "bold"
+              }}
             >
               Pay With Stripe
-            </button>
+            </Button>
             {/* <RadioGroup defaultValue="1" my={6}
               value={paypal}
               onChange={ raidoChange }
