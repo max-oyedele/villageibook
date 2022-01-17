@@ -176,6 +176,10 @@ const useActionDispatch = () => {
     await dispatch(submitStepTwo(params));
   };
 
+  const submitPremiumUser = async (params) => {
+    await dispatch(submitPremiumUser(params));
+  };
+
   const resetPost = async () => {
     await dispatch(postResetFunc());
   };
@@ -192,6 +196,7 @@ const useActionDispatch = () => {
     submitPostData,
     submitStepOneData,
     submitStepTwoData,
+    submitPremiumUser,
     resetPost,
     resetPosts,
     fetchCountriesData,

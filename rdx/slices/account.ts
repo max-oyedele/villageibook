@@ -128,6 +128,40 @@ export const submitStepTwo = createAsyncThunk(
   }
 );
 
+export const submitPremiumUser = createAsyncThunk(
+  "account/submitPremiumUser",
+  async (
+    params: {
+      uuid: string;
+      roles: string;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const access_token = getUserToken();
+
+      const bodyFormData = new FormData();
+      bodyFormData.append("roles", params.roles);
+
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/admin/users/${params.uuid}/roles`,
+        bodyFormData,
+        {
+          headers: {
+            authorization: "Bearer " + access_token,
+            "content-type": `multipart/form-data`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      // return thunkAPI.rejectWithValue({ error: error.message });
+      return thunkAPI.rejectWithValue(error.response.statusText);
+    }
+  }
+);
+
 /********************************** */
 const initialState: AccountState = {
   status: Status.IDLE,
@@ -180,6 +214,18 @@ export const accountSlice = createSlice({
       state.status = Status.IDLE;
     });
     builder.addCase(submitStepTwo.rejected, (state, action) => {
+      state.status = Status.IDLE;
+      state.error = action.payload;
+    });
+    builder.addCase(submitPremiumUser.pending, (state, action) => {
+      state.status = Status.LOADING;
+      state.error = null;
+    });
+    builder.addCase(submitPremiumUser.fulfilled, (state, action) => {
+      state.me = action.payload;
+      state.status = Status.IDLE;
+    });
+    builder.addCase(submitPremiumUser.rejected, (state, action) => {
       state.status = Status.IDLE;
       state.error = action.payload;
     });

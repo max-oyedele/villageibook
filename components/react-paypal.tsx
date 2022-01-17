@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react'
 import { PayPalButtons } from '@paypal/react-paypal-js'
-
-import { fetchPostJSON } from '../pages/libs/api-helpers'
+import { useRouter } from "next/router";
+import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 
 const ReactPayPal = (props) => {
   const { amount } = props
   const [succeeded, setSucceeded] = useState(false)
   const [error, setError] = useState('')
+  const router = useRouter();
+  const { submitPremiumUser } = useActionDispatch();
+  const { me } = useFetchData();
 
   const createOrder = (data, actions) => {
     if (data) {
@@ -37,7 +41,7 @@ const ReactPayPal = (props) => {
       if (payer) {
       }
       setSucceeded(true)
-      // updateOrderDB(data)
+      updateOrderDB(data)
     })
   }
 
@@ -58,44 +62,19 @@ const ReactPayPal = (props) => {
         paypalPayerId: data.payerID,
       }
 
-      fetchPostJSON('/api/createOrder', {
-        order: orderWithPayment,
-      })
-        .then(async (res) => {
-          // console.log('create order res', res)
-          if (res.error) {
-            // console.log('update order error', res.error)
-            setError(res.error)
-          } else if (newOrderDetails) {
-            let orderDetailsWithOrderId = []
-            const orderDetails = JSON.parse(newOrderDetails)
-            orderDetails.forEach((e) => orderDetailsWithOrderId.push({ ...e, orderId: res.id }))
-            await fetchPostJSON('/api/createOrderDetails', {
-              orderDetails: orderDetailsWithOrderId,
-            })
-
-            localStorage.removeItem('order')
-            localStorage.removeItem('orderDetails')
-          }
-        })
-        .catch((err) => {
-          console.error(err)
-        })
+      const params = {
+        uuid: me.uuid,
+        roles: ["PREMIUM"]
+      }
+      
+      submitPremiumUser(params)
+      localStorage.removeItem('order')
+      localStorage.removeItem('orderDetails')
     }
   }
 
-  const redirects = async () => {
-    return [
-      {
-        source: '/checkout',
-        destination: '/accountedit', // Matched parameters can be used in the destination
-        permanent: true,
-      },
-    ]
-  }
-
   useEffect(() => {
-    redirects();
+    router.push("/accountedit");
   }, [succeeded])
 
   return (
