@@ -322,6 +322,7 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
         actions.setSubmitting(true);
         setLoading(true);
         await submitStepOneData(params);
+        await fetchMeData();
         actions.setSubmitting(false);
       }}
     >
@@ -550,6 +551,7 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
   const [isUploading, setIsUploading] = useState(false);
   const toast = useToast();
   const [loading, setLoading] = useState(false);
+  const { fetchMeData } = useActionDispatch();
 
   const uploadToClient = (event, index) => {
     if (event.target.files && event.target.files[0]) {
@@ -606,6 +608,7 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
         actions.setSubmitting(true);
         setLoading(true);
         await submitStepTwoData(params);
+        await fetchMeData();
         actions.setSubmitting(false);
       }}
     >

@@ -196,7 +196,7 @@ export const accountSlice = createSlice({
     });
     builder.addCase(submitStepOne.fulfilled, (state, action) => {
       state.status = Status.IDLE;
-      state.me = action.payload;
+      // state.me = action.payload;
       state.step = Step.STEP2;
     });
     builder.addCase(submitStepOne.rejected, (state, action) => {
@@ -209,7 +209,7 @@ export const accountSlice = createSlice({
       state.error = null;
     });
     builder.addCase(submitStepTwo.fulfilled, (state, action) => {
-      state.me = action.payload;
+      // state.me = action.payload;
       state.step = Step.COMPLETED;
       state.status = Status.IDLE;
     });
