@@ -193,6 +193,8 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
   const [selectedLivingCountry, setSelectedLivingCountry] = useState<Country>(null);
   const [selectedLivingVillage, setSelectedLivingVillage] = useState<Village>(null);
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   useEffect(() => {
     fetchCommonData();
@@ -206,6 +208,18 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
     else {
       setFirstName(me.firstName);
       setLastName(me.lastName);
+      if (loading) {
+        setLoading(false);
+        !toast.isActive("updateMe") &&
+          toast({
+            id: "updateMe",
+            title: "Successfully Updated.",
+            description: "Updated",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+      }
     }
   }, [me]);
 
@@ -306,6 +320,7 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
         };
 
         actions.setSubmitting(true);
+        setLoading(true);
         await submitStepOneData(params);
         actions.setSubmitting(false);
       }}
@@ -533,6 +548,8 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
   const [refresh, setRefresh] = useState(false);
 
   const [isUploading, setIsUploading] = useState(false);
+  const toast = useToast();
+  const [loading, setLoading] = useState(false);
 
   const uploadToClient = (event, index) => {
     if (event.target.files && event.target.files[0]) {
@@ -557,6 +574,20 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
     about: yup.string().nullable().required("About me is required."),
   });
 
+  useEffect(() => {
+    if (loading) {
+      setLoading(false);
+      !toast.isActive("updateMe") &&
+        toast({
+          id: "updateMe",
+          title: "Successfully Updated.",
+          description: "Updated",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+    }
+  }, [me])
   return (
     <Formik
       initialValues={{
@@ -573,6 +604,7 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
           photo3,
         };
         actions.setSubmitting(true);
+        setLoading(true);
         await submitStepTwoData(params);
         actions.setSubmitting(false);
       }}
