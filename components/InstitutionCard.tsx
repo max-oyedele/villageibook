@@ -71,16 +71,18 @@ const InstitutionCard: React.FC<{ institution: Institution }> = ({
               {institution.phone}
             </Text>
             {breakpointValue === "base" && (
-              <Box mt={4}>
-                <Button
-                  w={{ base: "full", sm: "70%" }}
-                  h="26px"
-                  fontSize="12px"
-                  fontWeight="400"
-                >
-                  More
-                </Button>
-              </Box>
+              <Link href={`/institutionview/${institution?.uuid}`} passHref={true}>
+                <Box mt={4}>
+                  <Button
+                    w={{ base: "full", sm: "70%" }}
+                    h="26px"
+                    fontSize="12px"
+                    fontWeight="400"
+                  >
+                    More
+                  </Button>
+                </Box>
+              </Link>
             )}
           </Flex>
         </GridItem>
