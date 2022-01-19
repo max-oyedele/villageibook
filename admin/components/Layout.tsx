@@ -18,7 +18,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FaHome, FaThList, FaRegMoneyBillAlt, FaUserFriends } from "react-icons/fa";
+import { FaHome, FaThList, FaRegMoneyBillAlt, FaUserFriends, FaUserGraduate } from "react-icons/fa";
 
 import Logo from "components/Logo";
 
@@ -52,6 +52,11 @@ var menus = [
     path: "/admin/users",
     name: "Users",
     icon: FaUserFriends,
+  },
+  {
+    path: "/admin/premium-users",
+    name: "Premium Users",
+    icon: FaUserGraduate,
   },
 ];
 

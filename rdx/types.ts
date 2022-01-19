@@ -11,7 +11,8 @@ import {
   Profession,
   Story,
   Personality,
-  Institution
+  Institution,
+  Session
 } from "types/schema";
 import { Post, Video } from "types/data";
 import { SVGFactory } from "react";
@@ -33,6 +34,12 @@ export interface AuthState {
   jwt: any;
   status: Status;
   me?: User;
+  error?: SerializedError;
+}
+
+export interface CheckoutSessionState {
+  status: Status;
+  session: Session;
   error?: SerializedError;
 }
 

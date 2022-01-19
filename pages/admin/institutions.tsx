@@ -270,7 +270,10 @@ const Institutions: NextPage = () => {
       <Layout>
         <VillageSearchBox setVillage={setVillage} />
         <Flex justifyContent={"flex-end"}>
-          <Button onClick={() => modal.onOpen()} isDisabled={!village}>Add Institution</Button>
+          <Button onClick={() => {
+            modal.onOpen();
+            setIsEdit(false);
+            }} isDisabled={!village}>Add Institution</Button>
         </Flex>
 
         <Table {...getTableProps()}>

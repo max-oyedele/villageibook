@@ -13,12 +13,22 @@ import { wrapper, store } from "rdx/store";
 import { ChakraProvider as ThemeProvider } from "@chakra-ui/react";
 import theme from "styles/theme";
 
+import { PayPalScriptProvider } from '@paypal/react-paypal-js'
+
+const initialOptions = {
+  "client-id": "AXBwtg1zll4vpZ8LXQzs4KEcaEiFBgzJ73QrIUwnsaHbPVDFTBVDVXj49NgyHE5Em5UA0X2dtmcWkuwm",
+  currency: "USD",
+  intent: "capture"
+};
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
-      </ThemeProvider>
+      <PayPalScriptProvider options={initialOptions}>
+        <ThemeProvider>
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </PayPalScriptProvider>
     </Provider>
   );
 }

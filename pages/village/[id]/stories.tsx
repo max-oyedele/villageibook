@@ -107,6 +107,7 @@ const Story: NextPage = () => {
                     }
                     columnGap={6}
                     rowGap={12}
+                    sx={{justifyContent: "flex-start"}}
                   >
                     {pageData.map((story) => (
                       <StoryCard key={story.uuid} story={story} />
@@ -122,6 +123,8 @@ const Story: NextPage = () => {
                   <Paginate
                     handlePageClick={handlePageClicked}
                     pageCount={pageCount}
+                    itemOffset={itemOffset}
+                    isLast={villageStories["stories"].length - itemsPerPage > itemOffset}
                   />
                 )}
             </Box>

@@ -18,6 +18,7 @@ import * as yup from "yup";
 
 import AvatarUpload from 'admin/components/AvatarUpload';
 import InputBox from 'components/widgets/InputBox';
+import InputTextArea from 'components/widgets/InputTextArea';
 
 import useAdminFetchData from 'hooks/use-admin-fetch-data';
 import useAdminActionDispatch from 'hooks/use-admin-action-dispatch';
@@ -110,11 +111,11 @@ const StoryForm: React.FC<{
                                 isInvalid={!!errors.title}
                                 error={errors.title}
                             />
-                            <InputBox
+                            <InputTextArea
                                 id="content"
                                 label="Content"
                                 value={content ?? ""}
-                                onChange={(e) => setContent(e.target.value)}
+                                onChange={setContent}
                                 isRequired={true}
                                 isInvalid={!!errors.content}
                                 error={errors.content}

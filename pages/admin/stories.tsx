@@ -246,7 +246,10 @@ const Stories: NextPage = () => {
 
         <VillageSearchBox setVillage={setVillage} />
         <Flex justifyContent={"flex-end"}>
-          <Button onClick={() => modal.onOpen()} isDisabled={!village}>Add Story</Button>
+          <Button onClick={() => {
+            modal.onOpen();
+            setIsEdit(false);
+            }} isDisabled={!village}>Add Story</Button>
         </Flex>
 
         <Table {...getTableProps()}>

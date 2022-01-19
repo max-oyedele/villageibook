@@ -303,6 +303,7 @@ export const submitEditPersonality = createAsyncThunk(
       achievements?: string;
       career?: string;
       villageUuid: string;
+      uuid: string;
     },
     thunkAPI
   ) => {
@@ -314,7 +315,7 @@ export const submitEditPersonality = createAsyncThunk(
       bodyFormData.append("about", params.about);
       // bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
       // bodyFormData.append("hasPhotoName", params.photo?.name);
-      bodyFormData.append("hasPhotoDescription", params.photo?.description);
+      // bodyFormData.append("hasPhotoDescription", params.photo?.description);
       // bodyFormData.append("hasVideoUrl", params.video.avatar);
 
       params.dateOfBirth &&
@@ -326,7 +327,7 @@ export const submitEditPersonality = createAsyncThunk(
       bodyFormData.append("career", params.career);
 
       const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/personalities/${params.villageUuid}/`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/personalities/${params.uuid}`,
         bodyFormData,
         {
           headers: {

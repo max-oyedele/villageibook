@@ -23,7 +23,6 @@ import {
 } from "@chakra-ui/react";
 
 import { useTable } from "react-table";
-
 import Layout from "admin/components/Layout";
 import ImageBox from "components/widgets/ImageBox";
 import UserForm from "admin/components/UserForm";
@@ -37,12 +36,12 @@ import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
 
 import { Village, User } from "types/schema";
 
-const Users: NextPage = () => {
+const PremiumUsers: NextPage = () => {
   const router = useRouter();
   const { me } = useFetchData();
   const { fetchMeData, submitStepTwoData } = useActionDispatch();
-  const { users } = useAdminFetchData();
-  const { delStatus, deleteData, resetState, fetchUsersData } = useAdminActionDispatch();
+  const { pmusers } = useAdminFetchData();
+  const { delStatus, deleteData, resetState, fetchPmusersData } = useAdminActionDispatch();
   const [isEdit, setIsEdit] = useState(false);
   const toast = useToast();
 
@@ -50,7 +49,7 @@ const Users: NextPage = () => {
     const access_token = getUserToken();
     if (access_token) {
       fetchMeData();
-      fetchUsersData();
+      fetchPmusersData();
     } else {
       router.push("/home");
     }
@@ -68,12 +67,12 @@ const Users: NextPage = () => {
         toast({
           id: "userDelete",
           title: "Data has been deleted.",
-          description: "User data is deleleted",
+          description: "Premium User data is deleleted",
           status: "success",
           duration: 3000,
           isClosable: true,
       });
-      fetchUsersData();
+      fetchPmusersData();
       resetState();
     }
   }, [delStatus]);
@@ -81,7 +80,7 @@ const Users: NextPage = () => {
   const [village, setVillage] = useState<Village>(null);
 
   useEffect(() => {
-    fetchUsersData();
+    fetchPmusersData();
   }, [village]);
 
   const columns = useMemo(
@@ -152,7 +151,7 @@ const Users: NextPage = () => {
         Cell: function ActionItem({ row }) {
           return (
             <HStack>
-              {/* <Button
+              <Button
                 onClick={() => {
                   setUser(row.original);
                   modal.onOpen();
@@ -160,7 +159,7 @@ const Users: NextPage = () => {
                 }}
               >
                 Edit
-              </Button> */}
+              </Button>
               <Button
                 onClick={() => {
                   setUuid(row.original.uuid);
@@ -180,8 +179,8 @@ const Users: NextPage = () => {
   const [data, setData] = useState([]);
   const tableInstance = useTable({ columns, data });
   useEffect(() => {
-    setData(users);
-  }, [users]);
+    setData(pmusers);
+  }, [pmusers]);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
@@ -241,7 +240,7 @@ const Users: NextPage = () => {
         <ModalOverlay />
         <ModalContent m={0} p={6} bgColor="white">
           <UserForm
-            type="edit"
+            type="add"
             user={user}
             isEdit={isEdit}
           />
@@ -258,4 +257,4 @@ const Users: NextPage = () => {
   );
 };
 
-export default Users;
+export default PremiumUsers;

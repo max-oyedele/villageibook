@@ -1,11 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import {
-    Container,
-    Stack,
     HStack,
-    VStack,
-    Divider,
-    Flex,
     Textarea,
     Box,
     Text,
@@ -18,12 +13,6 @@ import {
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 
-import AvatarUpload from 'admin/components/AvatarUpload';
-import InputBox from 'components/widgets/InputBox';
-
-import useAdminFetchData from 'hooks/use-admin-fetch-data';
-import useAdminActionDispatch from 'hooks/use-admin-action-dispatch';
-import InputTextArea from "components/widgets/InputTextArea";
 import { User } from 'types/schema';
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
@@ -53,8 +42,6 @@ const UserForm: React.FC<{
     const [photoURL3, setPhotoURL3] = useState(user.photo3 ?? null);
   
     const [refresh, setRefresh] = useState(false);
-  
-    const [isUploading, setIsUploading] = useState(false);
   
     const uploadToClient = (event, index) => {
       if (event.target.files && event.target.files[0]) {
