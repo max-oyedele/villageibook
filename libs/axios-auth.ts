@@ -23,7 +23,7 @@ axiosAuth.interceptors.response.use(function (response) {
   // Do something with response error
   // console.log('interceptor error', error.response)
   if(error.response.status === 401){ // unauthorized
-    Router.push('/');
+    Router.push('/home');
     localStorage.removeItem("villageibookAccount");
     removeUserToken();
   }
