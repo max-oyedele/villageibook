@@ -96,8 +96,7 @@ const PersonalityView: NextPage = () => {
               ml={breakpointValue === "base" ? 0 : "224px"}
               bgColor="white"
               borderRadius="8px"
-              border="1px"
-              borderColor="gray.300"
+              boxShadow="sm"
             >
               <Flex flexDirection="column" p={6}>
                 {breakpointValue === "base" && (
@@ -119,7 +118,7 @@ const PersonalityView: NextPage = () => {
                   </Flex>
                 )}
 
-                <Text fontSize="18px">Personal Info</Text>
+                <Text fontSize="18px">Personality Info</Text>
                 <VStack w="full" spacing={2} divider={<Divider />} mt={6}>
                   <HStack w="full">
                     <Box w="full" fontSize="13px" color="purpleTone">
