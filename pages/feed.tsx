@@ -67,10 +67,15 @@ const Feed: NextPage = () => {
   useEffect(() => {
     fetchMeData();
     fetchFeedPageData({ page: 1 });
-    fetchVillageData({ villageUuid: me?.comesFrom?.uuid });
     fetchGraduateStatsData({ type: "region" });
     fetchGraduateStatsData({ type: "village" });
   }, []);
+  
+  useEffect(()=>{
+    if(me){
+      fetchVillageData({ villageUuid: me?.comesFrom?.uuid });
+    }
+  }, [me])
 
   useEffect(() => {
     if (postStatus === Status.SUCCESS) {

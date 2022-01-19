@@ -16,13 +16,13 @@ import {
   AspectRatio,
   Button,
   useBreakpointValue,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 
-import { Step } from "rdx/types";
+import { Status, Step } from "rdx/types";
 
 import useFetchData from "hooks/use-fetch-data";
 
@@ -45,7 +45,7 @@ import {
   Village,
   University,
   Profession,
-  Degree
+  Degree,
 } from "types/schema";
 
 import useActionDispatch from "hooks/use-action-dispatch";
@@ -151,22 +151,24 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
 
   const {
     me,
+    accountStatus,
     countries,
     districts,
     subDistricts,
     villages,
     universities,
     professions,
-    degrees: degreeStrs,  
+    degrees: degreeStrs,
   } = useFetchData();
   const {
+    updateReset,
     fetchCommonData,
     fetchRegionsData,
     fetchDistrictsData,
     fetchSubDistrictsData,
     fetchVillagesData,
     fetchMeData,
-    submitStepOneData
+    submitStepOneData,
   } = useActionDispatch();
 
   const platformCountries = [
@@ -181,94 +183,141 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
   const [firstName, setFirstName] = useState<string | null>(null);
   const [lastName, setLastName] = useState<string | null>(null);
 
-  const [selectedUniversity, setSelectedUniversity] = useState<University | null>(null);
-  const [selectedProfession, setSelectedProfession] = useState<Profession | null>(null);
+  const [selectedUniversity, setSelectedUniversity] =
+    useState<University | null>(null);
+  const [selectedProfession, setSelectedProfession] =
+    useState<Profession | null>(null);
   const [degrees, setDegrees] = useState<Degree[]>([]);
   const [selectedDegree, setSelectedDegree] = useState<Degree | null>(null);
 
-  const [selectedCountry, setSelectedCountry] = useState<Country>(platformCountries[0]);
+  const [selectedCountry, setSelectedCountry] = useState<Country>(
+    platformCountries[0]
+  );
   const [selectedRegion, setSelectedRegion] = useState<Region>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
-  const [selectedSubDistrict, setSelectedSubDistrict] = useState<SubDistrict>(null);
+  const [selectedSubDistrict, setSelectedSubDistrict] =
+    useState<SubDistrict>(null);
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
-  const [selectedLivingCountry, setSelectedLivingCountry] = useState<Country>(null);
-  const [selectedLivingVillage, setSelectedLivingVillage] = useState<Village>(null);
-  const [loading, setLoading] = useState(false);
+  const [selectedLivingCountry, setSelectedLivingCountry] =
+    useState<Country>(null);
+  const [selectedLivingVillage, setSelectedLivingVillage] =
+    useState<Village>(null);
+
   const toast = useToast();
 
   useEffect(() => {
     fetchCommonData();
-    fetchVillagesData(null); //remove later
+    // fetchRegionsData(null);
+    fetchDistrictsData(null);
+    fetchSubDistrictsData(null);
+    fetchVillagesData(null);
   }, []);
 
   useEffect(() => {
-    if (!me) {
-      fetchMeData();
+    if (accountStatus === Status.SUCCESS) {
+      !toast.isActive("updateMe") &&
+        toast({
+          id: "updateMe",
+          title: "Successfully Updated.",
+          description: "Updated",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+
+      localStorage.removeItem("villageibookAccount"); // remove if update api response is enough
+      fetchMeData(); // remove if update api response is enough
+      updateReset();
     }
-    else {
-      setFirstName(me.firstName);
-      setLastName(me.lastName);
-      if (loading) {
-        setLoading(false);
-        !toast.isActive("updateMe") &&
-          toast({
-            id: "updateMe",
-            title: "Successfully Updated.",
-            description: "Updated",
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-          });
-      }
-    }
-  }, [me]);
+  }, [accountStatus]);
 
   useEffect(() => {
     if (me) {
-      if (countries) {
-        setSelectedLivingCountry(countries.find(e => e.uuid === me.livesIn?.uuid));
+      // initialize with me
+      setFirstName(me.firstName);
+      setLastName(me.lastName);
+
+      if (countries?.length > 0) {
+        setSelectedLivingCountry(
+          countries.find((e) => e.uuid === me.livesIn?.uuid)
+        );
       }
-      if (villages) {
+      if (districts?.length > 0 && !selectedDistrict) {
+        setSelectedDistrict(
+          districts.find((e) => e.uuid === me.comesFrom?.district?.uuid)
+        );
+      }
+      if (subDistricts?.length > 0 && !selectedSubDistrict) {
+        setSelectedSubDistrict(
+          subDistricts.find((e) => e.uuid === me.comesFrom?.subDistrict?.uuid)
+        );
+      }
+      if (villages?.length > 0 && !selectedVillage) {
         setSelectedVillage(villages.find((e) => e.uuid === me.comesFrom?.uuid));
       }
       if (universities) {
-        setSelectedUniversity(universities.find((e) => e.uuid === me.graduatedAt?.uuid));
+        setSelectedUniversity(
+          universities.find((e) => e.uuid === me.graduatedAt?.uuid)
+        );
       }
       if (professions) {
-        setSelectedProfession(professions.find((e) => e.uuid === me.hasProfession?.uuid));
+        setSelectedProfession(
+          professions.find((e) => e.uuid === me.hasProfession?.uuid)
+        );
       }
       if (degreeStrs) {
-        setDegrees(degreeStrs.map((e, index) => ({
-          id: index,
-          name: e,
-          href: e.toLowerCase(),
-          uuid: index.toString() //temp
-        })))
+        setDegrees(
+          degreeStrs.map((e, index) => ({
+            id: index,
+            name: e,
+            href: e.toLowerCase(),
+            uuid: index.toString(), //temp
+          }))
+        );
       }
     }
-  }, [me, countries, villages, universities, professions, degreeStrs])
+  }, [
+    me,
+    countries,
+    districts,
+    subDistricts,
+    villages,
+    universities,
+    professions,
+    degreeStrs,
+  ]);
+
   useEffect(() => {
     if (degrees.length > 0) {
       const selectedDegree = degrees.find((e) => e.name === me?.degree);
       if (selectedDegree) setSelectedDegree(selectedDegree);
     }
-  }, [degrees])
+  }, [degrees]);
 
   useEffect(() => {
-    setSelectedRegion(null);
-    fetchRegionsData({ country: selectedCountry });
+    if (selectedCountry) {
+      setSelectedRegion(null);
+      fetchRegionsData({ country: selectedCountry });
+    }
   }, [selectedCountry]);
   useEffect(() => {
-    setSelectedDistrict(null);
-    fetchDistrictsData({ region: selectedRegion });
+    if (selectedRegion) {
+      setSelectedDistrict(null);
+      fetchDistrictsData({ region: selectedRegion });
+    }
   }, [selectedRegion]);
   useEffect(() => {
-    setSelectedSubDistrict(null);
-    fetchSubDistrictsData({ district: selectedDistrict });
+    if (selectedDistrict) {
+      setSelectedSubDistrict(null);
+      setSelectedVillage(null);
+      fetchSubDistrictsData({ district: selectedDistrict });
+    }
   }, [selectedDistrict]);
   useEffect(() => {
-    // setSelectedVillage(null);
-    // fetchVillagesData({ subDistrict: selectedSubDistrict });
+    if (selectedSubDistrict) {
+      setSelectedVillage(null);
+      // fetchVillagesData({ subDistrict: selectedSubDistrict });
+    }
   }, [selectedSubDistrict]);
 
   const step1Schema = yup.object({
@@ -316,13 +365,11 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
           livesIn: selectedLivingCountry.uuid,
           graduatedAt: selectedUniversity?.uuid,
           degree: selectedDegree?.name,
-          profession: selectedProfession?.uuid
+          profession: selectedProfession?.uuid,
         };
 
         actions.setSubmitting(true);
-        setLoading(true);
         await submitStepOneData(params);
-        await fetchMeData();
         actions.setSubmitting(false);
       }}
     >
@@ -533,8 +580,8 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
 };
 
 const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
-  const { me } = useFetchData();
-  const { submitStepTwoData } = useActionDispatch();
+  const { me, accountStatus } = useFetchData();
+  const { updateReset, submitStepTwoData, fetchMeData } = useActionDispatch();
 
   const [about, setAbout] = useState(null);
 
@@ -550,9 +597,7 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
 
   const [isUploading, setIsUploading] = useState(false);
   const toast = useToast();
-  const [loading, setLoading] = useState(false);
-  const { fetchMeData } = useActionDispatch();
-
+  
   const uploadToClient = (event, index) => {
     if (event.target.files && event.target.files[0]) {
       const i = event.target.files[0];
@@ -577,8 +622,7 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
   });
 
   useEffect(() => {
-    if (loading) {
-      setLoading(false);
+    if (accountStatus === Status.SUCCESS) {
       !toast.isActive("updateMe") &&
         toast({
           id: "updateMe",
@@ -588,8 +632,13 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
           duration: 3000,
           isClosable: true,
         });
+
+      localStorage.removeItem("villageibookAccount"); // remove if update api response is enough
+      fetchMeData(); // remove if update api response is enough
+      updateReset();
     }
-  }, [me])
+  }, [accountStatus]);
+
   return (
     <Formik
       initialValues={{
@@ -606,9 +655,7 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
           photo3,
         };
         actions.setSubmitting(true);
-        setLoading(true);
-        await submitStepTwoData(params);
-        await fetchMeData();
+        await submitStepTwoData(params);        
         actions.setSubmitting(false);
       }}
     >

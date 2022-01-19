@@ -163,8 +163,7 @@ const UserView: NextPage = () => {
                         <Box
                           w="full"
                           fontSize="13px"
-                          color="GrayText"
-                          textTransform="capitalize"
+                          color="GrayText"                          
                         >
                           {user?.email}
                         </Box>
@@ -182,7 +181,7 @@ const UserView: NextPage = () => {
                           color="GrayText"
                           textTransform="capitalize"
                         >
-                          {/* {user?.district} */}-
+                          {user?.comesFrom?.district?.name}
                         </Box>
                       </HStack>
                       <HStack w="full">
@@ -195,9 +194,7 @@ const UserView: NextPage = () => {
                           color="GrayText"
                           textTransform="capitalize"
                         >
-                          {!user?.hasProfession.name
-                            ? user?.hasProfession.name
-                            : "-"}
+                          {user?.comesFrom?.subDistrict?.name}
                         </Box>
                       </HStack>
                       <HStack w="full">
@@ -220,6 +217,19 @@ const UserView: NextPage = () => {
                     Education
                   </Text>
                   <VStack w="70%" spacing={2} divider={<Divider />} mt={6}>
+                    <HStack w="full">
+                      <Box w="full" fontSize="13px" color="purpleTone">
+                        Profession
+                      </Box>
+                      <Box
+                        w="full"
+                        fontSize="13px"
+                        color="GrayText"
+                        textTransform="capitalize"
+                      >
+                        {user?.hasProfession?.name}
+                      </Box>
+                    </HStack>
                     <HStack w="full">
                       <Box w="full" fontSize="13px" color="purpleTone">
                         Degree

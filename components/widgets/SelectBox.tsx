@@ -5,23 +5,7 @@ import { BiChevronDown } from "react-icons/bi";
 import { FixedSizeList as List } from "react-window";
 
 const SelectBox = (props: any) => {
-  const [options, setOptions] = React.useState(props.options);
-  const [selectedOption, setSelectedOption] = React.useState(props.selectedOption ?? null);
-
-  React.useEffect(() => {
-    if(props.options.length > 0){
-      setOptions(props.options);
-    }
-  }, [props.options]);
-
-  React.useEffect(() => {
-    if(props.selectedOption){
-      setSelectedOption(props.selectedOption);
-    }
-  }, [props.selectedOption]);
-
   const handleChange = (value: any) => {
-    setSelectedOption(value);
     props.setSelectedOption(value);
     props.onChange && props.onChange(value);
   };
@@ -35,10 +19,10 @@ const SelectBox = (props: any) => {
   };
 
   const optionHeight = 40;
-
   const MenuList = (props) => {
     const { options, children, maxHeight, getValue } = props;
     const [value] = getValue();
+
     const initialOffset = options.indexOf(value) * optionHeight;
 
     return (
@@ -59,9 +43,9 @@ const SelectBox = (props: any) => {
       instanceId={props.id}
       isMulti={props.isMulti ? true : false}
       getOptionLabel={props.optionLabel}
-      value={selectedOption}
+      value={props.selectedOption}
       onChange={handleChange}
-      options={options}
+      options={props.options}
       placeholder={props.placeholder ?? ""}
       className={props.className ?? ""}
       components={{ MenuList, DropdownIndicator }}
@@ -69,7 +53,7 @@ const SelectBox = (props: any) => {
         option: (provided, state) => ({
           // ...provided,
           width: "auto",
-          height: optionHeight,
+          height: props.height ?? optionHeight,
           backgroundColor: state.isFocused ? "#f5f8fa" : "transparent",
           color: "#656565",
           marginLeft: 5,
@@ -80,7 +64,7 @@ const SelectBox = (props: any) => {
           display: "flex",
           alignItems: "center",
           fontSize: 13,
-          whiteSpace: 'nowrap',
+          whiteSpace: "nowrap",
           // border: '1px solid #e5e5e5',
           // borderRadius: 4
         }),

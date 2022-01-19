@@ -40,7 +40,7 @@ const Home: NextPage = () => {
   }, []);
 
   useEffect(() => {    
-    if (posts.length > 0) { // temporary, if fetch is success, considering access_token is valid so can redirect to Feed
+    if (posts["posts"].length > 0) { // temporary, if fetch is success, considering access_token is valid so can redirect to Feed
       router.push("/feed");
     }    
   }, [posts]);

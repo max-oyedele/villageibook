@@ -36,7 +36,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
   };
 
   const ago = post.lastUpdated ? moment(post.lastUpdated).fromNow() : "";
-  console.log("<post with special character>");
+  
   return (
     <Fragment>
       <Box w="full" p={4} bgColor="white" borderRadius="8px" boxShadow="sm">

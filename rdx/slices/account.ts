@@ -5,7 +5,7 @@ import {
   SerializedError,
 } from "@reduxjs/toolkit";
 
-import axiosAuth from "libs/axios-auth";;
+import axiosAuth from "libs/axios-auth";
 import axios from "axios";
 import { getUserToken } from "helpers/user-token";
 
@@ -26,7 +26,10 @@ export const fetchMe = createAsyncThunk(
         params: { endpoint: "/users/me.json" },
       });
 
-      localStorage.setItem("villageibookAccount", JSON.stringify(response.data));
+      localStorage.setItem(
+        "villageibookAccount",
+        JSON.stringify(response.data)
+      );
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -60,7 +63,7 @@ export const submitStepOne = createAsyncThunk(
       bodyFormData.append("comesFrom", params.comesFrom);
       if (params.graduatedAt)
         bodyFormData.append("graduatedAt", params.graduatedAt);
-      
+
       if (params.degree) bodyFormData.append("degree", params.degree);
       if (params.profession)
         bodyFormData.append("profession", params.profession);
@@ -75,8 +78,11 @@ export const submitStepOne = createAsyncThunk(
           },
         }
       );
-      
-      localStorage.setItem("villageibookAccount", JSON.stringify(response.data));
+
+      localStorage.setItem(
+        "villageibookAccount",
+        JSON.stringify(response.data)
+      );
       return response.data;
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });
@@ -119,8 +125,8 @@ export const submitStepTwo = createAsyncThunk(
         }
       );
 
-      localStorage.setItem("villageibookAccount", JSON.stringify(response.data));
-      return response.data;
+      // localStorage.setItem("villageibookAccount", JSON.stringify(response.data)); // now response data is not perfect like fetchMe
+      return response.data; // no use for now
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });
       return thunkAPI.rejectWithValue(error.response.statusText);
@@ -175,6 +181,9 @@ export const accountSlice = createSlice({
   initialState: initialState,
   reducers: {
     reset: () => initialState,
+    resetUpdate: (state) => {
+      state.status = Status.IDLE;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchMe.pending, (state, action) => {
@@ -195,7 +204,7 @@ export const accountSlice = createSlice({
       state.error = null;
     });
     builder.addCase(submitStepOne.fulfilled, (state, action) => {
-      state.status = Status.IDLE;
+      state.status = Status.SUCCESS;
       // state.me = action.payload;
       state.step = Step.STEP2;
     });
@@ -209,9 +218,9 @@ export const accountSlice = createSlice({
       state.error = null;
     });
     builder.addCase(submitStepTwo.fulfilled, (state, action) => {
+      state.status = Status.SUCCESS;
       // state.me = action.payload;
       state.step = Step.COMPLETED;
-      state.status = Status.IDLE;
     });
     builder.addCase(submitStepTwo.rejected, (state, action) => {
       state.status = Status.IDLE;
@@ -232,4 +241,4 @@ export const accountSlice = createSlice({
   },
 });
 
-export const { reset } = accountSlice.actions;
+export const { reset, resetUpdate } = accountSlice.actions;

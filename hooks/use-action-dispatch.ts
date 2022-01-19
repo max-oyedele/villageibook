@@ -16,6 +16,7 @@ import { reset as authResetFunc, login, signup } from "rdx/slices/auth";
 import { checkoutSession } from "rdx/slices/checkout";
 import {
   reset as accountResetFunc,
+  resetUpdate as updateResetFunc,
   fetchMe,
   submitStepOne,
   submitStepTwo,
@@ -59,6 +60,10 @@ const useActionDispatch = () => {
   const accountReset = async () => {
     await dispatch(accountResetFunc());
   };
+
+  const updateReset = async () => {
+    await dispatch(updateResetFunc());
+  }
 
   const doLogin = async (params) => {
     await dispatch(login(params));
@@ -191,6 +196,7 @@ const useActionDispatch = () => {
   return {
     authReset,
     accountReset,
+    updateReset,
     doLogin,
     doSignup,
     submitPostData,
