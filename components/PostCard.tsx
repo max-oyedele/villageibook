@@ -1,6 +1,5 @@
 import React, { Fragment, useState } from "react";
 import Link from "next/link";
-import ReactReadMoreReadLess from "react-read-more-read-less";
 
 import {
   Flex,
@@ -22,6 +21,7 @@ import moment from "moment";
 
 import ImageBox from "components/widgets/ImageBox";
 import VideoBox from "components/widgets/VideoBox";
+import ReadMoreLess from "components/widgets/ReadMoreLess";
 import { Post } from "types/data";
 
 const PostCard: React.FC<{ post: Post }> = ({ post }) => {
@@ -36,16 +36,10 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
   };
 
   const ago = post.lastUpdated ? moment(post.lastUpdated).fromNow() : "";
-
+  console.log("<post with special character>");
   return (
     <Fragment>
-      <Box
-        w="full"
-        p={4}
-        bgColor="white"
-        borderRadius="8px"
-        boxShadow="sm"
-      >
+      <Box w="full" p={4} bgColor="white" borderRadius="8px" boxShadow="sm">
         <Flex
           w="full"
           justifyContent="space-between"
@@ -90,17 +84,9 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
           </Box> */}
         </Flex>
 
-        <Text fontSize="13px" my={4}>
-          <ReactReadMoreReadLess
-            charLimit={200}
-            readMoreText={"see more"}
-            readLessText={"see less"}
-            readMoreStyle={{ color: "#553CFB", cursor: "pointer" }}
-            readLessStyle={{ color: "#553CFB", cursor: "pointer" }}
-          >
-            {post.content}
-          </ReactReadMoreReadLess>
-        </Text>
+        <Box fontSize="13px" my={4}>
+          <ReadMoreLess>{post.content}</ReadMoreLess>          
+        </Box>
 
         <VStack direction={{ base: "column", lg: "row" }} spacing={4}>
           {post.picture && (
