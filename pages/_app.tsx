@@ -16,7 +16,7 @@ import theme from "styles/theme";
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 
 const initialOptions = {
-  "client-id": "AXBwtg1zll4vpZ8LXQzs4KEcaEiFBgzJ73QrIUwnsaHbPVDFTBVDVXj49NgyHE5Em5UA0X2dtmcWkuwm",
+  "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
   currency: "USD",
   intent: "capture"
 };

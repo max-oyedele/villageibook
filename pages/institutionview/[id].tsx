@@ -60,8 +60,7 @@ const InstitutionView: NextPage = () => {
               w="full"
               bgColor="white"
               borderRadius="8px"
-              border="1px"
-              borderColor="gray.300"
+              boxShadow="sm"
             >
               <Flex flexDirection="column" p={6}>
                 <Flex flexDirection="column" alignItems="center" mb={6}>
@@ -71,6 +70,7 @@ const InstitutionView: NextPage = () => {
                     }
                     size="2xl"
                     mb={6}
+                    alt=""
                   />
                 </Flex>
 

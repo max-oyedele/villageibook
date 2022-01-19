@@ -2,8 +2,8 @@ import { Fragment } from "react";
 import Link from "next/link";
 import { Flex, Box, Text, Image, Button } from "@chakra-ui/react";
 
+import ReadMoreLess from "components/widgets/ReadMoreLess";
 import type { Story } from "types/schema";
-import ReactReadMoreReadLess from "react-read-more-read-less";
 
 const StoryCard: React.FC<{ story: Story }> = ({ story }) => {
   return (
@@ -21,15 +21,9 @@ const StoryCard: React.FC<{ story: Story }> = ({ story }) => {
             {story.title}
           </Text>
           <Text fontSize="12px" color="GrayText" mt={4}>
-            <ReactReadMoreReadLess
-              charLimit={200}
-              readMoreText={"see more"}
-              readLessText={"see less"}
-              readMoreStyle={{ color: "#553CFB", cursor: "pointer" }}
-              readLessStyle={{ color: "#553CFB", cursor: "pointer" }}
-            >
+            <ReadMoreLess>
               {story.content}
-            </ReactReadMoreReadLess>
+            </ReadMoreLess>
           </Text>
         </Box>
       </Flex>

@@ -28,7 +28,7 @@ const initialState: CheckoutSessionState = {
 };
 
 export const checkoutSessionSlice = createSlice({
-  name: "session",
+  name: "checkout",
   initialState: initialState,
   reducers: {
     reset: (state) => initialState,

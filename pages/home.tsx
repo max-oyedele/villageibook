@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Link from "next/link";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import { BsDot } from "react-icons/bs";
 import { BiCaretRight } from "react-icons/bi";
 
@@ -20,27 +20,31 @@ import {
   Button,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import Slider from "react-slick";
 import ReactPlayer from "react-player/lazy";
 
 import Logo from "components/Logo";
 import Footer from "components/Footer";
 
-import HomeSlick from "components/HomeSlick";
-import HomeSlickControl from "components/HomeSlickControl";
 import HomeCategoryBar from "components/HomeCategoryBar";
 import FaqAccordion from "components/FaqAccordion";
+import useFetchData from "hooks/use-fetch-data";
+import useActionDispatch from "hooks/use-action-dispatch";
 
 const Home: NextPage = () => {
   const router = useRouter();
-  
+  const { posts } = useFetchData();
+  const { fetchFeedPageData } = useActionDispatch();
+
   useEffect(() => {
-    const account = localStorage.getItem("villageibookAccount")
-    if (account) {
-      router.push("/feed");
-    }
+    fetchFeedPageData({ page: 1 });
   }, []);
-  
+
+  useEffect(() => {    
+    if (posts.length > 0) { // temporary, if fetch is success, considering access_token is valid so can redirect to Feed
+      router.push("/feed");
+    }    
+  }, [posts]);
+
   const breakpointValue = useBreakpointValue({
     base: "base",
     md: "md",
@@ -131,7 +135,7 @@ const Home: NextPage = () => {
                 </VStack>
               </Box>
             )}
-            <Box w="full">              
+            <Box w="full">
               <Image
                 src={`/images/logo-img.svg`}
                 alt=""
