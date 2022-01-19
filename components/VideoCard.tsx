@@ -18,8 +18,12 @@ import { Video } from "types/data";
 const VideoCard: React.FC<{ video: Video }> = ({ video }) => {
   return (
     <Fragment>
-      <Flex w="full" flexDirection="column">
-        <VideoBox videoUrl={video.url} />
+      <Flex
+        w="full"
+        flexDirection="column"
+        borderRadius="8px"
+        boxShadow="sm">
+        <VideoBox videoUrl={video?.url??"/images/default-video.png"} />
         <Box mt={4}>
           <Text fontSize="15px" color="primary" textTransform="capitalize">
             {video.name}

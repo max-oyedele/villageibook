@@ -45,7 +45,7 @@ const VideoBox: React.FC<{
     <Fragment>
       <Box w="full" pos="relative">
         {videoBackImg && <Image src={videoBackImg} alt="" />}
-        {!videoBackImg && (
+        {!videoBackImg && videoReady &&(
           <ReactPlayer
             className="react-player"
             url={videoUrl}
@@ -56,7 +56,9 @@ const VideoBox: React.FC<{
             // light={videoBackImg ?? false}
           />
         )}
-
+        {!videoReady && (
+          <Image src={"/images/default-video.png"} alt="" />
+        )}
         <Flex
           pos="absolute"
           top={0}
@@ -67,6 +69,7 @@ const VideoBox: React.FC<{
         >
           {!videoReady && (
             <Box w={9} h={9}>
+              <Image src={videoBackImg} alt="" />
               {/* <Loader loading={true} type="clip" /> */}
             </Box>
           )}
