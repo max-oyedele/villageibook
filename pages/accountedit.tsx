@@ -193,7 +193,7 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
   const [selectedLivingCountry, setSelectedLivingCountry] = useState<Country>(null);
   const [selectedLivingVillage, setSelectedLivingVillage] = useState<Village>(null);
-  const [loading, setLoading] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
   const toast = useToast();
 
   useEffect(() => {
@@ -208,8 +208,8 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
     else {
       setFirstName(me.firstName);
       setLastName(me.lastName);
-      if (loading) {
-        setLoading(false);
+      if (isSubmit) {
+        setIsSubmit(false);
         !toast.isActive("updateMe") &&
           toast({
             id: "updateMe",
@@ -320,7 +320,7 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
         };
 
         actions.setSubmitting(true);
-        setLoading(true);
+        setIsSubmit(true);
         await submitStepOneData(params);
         await fetchMeData();
         actions.setSubmitting(false);
@@ -550,7 +550,7 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
 
   const [isUploading, setIsUploading] = useState(false);
   const toast = useToast();
-  const [loading, setLoading] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
   const { fetchMeData } = useActionDispatch();
 
   const uploadToClient = (event, index) => {
@@ -577,8 +577,8 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
   });
 
   useEffect(() => {
-    if (loading) {
-      setLoading(false);
+    if (isSubmit) {
+      setIsSubmit(false);
       !toast.isActive("updateMe") &&
         toast({
           id: "updateMe",
@@ -606,7 +606,7 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
           photo3,
         };
         actions.setSubmitting(true);
-        setLoading(true);
+        setIsSubmit(true);
         await submitStepTwoData(params);
         await fetchMeData();
         actions.setSubmitting(false);

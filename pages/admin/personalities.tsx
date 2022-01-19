@@ -99,7 +99,7 @@ const Personalities: NextPage = () => {
         toast({
           id: "personalityDelete",
           title: "Data has been deleted.",
-          description: "Personalities data is deleleted",
+          description: "Personalities data is deleted",
           status: "success",
           duration: 3000,
           isClosable: true,

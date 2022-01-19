@@ -19,7 +19,6 @@ import useFetchData from "hooks/use-fetch-data";
 
 const Checkout: NextPage = () => {
   const [confirmModal, setConfirmModal] = useState(false)
-  const [loading, setLoading] = useState(false)
   const [paypal, setPaypal] = useState(1)
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const modal = useDisclosure();
@@ -29,12 +28,9 @@ const Checkout: NextPage = () => {
   const { session } = useFetchData();
 
   const paymentWithStripe = async (amount) => {
-    setLoading(true)
     fetchCheckoutSession({
       amount: amount,
     })
-
-    setLoading(false)
   }
 
   useEffect(() => {

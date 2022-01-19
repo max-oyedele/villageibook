@@ -68,7 +68,7 @@ const Users: NextPage = () => {
         toast({
           id: "userDelete",
           title: "Data has been deleted.",
-          description: "User data is deleleted",
+          description: "User data is deleted",
           status: "success",
           duration: 3000,
           isClosable: true,

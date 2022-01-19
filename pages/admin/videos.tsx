@@ -74,7 +74,7 @@ const Videos: NextPage = () => {
         toast({
           id: "VideoDelete",
           title: "Data has been deleted.",
-          description: "Videos data is deleleted",
+          description: "Videos data is deleted",
           status: "success",
           duration: 3000,
           isClosable: true,

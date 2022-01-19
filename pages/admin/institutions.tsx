@@ -91,7 +91,7 @@ const Institutions: NextPage = () => {
         toast({
           id: "institutionsDelete",
           title: "Data has been deleted.",
-          description: "Institutions data is deleleted",
+          description: "Institutions data is deleted",
           status: "success",
           duration: 3000,
           isClosable: true,

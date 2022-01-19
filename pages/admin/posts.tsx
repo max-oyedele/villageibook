@@ -79,7 +79,7 @@ const Posts: NextPage = () => {
         toast({
           id: "PostDelete",
           title: "Data has been deleted.",
-          description: "Post data is deleleted",
+          description: "Post data is deleted",
           status: "success",
           duration: 3000,
           isClosable: true,

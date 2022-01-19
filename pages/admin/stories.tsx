@@ -90,7 +90,7 @@ const Stories: NextPage = () => {
         toast({
           id: "StoryDelete",
           title: "Data has been deleted.",
-          description: "Stories data is deleleted",
+          description: "Stories data is deleted",
           status: "success",
           duration: 3000,
           isClosable: true,

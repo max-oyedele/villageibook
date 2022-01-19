@@ -67,7 +67,7 @@ const PremiumUsers: NextPage = () => {
         toast({
           id: "userDelete",
           title: "Data has been deleted.",
-          description: "Premium User data is deleleted",
+          description: "Premium User data is deleted",
           status: "success",
           duration: 3000,
           isClosable: true,
