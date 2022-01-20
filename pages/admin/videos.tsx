@@ -234,42 +234,44 @@ const Videos: NextPage = () => {
             }} isDisabled={!village}>Add Video</Button>
         </Flex>
 
-        <Table {...getTableProps()}>
-          <Thead>
-            {
-              headerGroups.map((headerGroup, index) => (
-                <Tr key={index} {...headerGroup.getHeaderGroupProps()}>
-                  {
-                    headerGroup.headers.map((column, iindex) => (
-                      <Th key={iindex} {...column.getHeaderProps()}>
-                        {
-                          column.render('Header')}
-                      </Th>
-                    ))}
-                </Tr>
-              ))}
-          </Thead>
-          
-          <Tbody {...getTableBodyProps()}>
-            {
-              rows.map((row, index) => {
-                prepareRow(row)
-                return (
-                  <Tr key={index} {...row.getRowProps()}>
+        <Box overflowX="auto">
+          <Table {...getTableProps()}>
+            <Thead>
+              {
+                headerGroups.map((headerGroup, index) => (
+                  <Tr key={index} {...headerGroup.getHeaderGroupProps()}>
                     {
-                      row.cells.map((cell, iindex) => {
-                        return (
-                          <Td key={iindex} {...cell.getCellProps()}>
-                            {
-                              cell.render('Cell')}
-                          </Td>
-                        )
-                      })}
+                      headerGroup.headers.map((column, iindex) => (
+                        <Th key={iindex} {...column.getHeaderProps()}>
+                          {
+                            column.render('Header')}
+                        </Th>
+                      ))}
                   </Tr>
-                )
-              })}
-          </Tbody>
-        </Table>
+                ))}
+            </Thead>
+            
+            <Tbody {...getTableBodyProps()}>
+              {
+                rows.map((row, index) => {
+                  prepareRow(row)
+                  return (
+                    <Tr key={index} {...row.getRowProps()}>
+                      {
+                        row.cells.map((cell, iindex) => {
+                          return (
+                            <Td key={iindex} {...cell.getCellProps()}>
+                              {
+                                cell.render('Cell')}
+                            </Td>
+                          )
+                        })}
+                    </Tr>
+                  )
+                })}
+            </Tbody>
+          </Table>
+        </Box>
       </Layout>
 
       <Modal

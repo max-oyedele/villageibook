@@ -167,47 +167,49 @@ const Posts: NextPage = () => {
   return (
     <Fragment>
       <Layout>
-        <Table {...getTableProps()}>
-          <Thead>
-            {// Loop over the header rows
-              headerGroups.map((headerGroup, index) => (
-                // Apply the header row props
-                <Tr key={index} {...headerGroup.getHeaderGroupProps()}>
-                  {// Loop over the headers in each row
-                    headerGroup.headers.map((column, iindex) => (
-                      // Apply the header cell props
-                      <Th key={iindex} {...column.getHeaderProps()}>
-                        {// Render the header
-                          column.render('Header')}
-                      </Th>
-                    ))}
-                </Tr>
-              ))}
-          </Thead>
-          {/* Apply the table body props */}
-          <Tbody {...getTableBodyProps()}>
-            {// Loop over the table rows
-              rows.map((row, index) => {
-                // Prepare the row for display
-                prepareRow(row)
-                return (
-                  // Apply the row props
-                  <Tr key={index} {...row.getRowProps()}>
-                    {// Loop over the rows cells
-                      row.cells.map((cell, iindex) => {
-                        // Apply the cell props
-                        return (
-                          <Td key={iindex} {...cell.getCellProps()}>
-                            {// Render the cell contents
-                              cell.render('Cell')}
-                          </Td>
-                        )
-                      })}
+        <Box overflowX="auto">
+          <Table {...getTableProps()}>
+            <Thead>
+              {// Loop over the header rows
+                headerGroups.map((headerGroup, index) => (
+                  // Apply the header row props
+                  <Tr key={index} {...headerGroup.getHeaderGroupProps()}>
+                    {// Loop over the headers in each row
+                      headerGroup.headers.map((column, iindex) => (
+                        // Apply the header cell props
+                        <Th key={iindex} {...column.getHeaderProps()}>
+                          {// Render the header
+                            column.render('Header')}
+                        </Th>
+                      ))}
                   </Tr>
-                )
-              })}
-          </Tbody>
-        </Table>
+                ))}
+            </Thead>
+            {/* Apply the table body props */}
+            <Tbody {...getTableBodyProps()}>
+              {// Loop over the table rows
+                rows.map((row, index) => {
+                  // Prepare the row for display
+                  prepareRow(row)
+                  return (
+                    // Apply the row props
+                    <Tr key={index} {...row.getRowProps()}>
+                      {// Loop over the rows cells
+                        row.cells.map((cell, iindex) => {
+                          // Apply the cell props
+                          return (
+                            <Td key={iindex} {...cell.getCellProps()}>
+                              {// Render the cell contents
+                                cell.render('Cell')}
+                            </Td>
+                          )
+                        })}
+                    </Tr>
+                  )
+                })}
+            </Tbody>
+          </Table>
+        </Box>
       </Layout>
       <DeleteDialog uuid={uuid} isOpen={isOpen} onClose={onClose} onConfirm={onDelete} />
     </Fragment>

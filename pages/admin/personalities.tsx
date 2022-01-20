@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect, useRef, useMemo } from "react";
+import React, { Fragment, useState, useEffect, useRef, useMemo } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import {
@@ -18,7 +18,8 @@ import {
   ModalContent,
   useBreakpointValue,
   useDisclosure,
-  useToast
+  useToast,
+  ModalBody
 } from "@chakra-ui/react";
 
 import { useTable, useSortBy } from "react-table";
@@ -233,6 +234,7 @@ const Personalities: NextPage = () => {
     deleteData({ type: "personalities", uuid });
     dialog.onClose();
   };
+  const [scrollBehavior, setScrollBehavior] = React.useState("inside");
 
   return (
     <Fragment>
@@ -243,53 +245,56 @@ const Personalities: NextPage = () => {
             Add Personality
           </Button>
         </Flex>
-
-        <Table {...getTableProps()}>
-          <Thead>
-            {headerGroups.map((headerGroup, index) => (
-              <Tr key={index} {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column, iindex) => (
-                  <Th key={iindex} {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </Th>
-                ))}
-              </Tr>
-            ))}
-          </Thead>
-          <Tbody {...getTableBodyProps()}>
-            {rows.map((row, index) => {
-              prepareRow(row);
-              return (
-                <Tr key={index} {...row.getRowProps()}>
-                  {row.cells.map((cell, iindex) => {
-                    return (
-                      <Td key={iindex} {...cell.getCellProps()}>
-                        {cell.render("Cell")}
-                      </Td>
-                    );
-                  })}
+        <Box overflowX="auto">
+          <Table {...getTableProps()}>
+            <Thead>
+              {headerGroups.map((headerGroup, index) => (
+                <Tr key={index} {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column, iindex) => (
+                    <Th key={iindex} {...column.getHeaderProps()}>
+                      {column.render("Header")}
+                    </Th>
+                  ))}
                 </Tr>
-              );
-            })}
-          </Tbody>
-        </Table>
+              ))}
+            </Thead>
+            <Tbody {...getTableBodyProps()}>
+              {rows.map((row, index) => {
+                prepareRow(row);
+                return (
+                  <Tr key={index} {...row.getRowProps()}>
+                    {row.cells.map((cell, iindex) => {
+                      return (
+                        <Td key={iindex} {...cell.getCellProps()}>
+                          {cell.render("Cell")}
+                        </Td>
+                      );
+                    })}
+                  </Tr>
+                );
+              })}
+            </Tbody>
+          </Table>
+        </Box>
       </Layout>
-
       <Modal
         closeOnOverlayClick={true}
         isCentered
         size={breakpointValue === "base" ? "full" : "2xl"}
         isOpen={modal.isOpen}
         onClose={modal.onClose}
+        scrollBehavior={scrollBehavior}
       >
         <ModalOverlay />
         <ModalContent m={0} p={6} bgColor="white">
-          <PersonalityForm
-            type="add"
-            village={village}
-            personality={isEdit ? personality : null}
-            isEdit={isEdit}
-          />
+          <ModalBody>
+            <PersonalityForm
+              type="add"
+              village={village}
+              personality={isEdit ? personality : null}
+              isEdit={isEdit}
+            />
+          </ModalBody>
         </ModalContent>
       </Modal>
 
