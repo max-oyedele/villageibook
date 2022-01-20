@@ -11,7 +11,8 @@ export type User = {
   about?: string;
   comesFrom?: Village;
   livesIn?: Country;
-  graduatedAt?: University;
+  graduatedIn?: Country;
+  university?: University;
   hasProfession?: Profession;
   degree?: string; //Degree;
   lastUpdated?: string;
@@ -67,6 +68,8 @@ export type Village = {
   history?: string;
   photo?: Photo;
   video?: Video;
+  district?: Partial<District>;
+  subDistrict?: Partial<SubDistrict>;
   href?: string;
   uuid: string;
   lastUpdated?: number;

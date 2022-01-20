@@ -16,6 +16,7 @@ import { reset as authResetFunc, login, signup } from "rdx/slices/auth";
 import { checkoutSession } from "rdx/slices/checkout";
 import {
   reset as accountResetFunc,
+  resetUpdate as updateResetFunc,
   fetchMe,
   submitStepOne,
   submitStepTwo,
@@ -60,6 +61,10 @@ const useActionDispatch = () => {
     await dispatch(accountResetFunc());
   };
 
+  const updateReset = async () => {
+    await dispatch(updateResetFunc());
+  }
+
   const doLogin = async (params) => {
     await dispatch(login(params));
   };
@@ -83,8 +88,8 @@ const useActionDispatch = () => {
   const fetchVillagesData = async (params) => {
     await dispatch(fetchVillages(params));
   };
-  const fetchUniversitiesData = async () => {
-    await dispatch(fetchUniversities());
+  const fetchUniversitiesData = async (params) => {
+    await dispatch(fetchUniversities(params));
   };
   const fetchProfessionsData = async () => {
     await dispatch(fetchProfessions());
@@ -94,8 +99,7 @@ const useActionDispatch = () => {
   };
 
   const fetchCommonData = () => {
-    fetchCountriesData();
-    fetchUniversitiesData();
+    fetchCountriesData();    
     fetchProfessionsData();
     fetchDegreesData();
   };
@@ -191,6 +195,7 @@ const useActionDispatch = () => {
   return {
     authReset,
     accountReset,
+    updateReset,
     doLogin,
     doSignup,
     submitPostData,
@@ -204,6 +209,7 @@ const useActionDispatch = () => {
     fetchDistrictsData,
     fetchSubDistrictsData,
     fetchVillagesData,
+    fetchUniversitiesData,
     fetchCommonData,
     fetchMeData,
     fetchUserData,

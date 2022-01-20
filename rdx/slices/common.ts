@@ -11,7 +11,7 @@ import { Status, CommonState } from "../types";
 
 /*********************** */
 export const fetchCountries = createAsyncThunk(
-  "common/countries",
+  "common/count ries",
   async (_, thunkAPI) => {
     try {
       const immutableCountries = localStorage.getItem("immutableCountries");
@@ -20,7 +20,7 @@ export const fetchCountries = createAsyncThunk(
       }
 
       const response = await axiosAuth.get("/api/entry", {
-        params: { endpoint: "/countries.json?page=1&size=210" },
+        params: { endpoint: "/countries.json?page=1&size=210&sort=name.ASC" },
       });
 
       localStorage.setItem(
@@ -39,7 +39,7 @@ export const fetchRegions = createAsyncThunk(
   "common/regions",
   async (params: any, thunkAPI) => {
     try {
-      const endpoint = "/regions.json";
+      const endpoint = "/regions.json?sort=name.ASC";
       const response = await axiosAuth.get("/api/entry", {
         params: { endpoint },
       });
@@ -55,8 +55,8 @@ export const fetchDistricts = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const endpoint = params?.region
-        ? `/region/[href=${params.region.href}]/districts.json`
-        : "/districts.json";
+        ? `/region/[href=${params.region.href}]/districts.json?sort=name.ASC`
+        : "/districts.json?sort=name.ASC";
 
       const response = await axiosAuth.get("/api/entry", {
         params: { endpoint },
@@ -73,8 +73,8 @@ export const fetchSubDistricts = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const endpoint = params?.district
-        ? `/district/[href=${params.district.href}]/sub-districts.json`
-        : "/sub-districts.json";
+        ? `/district/[href=${params.district.href}]/sub-districts.json?sort=name.ASC`
+        : "/sub-districts.json?sort=name.ASC";
 
       const response = await axiosAuth.get("/api/entry", {
         params: { endpoint },
@@ -91,8 +91,8 @@ export const fetchVillages = createAsyncThunk(
   async (params: any, thunkAPI) => {
     try {
       const endpoint = params?.subDistrict
-        ? `/sub-district/[href=${params.subDistrict.href}]/villages.json`
-        : "/villages.json?fields=name,heading,description,history,photo.url,href,uuid,lastUpdated";
+        ? `/sub-district/[href=${params.subDistrict.href}]/villages.json?sort=name.ASC`
+        : "/villages.json?sort=name.ASC&fields=name,heading,description,history,photo.url,href,uuid,lastUpdated";
 
       const response = await axiosAuth.get("/api/entry", {
         params: { endpoint },
@@ -106,25 +106,15 @@ export const fetchVillages = createAsyncThunk(
 
 export const fetchUniversities = createAsyncThunk(
   "common/universities",
-  async (_, thunkAPI) => {
+  async (params: any, thunkAPI) => {
     try {
-      const immutableUniversities = localStorage.getItem(
-        "immutableUniversities"
-      );
-      if (immutableUniversities) {
-        return JSON.parse(immutableUniversities);
-      }
+      const endpoint = params?.graduatedIn
+        ? `/country/[href=${params.graduatedIn.href}]/universities.json?sort=name.ASC`
+        : "/universities.json?sort=name.ASC"; //?page=1&size=9220
 
       const response = await axiosAuth.get("/api/entry", {
-        params: {
-          endpoint: "/universities.json", //?page=1&size=9220
-        },
+        params: { endpoint },
       });
-
-      localStorage.setItem(
-        "immutableUniversities",
-        JSON.stringify(response.data.universities)
-      );
 
       return response.data.universities; // data: {pagination: {}, universities: []}
     } catch (error) {

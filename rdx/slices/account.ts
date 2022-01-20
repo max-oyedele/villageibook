@@ -5,7 +5,7 @@ import {
   SerializedError,
 } from "@reduxjs/toolkit";
 
-import axiosAuth from "libs/axios-auth";;
+import axiosAuth from "libs/axios-auth";
 import axios from "axios";
 import { getUserToken } from "helpers/user-token";
 
@@ -26,7 +26,10 @@ export const fetchMe = createAsyncThunk(
         params: { endpoint: "/users/me.json" },
       });
 
-      localStorage.setItem("villageibookAccount", JSON.stringify(response.data));
+      localStorage.setItem(
+        "villageibookAccount",
+        JSON.stringify(response.data)
+      );
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -43,7 +46,7 @@ export const submitStepOne = createAsyncThunk(
       avatar?: any;
       livesIn?: string;
       comesFrom?: string;
-      graduatedAt?: string;
+      university?: string;
       degree?: string;
       profession?: string;
     },
@@ -58,13 +61,13 @@ export const submitStepOne = createAsyncThunk(
       bodyFormData.append("avatar", params.avatar);
       bodyFormData.append("livesIn", params.livesIn);
       bodyFormData.append("comesFrom", params.comesFrom);
-      if (params.graduatedAt)
-        bodyFormData.append("graduatedAt", params.graduatedAt);
       
+      if (params.university)
+        bodyFormData.append("university", params.university);
       if (params.degree) bodyFormData.append("degree", params.degree);
       if (params.profession)
         bodyFormData.append("profession", params.profession);
-
+        
       const response = await axios.patch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`,
         bodyFormData,
@@ -75,7 +78,7 @@ export const submitStepOne = createAsyncThunk(
           },
         }
       );
-      
+
       localStorage.setItem("villageibookAccount", JSON.stringify(response.data));
       return response.data;
     } catch (error) {
@@ -175,6 +178,9 @@ export const accountSlice = createSlice({
   initialState: initialState,
   reducers: {
     reset: () => initialState,
+    resetUpdate: (state) => {
+      state.status = Status.IDLE;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchMe.pending, (state, action) => {
@@ -195,8 +201,8 @@ export const accountSlice = createSlice({
       state.error = null;
     });
     builder.addCase(submitStepOne.fulfilled, (state, action) => {
-      state.status = Status.IDLE;
-      // state.me = action.payload;
+      state.status = Status.SUCCESS;
+      state.me = action.payload;
       state.step = Step.STEP2;
     });
     builder.addCase(submitStepOne.rejected, (state, action) => {
@@ -209,9 +215,9 @@ export const accountSlice = createSlice({
       state.error = null;
     });
     builder.addCase(submitStepTwo.fulfilled, (state, action) => {
-      // state.me = action.payload;
+      state.status = Status.SUCCESS;
+      state.me = action.payload;
       state.step = Step.COMPLETED;
-      state.status = Status.IDLE;
     });
     builder.addCase(submitStepTwo.rejected, (state, action) => {
       state.status = Status.IDLE;
@@ -232,4 +238,4 @@ export const accountSlice = createSlice({
   },
 });
 
-export const { reset } = accountSlice.actions;
+export const { reset, resetUpdate } = accountSlice.actions;

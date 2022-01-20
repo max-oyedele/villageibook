@@ -10,6 +10,7 @@ const InputBoxWithSelect: React.FC<{
   optionLabel: any;
   selectedOption: any;
   setSelectedOption: React.Dispatch<React.SetStateAction<any | null>>;
+  isClearable?: boolean;
   isRequired: boolean;
   isInvalid: boolean;
   error: any;
@@ -20,6 +21,7 @@ const InputBoxWithSelect: React.FC<{
   optionLabel,
   selectedOption,
   setSelectedOption,
+  isClearable,
   isRequired,
   isInvalid,
   error,
@@ -36,6 +38,7 @@ const InputBoxWithSelect: React.FC<{
               id={id}
               options={options}
               optionLabel={optionLabel}
+              isClearable={isClearable}
               selectedOption={selectedOption}
               setSelectedOption={setSelectedOption}
               width="full"
