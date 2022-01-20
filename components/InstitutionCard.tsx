@@ -79,7 +79,7 @@ const InstitutionCard: React.FC<{ institution: Institution }> = ({
                     fontSize="12px"
                     fontWeight="400"
                   >
-                    More
+                    View More
                   </Button>
                 </Box>
               </Link>
@@ -96,7 +96,7 @@ const InstitutionCard: React.FC<{ institution: Institution }> = ({
                   fontSize="12px"
                   fontWeight="400"
                 >
-                  More
+                  View More
                 </Button>
               </Link>
             </Flex>

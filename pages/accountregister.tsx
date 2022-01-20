@@ -14,7 +14,7 @@ import {
   Text,
   Button,
   useBreakpointValue,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 
 import { Formik, Form } from "formik";
@@ -68,13 +68,13 @@ const AccountToRegister: NextPage = () => {
     fetchVillagesData,
     fetchCommonData,
     fetchMeData,
-    submitStepOneData
+    submitStepOneData,
   } = useActionDispatch();
 
   useEffect(() => {
     fetchCommonData();
     fetchVillagesData(null); //remove later
-    
+
     const access_token = getUserToken();
     if (access_token) {
       fetchMeData();
@@ -94,18 +94,23 @@ const AccountToRegister: NextPage = () => {
 
   const [avatar, setAvatar] = useState(null);
 
-  const [selectedUniversity, setSelectedUniversity] = useState<University | null>(null);
-  const [selectedProfession, setSelectedProfession] = useState<Profession | null>(null);
+  const [selectedUniversity, setSelectedUniversity] =
+    useState<University | null>(null);
+  const [selectedProfession, setSelectedProfession] =
+    useState<Profession | null>(null);
   const [degrees, setDegrees] = useState<Degree[]>([]);
   const [selectedDegree, setSelectedDegree] = useState<Degree | null>(null);
 
-  const [selectedCountry, setSelectedCountry] = useState<Country>(platformCountries[0]);
+  const [selectedCountry, setSelectedCountry] = useState<Country>(
+    platformCountries[0]
+  );
   const [selectedRegion, setSelectedRegion] = useState<Region>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<District>(null);
-  const [selectedSubDistrict, setSelectedSubDistrict] = useState<SubDistrict>(null);
+  const [selectedSubDistrict, setSelectedSubDistrict] =
+    useState<SubDistrict>(null);
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
-  const [selectedLivingCountry, setSelectedLivingCountry] = useState<Country>(null);
-
+  const [selectedLivingCountry, setSelectedLivingCountry] =
+    useState<Country>(null);
 
   useEffect(() => {
     if (step === Step.STEP2) {
@@ -138,25 +143,21 @@ const AccountToRegister: NextPage = () => {
     fetchSubDistrictsData({ district: selectedDistrict });
   }, [selectedDistrict]);
   useEffect(() => {
-    // setSelectedVillage(null);
+    setSelectedVillage(null);
     // fetchVillagesData({ subDistrict: selectedSubDistrict });
   }, [selectedSubDistrict]);
   useEffect(() => {
     if (degreeStrs) {
-      setDegrees(degreeStrs.map((e, index) => ({
+      const tDgrees = degreeStrs.map((e, index) => ({
         id: index,
         name: e,
         href: e.toLowerCase(),
-        uuid: index.toString() //temp
-      })))
+        uuid: index.toString(), //temp
+      }));
+      setDegrees(tDgrees);
+      setSelectedDegree(tDgrees.find((e) => e.name === me?.degree));
     }
-  }, [degreeStrs])
-  useEffect(()=>{
-    if (degrees.length > 0) {
-      const selectedDegree = degrees.find((e) => e.name === me?.degree);
-      if(selectedDegree) setSelectedDegree(selectedDegree);
-    }
-  }, [degrees])
+  }, [degreeStrs]);
 
   const accountSchema = yup.object({
     university: yup.object().nullable(),
@@ -191,7 +192,6 @@ const AccountToRegister: NextPage = () => {
             subDistrict: selectedSubDistrict,
             village: selectedVillage,
             livingCountry: selectedLivingCountry,
-            // livingVillage: selectedLivingVillage,
           }}
           enableReinitialize={true}
           validationSchema={accountSchema}
@@ -204,7 +204,7 @@ const AccountToRegister: NextPage = () => {
               livesIn: selectedLivingCountry.uuid,
               graduatedAt: selectedUniversity?.uuid,
               degree: selectedDegree?.href,
-              profession: selectedProfession?.uuid
+              profession: selectedProfession?.uuid,
             };
 
             actions.setSubmitting(true);
@@ -267,18 +267,6 @@ const AccountToRegister: NextPage = () => {
                           error={errors.livingCountry}
                         />
 
-                        {/* <InputBoxWithSelect
-                          id="livingVillage"
-                          label="Village"
-                          options={villages}
-                          optionLabel={({ name }) => name}
-                          selectedOption={selectedLivingVillage}
-                          setSelectedOption={setSelectedLivingVillage}
-                          isRequired={true}
-                          isInvalid={!selectedLivingVillage}
-                          error={errors.livingVillage}
-                        /> */}
-
                         <Text fontSize="11px" color="purpleTone" mt={8}>
                           Where are you from?
                         </Text>
@@ -296,7 +284,7 @@ const AccountToRegister: NextPage = () => {
                         />
                         {/* <InputBoxWithSelect
                           id="region"
-                          label="Division"
+                          label="Region"
                           options={regions}
                           optionLabel={({ name }) => name}
                           selectedOption={selectedRegion}
@@ -352,6 +340,7 @@ const AccountToRegister: NextPage = () => {
                           optionLabel={({ name }) => name}
                           selectedOption={selectedUniversity}
                           setSelectedOption={setSelectedUniversity}
+                          isClearable={true}
                           isRequired={false}
                           isInvalid={!selectedUniversity}
                           error={errors.university}
@@ -364,22 +353,25 @@ const AccountToRegister: NextPage = () => {
                           optionLabel={({ name }) => name}
                           selectedOption={selectedProfession}
                           setSelectedOption={setSelectedProfession}
+                          isClearable={true}
                           isRequired={false}
                           isInvalid={!selectedProfession}
                           error={errors.profession}
                         />
-
-                        <InputBoxWithSelect
-                          id="degree"
-                          label="Degree"
-                          options={degrees}
-                          optionLabel={({ name }) => name}
-                          selectedOption={selectedDegree}
-                          setSelectedOption={setSelectedDegree}
-                          isRequired={false}
-                          isInvalid={!selectedDegree}
-                          error={errors.degree}
-                        />
+                        {selectedUniversity && (
+                          <InputBoxWithSelect
+                            id="degree"
+                            label="Degree"
+                            options={degrees}
+                            optionLabel={({ name }) => name}
+                            selectedOption={selectedDegree}
+                            setSelectedOption={setSelectedDegree}
+                            isClearable={true}
+                            isRequired={false}
+                            isInvalid={!selectedDegree}
+                            error={errors.degree}
+                          />
+                        )}
                       </Box>
                     </Stack>
                   </Flex>
@@ -388,7 +380,7 @@ const AccountToRegister: NextPage = () => {
                       type="submit"
                       w="50%"
                       fontSize="12px"
-                      fontWeight="400"                      
+                      fontWeight="400"
                       isLoading={isSubmitting}
                       disabled={isSubmitting}
                     >

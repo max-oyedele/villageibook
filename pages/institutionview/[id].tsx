@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 
 import Header from "components/Header";
+import Footer from "components/Footer";
 import Loader from "components/widgets/Loader";
 
 import useFetchData from "hooks/use-fetch-data";
@@ -147,6 +148,10 @@ const InstitutionView: NextPage = () => {
           </Flex>
         )}
       </Container>
+
+      <Box w="full" pos="fixed" bottom={0} bg="white" mt={20}>
+        <Footer />
+      </Box>
     </Fragment>
   );
 };

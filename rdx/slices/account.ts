@@ -67,7 +67,7 @@ export const submitStepOne = createAsyncThunk(
       if (params.degree) bodyFormData.append("degree", params.degree);
       if (params.profession)
         bodyFormData.append("profession", params.profession);
-
+        
       const response = await axios.patch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`,
         bodyFormData,
@@ -79,10 +79,7 @@ export const submitStepOne = createAsyncThunk(
         }
       );
 
-      localStorage.setItem(
-        "villageibookAccount",
-        JSON.stringify(response.data)
-      );
+      localStorage.setItem("villageibookAccount", JSON.stringify(response.data));
       return response.data;
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });
@@ -125,8 +122,8 @@ export const submitStepTwo = createAsyncThunk(
         }
       );
 
-      // localStorage.setItem("villageibookAccount", JSON.stringify(response.data)); // now response data is not perfect like fetchMe
-      return response.data; // no use for now
+      localStorage.setItem("villageibookAccount", JSON.stringify(response.data));
+      return response.data;
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });
       return thunkAPI.rejectWithValue(error.response.statusText);
@@ -205,7 +202,7 @@ export const accountSlice = createSlice({
     });
     builder.addCase(submitStepOne.fulfilled, (state, action) => {
       state.status = Status.SUCCESS;
-      // state.me = action.payload;
+      state.me = action.payload;
       state.step = Step.STEP2;
     });
     builder.addCase(submitStepOne.rejected, (state, action) => {
@@ -219,7 +216,7 @@ export const accountSlice = createSlice({
     });
     builder.addCase(submitStepTwo.fulfilled, (state, action) => {
       state.status = Status.SUCCESS;
-      // state.me = action.payload;
+      state.me = action.payload;
       state.step = Step.COMPLETED;
     });
     builder.addCase(submitStepTwo.rejected, (state, action) => {

@@ -1,7 +1,7 @@
 import React from "react";
 
 import Select, { components } from "react-select";
-import { BiChevronDown } from "react-icons/bi";
+import { BiChevronDown, BiX } from "react-icons/bi";
 import { FixedSizeList as List } from "react-window";
 
 const SelectBox = (props: any) => {
@@ -14,6 +14,14 @@ const SelectBox = (props: any) => {
     return (
       <components.DropdownIndicator {...props}>
         <BiChevronDown color="#9F9FB5" />
+      </components.DropdownIndicator>
+    );
+  };
+
+  const ClearIndicator = (props: any) => {
+    return (
+      <components.DropdownIndicator {...props}>
+        <BiX color="#9F9FB5" />
       </components.DropdownIndicator>
     );
   };
@@ -42,13 +50,14 @@ const SelectBox = (props: any) => {
     <Select
       instanceId={props.id}
       isMulti={props.isMulti ? true : false}
+      isClearable={props.isClearable ?? false}
       getOptionLabel={props.optionLabel}
       value={props.selectedOption}
       onChange={handleChange}
       options={props.options}
       placeholder={props.placeholder ?? ""}
       className={props.className ?? ""}
-      components={{ MenuList, DropdownIndicator }}
+      components={{ MenuList, DropdownIndicator, ClearIndicator }}
       styles={{
         option: (provided, state) => ({
           // ...provided,

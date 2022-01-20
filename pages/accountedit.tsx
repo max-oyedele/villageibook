@@ -56,15 +56,43 @@ const AccountToEdit: NextPage = () => {
 
   const [activeStep, setActiveStep] = useState<number>(1);
 
-  const { me, step, accountError } = useFetchData();
-  const { fetchMeData } = useActionDispatch();
+  const { me, step, accountStatus, accountError } = useFetchData();
+  const { updateReset, fetchMeData } = useActionDispatch();
 
   useEffect(() => {
     fetchMeData();
   }, []);
 
   useEffect(() => {
-    if (!accountError && step === Step.STEP2 && isBySupport) setActiveStep(2);
+    if (accountStatus === Status.SUCCESS) {
+      if (step === Step.STEP2 && isBySupport) {
+        !toast.isActive("byAdminTeam") &&
+          toast({
+            id: "byAdminTeam",
+            title: "Thank you!",
+            description:
+              "One staff of our admin team will reach out to you soon via email.",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+      } else {
+        !toast.isActive("updateMe") &&
+          toast({
+            id: "updateMe",
+            title: "Successfully Updated.",
+            description: "Updated",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+
+        setActiveStep(2);
+      }
+      
+      updateReset()
+    }
+
     if (accountError) {
       !toast.isActive("accountError") &&
         toast({
@@ -76,11 +104,10 @@ const AccountToEdit: NextPage = () => {
           isClosable: true,
         });
     }
-  }, [accountError, step]);
+  }, [accountStatus, accountError, step]);
 
   const [avatar, setAvatar] = useState(null);
 
-  const [isSubscribed, setIsSubscribed] = useState(false);
   const [isBySupport, setIsBySupport] = useState(false);
 
   return (
@@ -150,8 +177,7 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const {
-    me,
-    accountStatus,
+    me,    
     countries,
     districts,
     subDistricts,
@@ -160,14 +186,12 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
     professions,
     degrees: degreeStrs,
   } = useFetchData();
-  const {
-    updateReset,
+  const {    
     fetchCommonData,
     fetchRegionsData,
     fetchDistrictsData,
     fetchSubDistrictsData,
     fetchVillagesData,
-    fetchMeData,
     submitStepOneData,
   } = useActionDispatch();
 
@@ -200,10 +224,6 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
   const [selectedLivingCountry, setSelectedLivingCountry] =
     useState<Country>(null);
-  const [selectedLivingVillage, setSelectedLivingVillage] =
-    useState<Village>(null);
-
-  const toast = useToast();
 
   useEffect(() => {
     fetchCommonData();
@@ -214,26 +234,7 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
   }, []);
 
   useEffect(() => {
-    if (accountStatus === Status.SUCCESS) {
-      !toast.isActive("updateMe") &&
-        toast({
-          id: "updateMe",
-          title: "Successfully Updated.",
-          description: "Updated",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-
-      localStorage.removeItem("villageibookAccount"); // remove if update api response is enough
-      fetchMeData(); // remove if update api response is enough
-      updateReset();
-    }
-  }, [accountStatus]);
-
-  useEffect(() => {
     if (me) {
-      // initialize with me
       setFirstName(me.firstName);
       setLastName(me.lastName);
 
@@ -244,16 +245,20 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
       }
       if (districts?.length > 0 && !selectedDistrict) {
         setSelectedDistrict(
-          districts.find((e) => e.uuid === me.comesFrom?.district?.uuid)
+          districts.find((e) => e.uuid === me.comesFrom?.district?.uuid) ?? null
         );
       }
       if (subDistricts?.length > 0 && !selectedSubDistrict) {
         setSelectedSubDistrict(
-          subDistricts.find((e) => e.uuid === me.comesFrom?.subDistrict?.uuid)
+          subDistricts.find(
+            (e) => e.uuid === me.comesFrom?.subDistrict?.uuid
+          ) ?? null
         );
       }
       if (villages?.length > 0 && !selectedVillage) {
-        setSelectedVillage(villages.find((e) => e.uuid === me.comesFrom?.uuid));
+        setSelectedVillage(
+          villages.find((e) => e.uuid === me.comesFrom?.uuid) ?? null
+        );
       }
       if (universities) {
         setSelectedUniversity(
@@ -266,14 +271,14 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
         );
       }
       if (degreeStrs) {
-        setDegrees(
-          degreeStrs.map((e, index) => ({
-            id: index,
-            name: e,
-            href: e.toLowerCase(),
-            uuid: index.toString(), //temp
-          }))
-        );
+        const tDgrees = degreeStrs.map((e, index) => ({
+          id: index,
+          name: e,
+          href: e.toLowerCase(),
+          uuid: index.toString(), //temp
+        }));
+        setDegrees(tDgrees);
+        setSelectedDegree(tDgrees.find((e) => e.name === me?.degree));
       }
     }
   }, [
@@ -286,13 +291,6 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
     professions,
     degreeStrs,
   ]);
-
-  useEffect(() => {
-    if (degrees.length > 0) {
-      const selectedDegree = degrees.find((e) => e.name === me?.degree);
-      if (selectedDegree) setSelectedDegree(selectedDegree);
-    }
-  }, [degrees]);
 
   useEffect(() => {
     if (selectedCountry) {
@@ -309,14 +307,13 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
   useEffect(() => {
     if (selectedDistrict) {
       setSelectedSubDistrict(null);
-      setSelectedVillage(null);
       fetchSubDistrictsData({ district: selectedDistrict });
     }
   }, [selectedDistrict]);
   useEffect(() => {
     if (selectedSubDistrict) {
-      setSelectedVillage(null);
-      // fetchVillagesData({ subDistrict: selectedSubDistrict });
+      // setSelectedVillage(null);
+      // fetchVillagesData({ subDistrict: selectedSubDistrict }); // this is not correctly working in backend for now
     }
   }, [selectedSubDistrict]);
 
@@ -335,7 +332,6 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
       .object()
       .nullable()
       .required("Country must be selected."),
-    // livingVillage: yup.object().nullable().required("Village must be selected."),
   });
 
   return (
@@ -352,7 +348,6 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
         subDistrict: selectedSubDistrict,
         village: selectedVillage,
         livingCountry: selectedLivingCountry,
-        // livingVillage: selectedLivingVillage,
       }}
       enableReinitialize={true}
       validationSchema={step1Schema}
@@ -422,18 +417,6 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
                 error={errors.livingCountry}
               />
 
-              {/* <InputBoxWithSelect
-                id="livingVillage"
-                label="Village"
-                options={villages}
-                optionLabel={({ name }) => name}
-                selectedOption={selectedLivingVillage}
-                setSelectedOption={setSelectedLivingVillage}
-                isRequired={true}
-                isInvalid={!selectedLivingVillage}
-                error={errors.livingVillage}
-              /> */}
-
               <Text fontSize="11px" color="purpleTone" mt={8}>
                 Where are you from?
               </Text>
@@ -451,7 +434,7 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
               />
               {/* <InputBoxWithSelect
                 id="region"
-                label="Division"
+                label="Region"
                 options={regions}
                 optionLabel={({ name }) => name}
                 selectedOption={selectedRegion}
@@ -507,6 +490,7 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
                 optionLabel={({ name }) => name}
                 selectedOption={selectedUniversity}
                 setSelectedOption={setSelectedUniversity}
+                isClearable={true}
                 isRequired={false}
                 isInvalid={!selectedUniversity}
                 error={errors.university}
@@ -519,22 +503,26 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
                 optionLabel={({ name }) => name}
                 selectedOption={selectedProfession}
                 setSelectedOption={setSelectedProfession}
+                isClearable={true}
                 isRequired={false}
                 isInvalid={!selectedProfession}
                 error={errors.profession}
               />
 
-              <InputBoxWithSelect
-                id="degree"
-                label="Degree"
-                options={degrees}
-                optionLabel={({ name }) => name}
-                selectedOption={selectedDegree}
-                setSelectedOption={setSelectedDegree}
-                isRequired={false}
-                isInvalid={!selectedDegree}
-                error={errors.degree}
-              />
+              {selectedUniversity && (
+                <InputBoxWithSelect
+                  id="degree"
+                  label="Degree"
+                  options={degrees}
+                  optionLabel={({ name }) => name}
+                  selectedOption={selectedDegree}
+                  setSelectedOption={setSelectedDegree}
+                  isClearable={true}
+                  isRequired={false}
+                  isInvalid={!selectedDegree}
+                  error={errors.degree}
+                />
+              )}
 
               {!me?.roles?.includes("PREMIUM") && (
                 <Box mt={12}>
@@ -580,10 +568,10 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
 };
 
 const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
-  const { me, accountStatus } = useFetchData();
-  const { updateReset, submitStepTwoData, fetchMeData } = useActionDispatch();
+  const { me } = useFetchData();
+  const { submitStepTwoData } = useActionDispatch();
 
-  const [about, setAbout] = useState(null);
+  const [about, setAbout] = useState(me.about);
 
   const photoRefs = useRef([]);
   const [photo1, setPhoto1] = useState(null);
@@ -596,8 +584,7 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
   const [refresh, setRefresh] = useState(false);
 
   const [isUploading, setIsUploading] = useState(false);
-  const toast = useToast();
-  
+
   const uploadToClient = (event, index) => {
     if (event.target.files && event.target.files[0]) {
       const i = event.target.files[0];
@@ -618,26 +605,8 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
   };
 
   const step2Schema = yup.object({
-    about: yup.string().nullable().required("About me is required."),
+    about: yup.string().required("About me is required."),
   });
-
-  useEffect(() => {
-    if (accountStatus === Status.SUCCESS) {
-      !toast.isActive("updateMe") &&
-        toast({
-          id: "updateMe",
-          title: "Successfully Updated.",
-          description: "Updated",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-
-      localStorage.removeItem("villageibookAccount"); // remove if update api response is enough
-      fetchMeData(); // remove if update api response is enough
-      updateReset();
-    }
-  }, [accountStatus]);
 
   return (
     <Formik
@@ -655,7 +624,7 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
           photo3,
         };
         actions.setSubmitting(true);
-        await submitStepTwoData(params);        
+        await submitStepTwoData(params);
         actions.setSubmitting(false);
       }}
     >
@@ -672,6 +641,7 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
             id="about"
             label="About Me"
             rows={10}
+            value={about}
             onChange={setAbout}
             isRequired={true}
             isInvalid={!!errors.about}

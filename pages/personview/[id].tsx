@@ -61,8 +61,8 @@ const PersonalityView: NextPage = () => {
       <Container maxW="container.xl" px={6} mt={8} mb={48}>
         {/* <PageTitle title={user?.firstName + " " + user?.lastName ?? ""} /> */}
 
-        {viewPageStatus === 'loading' && <Loader />}
-        {viewPageStatus !== 'loading' && (
+        {viewPageStatus === "loading" && <Loader />}
+        {viewPageStatus !== "loading" && (
           <Flex>
             {breakpointValue === "md" && (
               <Flex
@@ -160,29 +160,15 @@ const PersonalityView: NextPage = () => {
                     </Box>
                   </HStack>
                 </VStack>
-
-                {/* {breakpointValue === "base" && (
-                  <VStack spacing={6} mt={8}>
-                    {user?.details?.photos.map((photo, index) => (
-                      <Image
-                        key={index}
-                        src={photo}
-                        w="full"
-                        fit="cover"
-                        alt=""
-                      />
-                    ))}
-                  </VStack>
-                )} */}
               </Flex>
             </Box>
           </Flex>
         )}
       </Container>
 
-      {/* <Box pos="fixed" w="full" bottom={0}>
+      <Box w="full" pos="fixed" bottom={0} bg="white" mt={20}>
         <Footer />
-      </Box> */}
+      </Box>
     </Fragment>
   );
 };
