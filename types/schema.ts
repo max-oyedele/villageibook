@@ -11,7 +11,8 @@ export type User = {
   about?: string;
   comesFrom?: Village;
   livesIn?: Country;
-  graduatedAt?: University;
+  graduatedIn?: Country;
+  university?: University;
   hasProfession?: Profession;
   degree?: string; //Degree;
   lastUpdated?: string;

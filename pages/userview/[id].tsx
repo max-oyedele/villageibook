@@ -244,6 +244,19 @@ const UserView: NextPage = () => {
                 >
                   <HStack w="full">
                     <Box w="full" fontSize="13px" color="purpleTone">
+                      Graduated in
+                    </Box>
+                    <Box
+                      w="full"
+                      fontSize="13px"
+                      color="GrayText"
+                      textTransform="capitalize"
+                    >
+                      {user?.graduatedIn?.name}
+                    </Box>
+                  </HStack>
+                  <HStack w="full">
+                    <Box w="full" fontSize="13px" color="purpleTone">
                       University
                     </Box>
                     <Box
@@ -252,7 +265,7 @@ const UserView: NextPage = () => {
                       color="GrayText"
                       textTransform="capitalize"
                     >
-                      {user?.graduatedAt.name}
+                      {user?.university?.name}
                     </Box>
                   </HStack>
                   <HStack w="full">

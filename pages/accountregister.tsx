@@ -42,7 +42,7 @@ import useActionDispatch from "hooks/use-action-dispatch";
 
 import { getUserToken } from "helpers/user-token";
 
-import { Step } from "rdx/types";
+import { Status, Step } from "rdx/types";
 
 const AccountToRegister: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
@@ -52,6 +52,7 @@ const AccountToRegister: NextPage = () => {
   const {
     me,
     step,
+    accountStatus,
     accountError,
     countries,
     districts,
@@ -62,11 +63,13 @@ const AccountToRegister: NextPage = () => {
     degrees: degreeStrs,
   } = useFetchData();
   const {
+    updateReset,
+    fetchCommonData,
     fetchRegionsData,
     fetchDistrictsData,
     fetchSubDistrictsData,
     fetchVillagesData,
-    fetchCommonData,
+    fetchUniversitiesData,
     fetchMeData,
     submitStepOneData,
   } = useActionDispatch();
@@ -78,10 +81,15 @@ const AccountToRegister: NextPage = () => {
     const access_token = getUserToken();
     if (access_token) {
       fetchMeData();
-    } else {
-      router.push("/home");
     }
   }, []);
+
+  useEffect(()=>{
+    if(me?.livesIn.uuid && me?.comesFrom.uuid){
+      // already have registered fields
+      router.push('/feed');
+    }
+  }, [me])
 
   const platformCountries = [
     {
@@ -94,13 +102,8 @@ const AccountToRegister: NextPage = () => {
 
   const [avatar, setAvatar] = useState(null);
 
-  const [selectedUniversity, setSelectedUniversity] =
-    useState<University | null>(null);
-  const [selectedProfession, setSelectedProfession] =
-    useState<Profession | null>(null);
-  const [degrees, setDegrees] = useState<Degree[]>([]);
-  const [selectedDegree, setSelectedDegree] = useState<Degree | null>(null);
-
+  const [selectedLivingCountry, setSelectedLivingCountry] =
+    useState<Country>(null);
   const [selectedCountry, setSelectedCountry] = useState<Country>(
     platformCountries[0]
   );
@@ -109,13 +112,31 @@ const AccountToRegister: NextPage = () => {
   const [selectedSubDistrict, setSelectedSubDistrict] =
     useState<SubDistrict>(null);
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
-  const [selectedLivingCountry, setSelectedLivingCountry] =
-    useState<Country>(null);
+  const [selectedGraduatedIn, setSelectedGraduatedIn] = useState<Country>(null);
+  const [selectedUniversity, setSelectedUniversity] =
+    useState<University | null>(null);
+  const [selectedProfession, setSelectedProfession] =
+    useState<Profession | null>(null);
+  const [degrees, setDegrees] = useState<Degree[]>([]);
+  const [selectedDegree, setSelectedDegree] = useState<Degree | null>(null);
 
   useEffect(() => {
-    if (step === Step.STEP2) {
-      router.push("/feed");
-      return;
+    if (accountStatus === Status.SUCCESS) {
+      if (step === Step.STEP2) {      
+        !toast.isActive("registerMe") &&
+          toast({
+            id: "registerMe",
+            title: "Welcome being a Skillhet member!",
+            description: "Successfully registered.",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+
+          router.push("/feed");          
+      }
+
+      updateReset();
     }
     if (accountError) {
       !toast.isActive("accountError") &&
@@ -128,7 +149,7 @@ const AccountToRegister: NextPage = () => {
           isClosable: true,
         });
     }
-  }, [step, accountError]);
+  }, [accountStatus, accountError, step]);
 
   useEffect(() => {
     setSelectedRegion(null);
@@ -143,9 +164,15 @@ const AccountToRegister: NextPage = () => {
     fetchSubDistrictsData({ district: selectedDistrict });
   }, [selectedDistrict]);
   useEffect(() => {
-    setSelectedVillage(null);
+    // setSelectedVillage(null);
     // fetchVillagesData({ subDistrict: selectedSubDistrict });
   }, [selectedSubDistrict]);
+  useEffect(() => {
+    if (selectedGraduatedIn) {
+      setSelectedUniversity(null);
+      fetchUniversitiesData({ graduatedIn: selectedGraduatedIn });
+    }
+  }, [selectedGraduatedIn]);
   useEffect(() => {
     if (degreeStrs) {
       const tDgrees = degreeStrs.map((e, index) => ({
@@ -155,24 +182,23 @@ const AccountToRegister: NextPage = () => {
         uuid: index.toString(), //temp
       }));
       setDegrees(tDgrees);
-      setSelectedDegree(tDgrees.find((e) => e.name === me?.degree));
     }
   }, [degreeStrs]);
 
   const accountSchema = yup.object({
-    university: yup.object().nullable(),
-    profession: yup.object().nullable(),
-    degree: yup.object().nullable(),
+    livingCountry: yup
+      .object()
+      .nullable()
+      .required("Country must be selected."),
     country: yup.object().nullable().required("Country must be selected."),
     // region: yup.object().nullable().required("Region must be selected."),
     district: yup.object().nullable().required("District must be selected."),
     subDistrict: yup.object().nullable().required("Upazila must be selected."),
     village: yup.object().nullable().required("Village must be selected."),
-    livingCountry: yup
-      .object()
-      .nullable()
-      .required("Country must be selected."),
-    // livingVillage: yup.object().nullable().required("Village must be selected."),
+    graduatedIn: yup.object().nullable(),
+    university: yup.object().nullable(),
+    profession: yup.object().nullable(),
+    degree: yup.object().nullable(),
   });
 
   return (
@@ -183,26 +209,26 @@ const AccountToRegister: NextPage = () => {
 
         <Formik
           initialValues={{
-            university: selectedUniversity,
-            profession: selectedProfession,
-            degree: selectedDegree,
+            livingCountry: selectedLivingCountry,
             country: selectedCountry,
             // region: selectedRegion,
             district: selectedDistrict,
             subDistrict: selectedSubDistrict,
             village: selectedVillage,
-            livingCountry: selectedLivingCountry,
+            graduatedIn: selectedGraduatedIn,
+            university: selectedUniversity,
+            profession: selectedProfession,
+            degree: selectedDegree,
           }}
           enableReinitialize={true}
           validationSchema={accountSchema}
           onSubmit={async (values, actions) => {
             const params = {
-              firstName: me.firstName,
-              lastName: me.lastName,
               avatar,
-              comesFrom: selectedVillage.uuid,
               livesIn: selectedLivingCountry.uuid,
-              graduatedAt: selectedUniversity?.uuid,
+              comesFrom: selectedVillage.uuid,
+              graduatedIn: selectedGraduatedIn.uuid,
+              university: selectedUniversity?.uuid,
               degree: selectedDegree?.href,
               profession: selectedProfession?.uuid,
             };
@@ -334,8 +360,21 @@ const AccountToRegister: NextPage = () => {
                         </Text>
 
                         <InputBoxWithSelect
-                          id="graduatedAt"
-                          label="Graduated at"
+                          id="graduatedIn"
+                          label="Graduated in"
+                          options={countries}
+                          optionLabel={({ name }) => name}
+                          selectedOption={selectedGraduatedIn}
+                          setSelectedOption={setSelectedGraduatedIn}
+                          isClearable={true}
+                          isRequired={false}
+                          isInvalid={!selectedGraduatedIn}
+                          error={errors.graduatedIn}
+                        />
+
+                        <InputBoxWithSelect
+                          id="university"
+                          label="University"
                           options={universities}
                           optionLabel={({ name }) => name}
                           selectedOption={selectedUniversity}

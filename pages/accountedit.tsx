@@ -89,8 +89,8 @@ const AccountToEdit: NextPage = () => {
 
         setActiveStep(2);
       }
-      
-      updateReset()
+
+      updateReset();
     }
 
     if (accountError) {
@@ -177,7 +177,7 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
 
   const {
-    me,    
+    me,
     countries,
     districts,
     subDistricts,
@@ -186,12 +186,13 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
     professions,
     degrees: degreeStrs,
   } = useFetchData();
-  const {    
+  const {
     fetchCommonData,
     fetchRegionsData,
     fetchDistrictsData,
     fetchSubDistrictsData,
     fetchVillagesData,
+    fetchUniversitiesData,
     submitStepOneData,
   } = useActionDispatch();
 
@@ -207,13 +208,8 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
   const [firstName, setFirstName] = useState<string | null>(null);
   const [lastName, setLastName] = useState<string | null>(null);
 
-  const [selectedUniversity, setSelectedUniversity] =
-    useState<University | null>(null);
-  const [selectedProfession, setSelectedProfession] =
-    useState<Profession | null>(null);
-  const [degrees, setDegrees] = useState<Degree[]>([]);
-  const [selectedDegree, setSelectedDegree] = useState<Degree | null>(null);
-
+  const [selectedLivingCountry, setSelectedLivingCountry] =
+    useState<Country>(null);
   const [selectedCountry, setSelectedCountry] = useState<Country>(
     platformCountries[0]
   );
@@ -222,8 +218,13 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
   const [selectedSubDistrict, setSelectedSubDistrict] =
     useState<SubDistrict>(null);
   const [selectedVillage, setSelectedVillage] = useState<Village>(null);
-  const [selectedLivingCountry, setSelectedLivingCountry] =
-    useState<Country>(null);
+  const [selectedGraduatedIn, setSelectedGraduatedIn] = useState<Country>(null);
+  const [selectedUniversity, setSelectedUniversity] =
+    useState<University | null>(null);
+  const [selectedProfession, setSelectedProfession] =
+    useState<Profession | null>(null);
+  const [degrees, setDegrees] = useState<Degree[]>([]);
+  const [selectedDegree, setSelectedDegree] = useState<Degree | null>(null);
 
   useEffect(() => {
     fetchCommonData();
@@ -242,7 +243,8 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
         setSelectedLivingCountry(
           countries.find((e) => e.uuid === me.livesIn?.uuid)
         );
-      }
+      }      
+
       if (districts?.length > 0 && !selectedDistrict) {
         setSelectedDistrict(
           districts.find((e) => e.uuid === me.comesFrom?.district?.uuid) ?? null
@@ -260,9 +262,12 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
           villages.find((e) => e.uuid === me.comesFrom?.uuid) ?? null
         );
       }
+      if (countries?.length > 0 && !selectedGraduatedIn) {
+        setSelectedGraduatedIn(countries.find((e) => e.uuid === me.graduatedIn?.uuid) ?? null)
+      }
       if (universities) {
         setSelectedUniversity(
-          universities.find((e) => e.uuid === me.graduatedAt?.uuid)
+          universities.find((e) => e.uuid === me.university?.uuid)
         );
       }
       if (professions) {
@@ -316,22 +321,29 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
       // fetchVillagesData({ subDistrict: selectedSubDistrict }); // this is not correctly working in backend for now
     }
   }, [selectedSubDistrict]);
+  useEffect(() => {
+    if (selectedGraduatedIn) {
+      setSelectedUniversity(null);
+      fetchUniversitiesData({ graduatedIn: selectedGraduatedIn });
+    }
+  }, [selectedGraduatedIn]);
 
   const step1Schema = yup.object({
     firstName: yup.string().nullable().required("First Name is required."),
     lastName: yup.string().nullable().required("Last Name is required."),
-    university: yup.object().nullable(),
-    profession: yup.object().nullable(),
-    degree: yup.object().nullable(),
+    livingCountry: yup
+      .object()
+      .nullable()
+      .required("Country must be selected."),
     country: yup.object().nullable().required("Country must be selected."),
     // region: yup.object().nullable().required("Region must be selected."),
     district: yup.object().nullable().required("District must be selected."),
     subDistrict: yup.object().nullable().required("Upazila must be selected."),
     village: yup.object().nullable().required("Village must be selected."),
-    livingCountry: yup
-      .object()
-      .nullable()
-      .required("Country must be selected."),
+    graduatedIn: yup.object().nullable(),
+    university: yup.object().nullable(),
+    profession: yup.object().nullable(),
+    degree: yup.object().nullable(),
   });
 
   return (
@@ -339,15 +351,16 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
       initialValues={{
         firstName: firstName,
         lastName: lastName,
-        university: selectedUniversity,
-        profession: selectedProfession,
-        degree: selectedDegree,
+        livingCountry: selectedLivingCountry,
         country: selectedCountry,
         // region: selectedRegion,
         district: selectedDistrict,
         subDistrict: selectedSubDistrict,
         village: selectedVillage,
-        livingCountry: selectedLivingCountry,
+        graduatedIn: selectedGraduatedIn,
+        university: selectedUniversity,
+        profession: selectedProfession,
+        degree: selectedDegree,
       }}
       enableReinitialize={true}
       validationSchema={step1Schema}
@@ -356,9 +369,10 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
           firstName,
           lastName,
           avatar,
-          comesFrom: selectedVillage.uuid,
           livesIn: selectedLivingCountry.uuid,
-          graduatedAt: selectedUniversity?.uuid,
+          comesFrom: selectedVillage.uuid,
+          graduatedIn: selectedGraduatedIn.uuid,
+          university: selectedUniversity?.uuid,
           degree: selectedDegree?.name,
           profession: selectedProfession?.uuid,
         };
@@ -484,8 +498,21 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
               </Text>
 
               <InputBoxWithSelect
-                id="graduatedAt"
-                label="Graduated at"
+                id="graduatedIn"
+                label="Graduated in"
+                options={countries}
+                optionLabel={({ name }) => name}
+                selectedOption={selectedGraduatedIn}
+                setSelectedOption={setSelectedGraduatedIn}
+                isClearable={true}
+                isRequired={false}
+                isInvalid={!selectedGraduatedIn}
+                error={errors.graduatedIn}
+              />
+
+              <InputBoxWithSelect
+                id="university"
+                label="University"
                 options={universities}
                 optionLabel={({ name }) => name}
                 selectedOption={selectedUniversity}
