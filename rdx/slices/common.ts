@@ -92,7 +92,7 @@ export const fetchVillages = createAsyncThunk(
     try {
       const endpoint = params?.subDistrict
         ? `/sub-district/[href=${params.subDistrict.href}]/villages.json?sort=name.ASC`
-        : "/villages.json?fields=name,heading,description,history,photo.url,href,uuid,lastUpdated";//&sort=name.ASC
+        : "/villages.json?sort=name.ASC&fields=name,heading,description,history,photo.url,href,uuid,lastUpdated";
 
       const response = await axiosAuth.get("/api/entry", {
         params: { endpoint },
