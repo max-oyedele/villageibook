@@ -32,6 +32,7 @@ import useActionDispatch from "hooks/use-action-dispatch";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
 import { Institution, Village } from "types/schema";
+import Paginate from "components/Paginate";
 
 const Institutions: NextPage = () => {
   const router = useRouter();
@@ -41,6 +42,8 @@ const Institutions: NextPage = () => {
   const { delStatus, addInstitution, editInstitution, deleteData, resetState, fetchInstitutionsData } = useAdminActionDispatch();
   const [isEdit, setIsEdit] = useState(false);
   const toast = useToast();
+  const [pageData, setPageData] = useState([]);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const access_token = getUserToken();
@@ -144,7 +147,7 @@ const Institutions: NextPage = () => {
         accessor: 'photo',
         Cell: function PictureItem({ row }) {
           return (
-            <Box>
+            <Box w={40} h={40}>
               <ImageBox imageUrl={row.original.photo?.url} />
             </Box>
           );
@@ -208,14 +211,13 @@ const Institutions: NextPage = () => {
   const tableInstance = useTable({ columns, data })
   
   useEffect(() => {
-    setData(institutions);
-  }, [institutions]);
+    setData(pageData);
+  }, [pageData])
 
-  useEffect(()=>{
-    if(village){
-      // setData(institutions.filter(e=>e.href.includes(village.href)));
-    }
-  }, [village])
+  useEffect(() => {
+    if (pageData && institutions?.length <= itemsPerPage)
+      setPageData(institutions.slice(0, itemsPerPage));
+  }, [institutions]);
 
   const {
     getTableProps,
@@ -284,6 +286,13 @@ const Institutions: NextPage = () => {
                 })}
             </Tbody>
           </Table>
+          {institutions?.length > itemsPerPage && (
+            <Paginate
+              data={institutions}
+              pageData={setPageData}
+              itemsPerPage={itemsPerPage}
+            />
+          )}
         </Box>
       </Layout>
 

@@ -56,7 +56,7 @@ const VideoBox: React.FC<{
             // light={videoBackImg ?? false}
           />
         )}
-        {!videoReady && (
+        {videoUrl && !videoReady && (
           <Image src={"/images/default-video.png"} alt="" />
         )}
         <Flex

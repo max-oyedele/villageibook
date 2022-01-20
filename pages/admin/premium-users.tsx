@@ -34,6 +34,7 @@ import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
 import { Village, User } from "types/schema";
 import ReadMoreLess from "components/widgets/ReadMoreLess";
+import Paginate from "components/Paginate";
 
 const PremiumUsers: NextPage = () => {
   const router = useRouter();
@@ -184,23 +185,29 @@ const PremiumUsers: NextPage = () => {
 
   const [data, setData] = useState([]);
   const tableInstance = useTable({ columns, data });
-  useEffect(() => {
-    setData(pmusers);
-  }, [pmusers]);
-
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
-
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const modal = useDisclosure();
   const dialog = useDisclosure();
-
   const [uuid, setUuid] = useState(null);
   const [user, setUser] = useState<User>(null);
   const onDelete = (uuid) => {
     deleteData({ type: "users", uuid });
     dialog.onClose();
   };
+  const [pageData, setPageData] = useState([]);
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    setData(pageData);
+  }, [pageData])
+
+  useEffect(() => {
+    if (pageData && pmusers?.length <= itemsPerPage)
+      setPageData(pmusers.slice(0, itemsPerPage));
+  }, [pmusers]);
+
 
   return (
     <Fragment>
@@ -235,6 +242,13 @@ const PremiumUsers: NextPage = () => {
               })}
             </Tbody>
           </Table>
+          {pmusers?.length > itemsPerPage && (
+            <Paginate
+              data={pmusers}
+              pageData={setPageData}
+              itemsPerPage={itemsPerPage}
+            />
+          )}
         </Box>
       </Layout>
 

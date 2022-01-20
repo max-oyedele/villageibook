@@ -33,6 +33,7 @@ import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
 import { Village, Story } from "types/schema";
 import ReadMoreLess from "components/widgets/ReadMoreLess";
+import Paginate from "components/Paginate";
 
 const Stories: NextPage = () => {
   const router = useRouter();
@@ -198,10 +199,6 @@ const Stories: NextPage = () => {
 
   const [data, setData] = useState([])
   const tableInstance = useTable({ columns, data })
-  useEffect(() => {
-    setData(stories);
-  }, [stories])
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -213,13 +210,23 @@ const Stories: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const modal = useDisclosure();
   const dialog = useDisclosure();
-
   const [uuid, setUuid] = useState(null);
   const [story, setStory] = useState<Story>(null);
   const onDelete = (uuid) => {
     deleteData({ type: "stories", uuid });
     dialog.onClose();
   }
+  const [pageData, setPageData] = useState([]);
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    setData(pageData);
+  }, [pageData])
+
+  useEffect(() => {
+    if (pageData && stories?.length <= itemsPerPage)
+      setPageData(stories.slice(0, itemsPerPage));
+  }, [stories]);
 
   return (
     <Fragment>
@@ -269,6 +276,13 @@ const Stories: NextPage = () => {
                 })}
             </Tbody>
           </Table>
+          {stories?.length > itemsPerPage && (
+            <Paginate
+              data={stories}
+              pageData={setPageData}
+              itemsPerPage={itemsPerPage}
+            />
+          )}
         </Box>
       </Layout>
 

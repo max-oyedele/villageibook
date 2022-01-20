@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useRef, useMemo } from "react";
+import { Fragment, useState, useEffect, useRef, useMemo } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import {
@@ -34,6 +34,7 @@ import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
 import { Village, Personality } from "types/schema";
 import ReadMoreLess from "components/widgets/ReadMoreLess";
+import Paginate from "components/Paginate";
 
 const Personalities: NextPage = () => {
   const router = useRouter();
@@ -43,6 +44,9 @@ const Personalities: NextPage = () => {
   const { delStatus, addPersonality, editPersonality, deleteData, resetState, fetchPersonalitiesData } = useAdminActionDispatch();
   const [isEdit, setIsEdit] = useState(false);
   const toast = useToast();
+  const [pageData, setPageData] = useState([]);
+  const itemsPerPage = 10;
+  type ScrollBehavior = "inside";
 
   useEffect(() => {
     const access_token = getUserToken();
@@ -218,7 +222,12 @@ const Personalities: NextPage = () => {
   const [data, setData] = useState([]);
   const tableInstance = useTable({ columns, data });
   useEffect(() => {
-    setData(personalities);
+    setData(pageData);
+  }, [pageData])
+
+  useEffect(() => {
+    if (pageData && personalities?.length <= itemsPerPage)
+      setPageData(personalities.slice(0, itemsPerPage));
   }, [personalities]);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -234,7 +243,7 @@ const Personalities: NextPage = () => {
     deleteData({ type: "personalities", uuid });
     dialog.onClose();
   };
-  const [scrollBehavior, setScrollBehavior] = React.useState("inside");
+  const [scrollBehavior, setScrollBehavior] = useState<ScrollBehavior>("inside");
 
   return (
     <Fragment>
@@ -275,6 +284,13 @@ const Personalities: NextPage = () => {
               })}
             </Tbody>
           </Table>
+          {personalities?.length > itemsPerPage && (
+            <Paginate
+              data={personalities}
+              pageData={setPageData}
+              itemsPerPage={itemsPerPage}
+            />
+          )}
         </Box>
       </Layout>
       <Modal

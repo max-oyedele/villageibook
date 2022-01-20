@@ -30,6 +30,7 @@ import useActionDispatch from "hooks/use-action-dispatch";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
 import ReadMoreLess from "components/widgets/ReadMoreLess";
+import Paginate from "components/Paginate";
 
 const Posts: NextPage = () => {
   const router = useRouter();
@@ -38,6 +39,8 @@ const Posts: NextPage = () => {
   const { posts } = useAdminFetchData();
   const { delStatus, resetState, fetchPostsData, deleteData } = useAdminActionDispatch();
   const toast = useToast();
+  const [pageData, setPageData] = useState([]);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const access_token = getUserToken();
@@ -138,7 +141,7 @@ const Posts: NextPage = () => {
   const [data, setData] = useState([])
   const tableInstance = useTable({ columns, data })
   useEffect(() => {
-    setData(posts.map(post => (
+    setData(pageData?.map(post => (
       {
         uuid: post.uuid,
         content: post.content,
@@ -147,7 +150,12 @@ const Posts: NextPage = () => {
         user: post.user
       }
     )))
-  }, [posts])
+  }, [pageData])
+
+  useEffect(() => {
+    if (pageData && posts?.length <= itemsPerPage)
+      setPageData(posts.slice(0, itemsPerPage));
+  }, [posts]);
 
   const {
     getTableProps,
@@ -209,6 +217,13 @@ const Posts: NextPage = () => {
                 })}
             </Tbody>
           </Table>
+          {posts?.length > itemsPerPage && (
+            <Paginate
+              data={posts}
+              pageData={setPageData}
+              itemsPerPage={itemsPerPage}
+            />
+          )}
         </Box>
       </Layout>
       <DeleteDialog uuid={uuid} isOpen={isOpen} onClose={onClose} onConfirm={onDelete} />

@@ -7,7 +7,6 @@ const Paginate = (props) => {
   const [isLast, setIsLast] = useState(false);
   const itemsPerPage = props.itemsPerPage? props.itemsPerPage : 4;
 
-  console.log("dddddddddddddddddddddddddddddddddddddddddddddddd")
   const handlePageClicked = (event) => {
     const newOffset =
       (event.selected * itemsPerPage) % props.data.length;

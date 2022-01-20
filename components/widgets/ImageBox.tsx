@@ -19,7 +19,7 @@ const ImageBox: React.FC<{ imageUrl: string }> = ({ imageUrl }) => {
     <Fragment>
       <Box w="full" h="full" pos="relative">
         <Image
-          src={imageUrl??"/images/default-photo.jpg"}
+          src={imageUrl}
           alt=""
           borderRadius="4px"
           w="full"

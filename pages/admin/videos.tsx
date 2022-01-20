@@ -34,6 +34,7 @@ import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
 import { Village, Video } from "types/schema";
 import ReadMoreLess from "components/widgets/ReadMoreLess";
+import Paginate from "components/Paginate";
 
 const Videos: NextPage = () => {
   const router = useRouter();
@@ -199,10 +200,6 @@ const Videos: NextPage = () => {
 
   const [data, setData] = useState([])
   const tableInstance = useTable({ columns, data })
-  useEffect(() => {
-    setData(videos);
-  }, [videos])
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -214,13 +211,23 @@ const Videos: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const modal = useDisclosure();
   const dialog = useDisclosure();
-
   const [uuid, setUuid] = useState(null);
   const [video, setVideo] = useState<Video>(null);
   const onDelete = (uuid) => {
     deleteData({ type: "videos", uuid });
     dialog.onClose();
   }
+  const [pageData, setPageData] = useState([]);
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    setData(pageData);
+  }, [pageData])
+
+  useEffect(() => {
+    if (pageData && videos?.length <= itemsPerPage)
+      setPageData(videos.slice(0, itemsPerPage));
+  }, [videos]);
 
   return (
     <Fragment>
@@ -271,6 +278,13 @@ const Videos: NextPage = () => {
                 })}
             </Tbody>
           </Table>
+          {videos?.length > itemsPerPage && (
+            <Paginate
+              data={videos}
+              pageData={setPageData}
+              itemsPerPage={itemsPerPage}
+            />
+          )}
         </Box>
       </Layout>
 
