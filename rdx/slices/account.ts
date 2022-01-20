@@ -46,7 +46,6 @@ export const submitStepOne = createAsyncThunk(
       avatar?: any;
       livesIn?: string;
       comesFrom?: string;
-      graduatedIn?: string;
       university?: string;
       degree?: string;
       profession?: string;
@@ -62,8 +61,7 @@ export const submitStepOne = createAsyncThunk(
       bodyFormData.append("avatar", params.avatar);
       bodyFormData.append("livesIn", params.livesIn);
       bodyFormData.append("comesFrom", params.comesFrom);
-      if (params.graduatedIn)
-        bodyFormData.append("graduatedIn", params.graduatedIn);
+      
       if (params.university)
         bodyFormData.append("university", params.university);
       if (params.degree) bodyFormData.append("degree", params.degree);

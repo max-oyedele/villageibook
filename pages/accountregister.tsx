@@ -227,7 +227,6 @@ const AccountToRegister: NextPage = () => {
               avatar,
               livesIn: selectedLivingCountry.uuid,
               comesFrom: selectedVillage.uuid,
-              graduatedIn: selectedGraduatedIn.uuid,
               university: selectedUniversity?.uuid,
               degree: selectedDegree?.href,
               profession: selectedProfession?.uuid,
