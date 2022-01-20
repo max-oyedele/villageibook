@@ -48,40 +48,9 @@ const Institutions: NextPage = () => {
   }, [vid]);
 
   useEffect(() => {
-    if (
-      villageInstitutions != null &&
-      villageInstitutions["institutions"].length > 0
-    ) {
-      setItemOffset(0);
-    } else if (
-      villageInstitutions != null &&
-      villageInstitutions["institutions"].length == 0
-    ) {
-      setPageData([]);
-    }
+    if (pageData == null && villageInstitutions && villageInstitutions["institutions"].length <= itemsPerPage)
+      setPageData(villageInstitutions["institutions"].slice(0, itemsPerPage));
   }, [villageInstitutions && villageInstitutions["institutions"]]);
-
-  const handlePageClicked = (event) => {
-    const newOffset =
-      (event.selected * itemsPerPage) %
-      villageInstitutions["institutions"].length;
-    setItemOffset(newOffset);
-  };
-
-  useEffect(() => {
-    if (
-      villageInstitutions != null &&
-      villageInstitutions["institutions"].length > 0
-    ) {
-      const endOffset = itemOffset + itemsPerPage;
-      setPageData(
-        villageInstitutions["institutions"].slice(itemOffset, endOffset)
-      );
-      setPageCount(
-        Math.ceil(villageInstitutions["institutions"].length / itemsPerPage)
-      );
-    }
-  }, [itemOffset, itemsPerPage]);
 
   return (
     <Fragment>
@@ -122,10 +91,8 @@ const Institutions: NextPage = () => {
               {villageInstitutions &&
                 villageInstitutions["institutions"].length > itemsPerPage && (
                   <Paginate
-                    handlePageClick={handlePageClicked}
-                    pageCount={pageCount}
-                    itemOffset={itemOffset}
-                    isLast={villageInstitutions["institutions"].length - itemsPerPage > itemOffset}
+                    data={villageInstitutions["institutions"]}
+                    pageData={setPageData}
                   />
                 )}
             </Box>

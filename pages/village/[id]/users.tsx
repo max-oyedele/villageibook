@@ -37,8 +37,6 @@ const Users: NextPage = () => {
   const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
 
   const [pageData, setPageData] = useState(null);
-  const [itemOffset, setItemOffset] = useState(1);
-  const [pageCount, setPageCount] = useState(1);
   const itemsPerPage = 4;
 
   useEffect(() => {
@@ -49,26 +47,9 @@ const Users: NextPage = () => {
   }, [vid]);
 
   useEffect(() => {
-    if (villageUsers != null && villageUsers["users"].length > 0) {
-      setItemOffset(0);
-    } else if (villageUsers != null && villageUsers["users"].length == 0) {
-      setPageData([]);
-    }
+    if (pageData == null && villageUsers && villageUsers["users"].length <= itemsPerPage)
+      setPageData(villageUsers["users"].slice(0, itemsPerPage));
   }, [villageUsers && villageUsers["users"]]);
-
-  const handlePageClicked = (event) => {
-    const newOffset =
-      (event.selected * itemsPerPage) % villageUsers["users"].length;
-    setItemOffset(newOffset);
-  };
-
-  useEffect(() => {
-    if (villageUsers != null && villageUsers["users"].length > 0) {
-      const endOffset = itemOffset + itemsPerPage;
-      setPageData(villageUsers["users"].slice(itemOffset, endOffset));
-      setPageCount(Math.ceil(villageUsers["users"].length / itemsPerPage));
-    }
-  }, [itemOffset, itemsPerPage]);
 
   return (
     <Fragment>
@@ -105,10 +86,8 @@ const Users: NextPage = () => {
               </VStack>
               {villageUsers && villageUsers["users"].length > itemsPerPage && (
                 <Paginate
-                  handlePageClick={handlePageClicked}
-                  pageCount={pageCount}
-                  itemOffset={itemOffset}
-                  isLast={villageUsers["users"].length - itemsPerPage > itemOffset}
+                  data={villageUsers["users"]}
+                  pageData={setPageData}
                 />
               )}
             </Box>

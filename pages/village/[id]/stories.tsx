@@ -38,8 +38,6 @@ const Story: NextPage = () => {
   const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
 
   const [pageData, setPageData] = useState(null);
-  const [itemOffset, setItemOffset] = useState(1);
-  const [pageCount, setPageCount] = useState(1);
   const itemsPerPage = 4;
 
   useEffect(() => {
@@ -50,29 +48,9 @@ const Story: NextPage = () => {
   }, [vid]);
 
   useEffect(() => {
-    if (villageStories != null && villageStories["stories"].length > 0) {
-      setItemOffset(0);
-    } else if (
-      villageStories != null &&
-      villageStories["stories"].length == 0
-    ) {
-      setPageData([]);
-    }
+    if (pageData == null && villageStories && villageStories["stories"].length <= itemsPerPage)
+      setPageData(villageStories["stories"].slice(0, itemsPerPage));
   }, [villageStories && villageStories["stories"]]);
-
-  const handlePageClicked = (event) => {
-    const newOffset =
-      (event.selected * itemsPerPage) % villageStories["stories"].length;
-    setItemOffset(newOffset);
-  };
-
-  useEffect(() => {
-    if (villageStories != null && villageStories["stories"].length > 0) {
-      const endOffset = itemOffset + itemsPerPage;
-      setPageData(villageStories["stories"].slice(itemOffset, endOffset));
-      setPageCount(Math.ceil(villageStories["stories"].length / itemsPerPage));
-    }
-  }, [itemOffset, itemsPerPage]);
 
   return (
     <Fragment>
@@ -121,10 +99,8 @@ const Story: NextPage = () => {
               {villageStories &&
                 villageStories["stories"].length > itemsPerPage && (
                   <Paginate
-                    handlePageClick={handlePageClicked}
-                    pageCount={pageCount}
-                    itemOffset={itemOffset}
-                    isLast={villageStories["stories"].length - itemsPerPage > itemOffset}
+                    data={villageStories["stories"]}
+                    pageData={setPageData}
                   />
                 )}
             </Box>
