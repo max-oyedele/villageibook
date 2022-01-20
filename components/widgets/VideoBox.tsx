@@ -45,7 +45,7 @@ const VideoBox: React.FC<{
     <Fragment>
       <Box w="full" pos="relative">
         {videoBackImg && <Image src={videoBackImg} alt="" />}
-        {!videoBackImg && videoReady &&(
+        {!videoBackImg && (
           <ReactPlayer
             className="react-player"
             url={videoUrl}
@@ -67,12 +67,6 @@ const VideoBox: React.FC<{
           justifyContent="center"
           alignItems="center"
         >
-          {!videoReady && (
-            <Box w={9} h={9}>
-              <Image src={videoBackImg} alt="" />
-              {/* <Loader loading={true} type="clip" /> */}
-            </Box>
-          )}
           {videoReady && videoUrl && (
             <Circle
               w={9}
@@ -86,7 +80,7 @@ const VideoBox: React.FC<{
           )}
         </Flex>
 
-        {!videoUrl && (
+        {/* {!videoUrl && (
           <Flex
             pos="absolute"
             top={0}
@@ -97,7 +91,7 @@ const VideoBox: React.FC<{
           >
             <BiLoaderCircle fontSize="34px" color="white" />
           </Flex>
-        )}
+        )} */}
       </Box>
 
       <Modal

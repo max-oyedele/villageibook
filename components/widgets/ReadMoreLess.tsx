@@ -12,14 +12,14 @@ const ReadMoreLess: React.FC<{
   };
 
   const renderedText = useMemo(
-    () => (isReadMore ? text.slice(0, 150) : text),
+    () => (isReadMore ? text?.slice(0, 150) : text),
     [isReadMore, text]
   );
 
   return (
     <Fragment>
       <Markup content={renderedText} />
-      {text.length > 150 && (
+      {text?.length > 150 && (
         <span
           onClick={toggleReadMore}
           style={{ color: "#553CFB", cursor: "pointer", textTransform: "lowercase" }}

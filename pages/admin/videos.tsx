@@ -8,41 +8,32 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
   Modal,
   ModalOverlay,
-  ModalHeader,
-  ModalCloseButton,
   ModalContent,
-  ModalBody,
-  ModalFooter,
-  useColorMode,
   useBreakpointValue,
   useDisclosure,
   HStack,
   useToast
 } from "@chakra-ui/react";
 
-import { useTable, useSortBy } from 'react-table';
+import { useTable } from 'react-table';
 
 import Layout from "admin/components/Layout";
-import ImageBox from "components/widgets/ImageBox";
 import VideoBox from "components/widgets/VideoBox";
 import VillageSearchBox from "admin/components/VillageSearchBox";
 import VideoForm from "admin/components/VideoForm";
 import DeleteDialog from "admin/components/DeleteDialog";
-
 import { getUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
-
 import { Village, Video } from "types/schema";
+import ReadMoreLess from "components/widgets/ReadMoreLess";
 
 const Videos: NextPage = () => {
   const router = useRouter();
@@ -164,6 +155,13 @@ const Videos: NextPage = () => {
       {
         Header: 'Description',
         accessor: 'description',
+        Cell: function DescriptionItem({ row }) {
+          return (
+            <Box>
+              <ReadMoreLess>{row.original.description}</ReadMoreLess>  
+            </Box>
+          );
+        },
       },
       {
         Header: 'Action',

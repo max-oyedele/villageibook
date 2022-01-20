@@ -23,19 +23,17 @@ import {
 } from "@chakra-ui/react";
 
 import { useTable } from "react-table";
-
 import Layout from "admin/components/Layout";
 import ImageBox from "components/widgets/ImageBox";
 import UserForm from "admin/components/UserForm";
 import DeleteDialog from "admin/components/DeleteDialog";
-
 import { getUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
-
 import { Village, User } from "types/schema";
+import ReadMoreLess from "components/widgets/ReadMoreLess";
 
 const Users: NextPage = () => {
   const router = useRouter();
@@ -105,6 +103,13 @@ const Users: NextPage = () => {
       {
         Header: "About",
         accessor: "about",
+        Cell: function AboutItem({ row }) {
+          return (
+            <Box>
+              <ReadMoreLess>{row.original.about}</ReadMoreLess>  
+            </Box>
+          );
+        },
       },
       {
         Header: "Photo1",

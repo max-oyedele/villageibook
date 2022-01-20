@@ -1,26 +1,13 @@
-import { Fragment, useState, useEffect, useRef, useMemo } from "react";
+import { Fragment, useState, useEffect, useMemo } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import {
   Box,
   Button,
-  Flex,
-  Grid,
   HStack,
   VStack,
-  Center,
-  Icon,
-  Image,
   Avatar,
   Text,
-  Portal,
-  Progress,
-  SimpleGrid,
-  Spacer,
-  Stat,
-  StatHelpText,
-  StatLabel,
-  StatNumber,
   Table,
   Thead,
   Tbody,
@@ -28,26 +15,21 @@ import {
   Tr,
   Th,
   Td,
-  TableCaption,
-  useColorMode,
-  useColorModeValue,
   useDisclosure,
   useToast
 } from "@chakra-ui/react";
 
-import { FaWallet, FaGlobe, FaFile, FaShoppingCart, FaRegArrowAltCircleRight, FaRocket, FaThList } from "react-icons/fa";
 import { useTable, useSortBy } from 'react-table';
-
 import Layout from "admin/components/Layout";
 import ImageBox from "components/widgets/ImageBox";
 import VideoBox from "components/widgets/VideoBox";
 import DeleteDialog from "admin/components/DeleteDialog";
-
 import { getUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
+import ReadMoreLess from "components/widgets/ReadMoreLess";
 
 const Posts: NextPage = () => {
   const router = useRouter();
@@ -94,13 +76,20 @@ const Posts: NextPage = () => {
       {
         Header: 'Content',
         accessor: 'content',
+        Cell: function ContentItem({ row }) {
+          return (
+            <Box>
+              <ReadMoreLess>{row.original.content}</ReadMoreLess>  
+            </Box>
+          );
+        },
       },
       {
         Header: 'Picture',
         accessor: 'picture',
         Cell: function PictureItem({ row }) {
           return (
-            <Box w={40}>
+            <Box w={40} h={40}>
               <ImageBox
                 imageUrl={row.original.picture}
               />

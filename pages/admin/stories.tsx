@@ -1,64 +1,38 @@
-import { Fragment, useState, useEffect, useRef, useMemo } from "react";
+import { Fragment, useState, useEffect, useMemo } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import {
   Box,
   Button,
   Flex,
-  Grid,
   HStack,
-  VStack,
-  Center,
-  Icon,
-  Image,
-  Avatar,
-  Text,
-  Portal,
-  Progress,
-  SimpleGrid,
-  Spacer,
-  Stat,
-  StatHelpText,
-  StatLabel,
-  StatNumber,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
   Modal,
   ModalOverlay,
-  ModalHeader,
-  ModalCloseButton,
   ModalContent,
-  ModalBody,
-  ModalFooter,
-  useColorMode,
-  useColorModeValue,
   useBreakpointValue,
   useDisclosure,
   useToast
 } from "@chakra-ui/react";
 
 import { useTable, useSortBy } from 'react-table';
-
 import Layout from "admin/components/Layout";
 import ImageBox from "components/widgets/ImageBox";
-import VideoBox from "components/widgets/VideoBox";
 import VillageSearchBox from "admin/components/VillageSearchBox";
 import StoryForm from "admin/components/StoryForm";
 import DeleteDialog from "admin/components/DeleteDialog";
-
 import { getUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
-
 import { Village, Story } from "types/schema";
+import ReadMoreLess from "components/widgets/ReadMoreLess";
 
 const Stories: NextPage = () => {
   const router = useRouter();
@@ -169,13 +143,20 @@ const Stories: NextPage = () => {
       {
         Header: 'Content',
         accessor: 'content',
+        Cell: function ContentItem({ row }) {
+          return (
+            <Box>
+              <ReadMoreLess>{row.original.content}</ReadMoreLess>  
+            </Box>
+          );
+        },
       },
       {
         Header: 'Photo',
         accessor: 'photo.url',
         Cell: function PictureItem({ row }) {
           return (
-            <Box w={40}>
+            <Box w={40} h={40}>
               <ImageBox imageUrl={row.original.photo?.url} />
             </Box>
           );
