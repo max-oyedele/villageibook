@@ -24,6 +24,7 @@ import { useTable, useSortBy } from 'react-table';
 import Layout from "admin/components/Layout";
 import ImageBox from "components/widgets/ImageBox";
 import VillageSearchBox from "admin/components/VillageSearchBox";
+import TableSearchBox from "admin/components/TableSearchBox";
 import StoryForm from "admin/components/StoryForm";
 import DeleteDialog from "admin/components/DeleteDialog";
 import { getUserToken } from "helpers/user-token";
@@ -269,19 +270,25 @@ const Stories: NextPage = () => {
       fetchStoriesData(null);
     }
   };
+  const [searchText, setSearhText] = useState('');
   
   return (
     <Fragment>
       <Layout>
-
         <VillageSearchBox setVillage={setVillage} />
-        <Flex justifyContent={"flex-end"}>
-          <Button onClick={() => {
-            modal.onOpen();
-            setIsEdit(false);
-            }} isDisabled={!village}>Add Story</Button>
-        </Flex>
-
+        <Box sx={{display: "flex", justifyContent: "space-between"}}>
+          <Flex justifyContent={"flex-start"}>
+            <TableSearchBox
+              onChange={setSearhText}
+            />
+          </Flex>
+          <Flex justifyContent={"flex-end"}>
+            <Button onClick={() => {
+              modal.onOpen();
+              setIsEdit(false);
+              }} isDisabled={!village}>Add Story</Button>
+          </Flex>
+        </Box>
         <Box overflowX="auto">
           <Table {...getTableProps()}>
             <Thead>
@@ -318,15 +325,14 @@ const Stories: NextPage = () => {
                 })}
             </Tbody>
           </Table>
-          {stories?.length > itemsPerPage && (
-            <Paginate
-              data={stories}
-              pageData={setPageData}
-              itemsPerPage={itemsPerPage}
-              centerPagination={true}
-            />
-          )}
         </Box>
+        <Paginate
+          data={stories}
+          pageData={setPageData}
+          itemsPerPage={itemsPerPage}
+          centerPagination={true}
+          searchText={searchText}
+        />
       </Layout>
 
       <Modal

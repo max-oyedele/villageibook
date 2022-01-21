@@ -14,6 +14,7 @@ import {
   Tr,
   Th,
   Td,
+  Flex,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -35,6 +36,7 @@ import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
 import { Village, User } from "types/schema";
 import ReadMoreLess from "components/widgets/ReadMoreLess";
 import Paginate from "components/Paginate";
+import TableSearchBox from "admin/components/TableSearchBox";
 
 const Users: NextPage = () => {
   const router = useRouter();
@@ -198,6 +200,7 @@ const Users: NextPage = () => {
   };
   const [pageData, setPageData] = useState([]);
   const itemsPerPage = 5;
+  const [searchText, setSearhText] = useState('');
 
   useEffect(() => {
     setData(pageData);
@@ -211,6 +214,13 @@ const Users: NextPage = () => {
   return (
     <Fragment>
       <Layout>
+        <Box sx={{display: "flex", justifyContent: "space-between"}}>
+          <Flex justifyContent={"flex-start"}>
+            <TableSearchBox
+              onChange={setSearhText}
+            />
+          </Flex>
+        </Box>
         <Box overflowX="auto">
           <Table {...getTableProps()}>
             <Thead>
@@ -241,15 +251,14 @@ const Users: NextPage = () => {
               })}
             </Tbody>
           </Table>
-          {users?.length > itemsPerPage && (
-            <Paginate
-              data={users}
-              pageData={setPageData}
-              itemsPerPage={itemsPerPage}
-              centerPagination={true}
-            />
-          )}
         </Box>
+        <Paginate
+          data={users}
+          pageData={setPageData}
+          itemsPerPage={itemsPerPage}
+          centerPagination={true}
+          searchText={searchText}
+        />
       </Layout>
 
       <Modal

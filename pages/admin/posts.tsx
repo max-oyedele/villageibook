@@ -11,7 +11,7 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
+  Flex,
   Tr,
   Th,
   Td,
@@ -31,6 +31,7 @@ import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
 import ReadMoreLess from "components/widgets/ReadMoreLess";
 import Paginate from "components/Paginate";
+import TableSearchBox from "admin/components/TableSearchBox";
 
 const Posts: NextPage = () => {
   const router = useRouter();
@@ -171,10 +172,18 @@ const Posts: NextPage = () => {
     deleteData({ type: "posts", uuid });
     onClose();
   }
+  const [searchText, setSearhText] = useState('');
 
   return (
     <Fragment>
       <Layout>
+        <Box sx={{display: "flex", justifyContent: "space-between"}}>
+          <Flex justifyContent={"flex-start"}>
+            <TableSearchBox
+              onChange={setSearhText}
+            />
+          </Flex>
+        </Box>
         <Box overflowX="auto">
           <Table {...getTableProps()}>
             <Thead>
@@ -217,15 +226,14 @@ const Posts: NextPage = () => {
                 })}
             </Tbody>
           </Table>
-          {posts?.length > itemsPerPage && (
-            <Paginate
-              data={posts}
-              pageData={setPageData}
-              itemsPerPage={itemsPerPage}
-              centerPagination={true}
-            />
-          )}
         </Box>
+        <Paginate
+          data={posts}
+          pageData={setPageData}
+          itemsPerPage={itemsPerPage}
+          centerPagination={true}
+          searchText={searchText}
+        />
       </Layout>
       <DeleteDialog uuid={uuid} isOpen={isOpen} onClose={onClose} onConfirm={onDelete} />
     </Fragment>

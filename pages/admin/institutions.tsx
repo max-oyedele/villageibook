@@ -24,6 +24,7 @@ import { useTable } from 'react-table';
 import Layout from "admin/components/Layout";
 import ImageBox from "components/widgets/ImageBox";
 import VillageSearchBox from "admin/components/VillageSearchBox";
+import TableSearchBox from "admin/components/TableSearchBox";
 import InstitutionForm from "admin/components/InstitutionForm";
 import DeleteDialog from "admin/components/DeleteDialog";
 import { getUserToken } from "helpers/user-token";
@@ -230,10 +231,9 @@ const Institutions: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const modal = useDisclosure();
   const dialog = useDisclosure();
-
   const [uuid, setUuid] = useState(null);
   const [institution, setInstitution] = useState<Institution>(null);
-
+  const [searchText, setSearhText] = useState('');
   const onDelete = (uuid) => {
     deleteData({ type: "institutions", uuid });
     dialog.onClose();
@@ -285,13 +285,19 @@ const Institutions: NextPage = () => {
     <Fragment>
       <Layout>
         <VillageSearchBox setVillage={setVillage} />
-        <Flex justifyContent={"flex-end"}>
-          <Button onClick={() => {
-            modal.onOpen();
-            setIsEdit(false);
-            }} isDisabled={!village}>Add Institution</Button>
-        </Flex>
-
+        <Box sx={{display: "flex", justifyContent: "space-between"}}>
+          <Flex justifyContent={"flex-start"}>
+            <TableSearchBox
+              onChange={setSearhText}
+            />
+          </Flex>
+          <Flex justifyContent={"flex-end"}>
+            <Button onClick={() => {
+              modal.onOpen();
+              setIsEdit(false);
+              }} isDisabled={!village}>Add Institution</Button>
+          </Flex>
+        </Box>
         <Box overflowX="auto">
           <Table {...getTableProps()}>
             <Thead>
@@ -328,15 +334,14 @@ const Institutions: NextPage = () => {
                 })}
             </Tbody>
           </Table>
-          {institutions?.length > itemsPerPage && (
-            <Paginate
-              data={institutions}
-              pageData={setPageData}
-              itemsPerPage={itemsPerPage}
-              centerPagination={true}
-            />
-          )}
         </Box>
+        <Paginate
+          data={institutions}
+          pageData={setPageData}
+          itemsPerPage={itemsPerPage}
+          centerPagination={true}
+          searchText={searchText}
+        />
       </Layout>
 
       <Modal

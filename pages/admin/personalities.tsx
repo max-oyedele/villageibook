@@ -25,6 +25,7 @@ import {
 import { useTable, useSortBy } from "react-table";
 import Layout from "admin/components/Layout";
 import VillageSearchBox from "admin/components/VillageSearchBox";
+import TableSearchBox from "admin/components/TableSearchBox";
 import PersonalityForm from "admin/components/PersonalityForm";
 import DeleteDialog from "admin/components/DeleteDialog";
 import { getUserToken } from "helpers/user-token";
@@ -244,11 +245,7 @@ const Personalities: NextPage = () => {
     dialog.onClose();
   };
   const [scrollBehavior, setScrollBehavior] = useState<ScrollBehavior>("inside");
-  const [search, setSearh] = useState('');
-  const handleSearch = (searchText: string) => {
-    console.log('search', searchText);
-    // setSearch(searchText);
-  };
+  const [searchText, setSearhText] = useState('');
 
   const onSubmit = (value) => {
     modal.onClose();
@@ -296,15 +293,20 @@ const Personalities: NextPage = () => {
     <Fragment>
       <Layout>
         <VillageSearchBox setVillage={setVillage} />
-        <Flex justifyContent={"flex-end"}>
-          <Button onClick={() => { modal.onOpen(); setIsEdit(false); }} isDisabled={!village}>
-            Add Personality
-          </Button>
-        </Flex>
+        <Box sx={{display: "flex", justifyContent: "space-between"}}>
+          <Flex justifyContent={"flex-start"}>
+            <TableSearchBox
+              onChange={setSearhText}
+            />
+          </Flex>
+          <Flex justifyContent={"flex-end"}>
+            <Button onClick={() => { modal.onOpen(); setIsEdit(false); }} isDisabled={!village}>
+              Add Personality
+            </Button>
+          </Flex>
+        </Box>
         <Box overflowX="auto">
-          <Table {...getTableProps()} onSearch={handleSearch}
-          initialSearch={search}
-          searchPlaceholder={'Search by...'}>
+          <Table {...getTableProps()}>
             <Thead>
               {headerGroups.map((headerGroup, index) => (
                 <Tr key={index} {...headerGroup.getHeaderGroupProps()}>
@@ -333,15 +335,14 @@ const Personalities: NextPage = () => {
               })}
             </Tbody>
           </Table>
-          {personalities?.length > itemsPerPage && (
-            <Paginate
-              data={personalities}
-              pageData={setPageData}
-              itemsPerPage={itemsPerPage}
-              centerPagination={true}
-            />
-          )}
         </Box>
+        <Paginate
+          data={personalities}
+          pageData={setPageData}
+          itemsPerPage={itemsPerPage}
+          centerPagination={true}
+          searchText={searchText}
+        />
       </Layout>
       <Modal
         closeOnOverlayClick={true}

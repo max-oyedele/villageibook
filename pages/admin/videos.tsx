@@ -25,6 +25,7 @@ import { useTable } from 'react-table';
 import Layout from "admin/components/Layout";
 import VideoBox from "components/widgets/VideoBox";
 import VillageSearchBox from "admin/components/VillageSearchBox";
+import TableSearchBox from "admin/components/TableSearchBox";
 import VideoForm from "admin/components/VideoForm";
 import DeleteDialog from "admin/components/DeleteDialog";
 import { getUserToken } from "helpers/user-token";
@@ -270,19 +271,25 @@ const Videos: NextPage = () => {
       fetchVideosData(null);
     }
   };
+  const [searchText, setSearhText] = useState('');
   
   return (
     <Fragment>
       <Layout>
-
         <VillageSearchBox setVillage={setVillage} />
-        <Flex justifyContent={"flex-end"}>
-          <Button onClick={() => {
-            modal.onOpen();
-            setIsEdit(false);
-            }} isDisabled={!village}>Add Video</Button>
-        </Flex>
-
+        <Box sx={{display: "flex", justifyContent: "space-between"}}>
+          <Flex justifyContent={"flex-start"}>
+            <TableSearchBox
+              onChange={setSearhText}
+            />
+          </Flex>
+          <Flex justifyContent={"flex-end"}>
+            <Button onClick={() => {
+              modal.onOpen();
+              setIsEdit(false);
+              }} isDisabled={!village}>Add Video</Button>
+          </Flex>
+        </Box>
         <Box overflowX="auto">
           <Table {...getTableProps()}>
             <Thead>
@@ -320,15 +327,14 @@ const Videos: NextPage = () => {
                 })}
             </Tbody>
           </Table>
-          {videos?.length > itemsPerPage && (
-            <Paginate
-              data={videos}
-              pageData={setPageData}
-              itemsPerPage={itemsPerPage}
-              centerPagination={true}
-            />
-          )}
         </Box>
+        <Paginate
+          data={videos}
+          pageData={setPageData}
+          itemsPerPage={itemsPerPage}
+          centerPagination={true}
+          searchText={searchText}
+        />
       </Layout>
 
       <Modal
