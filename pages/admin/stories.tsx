@@ -228,6 +228,48 @@ const Stories: NextPage = () => {
       setPageData(stories.slice(0, itemsPerPage));
   }, [stories]);
 
+  const onSubmit = (value) => {
+    modal.onClose();
+    if (value == "add") {
+      !toast.isActive("StoryAdd") &&
+        toast({
+          id: "StoryAdd",
+          title: "Data has been inserted.",
+          description: "Story data is inserted.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+    } 
+    else if (value == "update") {
+      !toast.isActive("StoryUpdate") &&
+        toast({
+          id: "StoryUpdate",
+          title: "Data has been Updated.",
+          description: "Story data is updated.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+    } else {
+      !toast.isActive("userError") &&
+        toast({
+          id: "userError",
+          title: "Failed! Try again.",
+          description: "Error",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+      });
+    }
+    if (village) {
+      fetchStoriesData({ villageUuid: village.uuid })
+    }
+    else {
+      fetchStoriesData(null);
+    }
+  };
+  
   return (
     <Fragment>
       <Layout>
@@ -301,6 +343,7 @@ const Stories: NextPage = () => {
             village={village}
             story={isEdit ? story : null}
             isEdit={isEdit}
+            onSubmit={onSubmit}
           />
         </ModalContent>
       </Modal>

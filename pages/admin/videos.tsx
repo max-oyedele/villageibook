@@ -229,6 +229,48 @@ const Videos: NextPage = () => {
       setPageData(videos.slice(0, itemsPerPage));
   }, [videos]);
 
+  const onSubmit = (value) => {
+    modal.onClose();
+    if (value == "add") {
+      !toast.isActive("VideoAdd") &&
+        toast({
+          id: "VideoAdd",
+          title: "Data has been inserted.",
+          description: "Video data is inserted.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+    } 
+    else if (value == "update") {
+      !toast.isActive("VideoUpdate") &&
+        toast({
+          id: "VideoUpdate",
+          title: "Data has been Updated.",
+          description: "Video data is updated.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+    } else {
+      !toast.isActive("userError") &&
+        toast({
+          id: "userError",
+          title: "Failed! Try again.",
+          description: "Error",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+      });
+    }
+    if (village) {
+      fetchVideosData({ villageUuid: village.uuid })
+    }
+    else {
+      fetchVideosData(null);
+    }
+  };
+  
   return (
     <Fragment>
       <Layout>
@@ -303,6 +345,7 @@ const Videos: NextPage = () => {
             village={village}
             video={isEdit ? video : null}
             isEdit={isEdit}
+            onSubmit={onSubmit}
           />
         </ModalContent>
       </Modal>

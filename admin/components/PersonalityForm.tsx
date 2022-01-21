@@ -28,12 +28,14 @@ const PersonalityForm: React.FC<{
     type: string,
     village: Village,
     personality?: Personality,
-    isEdit: boolean
+    isEdit: boolean,
+    onSubmit
 }> = ({
     type,
     village,
     personality,
-    isEdit
+    isEdit,
+    onSubmit
 }) => {
         const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
         const toast = useToast();
@@ -53,15 +55,7 @@ const PersonalityForm: React.FC<{
         const { submitPersonalityData, submitPersonalityEditData } = useAdminActionDispatch();
 
         if (error) {
-            !toast.isActive("personalityError") &&
-                toast({
-                    id: "personalityError",
-                    title: "Failed! Try again.",
-                    description: error.message,
-                    status: "error",
-                    duration: 3000,
-                    isClosable: true,
-                });
+            onSubmit("error");
         }
 
         const validationSchema = yup.object({
@@ -109,8 +103,10 @@ const PersonalityForm: React.FC<{
                     actions.setSubmitting(true);
                     if (!isEdit) {
                         await submitPersonalityData(params);
+                        onSubmit("add");
                     } else {
                         await submitPersonalityEditData(params);
+                        onSubmit("update");
                     }
                     actions.setSubmitting(false);
                 }}

@@ -239,6 +239,48 @@ const Institutions: NextPage = () => {
     dialog.onClose();
   }
 
+  const onSubmit = (value) => {
+    modal.onClose();
+    if (value == "add") {
+      !toast.isActive("InstitutionAdd") &&
+        toast({
+          id: "InstitutionAdd",
+          title: "Data has been inserted.",
+          description: "Institution data is inserted.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+    } 
+    else if (value == "update") {
+      !toast.isActive("InstitutionUpdate") &&
+        toast({
+          id: "InstitutionUpdate",
+          title: "Data has been Updated.",
+          description: "Institution data is updated.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+    } else {
+      !toast.isActive("userError") &&
+        toast({
+          id: "userError",
+          title: "Failed! Try again.",
+          description: "Error",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+      });
+    }
+    if (village) {
+      fetchInstitutionsData({ villageUuid: village.uuid })
+    }
+    else {
+      fetchInstitutionsData(null);
+    }
+  };
+  
   return (
     <Fragment>
       <Layout>
@@ -311,6 +353,7 @@ const Institutions: NextPage = () => {
             village={village}
             institution={isEdit ? institution : null}
             isEdit={isEdit}
+            onSubmit={onSubmit}
           />
         </ModalContent>
       </Modal>

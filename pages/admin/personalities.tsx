@@ -250,6 +250,48 @@ const Personalities: NextPage = () => {
     // setSearch(searchText);
   };
 
+  const onSubmit = (value) => {
+    modal.onClose();
+    if (value == "add") {
+      !toast.isActive("personalityAdd") &&
+        toast({
+          id: "personalityAdd",
+          title: "Data has been inserted.",
+          description: "Personality data is inserted.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+    } 
+    else if (value == "update") {
+      !toast.isActive("personalityUpdate") &&
+        toast({
+          id: "personalityUpdate",
+          title: "Data has been Updated.",
+          description: "Personality data is updated.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+    } else {
+      !toast.isActive("userError") &&
+        toast({
+          id: "userError",
+          title: "Failed! Try again.",
+          description: "Error",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+      });
+    }
+    if (village) {
+      fetchPersonalitiesData({ villageUuid: village.uuid })
+    }
+    else {
+      fetchPersonalitiesData(null);
+    }
+  };
+  
   return (
     <Fragment>
       <Layout>
@@ -317,6 +359,7 @@ const Personalities: NextPage = () => {
               village={village}
               personality={isEdit ? personality : null}
               isEdit={isEdit}
+              onSubmit={onSubmit}
             />
           </ModalBody>
         </ModalContent>

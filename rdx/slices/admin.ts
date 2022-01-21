@@ -12,6 +12,7 @@ var FormData = require("form-data");
 
 import { Status, AdminState } from "../types";
 import { getUserToken } from "helpers/user-token";
+import { ExecFileSyncOptionsWithBufferEncoding } from "child_process";
 
 export const fetchPosts = createAsyncThunk(
   "admin/fetchPosts",
@@ -203,6 +204,7 @@ export const submitEditStory = createAsyncThunk(
       photo?: any;
       video?: any;
       villageUuid: string;
+      uuid: string;
     },
     thunkAPI
   ) => {
@@ -212,13 +214,13 @@ export const submitEditStory = createAsyncThunk(
       const bodyFormData = new FormData();
       bodyFormData.append("title", params.title);
       bodyFormData.append("content", params.content);
-      bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
-      bodyFormData.append("hasPhotoName", params.photo?.name);
-      bodyFormData.append("hasPhotoDescription", params.photo?.description);
+      // bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
+      // bodyFormData.append("hasPhotoName", params.photo?.name);
+      // bodyFormData.append("hasPhotoDescription", params.photo?.description);
       // bodyFormData.append("hasVideoUrl", params.video?.avatar);
 
       const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/sotries/${params.villageUuid}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/sotries/${params.uuid}`,
         bodyFormData,
         {
           headers: {
@@ -313,7 +315,6 @@ export const submitEditPersonality = createAsyncThunk(
       const bodyFormData = new FormData();
       bodyFormData.append("name", params.name);
       bodyFormData.append("about", params.about);
-      // bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
       // bodyFormData.append("hasPhotoName", params.photo?.name);
       // bodyFormData.append("hasPhotoDescription", params.photo?.description);
       // bodyFormData.append("hasVideoUrl", params.video.avatar);
@@ -406,7 +407,7 @@ export const submitEditInstitution = createAsyncThunk(
       email?: string;
       phone?: string;
       history?: string;
-      villageUuid: string;
+      uuid: string;
     },
     thunkAPI
   ) => {
@@ -415,9 +416,9 @@ export const submitEditInstitution = createAsyncThunk(
 
       const bodyFormData = new FormData();
       bodyFormData.append("name", params.name);
-      bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
-      bodyFormData.append("hasPhotoName", params.photo?.name);
-      bodyFormData.append("hasPhotoDescription", params.photo?.description);
+      // bodyFormData.append("hasPhotoUrl", params.photo?.avatar);
+      // bodyFormData.append("hasPhotoName", params.photo?.name);
+      // bodyFormData.append("hasPhotoDescription", params.photo?.description);
       // bodyFormData.append("hasVideoUrl", params.video.avatar);
 
       bodyFormData.append("yearEstablished", params.yearEstablished);
@@ -427,7 +428,7 @@ export const submitEditInstitution = createAsyncThunk(
       bodyFormData.append("history", params.history);
 
       const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/institutions/${params.villageUuid}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/institutions/${params.uuid}`,
         bodyFormData,
         {
           headers: {
@@ -484,7 +485,7 @@ export const submitEditVideo = createAsyncThunk(
   async (
     params: {
       video: any;
-      villageUuid: string;
+      uuid: string;
     },
     thunkAPI
   ) => {
@@ -494,10 +495,10 @@ export const submitEditVideo = createAsyncThunk(
       const bodyFormData = new FormData();
       bodyFormData.append("name", params.video.name);
       bodyFormData.append("description", params.video.description);
-      bodyFormData.append("hasVideoUrl", params.video.avatar);
+      // bodyFormData.append("hasVideoUrl", params.video.avatar);
 
       const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/locations/${params.villageUuid}/HAS_MEDIA/videos`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/videos/${params.uuid}`,
         bodyFormData,
         {
           headers: {

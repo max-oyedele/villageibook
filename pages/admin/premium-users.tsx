@@ -57,7 +57,7 @@ const PremiumUsers: NextPage = () => {
 
   useEffect(() => {
     if (!me?.roles?.includes("ADMIN")) {
-      router.push("/feed");
+      // router.push("/feed");
     }
   }, [me]);
 
@@ -199,6 +199,32 @@ const PremiumUsers: NextPage = () => {
   const [pageData, setPageData] = useState([]);
   const itemsPerPage = 5;
 
+  const onSubmit = (value) => {
+    modal.onClose();
+    if (value) {
+      !toast.isActive("userUpdate") &&
+        toast({
+          id: "userUpdate",
+          title: "Data has been Updated.",
+          description: "Premium User data is updated.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+    } else {
+      !toast.isActive("userError") &&
+        toast({
+          id: "userError",
+          title: "Failed! Try again.",
+          description: "Error",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+      });
+    }
+    fetchPmusersData();
+  };
+  
   useEffect(() => {
     setData(pageData);
   }, [pageData])
@@ -266,6 +292,7 @@ const PremiumUsers: NextPage = () => {
             type="add"
             user={user}
             isEdit={isEdit}
+            isSubmit={onSubmit}
           />
         </ModalContent>
       </Modal>

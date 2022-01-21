@@ -16,22 +16,25 @@ import * as yup from "yup";
 import { User } from 'types/schema';
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
+import useAdminFetchData from 'hooks/use-admin-fetch-data';
 
 const UserForm: React.FC<{
     type: string,
     user: User,
-    isEdit: boolean
+    isEdit: boolean,
+    isSubmit?
 }> = ({
     type,
     user,
-    isEdit
+    isEdit,
+    isSubmit
 }) => {
     const { me } = useFetchData();
     const { submitStepTwoData } = useActionDispatch();
 
     const [about, setAbout] = useState(user.about);
     const [avatar, setAvatar] = useState(user.avatar);
-    const [id, setId] = useState(user.uuid);
+    const [uuid, setUuid] = useState(user.uuid);
   
     const photoRefs = useRef([]);
     const [photo1, setPhoto1] = useState(user.photo1);
@@ -40,7 +43,7 @@ const UserForm: React.FC<{
     const [photoURL1, setPhotoURL1] = useState(user.photo1 ?? null);
     const [photoURL2, setPhotoURL2] = useState(user.photo2 ?? null);
     const [photoURL3, setPhotoURL3] = useState(user.photo3 ?? null);
-  
+    const { error } = useAdminFetchData();
     const [refresh, setRefresh] = useState(false);
   
     const uploadToClient = (event, index) => {
@@ -62,6 +65,10 @@ const UserForm: React.FC<{
       }
     };
   
+    if (error) {
+      isSubmit(false);
+    }
+
     const step2Schema = yup.object({
       about: yup.string().nullable().required("About me is required."),
     });
@@ -80,10 +87,12 @@ const UserForm: React.FC<{
                 photo1,
                 photo2,
                 photo3,
+                uuid
             };
             actions.setSubmitting(true);
             await submitStepTwoData(params);
             actions.setSubmitting(false);
+            isSubmit(true)
         }}
       >
         {({

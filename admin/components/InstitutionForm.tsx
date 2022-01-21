@@ -28,16 +28,19 @@ const InstitutionForm: React.FC<{
     type: string,
     village: Village,
     institution?: Institution,
-    isEdit: boolean
+    isEdit: boolean,
+    onSubmit
 }> = ({
     type,
     village,
     institution,
-    isEdit
+    isEdit,
+    onSubmit
 }) => {
         const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
         const toast = useToast();
 
+        const [uuid, setUuid] = useState(institution?.uuid);
         const [name, setName] = useState(institution?.name);
         const [avatar, setAvatar] = useState(null);
         const [photo, setPhoto] = useState(institution?.photo);
@@ -51,15 +54,7 @@ const InstitutionForm: React.FC<{
         const { submitInstitutionData, submitInstitutionEditData } = useAdminActionDispatch();
         
         if (error) {
-            !toast.isActive("institutionError") &&
-                toast({
-                    id: "institutionError",
-                    title: "Failed! Try again.",
-                    description: error.message,
-                    status: "error",
-                    duration: 3000,
-                    isClosable: true,
-                });
+            onSubmit("error");
         }
 
         const validationSchema = yup.object({
@@ -84,13 +79,14 @@ const InstitutionForm: React.FC<{
                     address: address,
                     email: email,
                     phone: phone,
-                    history: history
+                    history: history,
+                    uuid: uuid
                 }}
                 enableReinitialize={true}
                 validationSchema={validationSchema}
                 onSubmit={async (values, actions) => {
                     const params = {
-                        villageUuid: village.uuid,
+                        uuid,
                         name,
                         photo: { avatar, name: photo.name, description: photo.description },
                         yearEstablished,
@@ -103,8 +99,10 @@ const InstitutionForm: React.FC<{
                     actions.setSubmitting(true);
                     if (!isEdit) {
                         await submitInstitutionData(params);
+                        onSubmit("add");
                     } else {
                         await submitInstitutionEditData(params);
+                        onSubmit("update");
                     }
                     actions.setSubmitting(false);
                 }}
