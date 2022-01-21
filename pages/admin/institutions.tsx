@@ -43,7 +43,7 @@ const Institutions: NextPage = () => {
   const [isEdit, setIsEdit] = useState(false);
   const toast = useToast();
   const [pageData, setPageData] = useState([]);
-  const itemsPerPage = 10;
+  const itemsPerPage = 4;
 
   useEffect(() => {
     const access_token = getUserToken();
@@ -147,7 +147,7 @@ const Institutions: NextPage = () => {
         accessor: 'photo',
         Cell: function PictureItem({ row }) {
           return (
-            <Box w={40} h={40}>
+            <Box w={36} h={36}>
               <ImageBox imageUrl={row.original.photo?.url} />
             </Box>
           );
@@ -275,7 +275,7 @@ const Institutions: NextPage = () => {
                       {
                         row.cells.map((cell, iindex) => {
                           return (
-                            <Td key={iindex} {...cell.getCellProps()}>
+                            <Td key={iindex} {...cell.getCellProps()} p={2}>
                               {
                                 cell.render('Cell')}
                             </Td>
@@ -291,6 +291,7 @@ const Institutions: NextPage = () => {
               data={institutions}
               pageData={setPageData}
               itemsPerPage={itemsPerPage}
+              centerPagination={true}
             />
           )}
         </Box>

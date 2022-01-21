@@ -26,13 +26,13 @@ ul.pagination li {
     text-align: center;
 }
 
-ul.pagination li.previouse-disabled.disabled,
-ul.pagination li.next-disabled.disabled {
+ul.pagination li.false.previouse-disabled.disabled,
+ul.pagination li.false.next-disabled.disabled {
     display: none;
 }
 
-ul.pagination li.previouse-disabled,
-ul.pagination li.next-disabled {
+ul.pagination li.true.previouse-disabled,
+ul.pagination li.true.next-disabled {
     width: 7rem;
 }
 
@@ -71,4 +71,10 @@ ul.pagination li a.active {
 ul.pagination .previous, 
 ul.pagination .next {
     width: 7rem;
+}
+
+.true.align-pagination.css-0 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }

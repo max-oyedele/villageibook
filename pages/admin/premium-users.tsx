@@ -106,7 +106,7 @@ const PremiumUsers: NextPage = () => {
         accessor: "about",
         Cell: function AboutItem({ row }) {
           return (
-            <Box>
+            <Box w={64}>
               <ReadMoreLess>{row.original.about}</ReadMoreLess>  
             </Box>
           );
@@ -117,7 +117,7 @@ const PremiumUsers: NextPage = () => {
         accessor: "photo1",
         Cell: function PictureItem({ row }) {
           return (
-            <Box>
+            <Box w={32} h={32}>
               <ImageBox
                 imageUrl={row.original.photo1}
               />
@@ -131,7 +131,7 @@ const PremiumUsers: NextPage = () => {
         accessor: "photo2",
         Cell: function PictureItem({ row }) {
           return (
-            <Box>
+            <Box w={32} h={32}>
               <ImageBox
                 imageUrl={row.original.photo2}
               />
@@ -144,7 +144,7 @@ const PremiumUsers: NextPage = () => {
         accessor: "photo3",
         Cell: function PictureItem({ row }) {
           return (
-            <Box>
+            <Box w={32} h={32}>
               <ImageBox
                 imageUrl={row.original.photo3}
               />
@@ -197,7 +197,7 @@ const PremiumUsers: NextPage = () => {
     dialog.onClose();
   };
   const [pageData, setPageData] = useState([]);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
 
   useEffect(() => {
     setData(pageData);
@@ -232,7 +232,7 @@ const PremiumUsers: NextPage = () => {
                   <Tr key={index} {...row.getRowProps()}>
                     {row.cells.map((cell, iindex) => {
                       return (
-                        <Td key={iindex} {...cell.getCellProps()}>
+                        <Td key={iindex} {...cell.getCellProps()} p={2}>
                           {cell.render("Cell")}
                         </Td>
                       );
@@ -247,6 +247,7 @@ const PremiumUsers: NextPage = () => {
               data={pmusers}
               pageData={setPageData}
               itemsPerPage={itemsPerPage}
+              centerPagination={true}
             />
           )}
         </Box>

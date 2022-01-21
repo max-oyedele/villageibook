@@ -157,7 +157,7 @@ const Stories: NextPage = () => {
         accessor: 'photo.url',
         Cell: function PictureItem({ row }) {
           return (
-            <Box w={40} h={40}>
+            <Box w={36} h={36}>
               <ImageBox imageUrl={row.original.photo?.url} />
             </Box>
           );
@@ -217,7 +217,7 @@ const Stories: NextPage = () => {
     dialog.onClose();
   }
   const [pageData, setPageData] = useState([]);
-  const itemsPerPage = 10;
+  const itemsPerPage = 4;
 
   useEffect(() => {
     setData(pageData);
@@ -265,7 +265,7 @@ const Stories: NextPage = () => {
                       {
                         row.cells.map((cell, iindex) => {
                           return (
-                            <Td key={iindex} {...cell.getCellProps()}>
+                            <Td key={iindex} {...cell.getCellProps()} p={2}>
                               {
                                 cell.render('Cell')}
                             </Td>
@@ -281,6 +281,7 @@ const Stories: NextPage = () => {
               data={stories}
               pageData={setPageData}
               itemsPerPage={itemsPerPage}
+              centerPagination={true}
             />
           )}
         </Box>

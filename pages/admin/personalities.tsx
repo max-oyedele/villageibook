@@ -45,7 +45,7 @@ const Personalities: NextPage = () => {
   const [isEdit, setIsEdit] = useState(false);
   const toast = useToast();
   const [pageData, setPageData] = useState([]);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
   type ScrollBehavior = "inside";
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const Personalities: NextPage = () => {
 
   useEffect(() => {
     if (!me?.roles?.includes("ADMIN")) {
-      router.push("/feed");
+      // router.push("/feed");
     }
   }, [me]);
 
@@ -244,6 +244,11 @@ const Personalities: NextPage = () => {
     dialog.onClose();
   };
   const [scrollBehavior, setScrollBehavior] = useState<ScrollBehavior>("inside");
+  const [search, setSearh] = useState('');
+  const handleSearch = (searchText: string) => {
+    console.log('search', searchText);
+    // setSearch(searchText);
+  };
 
   return (
     <Fragment>
@@ -255,7 +260,9 @@ const Personalities: NextPage = () => {
           </Button>
         </Flex>
         <Box overflowX="auto">
-          <Table {...getTableProps()}>
+          <Table {...getTableProps()} onSearch={handleSearch}
+          initialSearch={search}
+          searchPlaceholder={'Search by...'}>
             <Thead>
               {headerGroups.map((headerGroup, index) => (
                 <Tr key={index} {...headerGroup.getHeaderGroupProps()}>
@@ -289,6 +296,7 @@ const Personalities: NextPage = () => {
               data={personalities}
               pageData={setPageData}
               itemsPerPage={itemsPerPage}
+              centerPagination={true}
             />
           )}
         </Box>

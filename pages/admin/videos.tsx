@@ -147,7 +147,7 @@ const Videos: NextPage = () => {
         accessor: 'url',
         Cell: function VideoItem({ row }) {
           return (
-            <Box>
+            <Box w={60}>
               <VideoBox videoUrl={row.original.url} />
             </Box>
           );
@@ -218,7 +218,7 @@ const Videos: NextPage = () => {
     dialog.onClose();
   }
   const [pageData, setPageData] = useState([]);
-  const itemsPerPage = 10;
+  const itemsPerPage = 4;
 
   useEffect(() => {
     setData(pageData);
@@ -283,6 +283,7 @@ const Videos: NextPage = () => {
               data={videos}
               pageData={setPageData}
               itemsPerPage={itemsPerPage}
+              centerPagination={true}
             />
           )}
         </Box>
