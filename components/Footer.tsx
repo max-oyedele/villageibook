@@ -57,6 +57,7 @@ const Footer = () => {
       {breakpointValue === "md" && (
         <Flex
           bottom={0}
+          marginTop="auto"
           w="full"
           h="150px"
           // bgColor="grayBg"
