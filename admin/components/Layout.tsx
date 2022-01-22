@@ -153,7 +153,7 @@ export default function Layout(props) {
         })}
       </Box>
 
-      <Box w="calc(100vw-292px)" ml="292px" p="16px">{props.children}</Box>
+      <Box w="calc(100vw-292px)" h="100vh" ml="292px" p="16px" position="relative" flexDirection="column" display="flex" >{props.children}</Box>
     </Fragment>
   );
 }

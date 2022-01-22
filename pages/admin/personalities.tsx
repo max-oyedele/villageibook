@@ -60,7 +60,7 @@ const Personalities: NextPage = () => {
 
   useEffect(() => {
     if (!me?.roles?.includes("ADMIN")) {
-      // router.push("/feed");
+      router.push("/feed");
     }
   }, [me]);
 
