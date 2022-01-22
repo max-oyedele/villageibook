@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import ReactPaginate from 'react-paginate';
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 
 const Paginate = (props) => {
   const [itemOffset, setItemOffset] = useState(1);
@@ -56,20 +56,27 @@ const Paginate = (props) => {
   return (
     <Box className={`${props.centerPagination ?? 'paginate-center'} align-pagination`}>
       {data.length > itemsPerPage &&
-        <ReactPaginate
-          previousLabel={'Previous'}
-          nextLabel={'Next'}
-          breakLabel={'...'}
-          breakClassName={'break-me'}
-          previousClassName={`${preveOk ?? 'paginate-disabled'} previouse-disabled`}
-          nextClassName={`${nextOk ?? 'paginate-disabled'} next-disabled`}
-          pageRangeDisplayed={5}
-          onPageChange={handlePageClicked}
-          containerClassName={'pagination'}
-          renderOnZeroPageCount={null}
-          pageCount={pageCount}
-          activeClassName={'active'}
-        />
+        <>
+          <ReactPaginate
+            previousLabel={'Previous'}
+            nextLabel={'Next'}
+            breakLabel={'...'}
+            breakClassName={'break-me'}
+            previousClassName={`${preveOk ?? 'paginate-disabled'} previouse-disabled`}
+            nextClassName={`${nextOk ?? 'paginate-disabled'} next-disabled`}
+            pageRangeDisplayed={5}
+            onPageChange={handlePageClicked}
+            containerClassName={'pagination'}
+            renderOnZeroPageCount={null}
+            pageCount={pageCount}
+            activeClassName={'active'}
+          />
+          {props.centerPagination &&
+            <Text fontSize="sm" mt="3px" mx={4} className={'total'}>
+              (total: {data.length})
+            </Text>
+          }
+        </>
       }
     </Box>
   )
