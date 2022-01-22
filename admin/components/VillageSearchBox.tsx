@@ -36,6 +36,12 @@ const VillageSearchBox: React.FC<{ setVillage }> = ({ setVillage }) => {
     }
   }, [selectedVillage])
 
+  const handleChange = (value) => {
+    if (!value) {
+      setVillage(null);
+    }
+  }
+
   return (
     <Fragment>
       <HStack sx={{width: "100%", justifyContent: "center"}}>
@@ -47,6 +53,8 @@ const VillageSearchBox: React.FC<{ setVillage }> = ({ setVillage }) => {
             optionLabel={({ name }) => name}
             selectedOption={selectedVillage}
             setSelectedOption={setSelectedVillage}
+            isClearable={true}
+            onChange={handleChange}
             width="full"
             height="40px"
             placeholder="Select Village"

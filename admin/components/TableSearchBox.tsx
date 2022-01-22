@@ -8,7 +8,7 @@ import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
 import { Village } from "types/schema";
 
-const VillageSearchBox: React.FC<{ onChange }> = ({ onChange }) => {
+const TableSearchBox: React.FC<{ onChange }> = ({ onChange }) => {
   const { villages } = useFetchData();
   const { fetchVillagesData } = useActionDispatch();
   const [searchText, setSearchText] = useState("");
@@ -53,4 +53,4 @@ const VillageSearchBox: React.FC<{ onChange }> = ({ onChange }) => {
   );
 };
 
-export default VillageSearchBox;
+export default TableSearchBox;
