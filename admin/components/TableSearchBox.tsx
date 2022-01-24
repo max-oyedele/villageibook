@@ -26,7 +26,7 @@ const TableSearchBox: React.FC<{ onChange }> = ({ onChange }) => {
   return (
     <Fragment>
       <HStack>
-        <Box w={60} ml={6}>
+        <Box w={72} ml={6}>
           <Input
             placeholder="Search..."
             size="md"

@@ -46,7 +46,7 @@ const VillageSearchBox: React.FC<{ setVillage }> = ({ setVillage }) => {
     <Fragment>
       <HStack>
         {/* <BiSearch fontSize={20} color="#553CFB" /> */}
-        <Box w={60} ml={6}>
+        <Box w={72} ml={6}>
           <SelectBox
             id="villageSelector"
             options={villages}
