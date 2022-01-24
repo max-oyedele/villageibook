@@ -220,7 +220,7 @@ export const submitEditStory = createAsyncThunk(
       // bodyFormData.append("hasVideoUrl", params.video?.avatar);
 
       const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/sotries/${params.uuid}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/stories/${params.uuid}`,
         bodyFormData,
         {
           headers: {
