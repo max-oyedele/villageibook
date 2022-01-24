@@ -52,7 +52,7 @@ const PersonalityForm: React.FC<{
         const [uuid, setUuid] = useState(personality?.uuid);
 
         const { error } = useAdminFetchData();
-        const { submitPersonalityData, submitPersonalityEditData } = useAdminActionDispatch();
+        const { submitPersonalityData } = useAdminActionDispatch();
 
         if (error) {
             onSubmit("error");
@@ -82,7 +82,7 @@ const PersonalityForm: React.FC<{
                     educationLife: educationLife,
                     achievements: achievements,
                     career: career,
-                    uuid: uuid,
+                    uuid: isEdit ? uuid : null,
                 }}
                 enableReinitialize={true}
                 validationSchema={validationSchema}
@@ -101,13 +101,9 @@ const PersonalityForm: React.FC<{
                     };
 
                     actions.setSubmitting(true);
-                    if (!isEdit) {
-                        await submitPersonalityData(params);
-                        onSubmit("add");
-                    } else {
-                        await submitPersonalityEditData(params);
-                        onSubmit("update");
-                    }
+                    await submitPersonalityData(params);
+                    if (!isEdit) onSubmit("add");
+                    else onSubmit("update");
                     actions.setSubmitting(false);
                 }}
             >

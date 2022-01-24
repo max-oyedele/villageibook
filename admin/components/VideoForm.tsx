@@ -47,7 +47,7 @@ const VideoForm: React.FC<{
         const [avatarUrl, setAvatarUrl] = useState(video?.url);
 
         const { error } = useAdminFetchData();
-        const { submitVideoData, submitVideoEditData } = useAdminActionDispatch();
+        const { submitVideoData } = useAdminActionDispatch();
 
         if (error) {
             onSubmit("error");
@@ -68,18 +68,15 @@ const VideoForm: React.FC<{
                 validationSchema={validationSchema}
                 onSubmit={async (values, actions) => {
                     const params = {
+                        villageUuid: village.uuid,
                         video: { avatar, name, description },
-                        uuid
+                        uuid: isEdit? uuid: null
                     };
 
                     actions.setSubmitting(true);
-                    if (!isEdit) {
-                        await submitVideoData(params);
-                        onSubmit("add");
-                    } else {
-                        await submitVideoEditData(params);
-                        onSubmit("update");
-                    }
+                    await submitVideoData(params);
+                    if (!isEdit) onSubmit("add");
+                    else onSubmit("update");
                     actions.setSubmitting(false);
                 }}
             >

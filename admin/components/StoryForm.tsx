@@ -1,14 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
-    Container,
-    Stack,
-    HStack,
     VStack,
-    Divider,
-    Flex,
     Center,
     Box,
-    Text,
     Button,
     useBreakpointValue,
     useToast
@@ -47,7 +41,7 @@ const StoryForm: React.FC<{
         const [photo, setPhoto] = useState(story?.photo);
 
         const { error } = useAdminFetchData();
-        const { submitStoryData, submitStoryEditData } = useAdminActionDispatch();
+        const { submitStoryData } = useAdminActionDispatch();
 
         if (error) {
             onSubmit(error);
@@ -67,26 +61,23 @@ const StoryForm: React.FC<{
                     content: content,
                     photoName: photo?.name,
                     photoDescription: photo?.description,
-                    uuid: uuid               
+                    uuid: isEdit ? uuid : null
                 }}
                 enableReinitialize={true}
                 validationSchema={validationSchema}
                 onSubmit={async (values, actions) => {
                     const params = {
-                        uuid: uuid,
+                        villageUuid: village.uuid,
+                        uuid,
                         title,
                         content,
                         photo: { avatar, name: photo.name, description: photo.description },                        
                     };
 
                     actions.setSubmitting(true);
-                    if (!isEdit) {
-                        await submitStoryData(params);
-                        onSubmit("add");
-                    } else {
-                        await submitStoryEditData(params);
-                        onSubmit("update");
-                    }
+                    await submitStoryData(params);
+                    if (!isEdit) onSubmit("add");
+                    else onSubmit("update");
                     actions.setSubmitting(false);
                 }}
             >

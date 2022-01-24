@@ -51,7 +51,7 @@ const InstitutionForm: React.FC<{
         const [history, setHistory] = useState(institution?.history);
 
         const { error } = useAdminFetchData();
-        const { submitInstitutionData, submitInstitutionEditData } = useAdminActionDispatch();
+        const { submitInstitutionData } = useAdminActionDispatch();
         
         if (error) {
             onSubmit("error");
@@ -80,12 +80,13 @@ const InstitutionForm: React.FC<{
                     email: email,
                     phone: phone,
                     history: history,
-                    uuid: uuid
+                    uuid: isEdit? uuid : null
                 }}
                 enableReinitialize={true}
                 validationSchema={validationSchema}
                 onSubmit={async (values, actions) => {
                     const params = {
+                        villageUuid: village.uuid,
                         uuid,
                         name,
                         photo: { avatar, name: photo.name, description: photo.description },
@@ -97,13 +98,9 @@ const InstitutionForm: React.FC<{
                     };
 
                     actions.setSubmitting(true);
-                    if (!isEdit) {
-                        await submitInstitutionData(params);
-                        onSubmit("add");
-                    } else {
-                        await submitInstitutionEditData(params);
-                        onSubmit("update");
-                    }
+                    await submitInstitutionData(params);
+                    if (!isEdit) onSubmit("add");
+                    else onSubmit("update");
                     actions.setSubmitting(false);
                 }}
             >

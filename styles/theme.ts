@@ -10,7 +10,8 @@ const theme: Theme = extendTheme({
   colors: {
     primary: "teal.600",
     purpleTone: "#553CFB",
-    grayBg: "#F8F8FA",
+    grayTone: "#F8F8FA",
+    grayButton: "#E0E0E0",
     greenTone: "#36CFD1",
   },
   fonts: {
@@ -23,9 +24,9 @@ const theme: Theme = extendTheme({
           bg: "purpleTone",
           color: "white",
           _hover: {
-            bg: "purpleTone",            
+            bg: "purpleTone",
             _disabled: {
-              bg: "purpleTone",              
+              bg: "purpleTone",
             }
           },
           _focus: { 
@@ -34,6 +35,24 @@ const theme: Theme = extendTheme({
           },
           _disabled: {
             bg: "purpleTone",
+            opacity: 1
+          }
+        },
+        gray: {
+          bg: "grayButton",
+          color: "gray.600",
+          _hover: {
+            bg: "grayButton",
+            _disabled: {
+              bg: "grayButton",
+            }
+          },
+          _focus: { 
+            outline: "none",
+            boxShadow: "none"
+          },
+          _disabled: {
+            bg: "grayButton",
             opacity: 1
           }
         },

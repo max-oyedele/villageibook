@@ -130,7 +130,11 @@ const Posts: NextPage = () => {
         Cell: function ActionItem({ row }) {
           return (
             <HStack>
-              <Button onClick={() => { setUuid(row.original.uuid); onOpen() }}>Delete</Button>
+              <Button
+                variant='gray'
+                onClick={() => { setUuid(row.original.uuid); onOpen() }}>
+                  Delete
+              </Button>
             </HStack>
           )
         }
@@ -177,7 +181,7 @@ const Posts: NextPage = () => {
   return (
     <Fragment>
       <Layout>
-        <Box sx={{display: "flex", justifyContent: "space-between"}}>
+        <Box sx={{display: "flex", justifyContent: "space-between"}} mb={5}>
           <Flex justifyContent={"flex-start"}>
             <TableSearchBox
               onChange={setSearhText}

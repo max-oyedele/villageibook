@@ -20,7 +20,8 @@ const Paginate = (props) => {
     if (data && data?.length > 0) {
       const endOffset = itemOffset + itemsPerPage;
       if (data.length > itemsPerPage) {
-        props.pageData(data.slice(itemOffset, endOffset));
+        if (itemOffset == 1) props.pageData(data.slice(itemOffset-1, endOffset-1));
+        else props.pageData(data.slice(itemOffset, endOffset));
         setPageCount(Math.ceil(data.length / itemsPerPage));
       } else {
         props.pageData(data);
@@ -41,7 +42,7 @@ const Paginate = (props) => {
       props.pageData([]);
       setItemOffset(1);
     }
-  }, [itemOffset, data]);
+  }, [itemOffset, props.data, data]);
 
   useEffect(() => {
     setItemOffset(1);

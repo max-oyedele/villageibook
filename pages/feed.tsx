@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect, useRef } from "react";
 import type { NextPage } from "next";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 import {
   Container,
@@ -45,6 +45,7 @@ const Feed: NextPage = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const router = useRouter();
 
   const {
     me,
@@ -72,8 +73,13 @@ const Feed: NextPage = () => {
   }, []);
   
   useEffect(()=>{
-    if(me){
-      fetchVillageData({ villageUuid: me?.comesFrom?.uuid });
+    const isCompletedUser = (user) => {
+      return user?.livesIn?.uuid && user?.comesFrom?.uuid;
+    };
+
+    if (me) {
+      if (isCompletedUser(me)) fetchVillageData({ villageUuid: me?.comesFrom?.uuid });
+      else router.push("/accountregister");
     }
   }, [me])
 
