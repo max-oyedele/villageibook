@@ -183,6 +183,7 @@ const Stories: NextPage = () => {
                 </Button>
               }
               <Button
+                variant='gray'
                 onClick={() => {
                   setUuid(row.original.uuid);
                   dialog.onOpen();
@@ -275,9 +276,9 @@ const Stories: NextPage = () => {
   return (
     <Fragment>
       <Layout>
-        <VillageSearchBox setVillage={setVillage} />
         <Box sx={{display: "flex", justifyContent: "space-between"}}>
           <Flex justifyContent={"flex-start"}>
+            <VillageSearchBox setVillage={setVillage} />
             <TableSearchBox
               onChange={setSearhText}
             />

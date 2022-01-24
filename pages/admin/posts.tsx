@@ -130,7 +130,11 @@ const Posts: NextPage = () => {
         Cell: function ActionItem({ row }) {
           return (
             <HStack>
-              <Button onClick={() => { setUuid(row.original.uuid); onOpen() }}>Delete</Button>
+              <Button
+                variant='gray'
+                onClick={() => { setUuid(row.original.uuid); onOpen() }}>
+                  Delete
+              </Button>
             </HStack>
           )
         }

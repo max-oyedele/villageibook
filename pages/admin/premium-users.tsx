@@ -170,6 +170,7 @@ const PremiumUsers: NextPage = () => {
                 Edit
               </Button>
               <Button
+                variant='gray'
                 onClick={() => {
                   setUuid(row.original.uuid);
                   dialog.onOpen();
