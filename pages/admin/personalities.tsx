@@ -42,7 +42,7 @@ const Personalities: NextPage = () => {
   const { me } = useFetchData();
   const { fetchMeData } = useActionDispatch();
   const { personalities } = useAdminFetchData();
-  const { delStatus, addPersonality, editPersonality, deleteData, resetState, fetchPersonalitiesData } = useAdminActionDispatch();
+  const { delStatus, deleteData, resetState, fetchPersonalitiesData } = useAdminActionDispatch();
   const [isEdit, setIsEdit] = useState(false);
   const toast = useToast();
   const [pageData, setPageData] = useState([]);
@@ -84,50 +84,6 @@ const Personalities: NextPage = () => {
       resetState();
     }
   }, [delStatus]);
-
-  useEffect(() => {
-    if (addPersonality) {
-      !toast.isActive("personalityAdd") &&
-        toast({
-          id: "personalityAdd",
-          title: "Data has been added.",
-          description: "Personalities data is added",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-      });
-      modal.onClose()
-      if (village) {
-        fetchPersonalitiesData({ villageUuid: village.uuid })
-      }
-      else {
-        fetchPersonalitiesData(null);
-      }
-      resetState();
-    }
-  }, [addPersonality]);
-
-  useEffect(() => {
-    if (editPersonality) {
-      !toast.isActive("personalityEdit") &&
-        toast({
-          id: "personalityEdit",
-          title: "Data has been updated.",
-          description: "Personalities data is updated.",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-      });
-      modal.onClose()
-      if (village) {
-        fetchPersonalitiesData({ villageUuid: village.uuid })
-      }
-      else {
-        fetchPersonalitiesData(null);
-      }
-      resetState();
-    }
-  }, [addPersonality]);
 
   const [village, setVillage] = useState<Village>(null);
 
@@ -254,8 +210,8 @@ const Personalities: NextPage = () => {
       !toast.isActive("personalityAdd") &&
         toast({
           id: "personalityAdd",
-          title: "Data has been inserted.",
-          description: "Personality data is inserted.",
+          title: "Data has been added.",
+          description: "Personality data is added.",
           status: "success",
           duration: 3000,
           isClosable: true,

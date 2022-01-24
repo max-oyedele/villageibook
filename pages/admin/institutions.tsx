@@ -40,7 +40,7 @@ const Institutions: NextPage = () => {
   const { me } = useFetchData();
   const { fetchMeData } = useActionDispatch();
   const { institutions } = useAdminFetchData();
-  const { delStatus, addInstitution, editInstitution, deleteData, resetState, fetchInstitutionsData } = useAdminActionDispatch();
+  const { delStatus, deleteData, resetState, fetchInstitutionsData } = useAdminActionDispatch();
   const [isEdit, setIsEdit] = useState(false);
   const toast = useToast();
   const [pageData, setPageData] = useState([]);
@@ -81,50 +81,6 @@ const Institutions: NextPage = () => {
       }
     }
   }, [delStatus]);
-
-  useEffect(() => {
-    if (addInstitution) {
-      !toast.isActive("InstitutionAdd") &&
-        toast({
-          id: "InstitutionAdd",
-          title: "Data has been added.",
-          description: "Institutions data is added",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-      });
-      modal.onClose()
-      if (village) {
-        fetchInstitutionsData({ villageUuid: village.uuid })
-      }
-      else {
-        fetchInstitutionsData(null);
-      }
-      resetState();
-    }
-  }, [addInstitution]);
-
-  useEffect(() => {
-    if (editInstitution) {
-      !toast.isActive("InstitutionEdit") &&
-        toast({
-          id: "InstitutionEdit",
-          title: "Data has been updated.",
-          description: "Institutions data is updated.",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-      });
-      modal.onClose()
-      if (village) {
-        fetchInstitutionsData({ villageUuid: village.uuid })
-      }
-      else {
-        fetchInstitutionsData(null);
-      }
-      resetState();
-    }
-  }, [editInstitution]);
 
   const [village, setVillage] = useState<Village>(null);
 
@@ -246,8 +202,8 @@ const Institutions: NextPage = () => {
       !toast.isActive("InstitutionAdd") &&
         toast({
           id: "InstitutionAdd",
-          title: "Data has been inserted.",
-          description: "Institution data is inserted.",
+          title: "Data has been added.",
+          description: "Institution data is added.",
           status: "success",
           duration: 3000,
           isClosable: true,

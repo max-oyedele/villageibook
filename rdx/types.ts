@@ -114,12 +114,4 @@ export interface AdminState {
   pmusers: User[];
   error?: SerializedError;
   delStatus: string;
-  addPersonality: null;
-  editPersonality: null;
-  addStory: null;
-  editStory: null;
-  addInstitution: null;
-  editInstitution: null;
-  addVideo: null;
-  editVideo: null;
 }

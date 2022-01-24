@@ -41,7 +41,7 @@ const Stories: NextPage = () => {
   const { me } = useFetchData();
   const { fetchMeData } = useActionDispatch();
   const { stories } = useAdminFetchData();
-  const { delStatus, addStory, editStory, deleteData, resetState, fetchStoriesData } = useAdminActionDispatch();
+  const { delStatus, deleteData, resetState, fetchStoriesData } = useAdminActionDispatch();
   const [isEdit, setIsEdit] = useState(false);
   const toast = useToast();
 
@@ -80,50 +80,6 @@ const Stories: NextPage = () => {
       }
     }
   }, [delStatus]);
-
-  useEffect(() => {
-    if (addStory) {
-      !toast.isActive("StoryAdd") &&
-        toast({
-          id: "StoryAdd",
-          title: "Data has been added.",
-          description: "Stories data is added",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-      });
-      modal.onClose()
-      if (village) {
-        fetchStoriesData({ villageUuid: village.uuid })
-      }
-      else {
-        fetchStoriesData(null);
-      }
-      resetState();
-    }
-  }, [addStory]);
-
-  useEffect(() => {
-    if (editStory) {
-      !toast.isActive("StoryEdit") &&
-        toast({
-          id: "StoryEdit",
-          title: "Data has been updated.",
-          description: "Stories data is updated.",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-      });
-      modal.onClose()
-      if (village) {
-        fetchStoriesData({ villageUuid: village.uuid })
-      }
-      else {
-        fetchStoriesData(null);
-      }
-      resetState();
-    }
-  }, [editStory]);
 
   const [village, setVillage] = useState<Village>(null);
 
@@ -236,8 +192,8 @@ const Stories: NextPage = () => {
       !toast.isActive("StoryAdd") &&
         toast({
           id: "StoryAdd",
-          title: "Data has been inserted.",
-          description: "Story data is inserted.",
+          title: "Data has been added.",
+          description: "Story data is added.",
           status: "success",
           duration: 3000,
           isClosable: true,

@@ -42,7 +42,7 @@ const Videos: NextPage = () => {
   const { me } = useFetchData();
   const { fetchMeData } = useActionDispatch();
   const { videos } = useAdminFetchData();
-  const { delStatus, addVideo, editVideo, deleteData, resetState, fetchVideosData } = useAdminActionDispatch();
+  const { delStatus, deleteData, resetState, fetchVideosData } = useAdminActionDispatch();
   const [isEdit, setIsEdit] = useState(false);
   const toast = useToast();
 
@@ -81,50 +81,6 @@ const Videos: NextPage = () => {
       }
     }
   }, [delStatus]);
-
-  useEffect(() => {
-    if (addVideo) {
-      !toast.isActive("VideoAdd") &&
-        toast({
-          id: "VideoAdd",
-          title: "Data has been added.",
-          description: "Videos data is added",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-      });
-      modal.onClose()
-      if (village) {
-        fetchVideosData({ villageUuid: village.uuid })
-      }
-      else {
-        fetchVideosData(null);
-      }
-      resetState();
-    }
-  }, [addVideo]);
-
-  useEffect(() => {
-    if (editVideo) {
-      !toast.isActive("VideoEdit") &&
-        toast({
-          id: "VideoEdit",
-          title: "Data has been updated.",
-          description: "Videos data is updated.",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-      });
-      modal.onClose()
-      if (village) {
-        fetchVideosData({ villageUuid: village.uuid })
-      }
-      else {
-        fetchVideosData(null);
-      }
-      resetState();
-    }
-  }, [editVideo]);
 
   const [village, setVillage] = useState<Village>(null);
 
@@ -237,8 +193,8 @@ const Videos: NextPage = () => {
       !toast.isActive("VideoAdd") &&
         toast({
           id: "VideoAdd",
-          title: "Data has been inserted.",
-          description: "Video data is inserted.",
+          title: "Data has been added.",
+          description: "Video data is added.",
           status: "success",
           duration: 3000,
           isClosable: true,
