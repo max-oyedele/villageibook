@@ -1,53 +1,37 @@
-import { Fragment, useState, useEffect, useRef, useMemo } from "react";
+import { Fragment, useState, useEffect, useMemo } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import {
   Box,
   Button,
-  Flex,
-  Grid,
   HStack,
   VStack,
-  Center,
-  Icon,
-  Image,
   Avatar,
   Text,
-  Portal,
-  Progress,
-  SimpleGrid,
-  Spacer,
-  Stat,
-  StatHelpText,
-  StatLabel,
-  StatNumber,
   Table,
   Thead,
   Tbody,
-  Tfoot,
+  Flex,
   Tr,
   Th,
   Td,
-  TableCaption,
-  useColorMode,
-  useColorModeValue,
   useDisclosure,
   useToast
 } from "@chakra-ui/react";
 
-import { FaWallet, FaGlobe, FaFile, FaShoppingCart, FaRegArrowAltCircleRight, FaRocket, FaThList } from "react-icons/fa";
 import { useTable, useSortBy } from 'react-table';
-
 import Layout from "admin/components/Layout";
 import ImageBox from "components/widgets/ImageBox";
 import VideoBox from "components/widgets/VideoBox";
 import DeleteDialog from "admin/components/DeleteDialog";
-
 import { getUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
+import ReadMoreLess from "components/widgets/ReadMoreLess";
+import Paginate from "components/Paginate";
+import TableSearchBox from "admin/components/TableSearchBox";
 
 const Posts: NextPage = () => {
   const router = useRouter();
@@ -56,6 +40,8 @@ const Posts: NextPage = () => {
   const { posts } = useAdminFetchData();
   const { delStatus, resetState, fetchPostsData, deleteData } = useAdminActionDispatch();
   const toast = useToast();
+  const [pageData, setPageData] = useState([]);
+  const itemsPerPage = 4;
 
   useEffect(() => {
     const access_token = getUserToken();
@@ -79,7 +65,7 @@ const Posts: NextPage = () => {
         toast({
           id: "PostDelete",
           title: "Data has been deleted.",
-          description: "Post data is deleleted",
+          description: "Post data is deleted",
           status: "success",
           duration: 3000,
           isClosable: true,
@@ -94,13 +80,20 @@ const Posts: NextPage = () => {
       {
         Header: 'Content',
         accessor: 'content',
+        Cell: function ContentItem({ row }) {
+          return (
+            <Box>
+              <ReadMoreLess>{row.original.content}</ReadMoreLess>  
+            </Box>
+          );
+        },
       },
       {
         Header: 'Picture',
         accessor: 'picture',
         Cell: function PictureItem({ row }) {
           return (
-            <Box w={40}>
+            <Box w={36} h={36}>
               <ImageBox
                 imageUrl={row.original.picture}
               />
@@ -149,7 +142,7 @@ const Posts: NextPage = () => {
   const [data, setData] = useState([])
   const tableInstance = useTable({ columns, data })
   useEffect(() => {
-    setData(posts.map(post => (
+    setData(pageData?.map(post => (
       {
         uuid: post.uuid,
         content: post.content,
@@ -158,7 +151,12 @@ const Posts: NextPage = () => {
         user: post.user
       }
     )))
-  }, [posts])
+  }, [pageData])
+
+  useEffect(() => {
+    if (pageData && posts?.length <= itemsPerPage)
+      setPageData(posts.slice(0, itemsPerPage));
+  }, [posts]);
 
   const {
     getTableProps,
@@ -174,51 +172,68 @@ const Posts: NextPage = () => {
     deleteData({ type: "posts", uuid });
     onClose();
   }
+  const [searchText, setSearhText] = useState('');
 
   return (
     <Fragment>
       <Layout>
-        <Table {...getTableProps()}>
-          <Thead>
-            {// Loop over the header rows
-              headerGroups.map((headerGroup, index) => (
-                // Apply the header row props
-                <Tr key={index} {...headerGroup.getHeaderGroupProps()}>
-                  {// Loop over the headers in each row
-                    headerGroup.headers.map((column, iindex) => (
-                      // Apply the header cell props
-                      <Th key={iindex} {...column.getHeaderProps()}>
-                        {// Render the header
-                          column.render('Header')}
-                      </Th>
-                    ))}
-                </Tr>
-              ))}
-          </Thead>
-          {/* Apply the table body props */}
-          <Tbody {...getTableBodyProps()}>
-            {// Loop over the table rows
-              rows.map((row, index) => {
-                // Prepare the row for display
-                prepareRow(row)
-                return (
-                  // Apply the row props
-                  <Tr key={index} {...row.getRowProps()}>
-                    {// Loop over the rows cells
-                      row.cells.map((cell, iindex) => {
-                        // Apply the cell props
-                        return (
-                          <Td key={iindex} {...cell.getCellProps()}>
-                            {// Render the cell contents
-                              cell.render('Cell')}
-                          </Td>
-                        )
-                      })}
+        <Box sx={{display: "flex", justifyContent: "space-between"}}>
+          <Flex justifyContent={"flex-start"}>
+            <TableSearchBox
+              onChange={setSearhText}
+            />
+          </Flex>
+        </Box>
+        <Box overflowX="auto">
+          <Table {...getTableProps()}>
+            <Thead>
+              {// Loop over the header rows
+                headerGroups.map((headerGroup, index) => (
+                  // Apply the header row props
+                  <Tr key={index} {...headerGroup.getHeaderGroupProps()}>
+                    {// Loop over the headers in each row
+                      headerGroup.headers.map((column, iindex) => (
+                        // Apply the header cell props
+                        <Th key={iindex} {...column.getHeaderProps()}>
+                          {// Render the header
+                            column.render('Header')}
+                        </Th>
+                      ))}
                   </Tr>
-                )
-              })}
-          </Tbody>
-        </Table>
+                ))}
+            </Thead>
+            {/* Apply the table body props */}
+            <Tbody {...getTableBodyProps()}>
+              {// Loop over the table rows
+                rows.map((row, index) => {
+                  // Prepare the row for display
+                  prepareRow(row)
+                  return (
+                    // Apply the row props
+                    <Tr key={index} {...row.getRowProps()}>
+                      {// Loop over the rows cells
+                        row.cells.map((cell, iindex) => {
+                          // Apply the cell props
+                          return (
+                            <Td key={iindex} {...cell.getCellProps()} p={3}>
+                              {// Render the cell contents
+                                cell.render('Cell')}
+                            </Td>
+                          )
+                        })}
+                    </Tr>
+                  )
+                })}
+            </Tbody>
+          </Table>
+        </Box>
+        <Paginate
+          data={posts}
+          pageData={setPageData}
+          itemsPerPage={itemsPerPage}
+          centerPagination={true}
+          searchText={searchText}
+        />
       </Layout>
       <DeleteDialog uuid={uuid} isOpen={isOpen} onClose={onClose} onConfirm={onDelete} />
     </Fragment>

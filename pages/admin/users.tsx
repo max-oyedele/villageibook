@@ -14,6 +14,7 @@ import {
   Tr,
   Th,
   Td,
+  Flex,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -23,19 +24,19 @@ import {
 } from "@chakra-ui/react";
 
 import { useTable } from "react-table";
-
 import Layout from "admin/components/Layout";
 import ImageBox from "components/widgets/ImageBox";
 import UserForm from "admin/components/UserForm";
 import DeleteDialog from "admin/components/DeleteDialog";
-
 import { getUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
-
 import { Village, User } from "types/schema";
+import ReadMoreLess from "components/widgets/ReadMoreLess";
+import Paginate from "components/Paginate";
+import TableSearchBox from "admin/components/TableSearchBox";
 
 const Users: NextPage = () => {
   const router = useRouter();
@@ -68,7 +69,7 @@ const Users: NextPage = () => {
         toast({
           id: "userDelete",
           title: "Data has been deleted.",
-          description: "User data is deleleted",
+          description: "User data is deleted",
           status: "success",
           duration: 3000,
           isClosable: true,
@@ -105,13 +106,20 @@ const Users: NextPage = () => {
       {
         Header: "About",
         accessor: "about",
+        Cell: function AboutItem({ row }) {
+          return (
+            <Box w={64}>
+              <ReadMoreLess>{row.original.about}</ReadMoreLess>  
+            </Box>
+          );
+        },
       },
       {
         Header: "Photo1",
         accessor: "photo1",
         Cell: function PictureItem({ row }) {
           return (
-            <Box>
+            <Box w={32} h={32}>
               <ImageBox
                 imageUrl={row.original.photo1}
               />
@@ -125,7 +133,7 @@ const Users: NextPage = () => {
         accessor: "photo2",
         Cell: function PictureItem({ row }) {
           return (
-            <Box>
+            <Box w={32} h={32}>
               <ImageBox
                 imageUrl={row.original.photo2}
               />
@@ -138,7 +146,7 @@ const Users: NextPage = () => {
         accessor: "photo3",
         Cell: function PictureItem({ row }) {
           return (
-            <Box>
+            <Box w={32} h={32}>
               <ImageBox
                 imageUrl={row.original.photo3}
               />
@@ -179,56 +187,78 @@ const Users: NextPage = () => {
 
   const [data, setData] = useState([]);
   const tableInstance = useTable({ columns, data });
-  useEffect(() => {
-    setData(users);
-  }, [users]);
-
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
-
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
   const modal = useDisclosure();
   const dialog = useDisclosure();
-
   const [uuid, setUuid] = useState(null);
   const [user, setUser] = useState<User>(null);
   const onDelete = (uuid) => {
     deleteData({ type: "users", uuid });
     dialog.onClose();
   };
+  const [pageData, setPageData] = useState([]);
+  const itemsPerPage = 5;
+  const [searchText, setSearhText] = useState('');
+
+  useEffect(() => {
+    setData(pageData);
+  }, [pageData])
+
+  useEffect(() => {
+    if (pageData && users?.length <= itemsPerPage)
+      setPageData(users.slice(0, itemsPerPage));
+  }, [users]);
 
   return (
     <Fragment>
       <Layout>
-        <Table {...getTableProps()}>
-          <Thead>
-            {headerGroups.map((headerGroup, index) => (
-              <Tr key={index} {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column, iindex) => (
-                  <Th key={iindex} {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </Th>
-                ))}
-              </Tr>
-            ))}
-          </Thead>
-          <Tbody {...getTableBodyProps()}>
-            {rows.map((row, index) => {
-              prepareRow(row);
-              return (
-                <Tr key={index} {...row.getRowProps()}>
-                  {row.cells.map((cell, iindex) => {
-                    return (
-                      <Td key={iindex} {...cell.getCellProps()}>
-                        {cell.render("Cell")}
-                      </Td>
-                    );
-                  })}
+        <Box sx={{display: "flex", justifyContent: "space-between"}}>
+          <Flex justifyContent={"flex-start"}>
+            <TableSearchBox
+              onChange={setSearhText}
+            />
+          </Flex>
+        </Box>
+        <Box overflowX="auto">
+          <Table {...getTableProps()}>
+            <Thead>
+              {headerGroups.map((headerGroup, index) => (
+                <Tr key={index} {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column, iindex) => (
+                    <Th key={iindex} {...column.getHeaderProps()}>
+                      {column.render("Header")}
+                    </Th>
+                  ))}
                 </Tr>
-              );
-            })}
-          </Tbody>
-        </Table>
+              ))}
+            </Thead>
+            <Tbody {...getTableBodyProps()}>
+              {rows.map((row, index) => {
+                prepareRow(row);
+                return (
+                  <Tr key={index} {...row.getRowProps()}>
+                    {row.cells.map((cell, iindex) => {
+                      return (
+                        <Td key={iindex} {...cell.getCellProps()} p={2}>
+                          {cell.render("Cell")}
+                        </Td>
+                      );
+                    })}
+                  </Tr>
+                );
+              })}
+            </Tbody>
+          </Table>
+        </Box>
+        <Paginate
+          data={users}
+          pageData={setPageData}
+          itemsPerPage={itemsPerPage}
+          centerPagination={true}
+          searchText={searchText}
+        />
       </Layout>
 
       <Modal

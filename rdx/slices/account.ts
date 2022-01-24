@@ -98,6 +98,7 @@ export const submitStepTwo = createAsyncThunk(
       photo2?: string;
       photo3?: string;
       media?: any;
+      uuid?: string;
     },
     thunkAPI
   ) => {
@@ -108,11 +109,11 @@ export const submitStepTwo = createAsyncThunk(
       bodyFormData.append("avatar", params.avatar);
       bodyFormData.append("about", params.about);
       bodyFormData.append("photo1", params.photo1);
-      bodyFormData.append("photo2", params.photo3);
+      bodyFormData.append("photo2", params.photo2);
       bodyFormData.append("photo3", params.photo3);
 
       const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/users/${params.uuid}`,
         bodyFormData,
         {
           headers: {

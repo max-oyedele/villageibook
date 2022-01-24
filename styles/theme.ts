@@ -59,6 +59,9 @@ const theme: Theme = extendTheme({
       },
       "#__next": {
         minHeight: "100vh",
+        display: "flex",
+        position: "relative",
+        flexDirection: "column"
       },
       hr: {
         borderColor: mode("gray.700", "whiteAlpha.900")(props),

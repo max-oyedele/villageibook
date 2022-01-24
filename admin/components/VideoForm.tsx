@@ -28,16 +28,19 @@ const VideoForm: React.FC<{
     type: string,
     village: Village,
     video?: Video,
-    isEdit: boolean
+    isEdit: boolean,
+    onSubmit
 }> = ({
     type,
     village,
     video,
-    isEdit
+    isEdit,
+    onSubmit
 }) => {
         const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
         const toast = useToast();
 
+        const [uuid, setUuid] = useState(video?.uuid);                
         const [name, setName] = useState(video?.name);                
         const [description, setDescription] = useState(video?.description);
         const [avatar, setAvatar] = useState(null);
@@ -47,15 +50,7 @@ const VideoForm: React.FC<{
         const { submitVideoData, submitVideoEditData } = useAdminActionDispatch();
 
         if (error) {
-            !toast.isActive("videoError") &&
-                toast({
-                    id: "videoError",
-                    title: "Failed! Try again.",
-                    description: "Api error.",
-                    status: "error",
-                    duration: 3000,
-                    isClosable: true,
-                });
+            onSubmit("error");
         }
 
         const validationSchema = yup.object({
@@ -73,15 +68,17 @@ const VideoForm: React.FC<{
                 validationSchema={validationSchema}
                 onSubmit={async (values, actions) => {
                     const params = {
-                        villageUuid: village.uuid,                        
                         video: { avatar, name, description },
+                        uuid
                     };
 
                     actions.setSubmitting(true);
                     if (!isEdit) {
                         await submitVideoData(params);
+                        onSubmit("add");
                     } else {
                         await submitVideoEditData(params);
+                        onSubmit("update");
                     }
                     actions.setSubmitting(false);
                 }}

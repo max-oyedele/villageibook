@@ -18,28 +18,20 @@ import LeftVillageCard from "components/LeftVillageCard";
 import PersonalityCard from "components/PersonalityCard";
 import Alert from "components/widgets/Alert";
 import Loader from "components/widgets/Loader";
-
 import useWindowProp from "hooks/use-window-prop";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
-
 import Paginate from "components/Paginate";
 
 const Personalities: NextPage = () => {
   const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
-
   const router = useRouter();
   const { query } = router;
   const vid = query.id; //village name currently, but replace to uuid
-
   const { fixed } = useWindowProp();
-
   const { villagePageStatus, village, villagePersonalities } = useFetchData();
   const { fetchVillageData, fetchVillagePageData } = useActionDispatch();
-
   const [pageData, setPageData] = useState(null);
-  const [itemOffset, setItemOffset] = useState(1);
-  const [pageCount, setPageCount] = useState(1);
   const itemsPerPage = 4;
 
   useEffect(() => {
@@ -50,40 +42,9 @@ const Personalities: NextPage = () => {
   }, [vid]);
 
   useEffect(() => {
-    if (
-      villagePersonalities != null &&
-      villagePersonalities["personalities"].length > 0
-    ) {
-      setItemOffset(0);
-    } else if (
-      villagePersonalities != null &&
-      villagePersonalities["personalities"].length == 0
-    ) {
-      setPageData([]);
-    }
-  }, [villagePersonalities && villagePersonalities["personalities"]]);
-
-  const handlePageClicked = (event) => {
-    const newOffset =
-      (event.selected * itemsPerPage) %
-      villagePersonalities["personalities"].length;
-    setItemOffset(newOffset);
-  };
-
-  useEffect(() => {
-    if (
-      villagePersonalities != null &&
-      villagePersonalities["personalities"].length > 0
-    ) {
-      const endOffset = itemOffset + itemsPerPage;
-      setPageData(
-        villagePersonalities["personalities"].slice(itemOffset, endOffset)
-      );
-      setPageCount(
-        Math.ceil(villagePersonalities["personalities"].length / itemsPerPage)
-      );
-    }
-  }, [itemOffset, itemsPerPage]);
+    if (pageData == null && villagePersonalities?.["personalities"]?.length <= itemsPerPage)
+      setPageData(villagePersonalities["personalities"].slice(0, itemsPerPage));
+  }, [villagePersonalities?.["personalities"]]);
 
   return (
     <Fragment>
@@ -120,13 +81,10 @@ const Personalities: NextPage = () => {
               {pageData?.length == 0 && (
                 <Alert message="There is no personality to be displayed." />
               )}
-              {villagePersonalities &&
-                villagePersonalities["personalities"].length > itemsPerPage && (
+              {villagePersonalities?.["personalities"]?.length > itemsPerPage && (
                   <Paginate
-                    handlePageClick={handlePageClicked}
-                    pageCount={pageCount}
-                    itemOffset={itemOffset}
-                    isLast={villagePersonalities["personalities"].length - itemsPerPage > itemOffset}
+                    data={villagePersonalities["personalities"]}
+                    pageData={setPageData}
                   />
                 )}
             </Box>

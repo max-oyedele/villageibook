@@ -194,6 +194,7 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
     fetchVillagesData,
     fetchUniversitiesData,
     submitStepOneData,
+    fetchMeData
   } = useActionDispatch();
 
   const platformCountries = [
@@ -225,6 +226,8 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
     useState<Profession | null>(null);
   const [degrees, setDegrees] = useState<Degree[]>([]);
   const [selectedDegree, setSelectedDegree] = useState<Degree | null>(null);
+  const [isSubmit, setIsSubmit] = useState(false);
+  const toast = useToast();
 
   useEffect(() => {
     fetchCommonData();
@@ -238,6 +241,18 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
     if (me) {
       setFirstName(me.firstName);
       setLastName(me.lastName);
+      if (isSubmit) {
+        setIsSubmit(false);
+        !toast.isActive("updateMe") &&
+          toast({
+            id: "updateMe",
+            title: "Successfully Updated.",
+            description: "Updated",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+      }
 
       if (countries?.length > 0) {
         setSelectedLivingCountry(
@@ -377,7 +392,9 @@ const Step1Form = ({ avatar, isBySupport, setIsBySupport }) => {
         };
 
         actions.setSubmitting(true);
+        setIsSubmit(true);
         await submitStepOneData(params);
+        await fetchMeData();
         actions.setSubmitting(false);
       }}
     >
@@ -610,6 +627,9 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
   const [refresh, setRefresh] = useState(false);
 
   const [isUploading, setIsUploading] = useState(false);
+  const toast = useToast();
+  const [isSubmit, setIsSubmit] = useState(false);
+  const { fetchMeData } = useActionDispatch();
 
   const uploadToClient = (event, index) => {
     if (event.target.files && event.target.files[0]) {
@@ -634,6 +654,20 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
     about: yup.string().required("About me is required."),
   });
 
+  useEffect(() => {
+    if (isSubmit) {
+      setIsSubmit(false);
+      !toast.isActive("updateMe") &&
+        toast({
+          id: "updateMe",
+          title: "Successfully Updated.",
+          description: "Updated",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+    }
+  }, [me])
   return (
     <Formik
       initialValues={{
@@ -650,7 +684,9 @@ const Step2Form = ({ activeStep, setActiveStep, avatar }) => {
           photo3,
         };
         actions.setSubmitting(true);
+        setIsSubmit(true);
         await submitStepTwoData(params);
+        await fetchMeData();
         actions.setSubmitting(false);
       }}
     >

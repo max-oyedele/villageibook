@@ -5,69 +5,37 @@ import {
   Box,
   Button,
   Flex,
-  Grid,
   HStack,
-  VStack,
-  Center,
-  Icon,
-  Image,
   Avatar,
-  Text,
-  Portal,
-  Progress,
-  SimpleGrid,
-  Spacer,
-  Stat,
-  StatHelpText,
-  StatLabel,
-  StatNumber,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
   Modal,
   ModalOverlay,
-  ModalHeader,
-  ModalCloseButton,
   ModalContent,
-  ModalBody,
-  ModalFooter,
-  useColorMode,
-  useColorModeValue,
   useBreakpointValue,
   useDisclosure,
-  useToast
+  useToast,
+  ModalBody
 } from "@chakra-ui/react";
 
-import {
-  FaWallet,
-  FaGlobe,
-  FaFile,
-  FaShoppingCart,
-  FaRegArrowAltCircleRight,
-  FaRocket,
-  FaThList,
-} from "react-icons/fa";
 import { useTable, useSortBy } from "react-table";
-
 import Layout from "admin/components/Layout";
-import ImageBox from "components/widgets/ImageBox";
-import VideoBox from "components/widgets/VideoBox";
 import VillageSearchBox from "admin/components/VillageSearchBox";
+import TableSearchBox from "admin/components/TableSearchBox";
 import PersonalityForm from "admin/components/PersonalityForm";
 import DeleteDialog from "admin/components/DeleteDialog";
-
 import { getUserToken } from "helpers/user-token";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
 import useAdminFetchData from "hooks/use-admin-fetch-data";
 import useAdminActionDispatch from "hooks/use-admin-action-dispatch";
-
 import { Village, Personality } from "types/schema";
+import ReadMoreLess from "components/widgets/ReadMoreLess";
+import Paginate from "components/Paginate";
 
 const Personalities: NextPage = () => {
   const router = useRouter();
@@ -77,6 +45,9 @@ const Personalities: NextPage = () => {
   const { delStatus, addPersonality, editPersonality, deleteData, resetState, fetchPersonalitiesData } = useAdminActionDispatch();
   const [isEdit, setIsEdit] = useState(false);
   const toast = useToast();
+  const [pageData, setPageData] = useState([]);
+  const itemsPerPage = 5;
+  type ScrollBehavior = "inside";
 
   useEffect(() => {
     const access_token = getUserToken();
@@ -99,7 +70,7 @@ const Personalities: NextPage = () => {
         toast({
           id: "personalityDelete",
           title: "Data has been deleted.",
-          description: "Personalities data is deleleted",
+          description: "Personalities data is deleted",
           status: "success",
           duration: 3000,
           isClosable: true,
@@ -188,6 +159,13 @@ const Personalities: NextPage = () => {
       {
         Header: "About",
         accessor: "about",
+        Cell: function AboutItem({ row }) {
+          return (
+            <Box>
+              <ReadMoreLess>{row.original.about}</ReadMoreLess>  
+            </Box>
+          );
+        },
       },
       {
         Header: "Date of Birth",
@@ -245,7 +223,12 @@ const Personalities: NextPage = () => {
   const [data, setData] = useState([]);
   const tableInstance = useTable({ columns, data });
   useEffect(() => {
-    setData(personalities);
+    setData(pageData);
+  }, [pageData])
+
+  useEffect(() => {
+    if (pageData && personalities?.length <= itemsPerPage)
+      setPageData(personalities.slice(0, itemsPerPage));
   }, [personalities]);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -261,63 +244,125 @@ const Personalities: NextPage = () => {
     deleteData({ type: "personalities", uuid });
     dialog.onClose();
   };
+  const [scrollBehavior, setScrollBehavior] = useState<ScrollBehavior>("inside");
+  const [searchText, setSearhText] = useState('');
 
+  const onSubmit = (value) => {
+    modal.onClose();
+    if (value == "add") {
+      !toast.isActive("personalityAdd") &&
+        toast({
+          id: "personalityAdd",
+          title: "Data has been inserted.",
+          description: "Personality data is inserted.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+    } 
+    else if (value == "update") {
+      !toast.isActive("personalityUpdate") &&
+        toast({
+          id: "personalityUpdate",
+          title: "Data has been Updated.",
+          description: "Personality data is updated.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+      });
+    } else {
+      !toast.isActive("userError") &&
+        toast({
+          id: "userError",
+          title: "Failed! Try again.",
+          description: "Error",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+      });
+    }
+    if (village) {
+      fetchPersonalitiesData({ villageUuid: village.uuid })
+    }
+    else {
+      fetchPersonalitiesData(null);
+    }
+  };
+  
   return (
     <Fragment>
       <Layout>
         <VillageSearchBox setVillage={setVillage} />
-        <Flex justifyContent={"flex-end"}>
-          <Button onClick={() => { modal.onOpen(); setIsEdit(false); }} isDisabled={!village}>
-            Add Personality
-          </Button>
-        </Flex>
-
-        <Table {...getTableProps()}>
-          <Thead>
-            {headerGroups.map((headerGroup, index) => (
-              <Tr key={index} {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column, iindex) => (
-                  <Th key={iindex} {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </Th>
-                ))}
-              </Tr>
-            ))}
-          </Thead>
-          <Tbody {...getTableBodyProps()}>
-            {rows.map((row, index) => {
-              prepareRow(row);
-              return (
-                <Tr key={index} {...row.getRowProps()}>
-                  {row.cells.map((cell, iindex) => {
-                    return (
-                      <Td key={iindex} {...cell.getCellProps()}>
-                        {cell.render("Cell")}
-                      </Td>
-                    );
-                  })}
+        <Box sx={{display: "flex", justifyContent: "space-between"}}>
+          <Flex justifyContent={"flex-start"}>
+            <TableSearchBox
+              onChange={setSearhText}
+            />
+          </Flex>
+          <Flex justifyContent={"flex-end"}>
+            <Button onClick={() => { modal.onOpen(); setIsEdit(false); }} isDisabled={!village}>
+              Add Personality
+            </Button>
+          </Flex>
+        </Box>
+        <Box overflowX="auto">
+          <Table {...getTableProps()}>
+            <Thead>
+              {headerGroups.map((headerGroup, index) => (
+                <Tr key={index} {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column, iindex) => (
+                    <Th key={iindex} {...column.getHeaderProps()}>
+                      {column.render("Header")}
+                    </Th>
+                  ))}
                 </Tr>
-              );
-            })}
-          </Tbody>
-        </Table>
+              ))}
+            </Thead>
+            <Tbody {...getTableBodyProps()}>
+              {rows.map((row, index) => {
+                prepareRow(row);
+                return (
+                  <Tr key={index} {...row.getRowProps()}>
+                    {row.cells.map((cell, iindex) => {
+                      return (
+                        <Td key={iindex} {...cell.getCellProps()}>
+                          {cell.render("Cell")}
+                        </Td>
+                      );
+                    })}
+                  </Tr>
+                );
+              })}
+            </Tbody>
+          </Table>
+        </Box>
+        <Paginate
+          data={personalities}
+          pageData={setPageData}
+          itemsPerPage={itemsPerPage}
+          centerPagination={true}
+          searchText={searchText}
+        />
       </Layout>
-
       <Modal
         closeOnOverlayClick={true}
         isCentered
         size={breakpointValue === "base" ? "full" : "2xl"}
         isOpen={modal.isOpen}
         onClose={modal.onClose}
+        scrollBehavior={scrollBehavior}
       >
         <ModalOverlay />
         <ModalContent m={0} p={6} bgColor="white">
-          <PersonalityForm
-            type="add"
-            village={village}
-            personality={isEdit ? personality : null}
-            isEdit={isEdit}
-          />
+          <ModalBody>
+            <PersonalityForm
+              type="add"
+              village={village}
+              personality={isEdit ? personality : null}
+              isEdit={isEdit}
+              onSubmit={onSubmit}
+            />
+          </ModalBody>
         </ModalContent>
       </Modal>
 

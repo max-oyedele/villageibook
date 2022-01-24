@@ -56,7 +56,9 @@ const VideoBox: React.FC<{
             // light={videoBackImg ?? false}
           />
         )}
-
+        {videoUrl && !videoReady && (
+          <Image src={"/images/default-video.png"} alt="" />
+        )}
         <Flex
           pos="absolute"
           top={0}
@@ -65,11 +67,6 @@ const VideoBox: React.FC<{
           justifyContent="center"
           alignItems="center"
         >
-          {!videoReady && (
-            <Box w={9} h={9}>
-              {/* <Loader loading={true} type="clip" /> */}
-            </Box>
-          )}
           {videoReady && videoUrl && (
             <Circle
               w={9}
@@ -83,7 +80,7 @@ const VideoBox: React.FC<{
           )}
         </Flex>
 
-        {!videoUrl && (
+        {/* {!videoUrl && (
           <Flex
             pos="absolute"
             top={0}
@@ -94,7 +91,7 @@ const VideoBox: React.FC<{
           >
             <BiLoaderCircle fontSize="34px" color="white" />
           </Flex>
-        )}
+        )} */}
       </Box>
 
       <Modal

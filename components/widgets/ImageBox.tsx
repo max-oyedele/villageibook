@@ -1,27 +1,13 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 
 import {
-  HStack,
-  VStack,
-  Divider,
-  Flex,
   Box,
   Image,
-  Text,
-  Badge,
-  Button,
-  AspectRatio,
-  Center,
-  Circle,
   useBreakpointValue,
   useDisclosure,
   Modal,
   ModalOverlay,
-  ModalHeader,
-  ModalCloseButton,
   ModalContent,
-  ModalBody,
-  ModalFooter,
 } from "@chakra-ui/react";
 
 const ImageBox: React.FC<{ imageUrl: string }> = ({ imageUrl }) => {
@@ -31,7 +17,7 @@ const ImageBox: React.FC<{ imageUrl: string }> = ({ imageUrl }) => {
 
   return (
     <Fragment>
-      <Box w="full" pos="relative">
+      <Box w="full" h="full" pos="relative">
         <Image
           src={imageUrl}
           alt=""

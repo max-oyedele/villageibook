@@ -28,16 +28,19 @@ const StoryForm: React.FC<{
     type: string,
     village: Village,
     story?: Story,
-    isEdit: boolean
+    isEdit: boolean,
+    onSubmit
 }> = ({
     type,
     village,
     story,
-    isEdit
+    isEdit,
+    onSubmit
 }) => {
         const breakpointValue = useBreakpointValue({ base: "base", md: "md" });
         const toast = useToast();
 
+        const [uuid, setUuid] = useState(story?.uuid);        
         const [title, setTitle] = useState(story?.title);        
         const [content, setContent] = useState(story?.content);
         const [avatar, setAvatar] = useState(null);
@@ -47,15 +50,7 @@ const StoryForm: React.FC<{
         const { submitStoryData, submitStoryEditData } = useAdminActionDispatch();
 
         if (error) {
-            !toast.isActive("storyError") &&
-                toast({
-                    id: "storyError",
-                    title: "Failed! Try again.",
-                    description: error.message,
-                    status: "error",
-                    duration: 3000,
-                    isClosable: true,
-                });
+            onSubmit(error);
         }
 
         const validationSchema = yup.object({
@@ -71,13 +66,14 @@ const StoryForm: React.FC<{
                     title: title,
                     content: content,
                     photoName: photo?.name,
-                    photoDescription: photo?.description,                    
+                    photoDescription: photo?.description,
+                    uuid: uuid               
                 }}
                 enableReinitialize={true}
                 validationSchema={validationSchema}
                 onSubmit={async (values, actions) => {
                     const params = {
-                        villageUuid: village.uuid,
+                        uuid: uuid,
                         title,
                         content,
                         photo: { avatar, name: photo.name, description: photo.description },                        
@@ -86,8 +82,10 @@ const StoryForm: React.FC<{
                     actions.setSubmitting(true);
                     if (!isEdit) {
                         await submitStoryData(params);
+                        onSubmit("add");
                     } else {
                         await submitStoryEditData(params);
+                        onSubmit("update");
                     }
                     actions.setSubmitting(false);
                 }}

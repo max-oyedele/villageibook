@@ -55,6 +55,7 @@ export type Photo = {
 };
 
 export type Video = {
+  uuid: string;
   url: string;
   name?: string;
   description?: string;
