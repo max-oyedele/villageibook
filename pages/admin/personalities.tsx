@@ -249,7 +249,7 @@ const Personalities: NextPage = () => {
   return (
     <Fragment>
       <Layout>
-        <Box sx={{display: "flex", justifyContent: "space-between"}}>
+        <Box sx={{display: "flex", justifyContent: "space-between"}} mb={5}>
           <Flex justifyContent={"flex-start"}>
             <VillageSearchBox setVillage={setVillage} />
             <TableSearchBox
