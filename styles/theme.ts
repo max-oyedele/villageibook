@@ -13,6 +13,7 @@ const theme: Theme = extendTheme({
     grayTone: "#F8F8FA",
     grayButton: "#E0E0E0",
     greenTone: "#36CFD1",
+    GrayText: "#757575"
   },
   fonts: {
     body: `'Sofia Pro', sans-serif`,
@@ -62,7 +63,7 @@ const theme: Theme = extendTheme({
   styles: {
     global: (props: GlobalStyleProps): SystemStyleObject => ({
       body: {
-        fontFamily: "body",
+        fontFamily: "Sofia Pro",
         color: mode("gray.700", "whiteAlpha.900")(props),
         bg: mode("gray.50", "gray.800")(props),
         transition: "background-color 0.2s",

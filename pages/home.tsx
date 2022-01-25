@@ -57,49 +57,65 @@ const Home: NextPage = () => {
           <Logo />
         </Center>
 
-        <Box px={{ base: 6, md: 16, lg: 32 }} mt={12}>
-          <Stack spacing={12} direction={{ base: "column", md: "row" }}>
-            <Center w="full">
-              <Box>
-                <Text
-                  fontSize={["xl", "2xl", "3xl", "4xl", "5xl"]}
-                  fontWeight="600"
-                  color="GrayText"
-                  lineHeight={1.2}
-                >
-                  Welcome to Skillhet
-                </Text>
-                <Text
-                  fontSize={["xl", "2xl", "3xl", "4xl", "5xl"]}
-                  color="GrayText"
-                  lineHeight={1.2}
-                  mt={[0, 6]}
-                >
-                  your loved community
-                </Text>
-              </Box>
-            </Center>
-            {breakpointValue === "base" && (
-              <Box px={6} mt={12}>
+        {breakpointValue === "base" && (
+          <Box px={{ base: 6, md: 16, lg: 32 }} mt={8}>
+            <Stack spacing={12} direction={{ base: "column", md: "row" }}>
+              <Center w="full">
+                <Box>
+                  <Text
+                    fontSize="32px"
+                    fontWeight="600"
+                    color="GrayText"
+                    lineHeight="40px"
+                    fontFamily="Sofia Pro"
+                    textAlign="center"
+                  >
+                    Welcome to Skillhet
+                  </Text>
+                  <Text
+                    fontSize="32px"
+                    fontWeight="600"
+                    color="GrayText"
+                    lineHeight="40px"
+                    fontFamily="Sofia Pro"
+                    textAlign="center"
+                    mt={[0, 6]}
+                  >
+                    your loved community
+                  </Text>
+                </Box>
+              </Center>
+              <Box px={6} mt={10}>
                 <VStack spacing={4} justifyContent="space-around">
                   <Center>
                     <HStack
                       fontSize="xl"
                       fontWeight="semibold"
                       spacing={8}
-                      letterSpacing={4}
                     >
                       <HStack color="#E64E90">
                         <BsDot />
-                        <Text>Search</Text>
+                        <Text
+                          fontSize="20px"
+                          lineHeight="32px"
+                          fontWeight="600"
+                        >Search</Text>
                       </HStack>
                       <HStack color="#6852FB">
                         <BsDot />
-                        <Text>Connect</Text>
+                        <Text
+                          fontSize="20px"
+                          lineHeight="32px"
+                          fontWeight="600"
+                        >Connect</Text>
                       </HStack>
                       <HStack color="#36CFD1">
                         <BsDot />
-                        <Text>Inspire</Text>
+                        <Text
+                          fontSize="20px"
+                          lineHeight="32px"
+                          fontWeight="600"
+                        >Inspire</Text>
                       </HStack>
                     </HStack>
                   </Center>
@@ -115,16 +131,27 @@ const Home: NextPage = () => {
                         <Text
                           color="#553CFB"
                           cursor="pointer"
+                          fontSize="20px"
+                          lineHeight="32px"
+                          fontWeight="600"
                           _hover={{ color: "#AE3CFB" }}
                         >
                           Login
                         </Text>
                       </Link>
-                      <Text color="GrayText">Or</Text>
+                      <Text
+                        color="GrayText"
+                        fontSize="20px"
+                        lineHeight="32px"
+                        fontWeight="600"
+                      >Or</Text>
                       <Link href="/signup" passHref={true}>
                         <Text
                           color="#553CFB"
                           cursor="pointer"
+                          fontSize="20px"
+                          lineHeight="32px"
+                          fontWeight="600"
                           _hover={{ color: "#AE3CFB" }}
                         >
                           Signup
@@ -134,72 +161,118 @@ const Home: NextPage = () => {
                   </Center>
                 </VStack>
               </Box>
-            )}
-            <Box w="full">
-              <Image
-                src={`/images/logo-img.svg`}
-                alt=""
-                w="full"
-                objectFit="cover"
-              />
-            </Box>
-          </Stack>
-        </Box>
+              <Box w="full">
+                <Image
+                  src={`/images/logo-img.svg`}
+                  alt=""
+                  w="full"
+                  objectFit="cover"
+                />
+              </Box>
+            </Stack>
+          </Box>
+        )}
 
         {breakpointValue === "md" && (
-          <Box px={36} mt={24}>
-            <HStack spacing={4} justifyContent="space-around">
-              <Center>
-                <Stack
-                  fontSize="3xl"
-                  fontWeight="semibold"
-                  spacing={8}
-                  letterSpacing={4}
-                >
-                  <HStack color="#E64E90">
-                    <BsDot />
-                    <Text>Search</Text>
-                  </HStack>
-                  <HStack color="#6852FB">
-                    <BsDot />
-                    <Text>Connect</Text>
-                  </HStack>
-                  <HStack color="#36CFD1">
-                    <BsDot />
-                    <Text>Inspire</Text>
-                  </HStack>
-                </Stack>
+          <Box px={{ base: 6, md: 16, lg: 32 }} mt={8}>
+            <Stack spacing={12} direction={{ base: "column", md: "row" }}>
+              <Center w="full">
+                <Box>
+                  <Text
+                    fontSize="48px"
+                    fontWeight="600"
+                    color="GrayText"
+                    lineHeight="64px"
+                    fontFamily="Sofia Pro"
+                  >
+                    Welcome to Skillhet
+                  </Text>
+                  <Text
+                    fontSize="48px"
+                    fontWeight="600"
+                    color="GrayText"
+                    lineHeight="64px"
+                    fontFamily="Sofia Pro"
+                    mt={[0, 6]}
+                  >
+                    your loved community
+                  </Text>
+                </Box>
               </Center>
-              <Center>
-                <Stack
-                  fontSize="3xl"
-                  fontWeight="semibold"
-                  textAlign="center"
-                  spacing={8}
-                  letterSpacing={4}
-                >
-                  <Link href="/login" passHref={true}>
+              <Box w="full">
+                <Image
+                  src={`/images/logo-img.svg`}
+                  alt=""
+                  w="full"
+                  objectFit="cover"
+                />
+              </Box>
+            </Stack>
+            <Box px={36} mt={24}>
+              <HStack spacing={4} justifyContent="space-around">
+                <Center>
+                  <Stack
+                    fontSize="3xl"
+                    fontWeight="semibold"
+                    spacing={8}
+                    letterSpacing={4}
+                  >
+                    <HStack color="#E64E90">
+                      <BsDot />
+                      <Text fontSize="32px" lineHeight="56px" fontWeight="600">Search</Text>
+                    </HStack>
+                    <HStack color="#6852FB">
+                      <BsDot />
+                      <Text fontSize="32px" lineHeight="56px" fontWeight="600">Connect</Text>
+                    </HStack>
+                    <HStack color="#36CFD1">
+                      <BsDot />
+                      <Text fontSize="32px" lineHeight="56px" fontWeight="600">Inspire</Text>
+                    </HStack>
+                  </Stack>
+                </Center>
+                <Center>
+                  <Stack
+                    fontSize="3xl"
+                    fontWeight="semibold"
+                    textAlign="center"
+                    spacing={8}
+                    letterSpacing={4}
+                  >
+                    <Link href="/login" passHref={true}>
+                      <Text
+                        color="#553CFB"
+                        cursor="pointer"
+                        fontSize="32px"
+                        lineHeight="56px"
+                        fontWeight="600"
+                        _hover={{ color: "#AE3CFB" }}
+                      >
+                        Login
+                      </Text>
+                    </Link>
                     <Text
-                      color="#553CFB"
-                      cursor="pointer"
-                      _hover={{ color: "#AE3CFB" }}
-                    >
-                      Login
-                    </Text>
-                  </Link>
-                  <Text color="GrayText">Or</Text>
-                  <Link href="/signup" passHref={true}>
-                    <Text
-                      color="#553CFB"
-                      cursor="pointer"
-                      _hover={{ color: "#AE3CFB" }}
-                    >
-                      Signup
-                    </Text>
-                  </Link>
-                </Stack>
-              </Center>
-            </HStack>
+                      color="GrayText"
+                      fontSize="32px"
+                      lineHeight="56px"
+                      fontWeight="600"
+                    >Or</Text>
+                    <Link href="/signup" passHref={true}>
+                      <Text
+                        color="#553CFB"
+                        cursor="pointer"
+                        fontSize="32px"
+                        lineHeight="56px"
+                        fontWeight="600"
+                        _hover={{ color: "#AE3CFB" }}
+                      >
+                        Signup
+                      </Text>
+                    </Link>
+                  </Stack>
+                </Center>
+              </HStack>
+            </Box>
           </Box>
         )}
 
@@ -233,23 +306,22 @@ const Home: NextPage = () => {
               </Center> */}
               <Box
                 pos="absolute"
-                top={-4}
-                right={-4}
+                top={-6}
+                right={-6}
                 display={{ base: "block", md: "none", xl: "block" }}
-                w="50%"
-                h="50%"
+                w="45%"
+                h="40%"
                 bgColor="#36CFD1"
-                opacity={0.5}
                 zIndex={-1}
               ></Box>
             </Flex>
           </Box>
           <Center>
             <Box p={12}>
-              <Text fontSize="xl" fontWeight="semibold">
+              <Text fontSize="36px" lineHeight="36px" fontWeight="semibold">
                 Let{"'"}s explore
               </Text>
-              <Text fontSize="md" color="GrayText" mt={4}>
+              <Text fontSize="20px" lineHeight="28px" color="#8888A8" fontWeight="400" mt={4}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
                 auctor euismod lobortis. Mauris ornare ante non justo mattis,
                 vitae fermentum ligula consequat. Donec ac quam sit amet libero.
@@ -262,7 +334,7 @@ const Home: NextPage = () => {
         </Stack>
 
         <Box w={{ base: "100%", md: "70%" }} px={{ base: 6, md: 36 }} mt={24}>
-          <Text fontSize="2xl" fontWeight="semibold" mb={6}>
+          <Text fontSize="36px" lineHeight="36px" fontWeight="semibold" mb={6}>
             FAQ
           </Text>
           <FaqAccordion />
