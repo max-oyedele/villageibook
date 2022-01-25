@@ -71,7 +71,7 @@ const StoryForm: React.FC<{
                         uuid,
                         title,
                         content,
-                        photo: { avatar, name: photo.name, description: photo.description },                        
+                        photo: { avatar, name: photo.name, description: photo.description, uuid: photo.uuid },                        
                     };
 
                     actions.setSubmitting(true);

@@ -225,6 +225,7 @@ const PremiumUsers: NextPage = () => {
           isClosable: true,
       });
     }
+    fetchMeData();
     fetchPmusersData();
   };
   

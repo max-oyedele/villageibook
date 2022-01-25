@@ -123,7 +123,6 @@ export const submitStepTwo = createAsyncThunk(
         }
       );
 
-      localStorage.setItem("villageibookAccount", JSON.stringify(response.data));
       return response.data;
     } catch (error) {
       // return thunkAPI.rejectWithValue({ error: error.message });

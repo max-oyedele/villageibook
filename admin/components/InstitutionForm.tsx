@@ -89,7 +89,7 @@ const InstitutionForm: React.FC<{
                         villageUuid: village.uuid,
                         uuid,
                         name,
-                        photo: { avatar, name: photo.name, description: photo.description },
+                        photo: { avatar, name: photo.name, description: photo.description, uuid: photo.uuid },
                         yearEstablished,
                         address,
                         email,
