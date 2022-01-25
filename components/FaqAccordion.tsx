@@ -42,8 +42,8 @@ const FaqAccordion = () => {
               <Box
                 flex="1"
                 textAlign="left"
-                fontSize="24px"
-                lineHeight="24px"
+                fontSize={{ base: "20px", md: "24px"}}
+                lineHeight={{ base: "20px", md: "24px"}}
                 fontWeight="600"
                 textTransform="capitalize"
                 letterSpacing="-0.01em"
@@ -62,8 +62,8 @@ const FaqAccordion = () => {
             </AccordionButton>
             <AccordionPanel px={0} pb={4}>
               <Box w="full" py={2}
-                fontSize="20px"
-                lineHeight="28px"
+                fontSize={{ base: "16px", md: "20px"}}
+                lineHeight={{ base: "24px", md: "28px"}}
                 color="#8E8EA8"
                 letter="-1%"
               >

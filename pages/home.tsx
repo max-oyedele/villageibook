@@ -326,10 +326,10 @@ const Home: NextPage = () => {
           </Box>
           <Center>
             <Box p={12}>
-              <Text fontSize="36px" lineHeight="36px" fontWeight="semibold">
+              <Text fontSize={{ base: "32px", md: "36px"}} lineHeight={{ base: "32px", md: "36px"}} fontWeight="semibold">
                 Let{"'"}s explore
               </Text>
-              <Text fontSize="20px" lineHeight="28px" color="#8888A8" fontWeight="400" mt={4}>
+              <Text fontSize={{ base: "16px", md: "20px"}} lineHeight={{ base: "24px", md: "28px"}} color="#8888A8" fontWeight="400" mt={4}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
                 auctor euismod lobortis. Mauris ornare ante non justo mattis,
                 vitae fermentum ligula consequat. Donec ac quam sit amet libero.
@@ -342,7 +342,7 @@ const Home: NextPage = () => {
         </Stack>
 
         <Box w={{ base: "100%", md: "70%" }} px={{ base: 6, md: 36 }} mt={24}>
-          <Text fontSize="36px" lineHeight="36px" fontWeight="semibold" mb={6}>
+          <Text fontSize={{ base: "32px", md: "36px"}} lineHeight={{ base: "32px", md: "36px"}} fontWeight="semibold" mb={6}>
             FAQ
           </Text>
           <FaqAccordion />

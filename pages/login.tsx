@@ -123,12 +123,13 @@ const Login = () => {
           order={{ base: 1, md: 0 }}
         >
           <Flex
-            w={{ base: "80%", md: "100%", lg: "70%" }}
+            w={breakpointValue === "md" ? "346px" : "100%"}
             flexDirection="column"
           >
             <Text
               fontSize="36px"
-              fontWeight="bold"
+              fontWeight="600"
+              color="black"
               textAlign={{ base: "center", md: "left" }}
               mt={{ base: 10, md: 0 }}
             >
@@ -160,13 +161,17 @@ const Login = () => {
                     isRequired
                     isInvalid={errors.email && touched.email}
                   >
-                    <FormLabel fontSize="11px" color="GrayText">
+                    <FormLabel fontSize="11px" color="#A9A9BC" fontWeight="400" marginBottom="6px">
                       Email
                     </FormLabel>
                     <Input
                       type="email"
                       placeholder="Add Your Email Address"
                       fontSize="13px"
+                      color="black"
+                      _placeholder={{ color: "#9F9FB5" }}
+                      background="#FCFCFE"
+                      fontWeight="400"
                       name="email"
                       onChange={handleChange}
                     />
@@ -180,7 +185,7 @@ const Login = () => {
                     isRequired
                     isInvalid={errors.password && touched.password}
                   >
-                    <FormLabel fontSize="11px" color="GrayText">
+                    <FormLabel fontSize="11px" color="#A9A9BC" fontWeight="400" marginBottom="6px">
                       Password
                     </FormLabel>
                     <InputGroup>
@@ -188,11 +193,17 @@ const Login = () => {
                         type={passwordShow ? "text" : "password"}
                         placeholder="Add Your Password"
                         fontSize="13px"
+                        fontWeight="400"
+                        color="black"
+                        _placeholder={{ color: "#9F9FB5" }}
+                        background="#FCFCFE"
                         name="password"
                         onChange={handleChange}
                       />
                       <InputRightAddon
                         onClick={() => setPasswordShow(!passwordShow)}
+                        background="#FCFCFE"
+                        color="purpleTone"
                       >
                         {passwordShow ? <BiHide /> : <BiShow />}
                       </InputRightAddon>
@@ -205,7 +216,7 @@ const Login = () => {
                     type="submit"
                     size="md"
                     fontSize="12px"
-                    fontWeight="400"
+                    fontWeight="bold"
                     w="full"
                     mt={8}
                     isLoading={isSubmitting || authStatus === Status.LOADING}
@@ -226,7 +237,7 @@ const Login = () => {
         </Box>
 
         <Box
-          bgColor={{ base: "white", md: "grayBg" }}
+          bgColor={{ base: "white", md: "#E5E5E5" }}
           order={{ base: 0, md: 1 }}
         >
           <Center h="full" px={6}>
@@ -234,7 +245,7 @@ const Login = () => {
               src="/images/logo-img.svg"
               fit="cover"
               alt="login"
-              w="full"
+              w="80%"
             />
           </Center>
         </Box>

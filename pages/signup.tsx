@@ -122,7 +122,7 @@ const Signup = () => {
         <Logo />
       </Center>
       <SimpleGrid h="100vh" columns={{ base: 1, md: 2 }}>
-        <Box bgColor={{ base: "white", md: "grayBg" }}>
+        <Box bgColor={{ base: "white", md: "#E5E5E5" }}>
           <Center h="full" px={6}>
             <Image
               src="/images/logo-img.svg"
@@ -144,13 +144,14 @@ const Signup = () => {
           alignItems="center"          
         >
           <Flex
-            w={{ base: "80%", md: "100%", lg: "70%" }}
+            w={breakpointValue === "md" ? "346px" : "100%"}
             flexDirection="column"
             my={{ base: 6, md: 0 }}
           >
             <Text
               fontSize="36px"
-              fontWeight="bold"
+              fontWeight="600"
+              color="black"
               textAlign={{ base: "center", md: "left" }}
             >
               Sign Up
@@ -158,7 +159,7 @@ const Signup = () => {
             <Text
               fontSize="14px"
               fontWeight="400"
-              color="GrayText"
+              color="#8888A8"
               textAlign={{ base: "center", md: "left" }}
               mt={6}
             >
@@ -195,13 +196,17 @@ const Signup = () => {
                       isRequired
                       isInvalid={errors.firstname && touched.firstname}
                     >
-                      <FormLabel fontSize="11px" color="GrayText">
+                      <FormLabel fontSize="11px" color="#A9A9BC" fontWeight="400" marginBottom="6px">
                         Firstname
                       </FormLabel>
                       <Input
                         type="text"
                         placeholder="Add Your First Name"
                         fontSize="13px"
+                        color="black"
+                        _placeholder={{ color: "#9F9FB5" }}
+                        background="#FCFCFE"
+                        fontWeight="400"
                         name="firstname"
                         onChange={handleChange}
                       />
@@ -213,13 +218,17 @@ const Signup = () => {
                       isRequired
                       isInvalid={errors.lastname && touched.lastname}
                     >
-                      <FormLabel fontSize="11px" color="GrayText">
+                      <FormLabel fontSize="11px" color="#A9A9BC" fontWeight="400" marginBottom="6px">
                         Lastname
                       </FormLabel>
                       <Input
                         type="text"
                         placeholder="Add Your Last Name"
                         fontSize="13px"
+                        color="black"
+                        _placeholder={{ color: "#9F9FB5" }}
+                        background="#FCFCFE"
+                        fontWeight="400"
                         name="lastname"
                         onChange={handleChange}
                       />
@@ -233,13 +242,17 @@ const Signup = () => {
                     isRequired
                     isInvalid={errors.email && touched.email}
                   >
-                    <FormLabel fontSize="11px" color="GrayText">
+                    <FormLabel fontSize="11px" color="#A9A9BC" fontWeight="400" marginBottom="6px">
                       Email
                     </FormLabel>
                     <Input
                       type="email"
                       placeholder="Add Your Email Address"
                       fontSize="13px"
+                      color="black"
+                      _placeholder={{ color: "#9F9FB5" }}
+                      background="#FCFCFE"
+                      fontWeight="400"
                       name="email"
                       onChange={handleChange}
                     />
@@ -253,7 +266,7 @@ const Signup = () => {
                     isRequired
                     isInvalid={errors.password && touched.password}
                   >
-                    <FormLabel fontSize="11px" color="GrayText">
+                    <FormLabel fontSize="11px" color="#A9A9BC" fontWeight="400" marginBottom="6px">
                       Password
                     </FormLabel>
                     <InputGroup>
@@ -261,11 +274,17 @@ const Signup = () => {
                         type={passwordShow ? "text" : "password"}
                         placeholder="Add Your Password"
                         fontSize="13px"
+                        color="black"
+                        _placeholder={{ color: "#9F9FB5" }}
+                        background="#FCFCFE"
+                        fontWeight="400"
                         name="password"
                         onChange={handleChange}
                       />
                       <InputRightAddon
                         onClick={() => setPasswordShow(!passwordShow)}
+                        background="#FCFCFE"
+                        color="purpleTone"
                       >
                         {passwordShow ? <BiHide /> : <BiShow />}
                       </InputRightAddon>
@@ -280,7 +299,7 @@ const Signup = () => {
                     isRequired
                     isInvalid={errors.cpassword && touched.cpassword}
                   >
-                    <FormLabel fontSize="11px" color="GrayText">
+                    <FormLabel fontSize="11px" color="#A9A9BC" fontWeight="400" marginBottom="6px">
                       Confirm Password
                     </FormLabel>
                     <InputGroup>
@@ -288,11 +307,17 @@ const Signup = () => {
                         type={cPasswordShow ? "text" : "password"}
                         placeholder="Add Your Password"
                         fontSize="13px"
+                        color="black"
+                        _placeholder={{ color: "#9F9FB5" }}
+                        background="#FCFCFE"
+                        fontWeight="400"
                         name="cpassword"
                         onChange={handleChange}
                       />
                       <InputRightAddon
                         onClick={() => setCPasswordShow(!cPasswordShow)}
+                        background="#FCFCFE"
+                        color="purpleTone"
                       >
                         {cPasswordShow ? <BiHide /> : <BiShow />}
                       </InputRightAddon>
@@ -305,7 +330,7 @@ const Signup = () => {
                     type="submit"
                     size="md"
                     fontSize="12px"
-                    fontWeight="400"                    
+                    fontWeight="700"
                     w="full"
                     mt={8}
                     isLoading={isSubmitting}
@@ -318,10 +343,10 @@ const Signup = () => {
             </Formik>
 
             <HStack justifyContent={{ base: "center", md: "right" }} mt={6}>
-              <Text fontSize="12px" lineHeight={0}>
+              <Text fontSize="11px" lineHeight="11px">
                 Already have an account?
               </Text>
-              <Text display="inline" color="purpleTone" lineHeight={0}>
+              <Text display="inline" color="purpleTone" fontSize="11px" lineHeight="11px" fontWeight="bold">
                 <Link href="/login">Login</Link>
               </Text>
             </HStack>
