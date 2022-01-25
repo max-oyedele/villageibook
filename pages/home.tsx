@@ -282,11 +282,11 @@ const Home: NextPage = () => {
 
         <Stack
           direction={{ base: "column", xl: "row" }}
-          bgColor="grayBg"
+          bgColor="#F6F7F9"
           px={{ base: 6, lg: 32 }}
           mt={24}
         >
-          <Box mt={-4} pos="relative" zIndex={0}>
+          <Box mt={breakpointValue === "md" ? -4 : 0} pos="relative" zIndex={0}>
             <Flex
               justifyContent={{ base: "center", xl: "end" }}
               alignItems="start"
@@ -295,20 +295,28 @@ const Home: NextPage = () => {
                 className="react-player"
                 url="https://www.rmp-streaming.com/media/big-buck-bunny-360p.mp4"
                 // width="100%"
-                height="360px"
+                height={breakpointValue === "md" ? "360px" : "200px"}
                 playing={true}
+                playIcon={
+                  breakpointValue === "md" ?
+                    <Center pos="absolute" top={0} w="full" h="full">
+                      <Circle w="118px" h="118px" bgColor="gray.600" _hover={{ bgColor: "red.500", cursor: "pointer" }}>
+                        <BiCaretRight fontSize="48px" width="50%" color="white" />
+                      </Circle>
+                    </Center> :
+                    <Center pos="absolute" top={0} w="full" h="full">
+                      <Circle w="64px" h="64px" bgColor="gray.600" _hover={{ bgColor: "red.500", cursor: "pointer" }}>
+                        <BiCaretRight fontSize="48px" width="50%" color="white" />
+                      </Circle>
+                    </Center>
+                  }
                 light="/images/home-video-back.png"
               />
-              {/* <Center pos="absolute" top={0} w="full" h="full">
-                <Circle w={9} h={9} bgColor="gray.600" _hover={{ bgColor: "red.500", cursor: "pointer" }}>
-                  <BiCaretRight fontSize="24px" color="white" />
-                </Circle>
-              </Center> */}
               <Box
                 pos="absolute"
                 top={-6}
                 right={-6}
-                display={{ base: "block", md: "none", xl: "block" }}
+                display="block"
                 w="45%"
                 h="40%"
                 bgColor="#36CFD1"
