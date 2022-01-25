@@ -6,7 +6,6 @@ import {
 } from "@chakra-ui/react";
 import useFetchData from "hooks/use-fetch-data";
 import useActionDispatch from "hooks/use-action-dispatch";
-import { Village } from "types/schema";
 
 const TableSearchBox: React.FC<{ onChange }> = ({ onChange }) => {
   const { villages } = useFetchData();
@@ -32,6 +31,7 @@ const TableSearchBox: React.FC<{ onChange }> = ({ onChange }) => {
             size="md"
             width="full"
             height="40px"
+            background="white"
             value={searchText ?? ""}
             onChange={(e) => setSearchText(e.target.value)}
           />
