@@ -114,7 +114,8 @@ const Signup = () => {
       <Center
         w="full"
         bgColor={{base: "white", md: "transparent"}}
-        pos={{base: "static", md: "absolute"}}
+        pos={{ base: "static", md: "fixed" }}
+        marginBottom="auto"
         top="20px"
         left="20px"
         py={{base: 6, md: 0}}
