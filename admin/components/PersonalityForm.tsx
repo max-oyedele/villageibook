@@ -91,7 +91,7 @@ const PersonalityForm: React.FC<{
                         villageUuid: village.uuid,
                         name,
                         about,
-                        photo: { avatar, name: photo.name, description: photo.description },
+                        photo: { avatar, name: photo.name, description: photo.description, uuid: photo.uuid },
                         dateOfBirth,
                         dateOfDeath,
                         educationLife,

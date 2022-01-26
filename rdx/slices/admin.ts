@@ -33,7 +33,7 @@ export const fetchStories = createAsyncThunk(
       let endpoint = "";
       if (params?.villageUuid)
         endpoint += `/villages/${params.villageUuid}/HAS_STORY`;
-      endpoint += `/stories.json?fields=title,content,photo.url,photo.name,photo.description,uuid`;
+      endpoint += `/stories.json?fields=title,content,photo.url,photo.uuid,photo.name,photo.description,uuid`;
 
       const response = await axiosAuth.get("/api/entry", {
         params: { endpoint },
@@ -52,7 +52,7 @@ export const fetchPersonalities = createAsyncThunk(
       let endpoint = "";
       if (params?.villageUuid)
         endpoint += `/villages/${params.villageUuid}/HAS_PERSONALITY`;
-      endpoint += `/personalities.json?fields=name,about,photo.url,photo.name,photo.description,dateOfBirth,dateOfDeath,educationLife,achievements,career,uuid`;
+      endpoint += `/personalities.json?fields=name,about,photo.url,photo.uuid,photo.name,photo.description,dateOfBirth,dateOfDeath,educationLife,achievements,career,uuid`;
 
       const response = await axiosAuth.get("/api/entry", {
         params: { endpoint },
@@ -71,7 +71,7 @@ export const fetchInstitutions = createAsyncThunk(
       let endpoint = "";
       if (params?.villageUuid)
         endpoint += `/villages/${params.villageUuid}/HAS_INSTITUTION`;
-      endpoint += `/institutions.json?fields=name,photo.url,photo.name,photo.description,yearEstablished,address,email,phone,history,uuid`;
+      endpoint += `/institutions.json?fields=name,photo.url,photo.name,photo.uuid,photo.description,yearEstablished,address,email,phone,history,uuid`;
 
       const response = await axiosAuth.get("/api/entry", {
         params: { endpoint },
@@ -189,6 +189,9 @@ export const submitStory = createAsyncThunk(
         return response.data;
       }
       else {
+        bodyFormData.append(`HAS_MEDIA.Photo.${params.photo?.uuid}.url`, params.photo?.avatar);
+        bodyFormData.append(`HAS_MEDIA.Photo.${params.photo?.uuid}.name`, params.photo?.name);
+        bodyFormData.append(`HAS_MEDIA.Photo.${params.photo?.uuid}.description`, params.photo?.description);
         const response = await axios.patch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/stories/${params.uuid}`,
           bodyFormData,
@@ -257,6 +260,9 @@ export const submitPersonality = createAsyncThunk(
         );
         return response.data;
       } else {
+        bodyFormData.append(`HAS_MEDIA.Photo.${params.photo?.uuid}.url`, params.photo?.avatar);
+        bodyFormData.append(`HAS_MEDIA.Photo.${params.photo?.uuid}.name`, params.photo?.name);
+        bodyFormData.append(`HAS_MEDIA.Photo.${params.photo?.uuid}.description`, params.photo?.description);
         const response = await axios.patch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/personalities/${params.uuid}`,
           bodyFormData,
@@ -321,6 +327,9 @@ export const submitInstitution = createAsyncThunk(
         );
         return response.data;
       } else {
+        bodyFormData.append(`HAS_MEDIA.Photo.${params.photo?.uuid}.url`, params.photo?.avatar);
+        bodyFormData.append(`HAS_MEDIA.Photo.${params.photo?.uuid}.name`, params.photo?.name);
+        bodyFormData.append(`HAS_MEDIA.Photo.${params.photo?.uuid}.description`, params.photo?.description);
         const response = await axios.patch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/institutions/${params.uuid}`,
           bodyFormData,
@@ -372,6 +381,8 @@ export const submitVideo = createAsyncThunk(
 
         return response.data;
       } else {
+        bodyFormData.append(`HAS_MEDIA.Video.${params.uuid}.url`, params.video.avatar);
+        // bodyFormData.append("url", params.video.avatar);
         const response = await axios.patch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/videos/${params.uuid}`,
           bodyFormData,

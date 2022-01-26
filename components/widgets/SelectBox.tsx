@@ -89,7 +89,7 @@ const SelectBox = (props: any) => {
               ? "#f26522"
               : props.backColor === "secondary"
               ? "#282a2f"
-              : "transparent",
+              : "white",
           border: `1px solid ${props.borderColor ?? "#E5E7EB"}`,
         }),
         placeholder: () => ({
