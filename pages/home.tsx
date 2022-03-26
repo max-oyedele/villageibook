@@ -54,7 +54,7 @@ const Home: NextPage = () => {
     <Fragment>
       <Box bgColor="white" pt={6}>
         <Center w="full">
-          <Logo />
+          <Logo size="lg" />
         </Center>
 
         {breakpointValue === "base" && (

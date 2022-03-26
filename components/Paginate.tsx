@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import ReactPaginate from 'react-paginate';
+import ReactPaginate from "react-paginate";
 import { Box, Text } from "@chakra-ui/react";
 
 const Paginate = (props) => {
@@ -8,11 +8,10 @@ const Paginate = (props) => {
   const [nextOk, setNextOk] = useState(true);
   const [preveOk, setPrevOk] = useState(true);
   const [data, setData] = useState(props.data);
-  const itemsPerPage = props.itemsPerPage? props.itemsPerPage : 4;
+  const itemsPerPage = props.itemsPerPage ? props.itemsPerPage : 4;
 
   const handlePageClicked = (event) => {
-    const newOffset =
-      (event.selected * itemsPerPage) % data.length;
+    const newOffset = (event.selected * itemsPerPage) % data.length;
     setItemOffset(newOffset);
   };
 
@@ -20,7 +19,8 @@ const Paginate = (props) => {
     if (data && data?.length > 0) {
       const endOffset = itemOffset + itemsPerPage;
       if (data.length > itemsPerPage) {
-        if (itemOffset == 1) props.pageData(data.slice(itemOffset-1, endOffset-1));
+        if (itemOffset == 1)
+          props.pageData(data.slice(itemOffset - 1, endOffset - 1));
         else props.pageData(data.slice(itemOffset, endOffset));
         setPageCount(Math.ceil(data.length / itemsPerPage));
       } else {
@@ -46,41 +46,54 @@ const Paginate = (props) => {
 
   useEffect(() => {
     setItemOffset(1);
-    if (!props.searchText || props.searchText === "") setData(props.data)
-    else setData(props.data.filter(function (row) {
-      return  Object.keys(row).some(function(key) {
-        return String(row[key]).toLowerCase().indexOf(String(props.searchText).toLowerCase()) > -1;
-      })
-    }));
-  }, [props.searchText, props.data])
+    if (!props.searchText || props.searchText === "") setData(props.data);
+    else
+      setData(
+        props.data.filter(function (row) {
+          return Object.keys(row).some(function (key) {
+            return (
+              String(row[key])
+                .toLowerCase()
+                .indexOf(String(props.searchText).toLowerCase()) > -1
+            );
+          });
+        })
+      );
+  }, [props.searchText, props.data]);
 
   return (
-    <Box className={`${props.centerPagination ?? 'paginate-center'} align-pagination`}>
-      {data.length > itemsPerPage &&
+    <Box
+      className={`${
+        props.centerPagination ?? "paginate-center"
+      } align-pagination`}
+    >
+      {data.length > itemsPerPage && (
         <>
           <ReactPaginate
-            previousLabel={'Previous'}
-            nextLabel={'Next'}
-            breakLabel={'...'}
-            breakClassName={'break-me'}
-            previousClassName={`${preveOk ?? 'paginate-disabled'} previouse-disabled`}
-            nextClassName={`${nextOk ?? 'paginate-disabled'} next-disabled`}
+            previousLabel={"Previous"}
+            nextLabel={"Next"}
+            breakLabel={"..."}
+            breakClassName={"break-me"}
+            previousClassName={`${
+              preveOk ?? "paginate-disabled"
+            } previouse-disabled`}
+            nextClassName={`${nextOk ?? "paginate-disabled"} next-disabled`}
             pageRangeDisplayed={5}
             onPageChange={handlePageClicked}
-            containerClassName={'pagination'}
+            containerClassName={"pagination"}
             renderOnZeroPageCount={null}
             pageCount={pageCount}
-            activeClassName={'active'}
+            activeClassName={"active"}
           />
-          {props.centerPagination &&
-            <Text fontSize="sm" mt="3px" mx={4} className={'total'}>
+          {props.centerPagination && (
+            <Text fontSize="sm" mt="3px" mx={4} className={"total"}>
               (total: {data.length})
             </Text>
-          }
+          )}
         </>
-      }
+      )}
     </Box>
-  )
+  );
 };
 
 export default Paginate;
